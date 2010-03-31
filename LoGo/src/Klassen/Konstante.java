@@ -12,6 +12,7 @@ package Klassen;
 public class Konstante {
 
     // Konstanten
+    final static int FEHLER                 = -1;
     final static int SCHNITTPUNKT_LEER      = 0;
     final static int SCHNITTPUNKT_SCHWARZ   = 1;
     final static int SCHNITTPUNKT_WEISS     = 2;
