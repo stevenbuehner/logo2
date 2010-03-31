@@ -14,6 +14,7 @@ public class Spieler {
 
     private String spielerName;
     private long verbliebendeSpielzeitInMS;
+    private float komiPunkte;
 
 
     /**
@@ -75,5 +76,23 @@ public class Spieler {
         this.verbliebendeSpielzeitInMS = zeitInSek*60;
     }
 
+    /**
+     *
+     * @return Komi Punkte auf 0,5 gerundet (Die Runden Funktion ist aber noch
+     * nicht implementiert!)
+     */
+    public float getKomiPunkte(){
+
+        return this.komiPunkte;
+    }
+
+    /**
+     *
+     * @param Zum Setzen der komiPunkte. Die Werte werden bei der Ausgabe dann
+     * wieder auf 0,5 gerundet.
+     */
+    public void setKomiPunkte( float komiPunkte ){
+        this.komiPunkte = komiPunkte;
+    }
 
 }
