@@ -33,7 +33,7 @@
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="appTitleLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="appDescLabel" alignment="0" pref="392" max="32767" attributes="0"/>
+                          <Component id="appDescLabel" alignment="0" pref="397" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="versionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
