@@ -104,6 +104,8 @@ public class Spielfeld {
                     spielfeld[j][i] = Konstante.SCHNITTPUNKT_LEER;
                 }
             }
+            /* Jetzt ist das Brett noch leer. Es muss also mit den richtigen
+               Werten gefuellt werden - Fehlt noch*/
 
             this.aktuellesSpielfeldCache = spielfeld;
             this.spielfeldCacheMitZugnummerStand = this.letzteZugnummer;
@@ -190,7 +192,7 @@ public class Spielfeld {
          */
 
 
-        setStein( xPos, yPos, this.getSpielerAnDerReihe() );
+         return   setStein( xPos, yPos, this.getSpielerAnDerReihe() );
 
 
          /* Weitere Aufgaben:
@@ -201,21 +203,22 @@ public class Spielfeld {
          */
         
         //DUmmy
-        return true;
     }
 
     /**
      *
-     * @param X-Position des Spielfelds.
+     * @param xPos X-Position des Spielfelds.
      * Diese kann Werte zwischen 1 und der Feldlänge enthalten
-     * @param Y-Position des Spielfelds.
+     * @param yPos Y-Position des Spielfelds.
      * Diese kann Werte zwischen 1 und der Feldlänge enthalten
-     * @param Farbe des setzenden Spielers
+     * @param spielerfarbe Farbe des setzenden Spielers
+     * @return setStein gibt zurueck, ob das Setzen erfolgreich
      */
-    public void setStein(int xPos, int yPos, int spielerfarbe) {
+    public boolean setStein(int xPos, int yPos, int spielerfarbe) {
         /*
          * siehe Funktion setStein(...)
          */
+        return false; // Erstmal false machen... sollte geaendert werden wenn die Funktion was macht!!
     }
 
     public boolean setSteinMoeglich( int xPos, int yPos, int spielerfarbe ) {
