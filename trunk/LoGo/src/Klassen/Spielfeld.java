@@ -4,6 +4,7 @@
  */
 package Klassen;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +30,7 @@ public class Spielfeld {
         this.letzteZugnummer = 0;
         this.setGefangenenAnzahlSchwarz(0);
         this.setGefangenenAnzahlWeiss(0);
+        this.spielZugCollection = new ArrayList<Spielzug>();
 
 
         // Chache Funktionen setzen
@@ -180,16 +182,26 @@ public class Spielfeld {
      * Diese kann Werte zwischen 1 und der Feldlänge enthalten
      *
      */
-    public void setStein(int xPos, int yPos) {
+    public boolean setStein(int xPos, int yPos) {
+
         /* Die Funktion setzt den Stein fuer abhaengig vom letzten gespielten Zug.
          * Wenn also Spieler schwarz den letzten Zug gesetzt hat, wird der neue
          * Zug für Spieler weiss eingetragen.
-         *
-         * Weitere Aufgaben:
+         */
+
+
+        setStein( xPos, yPos, this.getSpielerAnDerReihe() );
+
+
+         /* Weitere Aufgaben:
          *  - Prüfen des Zuges, ob er Möglich ist (Doppelzüge beachten)
+         *      => Ueber die Funktion setSteinMoeglich( ... )
          *  - Prüfen wer am Zug ist
          *  - Cache-Werte INKREMENTELL erneuern.
          */
+        
+        //DUmmy
+        return true;
     }
 
     /**
@@ -206,7 +218,7 @@ public class Spielfeld {
          */
     }
 
-    public boolean setSteinMoeglich(int xPos, int yPos) {
+    public boolean setSteinMoeglich( int xPos, int yPos, int spielerfarbe ) {
         /*
          * Prüft ab ob an diesem Punkt ein Stein gesetzt werden darf.
          * Funktion wird verwendet, wenn zum Beispiel über einen Schnittpunkt
@@ -220,4 +232,31 @@ public class Spielfeld {
 
         return true;
     }
+
+    private int getSpielerAnDerReihe(){
+
+        int letzterSpieler = getSpielerVonLetztemZug();
+        
+        if (letzterSpieler == Konstante.SCHNITTPUNKT_SCHWARZ){
+            return Konstante.SCHNITTPUNKT_WEISS;
+        }
+        else if (letzterSpieler == Konstante.SCHNITTPUNKT_WEISS){
+            return Konstante.SCHNITTPUNKT_SCHWARZ;
+        }
+        else{
+            // FEHLER
+            return Konstante.FEHLER;
+        }
+        
+
+    }
+
+    private int getSpielerVonLetztemZug(){
+        /* Ich bin mir nicht ganz sicher ob die Funktion funktioniert
+             und ob sie auch noch funktioniert, wenn mal Elemente in der Collection
+             gelöscht wurden.
+         */
+        return this.spielZugCollection.get(this.spielZugCollection.size()-1).getFarbe();
+    }
+
 }
