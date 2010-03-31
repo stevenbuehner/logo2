@@ -25,13 +25,6 @@ public class Spielfeld {
     private int[][]         aktuellesSpielfeldCache;
     private int             spielfeldCacheMitZugnummerStand;
 
-    // Konstanten
-    final static int SCHNITTPUNKT_LEER      = 0;
-    final static int SCHNITTPUNKT_SCHWARZ   = 1;
-    final static int SCHNITTPUNKT_WEISS     = 2;
-    final static int SCHNITTPUNKT_VERBOTEN  = 3;
-
-
 
     public void Spielfeld( int spielfeldGroesse ){
         this.spielfeldGroesse   = spielfeldGroesse;
@@ -110,7 +103,7 @@ public class Spielfeld {
             // Spielfeld initialisieren
             for(int i=this.getSpielfeldGroesse()-1; i>=0; i--){
                 for(int j=this.getSpielfeldGroesse()-1; j>=0; j--){
-                    spielfeld[j][i] = SCHNITTPUNKT_LEER;
+                    spielfeld[j][i] = Konstante.SCHNITTPUNKT_LEER;
                 }
             }
 
@@ -151,7 +144,7 @@ public class Spielfeld {
             // Spielfeld initialisieren
             for(int i=this.getSpielfeldGroesse()-1; i>=0; i--){
                 for(int j=this.getSpielfeldGroesse()-1; j>=0; j--){
-                    spielfeld[j][i] = SCHNITTPUNKT_LEER;
+                    spielfeld[j][i] = Konstante.SCHNITTPUNKT_LEER;
                 }
             }
 
