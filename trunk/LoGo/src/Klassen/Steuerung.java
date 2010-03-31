@@ -13,62 +13,19 @@ package Klassen;
  */
 public class Steuerung {
 
-    private String spielerName;
-    private long verbleibendeSpielzeitInMS;
+    private Spieler spielerSchwarz;
+    private Spieler spielerWeiss;
+
+    /* Wenn die Spielerzeit aufgebraucht ist gibt es noch die Periodenzeit.
+    * Diese ist fuer alle Spieler gleich.
+    */
+    private long    periodenZeit;   
+    private Spielfeld dasSpielfeld;
 
 
-    /**
-     * @return Name des Spielers in Textform
-     */
-    public String getSpielerName(){
-        return this.spielerName;
+    public void Steuerung( ){
+
     }
-
-    /**
-     * @param Den Spielername zum Speichern in der Klasse übergeben
-     */
-    public void setSpielername( String spielerName ){
-        this.spielerName = spielerName;
-    }
-
-
-    /**
-     *
-     * @return Die verbleibende Spielzeit des Spielers in Millesekunden
-     */
-    public long getVerbleibendeSpielzeitInMS(){
-        return this.verbleibendeSpielzeitInMS;
-    }
-
-    /**
-     *
-     * @param Speichern der restlichen verbleibenden Spielzeit
-     * des Spielers in Millesekunden
-     */
-    public void setVerbleibendeSpielzeitInMS( long verbleibendeSpielzeit ){
-        this.verbleibendeSpielzeitInMS = verbleibendeSpielzeit;
-    }
-
-    /**
-     *
-     * @return Die verbleibende Spielzeit des Spielers in Sekunden gerundet.
-     */
-    public long getVerbleibendeSpielzeitInSek(){
-        return verbleibendeSpielzeitInMS/60;
-    }
-
-    /**
-     *
-     * @param Speichern der restlichen verbleibenden Spielzeit in Sekunden.
-     * Da der Wert intern in Millesekunden gespeichert wird, sollte diese
-     * Funktion nur sehr bedacht verwendet werden, da ansonsten dem Spieler
-     * wertvolle Millesekunden im Spiel fehlen könnten.
-     */
-    public void setVerbleibendeSpielzeitInSek( long verbleibendeSpielzeitInSek ){
-        this.verbleibendeSpielzeitInMS = verbleibendeSpielzeitInSek*60;
-    }
-
-
 
 
 }
