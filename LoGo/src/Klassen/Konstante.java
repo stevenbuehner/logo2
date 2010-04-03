@@ -18,5 +18,9 @@ public class Konstante {
     final static int SCHNITTPUNKT_WEISS     = 2;
     final static int SCHNITTPUNKT_VERBOTEN  = 3;
 
+    // Konstanten fuer Gefangenenstatus
+    final static int STEIN_UNGEWISS         = 4;
+    final static int STEIN_GEFANGEN         = 5;
+    final static int STEIN_LEBENDIG         = 6;
 
 }
