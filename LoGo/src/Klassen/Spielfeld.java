@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  *
- * @author steven
+ * @author steven, tommy
  * @version 0.1
  */
 public class Spielfeld {
@@ -339,11 +339,111 @@ public class Spielfeld {
                   * Aufgenommen werden. Hat er allerdings die gleiche Farbe,
                   * wird er markiert und in die Liste aufgenommen */
                  else if(feld[listeSteine[momElement].getXPos()-1][listeSteine[momElement].getYPos()].getBelegungswert() == farbe){
-                     
+                     /* Nachbarstein ist also von der gleichen Farbe. Dieser
+                      * muss markiert und in die Liste aufgenommen werden, aber
+                      * nur wenn sie noch nicht markiert sind */
+                     if(feld[listeSteine[momElement].getXPos()-1][listeSteine[momElement].getYPos()].getMarkiert() == false){
+                         feld[listeSteine[momElement].getXPos()-1][listeSteine[momElement].getYPos()].setMarkiert(true);
+                         listeSteine[endElement] = feld[listeSteine[momElement].getXPos()-1][listeSteine[momElement].getYPos()];
+                         ++endElement;
+                     }
                  }
              }
+
+             /* Wenn Stein rechten Nachbarn hat */
+             if(listeSteine[momElement].getXPos()!=feldGroesse-1){
+                 /* Nachsehen, ob linker nachbar Leer, dann Gruppe nicht fangbar! */
+                 if(feld[listeSteine[momElement].getXPos()+1][listeSteine[momElement].getYPos()].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER ||
+                    feld[listeSteine[momElement].getXPos()+1][listeSteine[momElement].getYPos()].getBelegungswert() == Konstante.SCHNITTPUNKT_VERBOTEN){
+                     fangbar=false; // Gruppe nicht fangbar, da sie eine Freiheit hat.
+                 }
+                 /* Der Stein hat also einen Nachbarstein, wenn dieser nicht der
+                  * Steinfarbe entspricht, muss er auch nicht in die Liste
+                  * Aufgenommen werden. Hat er allerdings die gleiche Farbe,
+                  * wird er markiert und in die Liste aufgenommen */
+                 else if(feld[listeSteine[momElement].getXPos()+1][listeSteine[momElement].getYPos()].getBelegungswert() == farbe){
+                     /* Nachbarstein ist also von der gleichen Farbe. Dieser
+                      * muss markiert und in die Liste aufgenommen werden, aber
+                      * nur wenn sie noch nicht markiert sind */
+                     if(feld[listeSteine[momElement].getXPos()+1][listeSteine[momElement].getYPos()].getMarkiert() == false){
+                         feld[listeSteine[momElement].getXPos()+1][listeSteine[momElement].getYPos()].setMarkiert(true);
+                         listeSteine[endElement] = feld[listeSteine[momElement].getXPos()+1][listeSteine[momElement].getYPos()];
+                         ++endElement;
+                     }
+                 }
+             }
+
+             /* Wenn Stein oberen Nachbarn hat (Oben und unten werden vielleicht
+              * umdefiniert, ist aber egal fuer den Algorithmus!)*/
+             if(listeSteine[momElement].getYPos()!=feldGroesse-1){
+                 /* Nachsehen, ob linker nachbar Leer, dann Gruppe nicht fangbar! */
+                 if(feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()+1].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER ||
+                    feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()+1].getBelegungswert() == Konstante.SCHNITTPUNKT_VERBOTEN){
+                     fangbar=false; // Gruppe nicht fangbar, da sie eine Freiheit hat.
+                 }
+                 /* Der Stein hat also einen Nachbarstein, wenn dieser nicht der
+                  * Steinfarbe entspricht, muss er auch nicht in die Liste
+                  * Aufgenommen werden. Hat er allerdings die gleiche Farbe,
+                  * wird er markiert und in die Liste aufgenommen */
+                 else if(feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()+1].getBelegungswert() == farbe){
+                     /* Nachbarstein ist also von der gleichen Farbe. Dieser
+                      * muss markiert und in die Liste aufgenommen werden, aber
+                      * nur wenn sie noch nicht markiert sind */
+                     if(feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()+1].getMarkiert() == false){
+                         feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()+1].setMarkiert(true);
+                         listeSteine[endElement] = feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()+1];
+                         ++endElement;
+                     }
+                 }
+             }
+
+             /* Wenn Stein unteren Nachbarn hat */
+             if(listeSteine[momElement].getYPos()!=0){
+                 /* Nachsehen, ob linker nachbar Leer, dann Gruppe nicht fangbar! */
+                 if(feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()-1].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER ||
+                    feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()-1].getBelegungswert() == Konstante.SCHNITTPUNKT_VERBOTEN){
+                     fangbar=false; // Gruppe nicht fangbar, da sie eine Freiheit hat.
+                 }
+                 /* Der Stein hat also einen Nachbarstein, wenn dieser nicht der
+                  * Steinfarbe entspricht, muss er auch nicht in die Liste
+                  * Aufgenommen werden. Hat er allerdings die gleiche Farbe,
+                  * wird er markiert und in die Liste aufgenommen */
+                 else if(feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()-1].getBelegungswert() == farbe){
+                     /* Nachbarstein ist also von der gleichen Farbe. Dieser
+                      * muss markiert und in die Liste aufgenommen werden, aber
+                      * nur wenn sie noch nicht markiert sind */
+                     if(feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()-1].getMarkiert() == false){
+                         feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()-1].setMarkiert(true);
+                         listeSteine[endElement] = feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()-1];
+                         ++endElement;
+                     }
+                 }
+             }
+
+             /* Jetzt wurden alle Nachbarn aufgenommen. Der naechste Stein wird
+              * also untersucht. Doch zuerst muss der jetzige sauber
+              * abgeschlossen werden */
+             feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()].setAnalysiert(true);
+             ++momElement;
         }while(momElement<endElement);
-        return 0;  // Damit NetBeans erstmal nicht meckert
+
+        /* Alle Steine der Gruppe sind jetzt in der Liste. Jetzt wird weiter
+         * gemacht, ja nachdem die Steine gefangen werden konnten */
+        if(fangbar==false){
+            /* Steine als lebendig markieren */
+            /* da momElement gerade auf leeres Feld zeigt! dekrementieren */
+            for(int i = momElement - 1; i>=0; --i) {
+                feld[listeSteine[i].getXPos()][listeSteine[i].getYPos()].setSteinStatus(Konstante.STEIN_LEBENDIG);
+            }
+        return 0; // wurde ja kein Stein gefangen
+        }
+        else {
+            for(int i = momElement -1; i>=0; --i) {
+                feld[listeSteine[i].getXPos()][listeSteine[i].getYPos()].setSteinStatus(Konstante.STEIN_GEFANGEN);
+                aktuellesSpielfeldCache[listeSteine[i].getXPos()][listeSteine[i].getYPos()] = Konstante.SCHNITTPUNKT_LEER;
+            }
+        return momElement; // momElement ist gerade die Gefangenenzahl ;)
+        }
     }
 
 }
