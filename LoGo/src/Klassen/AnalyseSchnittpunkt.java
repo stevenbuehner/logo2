@@ -19,12 +19,15 @@ public class AnalyseSchnittpunkt {
     private boolean markiert;
     private boolean analysiert;
 
-    /**
-     * 2 Konstruktoren der Klasse AnalyseSchnittpunkt. X, und Y-Koordinaten muss
-     * angegeben werden. Der belegungswert ist optional.
-     * @param xPos X-Koordinate
-     * @param yPos Y-Koordinate
-     */
+    public AnalyseSchnittpunkt(){
+        this.setXPos(-1);
+        this.setYPos(-1);
+        this.setSteinStatus(Konstante.STEIN_UNGEWISS);
+        this.setAnalysiert(false);
+        this.setMarkiert(false);
+        this.setBelegungswert(Konstante.SCHNITTPUNKT_LEER);
+    }
+
     public AnalyseSchnittpunkt(int xPos, int yPos){
         this.setXPos(xPos);
         this.setYPos(yPos);
