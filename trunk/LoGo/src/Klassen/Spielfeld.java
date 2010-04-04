@@ -32,7 +32,6 @@ public class Spielfeld {
         this.setGefangenenAnzahlWeiss(0);
         this.spielZugCollection = new ArrayList<Spielzug>();
 
-
         // Chache Funktionen setzen
         aktuellesSpielfeldCache = new int[this.getSpielfeldGroesse()][this.getSpielfeldGroesse()];
         spielfeldCacheMitZugnummerStand = this.letzteZugnummer;
@@ -218,11 +217,151 @@ public class Spielfeld {
      * @param spielerfarbe Farbe des setzenden Spielers
      * @return setStein gibt zurueck, ob das Setzen erfolgreich
      */
+
+    /* Warum ist der Return wert nicht int, dann kann man unterscheiden, warum
+     * ein Zug nicht moeglich ist. Auf der anderen seite kann soetwas auch von
+     * der GUI schon abgefangen werden...*/
     public boolean setStein(int xPos, int yPos, int spielerfarbe) {
-        /*
-         * siehe Funktion setStein(...)
-         */
-        return false; // Erstmal false machen... sollte geaendert werden wenn die Funktion was macht!!
+        /* Koordinaten umrechnen, da Array bei 0 beginnt */
+        int xKoord = xPos - 1;
+        int yKoord = yPos - 1;
+        boolean zugOK = false;
+
+        /* Testen auf Ko (Also verbotener Zug)*/
+        if(this.aktuellesSpielfeldCache[xKoord][yKoord]==Konstante.SCHNITTPUNKT_VERBOTEN) {
+            return false;
+        }
+
+        /* Testen ob schon Stein da steht */
+        if(this.aktuellesSpielfeldCache[xKoord][yKoord]==Konstante.SCHNITTPUNKT_SCHWARZ ||
+                this.aktuellesSpielfeldCache[xKoord][yKoord]==Konstante.SCHNITTPUNKT_WEISS){
+            return false;
+        }
+
+        /* Der Schnittpunkt ist also Leer und es ist erlaubt darauf zu spielen
+         * Jetzt wird ein AnalyseSpielfeld erstellt, damit wird dann gearbeitet */
+        AnalyseSchnittpunkt anaFeld[][];
+        anaFeld = new AnalyseSchnittpunkt[this.getSpielfeldGroesse()][this.getSpielfeldGroesse()];
+
+        /* Nun das Feld initialisieren */
+        for(int i=0; i<this.getSpielfeldGroesse(); i++){
+            for(int j=0; i<this.getSpielfeldGroesse(); j++){
+                anaFeld[i][j].setBelegungswert(this.aktuellesSpielfeldCache[i][j]);
+                anaFeld[i][j].setAnalysiert(false);
+                anaFeld[i][j].setMarkiert(false);
+                anaFeld[i][j].setSteinStatus(Konstante.STEIN_UNGEWISS);
+                anaFeld[i][j].setXPos(i);
+                anaFeld[i][j].setYPos(j);
+            }
+        }
+
+        /* Stein setzen und die Situation auswerten */
+        anaFeld[xKoord][yKoord].setBelegungswert(spielerfarbe);
+        int gefangeneSteine = 0;
+        int momGefSteine = 0;
+        boolean steinIstEinzeln = true; // wegen Ko-Regel
+
+        /* Wenn Stein nicht am Rand, dann versuchen Steine zu fangen */
+        if(xKoord!=0){
+            if(anaFeld[xKoord-1][yKoord].getBelegungswert()!=spielerfarbe){
+                momGefSteine = versucheSteinZuNehmen(xKoord-1, yKoord, anaFeld);
+                if(momGefSteine > 0) {
+                    gefangeneSteine+=momGefSteine;
+                    zugOK = true;
+                }
+                else if(momGefSteine == 0){
+                    /* nichts machen, da nichts zu tun ist */
+                }
+                else if(momGefSteine == -1){
+                    zugOK = true;
+                }
+            }
+            else {
+                steinIstEinzeln = false;
+            }
+        }
+
+        if(xKoord!=this.getSpielfeldGroesse()-1){
+            if(anaFeld[xKoord+1][yKoord].getBelegungswert()!=spielerfarbe){
+                momGefSteine = versucheSteinZuNehmen(xKoord+1, yKoord, anaFeld);
+                if(momGefSteine > 0) {
+                    gefangeneSteine+=momGefSteine;
+                    zugOK = true;
+                }
+                else if(momGefSteine == 0){
+                    /* nichts machen, da nichts zu tun ist */
+                }
+                else if(momGefSteine == -1){
+                    zugOK = true;
+                }
+            }
+            else {
+                steinIstEinzeln = false;
+            }
+        }
+
+        if(yKoord!=0){
+            if(anaFeld[xKoord][yKoord-1].getBelegungswert()!=spielerfarbe){
+                momGefSteine = versucheSteinZuNehmen(xKoord, yKoord-1, anaFeld);
+                if(momGefSteine > 0) {
+                    gefangeneSteine+=momGefSteine;
+                    zugOK = true;
+                }
+                else if(momGefSteine == 0){
+                    /* nichts machen, da nichts zu tun ist */
+                }
+                else if(momGefSteine == -1){
+                    zugOK = true;
+                }
+            }
+            else {
+                steinIstEinzeln = false;
+            }
+        }
+
+        if(yKoord!=this.getSpielfeldGroesse()-1){
+           if(anaFeld[xKoord][yKoord+1].getBelegungswert()!=spielerfarbe){
+                momGefSteine = versucheSteinZuNehmen(xKoord, yKoord+1, anaFeld);
+                if(momGefSteine > 0) {
+                    gefangeneSteine+=momGefSteine;
+                    zugOK = true;
+                }
+                else if(momGefSteine == 0){
+                    /* nichts machen, da nichts zu tun ist */
+                }
+                else if(momGefSteine == -1){
+                    zugOK = true;
+                }
+            }
+            else {
+                steinIstEinzeln = false;
+            }
+        }
+
+        /* Ist zugOK immer noch false, muss betrachtet werden, ob die Gruppe
+         * eine Freiheit hat, wenn nicht so ist es Selbstmord und somit ungueltig */
+        if(zugOK == false){
+            if(versucheSteinZuNehmen(xKoord, yKoord, anaFeld, false) == 0){
+                /* Dann hat der Zug zwar keine Steine gefangen und der Stein
+                 * hat keine Freiheiten, aber die Gruppe hat welche. Deshalb
+                 * kann der Stein gesetzt werden */
+                aktuellesSpielfeldCache[xKoord][yKoord] = spielerfarbe;
+                return true;
+            }
+            else {
+                /* Die Gruppe zu der der Stein gehoert hat keine Freiheiten.
+                 * Es ist also Selbstmord! Es ist zu bemerken, dass dabei die
+                 * Brettstellung nicht veraendert wird, da ja nichts gefangen
+                 * wurde (also vom richtigen Brett) */
+                return false;
+            }
+        }
+
+        /* Wenn man bis hier kommt, wurde ein Stein gesetzt der entweder eine
+         * Gruppe gefangen hat, oder eine Freiheit besitzt. Daher kann der
+         * Stein einfach gesetzt werden.*/
+        aktuellesSpielfeldCache[xKoord][yKoord] = spielerfarbe;
+        return true;
     }
 
     /*
@@ -300,9 +439,9 @@ public class Spielfeld {
 
         /* Noch abfangen, ob Wert falsch ist, denn logischer weise sollte jetzt
          * der Belegungswert schwarz oder weiss sein */
-        if(feld[xPos][yPos].getBelegungswert()!=Konstante.SCHNITTPUNKT_SCHWARZ && feld[xPos][yPos].getBelegungswert()!=Konstante.SCHNITTPUNKT_WEISS){
+        /*if(feld[xPos][yPos].getBelegungswert()!=Konstante.SCHNITTPUNKT_SCHWARZ && feld[xPos][yPos].getBelegungswert()!=Konstante.SCHNITTPUNKT_WEISS){
             return -2;
-        }
+        }*/
 
         /* Jetzt beginnt die eigentliche Prozedur, da man weiss, das es sich entweder
          * um einen schwarzen oder einen weissen Stein handelt. Zuerst wird getestet ob die
