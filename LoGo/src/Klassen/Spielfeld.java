@@ -281,6 +281,10 @@ public class Spielfeld {
      * @param yPos Ist die Y-Koordinate des Steins.
      * @param Feld Ist ein 2-Dimensionales Array vom Typ AnalyseSchnittpunkt. Es
      * dient als Brettstellung, die zu betrachten ist.
+     * @param nehmen Gibt an ob die Steine nur markiert werden, oder auch wirklich
+     * vom Brett genommen werden. Sollen die Steine nicht vom Brett genommen
+     * werden, so ist der Rueckgabewert 1, wenn die Steine genommen werden koennten,
+     * und 0 wenn nicht.
      * @return Der Rueckgabewert kennzeichnet bei Erfolg (also wenn die Gruppe
      * vom Brett genommen werden konnte) wieviele Steine entfernt worden. Bei
      * Misserfolg gibt es 2 Moeglichkeiten: 1. Die Gruppe konnte nicht entfernt
@@ -288,7 +292,7 @@ public class Spielfeld {
      * konnte nicht entfernt werden, weil an (xPos, yPos) gar kein Stein liegt
      * (Rueckgabewert -1)
      */
-    private int versucheSteinZuNehmen(int xPos, int yPos, AnalyseSchnittpunkt feld[][]){
+    private int versucheSteinZuNehmen(int xPos, int yPos, AnalyseSchnittpunkt feld[][], boolean nehmen){
         /* Zuerst testen ob an (x,y) ueberhaupt ein Stein ist */
         if(feld[xPos][yPos].getBelegungswert()==Konstante.SCHNITTPUNKT_LEER || feld[xPos][yPos].getBelegungswert()==Konstante.SCHNITTPUNKT_VERBOTEN){
             return -1;
@@ -432,18 +436,38 @@ public class Spielfeld {
         if(fangbar==false){
             /* Steine als lebendig markieren */
             /* da momElement gerade auf leeres Feld zeigt! dekrementieren */
-            for(int i = momElement - 1; i>=0; --i) {
-                feld[listeSteine[i].getXPos()][listeSteine[i].getYPos()].setSteinStatus(Konstante.STEIN_LEBENDIG);
+            if(nehmen==true){
+                for(int i = momElement - 1; i>=0; --i) {
+                    feld[listeSteine[i].getXPos()][listeSteine[i].getYPos()].setSteinStatus(Konstante.STEIN_LEBENDIG);
+                }
             }
         return 0; // wurde ja kein Stein gefangen
         }
         else {
-            for(int i = momElement -1; i>=0; --i) {
-                feld[listeSteine[i].getXPos()][listeSteine[i].getYPos()].setSteinStatus(Konstante.STEIN_GEFANGEN);
-                aktuellesSpielfeldCache[listeSteine[i].getXPos()][listeSteine[i].getYPos()] = Konstante.SCHNITTPUNKT_LEER;
+            if(nehmen==true){
+                for(int i = momElement -1; i>=0; --i) {
+                    feld[listeSteine[i].getXPos()][listeSteine[i].getYPos()].setSteinStatus(Konstante.STEIN_GEFANGEN);
+                    aktuellesSpielfeldCache[listeSteine[i].getXPos()][listeSteine[i].getYPos()] = Konstante.SCHNITTPUNKT_LEER;
+                }
+            return momElement; // momElement ist gerade die Gefangenenzahl ;)
             }
-        return momElement; // momElement ist gerade die Gefangenenzahl ;)
+            else {
+                return 1;
+            }
         }
+    }
+
+    /**
+     * Vereinfachte variante der Funktion versucheSteinZuNehmen. Dabei muss nicht
+     * uebergeben werden, ob man die Steine nehmen soll. Dieser Wert wird true
+     * gesetzt
+     * @param XPos X-Position des Steins
+     * @param YPos Y-Position des Steins
+     * @param feld Spielfeld
+     * @return
+     */
+    private int versucheSteinZuNehmen(int XPos, int YPos, AnalyseSchnittpunkt feld[][]){
+        return versucheSteinZuNehmen(XPos, YPos, feld, true);
     }
 
 }
