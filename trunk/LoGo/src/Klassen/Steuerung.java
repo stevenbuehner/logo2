@@ -6,6 +6,7 @@
 package Klassen;
 
 import interfaces.SteuerungIntface;
+import logo.LoGoApp;
 
 /**
  *
@@ -21,35 +22,88 @@ public class Steuerung implements SteuerungIntface {
     /* Wenn die Spielerzeit aufgebraucht ist gibt es noch die Periodenzeit.
     * Diese ist fuer alle Spieler gleich.
     */
-    private long    periodenZeit;   
+    private long    periodenZeit;
+
+    // Die Datenklasse
     private Spielfeld dasSpielfeld;
 
 
-    public void Steuerung( ){
-
+    public Steuerung( ){
+        this( 9, 60*1000 );     // Standardwerte
     }
 
-    public void initMitEinstellungen(String spielerName1, String spielerName2, long spielZeit1, long spielZeit2, float komiFuerWeiss, int spielfeldGroesse, int vorgabeSteineFuerSchwarz) {
+    public Steuerung ( int spielFeldGroesse, long periodenZeit ){
+        this.dasSpielfeld   = new Spielfeld( spielFeldGroesse );
+        this.periodenZeit   = periodenZeit;
+        this.spielerSchwarz = new Spieler("Steven", 100000, 0 );
+        this.spielerWeiss   = new Spieler("Steven", 100000, 0 );
+    }
+
+    public void initMitEinstellungen(
+            String spielerName1,
+            String spielerName2,
+            long spielZeit1,
+            long spielZeit2,
+            float komiFuerWeiss,
+            int spielfeldGroesse,
+            int vorgabeSteineFuerSchwarz) {
+
+        this.
+
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void initMitEinstellungen(String spielerName1, String spielerName2, long spielZeit1, long spielZeit2, float komiFuerWeiss, int spielfeldGroesse) {
+    public void initMitEinstellungen(
+            String spielerName1,
+            String spielerName2,
+            long spielZeit1,
+            long spielZeit2,
+            float komiFuerWeiss,
+            int spielfeldGroesse) {
+        
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void initMitEinstellungen(String spielerName1, String spielerName2, long spielZeit1, long spielZeit2, int spielfeldGroesse) {
+    public void initMitEinstellungen(
+            String spielerName1,
+            String spielerName2,
+            long spielZeit1,
+            long spielZeit2,
+            int spielfeldGroesse) {
+
+
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void initMitEinstellungenFuerStartformation(String spielerName1, String spielerName2, long spielZeit1, long spielZeit2, float komiFuerWeiss, int spielfeldGroesse) {
+    public void initMitEinstellungenFuerStartformation(
+            String spielerName1,
+            String spielerName2,
+            long spielZeit1,
+            long spielZeit2,
+            float komiFuerWeiss,
+            int spielfeldGroesse) {
+
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void initMitEinstellungenFuerStartformation(String spielerName1, String spielerName2, long spielZeit1, long spielZeit2, int spielfeldGroesse) {
+    public void initMitEinstellungenFuerStartformation(
+            String spielerName1,
+            String spielerName2,
+            long spielZeit1,
+            long spielZeit2,
+            int spielfeldGroesse) {
+
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void initMitDatenModell(Spielfeld feld, String spielerName1, String spielerName2, long spielZeit1, long spielZeit2, float komiFuerWeiss) {
+    public void initMitDatenModell(
+            Spielfeld feld,
+            String spielerName1,
+            String spielerName2,
+            long spielZeit1,
+            long spielZeit2,
+            float komiFuerWeiss) {
+
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -57,6 +111,14 @@ public class Steuerung implements SteuerungIntface {
         
         System.out.println( "Klick auf Punkt (" + xPos + "|" + yPos + ")" );
 
+        Spielfeld brett = this.dasSpielfeld;
+        
+        boolean returnWert = this.dasSpielfeld.setStein(xPos, yPos, Konstante.SCHNITTPUNKT_SCHWARZ);
+
+        LoGoApp.meineOberflaeche.setBrettOberflaeche(
+                this.dasSpielfeld.getAktuelesSpielFeld(),
+                this.dasSpielfeld.getSpielfeldGroesse());
+       
         throw new UnsupportedOperationException("Not fully supported yet.");
     }
 
