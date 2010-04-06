@@ -5,11 +5,14 @@
 
 package GUI;
 
+import Klassen.Konstante;
 import Klassen.Steuerung;
 import interfaces.oberflaecheInterface;
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.KeyEvent;
@@ -44,12 +47,18 @@ public class Oberflaeche extends Canvas implements oberflaecheInterface, MouseLi
     private BufferedImage		backgroundImage;						// Hintergrundbild
 
 
+    private int                         spielfeldGroesse    = 9;
+    private int                         spielfeldBreite     = 400;
+    private int                         spielfeldHoehe      = 400;
+    private int                         feldBreite          = spielfeldBreite/spielfeldGroesse;
+    private int                         feldHoehe           = spielfeldHoehe/spielfeldGroesse;
 
+    private int                         spielSteine[][];
 
 
     public Oberflaeche() {
-		this( "LoGo by DHBW", 678, 549, LoGoApp.meineSteuerung );
-	}
+        this( "LoGo by DHBW", 678, 549, LoGoApp.meineSteuerung );
+    }
 
 	public Oberflaeche (String fenstername, int width, int height, Steuerung pSteuerung) {
 		meineSteuerung = pSteuerung;
@@ -94,10 +103,81 @@ public class Oberflaeche extends Canvas implements oberflaecheInterface, MouseLi
 	backbuffer = gc.createCompatibleVolatileImage( getWidth(), getHeight() );
     }
 
+    @Override
+    public void paint(Graphics g)
+    {
+        int x       = spielfeldGroesse;
+        int y       = spielfeldGroesse;
+        int wert    = feldBreite;
+
+        int xOffset = feldBreite/2;
+        int yOffset = feldHoehe/2;
+
+        /*//Spielsteine setzen Test
+        spielSteine = new int[this.spielfeldGroesse][this.spielfeldGroesse];
+        spielSteine[1][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+        spielSteine[1][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+        spielSteine[1][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
+        spielSteine[1][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+
+        spielSteine[2][2] = Konstante.SCHNITTPUNKT_WEISS;
+        spielSteine[3][3] = Konstante.SCHNITTPUNKT_WEISS;
+        spielSteine[4][4] = Konstante.SCHNITTPUNKT_WEISS;
+        spielSteine[5][5] = Konstante.SCHNITTPUNKT_WEISS;
+         * /
+
+        // horizontales Gitter zeichnen
+        for(int i=0;i<=x;i++)
+        {
+            g.drawLine(xOffset , yOffset + feldHoehe*i, xOffset + spielfeldBreite , yOffset + feldHoehe*i);
+        }
+
+        // Zeichne die vertikalen Linien
+        for(int i=0;i<=y;i++)
+        {
+            g.drawLine(xOffset + feldBreite*i, yOffset, xOffset + feldBreite*i , yOffset + spielfeldBreite);
+        }
+         
+
+        
+      // Zellen ausfüllen, bei denen das Array den Inhalt "1" hat
+        for(int k = 0; k < x; k++)
+        {
+            for(int l = 0; l < y; l++)
+            {
+
+                switch (this.spielSteine[k][l]){
+                    
+                    case Konstante.SCHNITTPUNKT_LEER:
+                        break;
+                    case Konstante.SCHNITTPUNKT_SCHWARZ:
+                        g.setColor(Color.BLACK);
+                        g.fillOval(feldBreite*k, feldHoehe*l, feldBreite, feldBreite);
+                        //g.fillRect(0+k*wert,0+l*wert,wert,wert);
+                        break;
+                    case Konstante.SCHNITTPUNKT_WEISS:
+                        g.setColor(Color.BLACK);
+                        g.drawOval(feldBreite*k, feldHoehe*l, feldBreite, feldBreite);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
 
 
     public void setBrettOberflaeche(int[][] spielfeld, int spielfeldGroesse) {
-        throw new UnsupportedOperationException("Not supported yet.");
+
+        this.spielSteine        = spielfeld;
+        this.spielfeldGroesse   = spielfeldGroesse;
+        this.feldBreite         = this.spielfeldBreite/spielfeldGroesse;
+        this.feldHoehe          = this.spielfeldHoehe/spielfeldGroesse;
+        
+        // Feld neu zeichnen
+        this.repaint();
+        
+        throw new UnsupportedOperationException("Not filly supported yet.");
     }
 
     public void updateGUITimerWeiss(long periodenZeitInMS, long spielerZeitInMS) {
