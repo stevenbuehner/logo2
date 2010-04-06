@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Klassen;
 
 import interfaces.SteuerungIntface;
@@ -11,8 +6,8 @@ import logo.LoGoApp;
 /**
  *
  * @author steven
- * @version 0.1
- * @param Die Klasse dient zum Verwalten der Daten eines Spielers
+ * @version 0.2
+ * @param Die Klasse dient zur Steuerung des Spielflusses
  */
 public class Steuerung implements SteuerungIntface {
 
@@ -20,7 +15,7 @@ public class Steuerung implements SteuerungIntface {
     private Spieler spielerWeiss;
 
     /* Wenn die Spielerzeit aufgebraucht ist gibt es noch die Periodenzeit.
-    * Diese ist fuer alle Spieler gleich.
+    * Diese ist fuer alle Spieler gleich. In wirklich heisst dieser Wert Byo-yomi.
     */
     private long    periodenZeit;
 
@@ -33,42 +28,94 @@ public class Steuerung implements SteuerungIntface {
     }
 
     public Steuerung ( int spielFeldGroesse, long periodenZeit ){
-        this.dasSpielfeld   = new Spielfeld( spielFeldGroesse );
         this.periodenZeit   = periodenZeit;
-        this.spielerSchwarz = new Spieler("Steven", 100000, 0 );
-        this.spielerWeiss   = new Spieler("Steven", 100000, 0 );
+
+        // Initialisiere nicht angegebenes mit Standardwerten
+        this.initMitEinstellungen(
+                "Steven",
+                "Tommy",
+                30*60*1000,
+                30*60*1000,
+                0,
+                spielFeldGroesse);
     }
 
     public void initMitEinstellungen(
             String spielerNameSchwarz,
             String spielerNameWeiss,
-            long spielZeit1,
-            long spielZeit2,
+            long spielZeitSchwarz,
+            long spielZeitWeiss,
             float komiFuerWeiss,
             int spielfeldGroesse,
             int vorgabeSteineFuerSchwarz) {
 
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.spielerSchwarz = new Spieler(spielerNameSchwarz, spielZeitSchwarz, 0 );
+        this.spielerWeiss   = new Spieler(spielerNameWeiss, spielZeitWeiss, komiFuerWeiss);
+        this.dasSpielfeld   = new Spielfeld(spielfeldGroesse);
+        this.periodenZeit   = 60*2*1000;    //Standardwert 2 Min
+
+
+        switch( vorgabeSteineFuerSchwarz ){
+            case 0:
+                // Nichts zu tun
+                break;
+                /*
+                 * Hier muessen noch die Einstellungen fuer das Spielfeld in Form
+                 * von setzeStein();
+                 */
+                
+            default:
+                break;
+        }
+
+
+
+
+        throw new UnsupportedOperationException("Not fully supported yet.");
     }
 
     public void initMitEinstellungen(
             String spielerNameSchwarz,
             String spielerNameWeiss,
-            long spielZeit1,
-            long spielZeit2,
+            long spielZeitSchwarz,
+            long spielZeitWeiss,
             float komiFuerWeiss,
             int spielfeldGroesse) {
-        
-        throw new UnsupportedOperationException("Not supported yet.");
+
+        this.initMitEinstellungen(
+                spielerNameSchwarz,
+                spielerNameWeiss,
+                spielZeitSchwarz,
+                spielZeitWeiss,
+                komiFuerWeiss,
+                spielfeldGroesse,
+                0);
     }
 
     public void initMitEinstellungen(
             String spielerNameSchwarz,
             String spielerNameWeiss,
-            long spielZeit1,
-            long spielZeit2,
+            long spielZeitSchwarz,
+            long spielZeitWeiss,
             int spielfeldGroesse) {
 
+            this.initMitEinstellungen(
+                spielerNameSchwarz,
+                spielerNameWeiss,
+                spielZeitSchwarz,
+                spielZeitWeiss,
+                0,
+                spielfeldGroesse,
+                0);
+    }
+
+    public void initMitEinstellungenFuerStartformation(
+            String spielerNameSchwarz,
+            String spielerNameWeiss,
+            long spielZeitSchwarz,
+            long spielZeitWeiss,
+            float komiFuerWeiss,
+            int spielfeldGroesse) {
 
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -76,19 +123,8 @@ public class Steuerung implements SteuerungIntface {
     public void initMitEinstellungenFuerStartformation(
             String spielerNameSchwarz,
             String spielerNameWeiss,
-            long spielZeit1,
-            long spielZeit2,
-            float komiFuerWeiss,
-            int spielfeldGroesse) {
-
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void initMitEinstellungenFuerStartformation(
-            String spielerNameSchwarz,
-            String spielerNameWeiss,
-            long spielZeit1,
-            long spielZeit2,
+            long spielZeitSchwarz,
+            long spielZeitWeiss,
             int spielfeldGroesse) {
 
         throw new UnsupportedOperationException("Not supported yet.");
@@ -98,8 +134,8 @@ public class Steuerung implements SteuerungIntface {
             Spielfeld feld,
             String spielerNameSchwarz,
             String spielerNameWeiss,
-            long spielZeit1,
-            long spielZeit2,
+            long spielZeitSchwarz,
+            long spielZeitWeiss,
             float komiFuerWeiss) {
 
         throw new UnsupportedOperationException("Not supported yet.");
