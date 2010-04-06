@@ -20,5 +20,6 @@ public interface oberflaecheInterface {
     public void setGefangeneSteineSchwarz( int anzGefangenerSteiner );
     public void setSchwarzAmZug();
     public void setWeissAmZug();
+    public void gibFehlermeldungAus( String fehlertext );
 
 }

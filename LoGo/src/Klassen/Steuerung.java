@@ -166,12 +166,16 @@ public class Steuerung implements SteuerungIntface {
                     this.dasSpielfeld.getSpielfeldGroesse());
                 break;
             case -1:
+                LoGoApp.meineOberflaeche.gibFehlermeldungAus("Koregel: Verbotener Zug" );
                 break;
             case -2:
+                LoGoApp.meineOberflaeche.gibFehlermeldungAus("Dieser Schnittpunkt ist bereits belegt" );
                 break;
             case -3:
+                LoGoApp.meineOberflaeche.gibFehlermeldungAus("Selbstmord ist nicht erlaubt!" );
                 break;
             case -4:
+                LoGoApp.meineOberflaeche.gibFehlermeldungAus("Dieser Punkt ist in der Programmlogik nicht vorgesehen :-)" );
                 break;
             default:
                 // Das darf nicht vorkommen
@@ -179,9 +183,6 @@ public class Steuerung implements SteuerungIntface {
         }
 
 
-
-
-       
         throw new UnsupportedOperationException("Not fully supported yet.");
     }
 

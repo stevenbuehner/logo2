@@ -23,6 +23,7 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import logo.LoGoApp;
 
 /**
@@ -268,6 +269,11 @@ public class Oberflaeche extends Canvas implements oberflaecheInterface, MouseLi
 
     public void keyReleased(KeyEvent e) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void gibFehlermeldungAus(String fehlertext) {
+        // Gib Fehlermeldung aus Popup-Box aus
+        JOptionPane.showMessageDialog(this, fehlertext);
     }
 
 }
