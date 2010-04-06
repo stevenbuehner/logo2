@@ -86,7 +86,7 @@ public interface SteuerungIntface {
      * @param periodenZeit Byo-Yomi fuer beide Spieler
      * @param komiFuerWeiss Punkte zum Spielstaerkenausgleich fuer Weiss
      */
-    public void initMitDatenModell(Spielfeld feld, 
+    public void initMitDatenModell(Spielfeld feld,
                                    String spielerNameSchwarz,
                                    String spielerNameWeiss,
                                    long spielZeitSchwarz,
@@ -107,15 +107,66 @@ public interface SteuerungIntface {
      * Anzeigen und Spiel dann beenden
      */
     public void buttonAufgeben();
+
+    /**
+     * Spieler klickt auf Passen. Spielzug muss ausgefuehrt werden und der
+     * naechste ist dran. Wird 2 mal hintereinander gepasst, wird das Spiel
+     * beendet und gezaehlt.
+     */
     public void buttonPassen();
+
+    /**
+     * Spieler klickt auf Pause. Das Spiel, und damit die Spielzeit, wird
+     * angehalten. Das Brett wird abgedunkelt.
+     */
     public void buttonPause();
+
+    /**
+     * Spieler klickt auf Speichern. Spiel muss als sgf gespeichert werden.
+     */
     public void buttonSpielSpeichern();
+
+    /**
+     * Spieler klickt auf Undo. Spielzug wird rueckgaengig gemacht
+     */
     public void buttonUndo();
+
+    /**
+     * Spieler klickt auf Redo. Spielzug der geUndot wurde wird rueckgaengig
+     * gemacht (Es wir einfach um 1 nach vorn gegangen)
+     */
     public void buttonRedo();
+
+    /**
+     * Spieler klickt auf Zu-Start-Button. Anfangssituation wird geladen.
+     */
     public void buttonToStart();
+
+    /**
+     * Spieler klickt auf Zu-Ende-Button. Letzte Situation auf Brett wird
+     * hergestellt.
+     */
     public void buttonToEnd();
-    public void zeitAbgelaufenSpieler1Hauptzeit();
-    public void zeitAbgelaufenSpieler1Periodenzeit();
-    public void zeitAbgelaufenSpieler2Hauptzeit();
-    public void zeitAbgelaufenSpieler2Periodenzeit();
+
+    /**
+     * Hauptzeit des schwarzen Spielers ist abgelaufen. Periodenzeit muss starten
+     */
+    public void zeitAbgelaufenSchwarzHauptzeit();
+
+    /**
+     * Periodenzeit des schwarzen Spielers ist abgelaufen. Schwarz verliert.
+     * Spiel beendet.
+     */
+    public void zeitAbgelaufenSchwarzPeriodenzeit();
+
+    /**
+     * Hauptzeit des weissen Spielers ist abgelaufen. Periodenzeit muss starten
+     */
+    public void zeitAbgelaufenWeissHauptzeit();
+
+    /**
+     * Periodenzeit des weissen Spielers ist abgelaufen. Weiss verliert.
+     * Spiel beendet.
+     */
+    public void zeitAbgelaufenWeissPeriodenzeit();
 }
