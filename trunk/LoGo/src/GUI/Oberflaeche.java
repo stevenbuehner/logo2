@@ -229,9 +229,11 @@ public class Oberflaeche extends Canvas implements oberflaecheInterface, MouseLi
             // Klick ist im Wertebereich
 
             //Berechne den angeklickten Schnittpunkt
-            //Einfache Version vorerst ...
-            int xPos = xKlick/this.feldBreite;
-            int yPos = yKlick/this.feldHoehe;
+            /*Einfache Version vorerst ... (+1, weil wir unser SPielfeld im Berech
+                1 bis spielfeldGroesse deffiniert haben ...)
+            */
+            int xPos = xKlick/this.feldBreite + 1;
+            int yPos = yKlick/this.feldHoehe + 1;
 
             LoGoApp.meineSteuerung.klickAufFeld(xPos, yPos);
         }
