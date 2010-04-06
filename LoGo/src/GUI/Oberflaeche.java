@@ -113,7 +113,8 @@ public class Oberflaeche extends Canvas implements oberflaecheInterface, MouseLi
         int xOffset = feldBreite/2;
         int yOffset = feldHoehe/2;
 
-        /*//Spielsteine setzen Test
+        /*
+        //Spielsteine setzen Test
         spielSteine = new int[this.spielfeldGroesse][this.spielfeldGroesse];
         spielSteine[1][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
         spielSteine[1][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
@@ -124,7 +125,7 @@ public class Oberflaeche extends Canvas implements oberflaecheInterface, MouseLi
         spielSteine[3][3] = Konstante.SCHNITTPUNKT_WEISS;
         spielSteine[4][4] = Konstante.SCHNITTPUNKT_WEISS;
         spielSteine[5][5] = Konstante.SCHNITTPUNKT_WEISS;
-         * /
+        */
 
         // horizontales Gitter zeichnen
         for(int i=0;i<=x;i++)
