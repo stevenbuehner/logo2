@@ -47,7 +47,7 @@ public class Spielfeld {
         /* Feld muss als Leeres Feld initialisiert werden */
         int i,j;
         for(i=0; i<spielfeldGroesse; i++){
-            for(j=0; i<spielfeldGroesse; j++){
+            for(j=0; j<spielfeldGroesse; j++){
                 aktuellesSpielfeldCache[i][j] = Konstante.SCHNITTPUNKT_LEER;
             }
         }
