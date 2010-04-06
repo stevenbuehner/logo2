@@ -227,9 +227,6 @@ public class Spielfeld {
      * @return setStein gibt zurueck, ob das Setzen erfolgreich
      */
 
-    /* Warum ist der Return wert nicht int, dann kann man unterscheiden, warum
-     * ein Zug nicht moeglich ist. Auf der anderen seite kann soetwas auch von
-     * der GUI schon abgefangen werden...*/
     public boolean setStein(int xPos, int yPos, int spielerfarbe) {
         /* Koordinaten umrechnen, da Array bei 0 beginnt */
         int xKoord = xPos - 1;
