@@ -251,7 +251,7 @@ public class Spielfeld {
 
         /* Nun das Feld initialisieren */
         for(int i=0; i<this.getSpielfeldGroesse(); i++){
-            for(int j=0; i<this.getSpielfeldGroesse(); j++){
+            for(int j=0; j<this.getSpielfeldGroesse(); j++){
                 anaFeld[i][j].setBelegungswert(this.aktuellesSpielfeldCache[i][j]);
                 anaFeld[i][j].setAnalysiert(false);
                 anaFeld[i][j].setMarkiert(false);
