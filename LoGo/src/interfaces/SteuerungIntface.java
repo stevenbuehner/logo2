@@ -14,20 +14,20 @@ import Klassen.Spielfeld;
 public interface SteuerungIntface {
     /**
      * Am Anfang des Spieles muss ein Spielfeld initialisiert werden.
-     * @param spielerName1
-     * @param spielerName2
+     * @param spielerNameSchwarz
+     * @param spielerNameWeiss
      * @param spielZeit1
      * @param spielZeit2
      * @param komiFuerWeiss
      * @param spielfeldGroesse
      * @param vorgabeSteineFuerSchwarz
      */
-    public void initMitEinstellungen(String spielerName1, String spielerName2, long spielZeit1, long spielZeit2, float komiFuerWeiss, int spielfeldGroesse, int vorgabeSteineFuerSchwarz);
-    public void initMitEinstellungen(String spielerName1, String spielerName2, long spielZeit1, long spielZeit2, float komiFuerWeiss, int spielfeldGroesse);
-    public void initMitEinstellungen(String spielerName1, String spielerName2, long spielZeit1, long spielZeit2, int spielfeldGroesse);
-    public void initMitEinstellungenFuerStartformation(String spielerName1, String spielerName2, long spielZeit1, long spielZeit2, float komiFuerWeiss, int spielfeldGroesse);
+    public void initMitEinstellungen(String spielerNameSchwarz, String spielerNameWeiss, long spielZeit1, long spielZeit2, float komiFuerWeiss, int spielfeldGroesse, int vorgabeSteineFuerSchwarz);
+    public void initMitEinstellungen(String spielerNameSchwarz, String spielerNameWeiss, long spielZeit1, long spielZeit2, float komiFuerWeiss, int spielfeldGroesse);
+    public void initMitEinstellungen(String spielerNameSchwarz, String spielerNameWeiss, long spielZeit1, long spielZeit2, int spielfeldGroesse);
+    public void initMitEinstellungenFuerStartformation(String spielerNameSchwarz, String spielerNameWeiss, long spielZeit1, long spielZeit2, float komiFuerWeiss, int spielfeldGroesse);
     public void initMitEinstellungenFuerStartformation(String spielerName1, String spielerName2, long spielZeit1, long spielZeit2, int spielfeldGroesse);
-    public void initMitDatenModell(Spielfeld feld, String spielerName1, String spielerName2, long spielZeit1, long spielZeit2, float komiFuerWeiss);
+    public void initMitDatenModell(Spielfeld feld, String spielerNameSchwarz, String spielerNameWeiss, long spielZeit1, long spielZeit2, float komiFuerWeiss);
     public void klickAufFeld(int xPos, int yPos);
     public void buttonAufgeben();
     public void buttonPassen();

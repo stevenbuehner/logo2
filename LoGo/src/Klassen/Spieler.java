@@ -17,6 +17,12 @@ public class Spieler {
     private float komiPunkte;
 
 
+    public Spieler( String spielerName, long spielzeitInMS, float komiPunkte ){
+        this.setSpielerName(spielerName);
+        this.setVerbleibendeSpielzeitInMS(spielzeitInMS);
+        this.setKomiPunkte(komiPunkte);
+    }
+
     /**
      *
      * @return Den Namen des Spielers

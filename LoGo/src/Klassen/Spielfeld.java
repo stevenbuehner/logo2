@@ -204,7 +204,7 @@ public class Spielfeld {
          */
 
 
-         return   setStein( xPos, yPos, this.getSpielerAnDerReihe() );
+         return   this.setStein( xPos, yPos, this.getSpielerAnDerReihe() );
 
 
          /* Weitere Aufgaben:
