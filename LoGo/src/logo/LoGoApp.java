@@ -15,7 +15,7 @@ import Klassen.Steuerung;
  */
 public class LoGoApp extends SingleFrameApplication {
 
-    public static Oberflaeche   meineOberflaeche;
+    //public static Oberflaeche   meineOberflaeche;
     public static Steuerung     meineSteuerung;
     
 
@@ -47,7 +47,7 @@ public class LoGoApp extends SingleFrameApplication {
      */
     public static void main(String[] args) {
 
-        meineOberflaeche    = new Oberflaeche();
+        //meineOberflaeche    = new Oberflaeche();
         meineSteuerung      = new Steuerung();
 
         launch(LoGoApp.class, args);

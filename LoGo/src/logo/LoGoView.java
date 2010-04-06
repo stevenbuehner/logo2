@@ -102,7 +102,7 @@ public class LoGoView extends FrameView {
     private void initComponents() {
 
         mainPanel = new javax.swing.JPanel();
-        spielBrettPanel = new javax.swing.JPanel();
+        oberflaeche1 = new GUI.Oberflaeche();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -121,52 +121,28 @@ public class LoGoView extends FrameView {
 
         mainPanel.setName("mainPanel"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(logo.LoGoApp.class).getContext().getResourceMap(LoGoView.class);
-        spielBrettPanel.setBackground(resourceMap.getColor("spielBrettPanel.background")); // NOI18N
-        spielBrettPanel.setForeground(resourceMap.getColor("spielBrettPanel.foreground")); // NOI18N
-        spielBrettPanel.setMaximumSize(new java.awt.Dimension(700, 700));
-        spielBrettPanel.setMinimumSize(new java.awt.Dimension(700, 700));
-        spielBrettPanel.setName("spielBrettPanel"); // NOI18N
-        spielBrettPanel.setPreferredSize(new java.awt.Dimension(700, 700));
-        spielBrettPanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                spielBrettPanelMouseClicked(evt);
-            }
-        });
-
-        org.jdesktop.layout.GroupLayout spielBrettPanelLayout = new org.jdesktop.layout.GroupLayout(spielBrettPanel);
-        spielBrettPanel.setLayout(spielBrettPanelLayout);
-        spielBrettPanelLayout.setHorizontalGroup(
-            spielBrettPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 700, Short.MAX_VALUE)
-        );
-        spielBrettPanelLayout.setVerticalGroup(
-            spielBrettPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 700, Short.MAX_VALUE)
-        );
+        oberflaeche1.setName("oberflaeche1"); // NOI18N
 
         org.jdesktop.layout.GroupLayout mainPanelLayout = new org.jdesktop.layout.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, mainPanelLayout.createSequentialGroup()
-                .addContainerGap(183, Short.MAX_VALUE)
-                .add(spielBrettPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .add(mainPanelLayout.createSequentialGroup()
+                .add(166, 166, 166)
+                .add(oberflaeche1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 665, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(58, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(mainPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .add(spielBrettPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .add(55, 55, 55)
+                .add(oberflaeche1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 558, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(87, Short.MAX_VALUE))
         );
-
-        // Das Spielbrett-Canvas zum Panel hinzufuegen
-        spielBrettPanel.add(new Spielbrett());
 
         menuBar.setName("menuBar"); // NOI18N
 
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(logo.LoGoApp.class).getContext().getResourceMap(LoGoView.class);
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
@@ -274,11 +250,6 @@ public class LoGoView extends FrameView {
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void spielBrettPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_spielBrettPanelMouseClicked
-        // Added by Steven - GUI Test
-        this.spielBrettPanel.repaint();
-    }//GEN-LAST:event_spielBrettPanelMouseClicked
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFrame jFrame1;
     private javax.swing.JFrame jFrame2;
@@ -287,8 +258,8 @@ public class LoGoView extends FrameView {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
+    private GUI.Oberflaeche oberflaeche1;
     private javax.swing.JProgressBar progressBar;
-    private javax.swing.JPanel spielBrettPanel;
     private javax.swing.JLabel statusAnimationLabel;
     private javax.swing.JLabel statusMessageLabel;
     private javax.swing.JPanel statusPanel;
