@@ -351,11 +351,12 @@ public class Spielfeld {
                 /* Dann hat der Zug zwar keine Steine gefangen und der Stein
                  * hat keine Freiheiten, aber die Gruppe hat welche. Deshalb
                  * kann der Stein gesetzt werden */
-                aktuellesSpielfeldCache[xKoord][yKoord] = spielerfarbe;
+                this.aktuellesSpielfeldCache[xKoord][yKoord] = spielerfarbe;
+                this.steinEintragen(xPos, yPos, spielerfarbe);  // steinEintragen erhoeht die Zugnummer
+                this.spielfeldCacheMitZugnummerStand = this.letzteZugnummer;
                 /* Falls es ein Feld gab, das Verboten war so muss dieses
                  * Geloescht werden */
                 this.loescheVerbotenenPunkt();
-                this.steinEintragen(xPos, yPos, spielerfarbe);
                 return 1;
             }
             else {
@@ -371,6 +372,9 @@ public class Spielfeld {
          * Gruppe gefangen hat, oder eine Freiheit besitzt. Daher kann der
          * Stein einfach gesetzt werden.*/
         aktuellesSpielfeldCache[xKoord][yKoord] = spielerfarbe;
+        // Zu diesem Zeitpunkt ist der Chache auf jeden Fall veraendert worden
+        // Die Zugnummer selbst wird mit steinEintragen eins nach oben gezaehlt.
+        this.spielfeldCacheMitZugnummerStand = this.letzteZugnummer+1;
         /* Da zug OK ist, muss der letzte verbotene Punkt geloescht werden */
         this.loescheVerbotenenPunkt();
         /* Jetzt ist noch Ko abzufangen
