@@ -196,7 +196,7 @@ public class Spielfeld {
      * Diese kann Werte zwischen 1 und der Feldlänge enthalten
      * @return Gibt zurueck, ob das setzen erfolgreich war
      */
-    public boolean setStein(int xPos, int yPos) {
+    public int setStein(int xPos, int yPos) {
 
         /* Die Funktion setzt den Stein fuer abhaengig vom letzten gespielten Zug.
          * Wenn also Spieler schwarz den letzten Zug gesetzt hat, wird der neue
@@ -224,10 +224,15 @@ public class Spielfeld {
      * @param yPos Y-Position des Spielfelds.
      * Diese kann Werte zwischen 1 und der Feldlänge enthalten
      * @param spielerfarbe Farbe des setzenden Spielers
-     * @return setStein gibt zurueck, ob das Setzen erfolgreich
+     * @return Je nach Situarion signalisiert der Integer, was passiert ist:
+     * Zug wurde erfolgreich durchgefuehrt : 1 (OK)
+     * Zug war verboten : -1 (FEHLER)
+     * Schnittpunkt schon belegt : -2 (FEHLER)
+     * Selbstmord (verboten) : -3 (FEHLER)
+     * Programm kam zu Punkt, der unmoeglich zu erreichen ist : -4 (FEHLER)
      */
 
-    public boolean setStein(int xPos, int yPos, int spielerfarbe) {
+    public int setStein(int xPos, int yPos, int spielerfarbe) {
         /* Koordinaten umrechnen, da Array bei 0 beginnt */
         int xKoord = xPos - 1;
         int yKoord = yPos - 1;
@@ -235,13 +240,13 @@ public class Spielfeld {
 
         /* Testen auf Ko (Also verbotener Zug)*/
         if(this.aktuellesSpielfeldCache[xKoord][yKoord]==Konstante.SCHNITTPUNKT_VERBOTEN) {
-            return false;
+            return -1;
         }
 
         /* Testen ob schon Stein da steht */
         if(this.aktuellesSpielfeldCache[xKoord][yKoord]==Konstante.SCHNITTPUNKT_SCHWARZ ||
                 this.aktuellesSpielfeldCache[xKoord][yKoord]==Konstante.SCHNITTPUNKT_WEISS){
-            return false;
+            return -2;
         }
 
         /* Der Schnittpunkt ist also Leer und es ist erlaubt darauf zu spielen
@@ -252,13 +257,7 @@ public class Spielfeld {
         /* Nun das Feld initialisieren */
         for(int i=0; i<this.getSpielfeldGroesse(); i++){
             for(int j=0; j<this.getSpielfeldGroesse(); j++){
-                anaFeld[i][j] = new AnalyseSchnittpunkt( );
-                anaFeld[i][j].setBelegungswert(this.aktuellesSpielfeldCache[i][j]);
-                anaFeld[i][j].setAnalysiert(false);
-                anaFeld[i][j].setMarkiert(false);
-                anaFeld[i][j].setSteinStatus(Konstante.STEIN_UNGEWISS);
-                anaFeld[i][j].setXPos(i);
-                anaFeld[i][j].setYPos(j);
+                anaFeld[i][j] = new AnalyseSchnittpunkt(i,j,this.aktuellesSpielfeldCache[i][j]);
             }
         }
 
@@ -356,14 +355,14 @@ public class Spielfeld {
                 /* Falls es ein Feld gab, das Verboten war so muss dieses
                  * Geloescht werden */
                 this.loescheVerbotenenPunkt();
-                return true;
+                return 1;
             }
             else {
                 /* Die Gruppe zu der der Stein gehoert hat keine Freiheiten.
                  * Es ist also Selbstmord! Es ist zu bemerken, dass dabei die
                  * Brettstellung nicht veraendert wird, da ja nichts gefangen
                  * wurde (also vom richtigen Brett) */
-                return false;
+                return -3;
             }
         }
 
@@ -376,15 +375,15 @@ public class Spielfeld {
         /* Jetzt ist noch Ko abzufangen
          * Wenn nichts gefangen wurde, ist es auch kein Ko */
         if(gefangeneSteine == 0){
-            return true;
+            return 1;
         }
         /* Wenn der Stein nicht einzeln ist, ist es auch kein Ko */
         if(steinIstEinzeln == false){
-            return true;
+            return 1;
         }
         /* Wenn mehr als ein Stein gefangen wurde ist es auch kein Ko */
         if(gefangeneSteine > 1){
-            return true;
+            return 1;
         }
 
         /* Jetzt ist klar: Es wurde genau ein stein gefangen und der Stein der
@@ -420,7 +419,7 @@ public class Spielfeld {
 
          /* Wenn die Freiheiten nicht genau 1 sind, ist es kein Ko*/
          if(freiheitDesSteins!=1){
-             return true;
+             return 1;
          }
 
          /* Es ist also Ko. Das Muss markiert werden*/
@@ -428,31 +427,31 @@ public class Spielfeld {
              if(this.aktuellesSpielfeldCache[xKoord - 1][yKoord] == Konstante.SCHNITTPUNKT_LEER){
                  this.setzeVerbotenenPunkt(xKoord-1, yKoord);
                  this.aktuellesSpielfeldCache[xKoord - 1][yKoord] = Konstante.SCHNITTPUNKT_VERBOTEN;
-                 return true;
+                 return 1;
              }
          }
          if(xKoord!=this.getSpielfeldGroesse()-1){
              if(this.aktuellesSpielfeldCache[xKoord + 1][yKoord] == Konstante.SCHNITTPUNKT_LEER){
                  this.setzeVerbotenenPunkt(xKoord+1, yKoord);
                  this.aktuellesSpielfeldCache[xKoord + 1][yKoord] = Konstante.SCHNITTPUNKT_VERBOTEN;
-                 return true;
+                 return 1;
              }
          }
          if(yKoord!=0){
              if(this.aktuellesSpielfeldCache[xKoord][yKoord - 1] == Konstante.SCHNITTPUNKT_LEER){
                  this.setzeVerbotenenPunkt(xKoord, yKoord - 1);
                  this.aktuellesSpielfeldCache[xKoord][yKoord - 1] = Konstante.SCHNITTPUNKT_VERBOTEN;
-                 return true;
+                 return 1;
              }
          }
          if(yKoord!=this.getSpielfeldGroesse()-1){
              if(this.aktuellesSpielfeldCache[xKoord][yKoord + 1] == Konstante.SCHNITTPUNKT_LEER){
                  this.setzeVerbotenenPunkt(xKoord, yKoord + 1);
                  this.aktuellesSpielfeldCache[xKoord][yKoord + 1] = Konstante.SCHNITTPUNKT_VERBOTEN;
-                 return true;
+                 return 1;
              }
          }
-        return false; // Das darf nicht passieren
+        return -4; // Das darf nicht passieren
     }
 
     /*
