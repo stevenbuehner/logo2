@@ -26,7 +26,7 @@ public interface SteuerungIntface {
     public void initMitEinstellungen(String spielerNameSchwarz, String spielerNameWeiss, long spielZeit1, long spielZeit2, float komiFuerWeiss, int spielfeldGroesse);
     public void initMitEinstellungen(String spielerNameSchwarz, String spielerNameWeiss, long spielZeit1, long spielZeit2, int spielfeldGroesse);
     public void initMitEinstellungenFuerStartformation(String spielerNameSchwarz, String spielerNameWeiss, long spielZeit1, long spielZeit2, float komiFuerWeiss, int spielfeldGroesse);
-    public void initMitEinstellungenFuerStartformation(String spielerName1, String spielerName2, long spielZeit1, long spielZeit2, int spielfeldGroesse);
+    public void initMitEinstellungenFuerStartformation(String spielerNameSchwarz, String spielerNameWeiss, long spielZeit1, long spielZeit2, int spielfeldGroesse);
     public void initMitDatenModell(Spielfeld feld, String spielerNameSchwarz, String spielerNameWeiss, long spielZeit1, long spielZeit2, float komiFuerWeiss);
     public void klickAufFeld(int xPos, int yPos);
     public void buttonAufgeben();
