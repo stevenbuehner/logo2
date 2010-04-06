@@ -355,6 +355,7 @@ public class Spielfeld {
                 /* Falls es ein Feld gab, das Verboten war so muss dieses
                  * Geloescht werden */
                 this.loescheVerbotenenPunkt();
+                this.steinEintragen(xPos, yPos, spielerfarbe);
                 return 1;
             }
             else {
@@ -375,14 +376,17 @@ public class Spielfeld {
         /* Jetzt ist noch Ko abzufangen
          * Wenn nichts gefangen wurde, ist es auch kein Ko */
         if(gefangeneSteine == 0){
+            this.steinEintragen(xPos, yPos, spielerfarbe);
             return 1;
         }
         /* Wenn der Stein nicht einzeln ist, ist es auch kein Ko */
         if(steinIstEinzeln == false){
+            this.steinEintragen(xPos, yPos, spielerfarbe);
             return 1;
         }
         /* Wenn mehr als ein Stein gefangen wurde ist es auch kein Ko */
         if(gefangeneSteine > 1){
+            this.steinEintragen(xPos, yPos, spielerfarbe);
             return 1;
         }
 
@@ -419,6 +423,7 @@ public class Spielfeld {
 
          /* Wenn die Freiheiten nicht genau 1 sind, ist es kein Ko*/
          if(freiheitDesSteins!=1){
+             this.steinEintragen(xPos, yPos, spielerfarbe);
              return 1;
          }
 
@@ -427,6 +432,7 @@ public class Spielfeld {
              if(this.aktuellesSpielfeldCache[xKoord - 1][yKoord] == Konstante.SCHNITTPUNKT_LEER){
                  this.setzeVerbotenenPunkt(xKoord-1, yKoord);
                  this.aktuellesSpielfeldCache[xKoord - 1][yKoord] = Konstante.SCHNITTPUNKT_VERBOTEN;
+                 this.steinEintragen(xPos, yPos, spielerfarbe);
                  return 1;
              }
          }
@@ -434,6 +440,7 @@ public class Spielfeld {
              if(this.aktuellesSpielfeldCache[xKoord + 1][yKoord] == Konstante.SCHNITTPUNKT_LEER){
                  this.setzeVerbotenenPunkt(xKoord+1, yKoord);
                  this.aktuellesSpielfeldCache[xKoord + 1][yKoord] = Konstante.SCHNITTPUNKT_VERBOTEN;
+                 this.steinEintragen(xPos, yPos, spielerfarbe);
                  return 1;
              }
          }
@@ -441,6 +448,7 @@ public class Spielfeld {
              if(this.aktuellesSpielfeldCache[xKoord][yKoord - 1] == Konstante.SCHNITTPUNKT_LEER){
                  this.setzeVerbotenenPunkt(xKoord, yKoord - 1);
                  this.aktuellesSpielfeldCache[xKoord][yKoord - 1] = Konstante.SCHNITTPUNKT_VERBOTEN;
+                 this.steinEintragen(xPos, yPos, spielerfarbe);
                  return 1;
              }
          }
@@ -448,6 +456,7 @@ public class Spielfeld {
              if(this.aktuellesSpielfeldCache[xKoord][yKoord + 1] == Konstante.SCHNITTPUNKT_LEER){
                  this.setzeVerbotenenPunkt(xKoord, yKoord + 1);
                  this.aktuellesSpielfeldCache[xKoord][yKoord + 1] = Konstante.SCHNITTPUNKT_VERBOTEN;
+                 this.steinEintragen(xPos, yPos, spielerfarbe);
                  return 1;
              }
          }
@@ -496,7 +505,14 @@ public class Spielfeld {
              und ob sie auch noch funktioniert, wenn mal Elemente in der Collection
              gelöscht wurden.
          */
-        return this.spielZugCollection.get(this.spielZugCollection.size()-1).getFarbe();
+        if (this.spielZugCollection.size() == 0){
+            // Es wurde noch kein Zug eingetragen. Dann beginnt immer Spieler SCHWARZ.
+            // Das heisst dass theoretisch Weiss davor dran gewesen waere.
+            return Konstante.SCHNITTPUNKT_WEISS;
+        }
+        else{
+            return this.spielZugCollection.get(this.spielZugCollection.size()-1).getFarbe();
+        }
     }
 
 
@@ -729,4 +745,9 @@ public class Spielfeld {
         this.setYPosVerboten(yArray);
     }
 
+    private void steinEintragen( int xPos, int yPos, int farbe ){
+        this.spielZugCollection.add(new Spielzug(xPos, yPos, farbe));
+        this.letzteZugnummer++;
+    } 
+    
 }

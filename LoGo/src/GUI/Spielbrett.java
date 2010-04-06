@@ -13,6 +13,8 @@ import java.awt.Graphics;
  * @version 0.1
  * Die Klasse wurde als Vorlage aus einem Forum entnommen:
  * http://www.java-forum.org/awt-swing-swt/95342-spielfeld-gitter-einzelne-zellen-veraendern.html#_
+ *
+ * Diese Klasse wird aktuell nirgends im Spiel verwedet!!!!
  */
 public class Spielbrett extends Canvas
 {
