@@ -40,22 +40,20 @@ public class Steuerung implements SteuerungIntface {
     }
 
     public void initMitEinstellungen(
-            String spielerName1,
-            String spielerName2,
+            String spielerNameSchwarz,
+            String spielerNameWeiss,
             long spielZeit1,
             long spielZeit2,
             float komiFuerWeiss,
             int spielfeldGroesse,
             int vorgabeSteineFuerSchwarz) {
 
-        this.
-
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void initMitEinstellungen(
-            String spielerName1,
-            String spielerName2,
+            String spielerNameSchwarz,
+            String spielerNameWeiss,
             long spielZeit1,
             long spielZeit2,
             float komiFuerWeiss,
@@ -65,8 +63,8 @@ public class Steuerung implements SteuerungIntface {
     }
 
     public void initMitEinstellungen(
-            String spielerName1,
-            String spielerName2,
+            String spielerNameSchwarz,
+            String spielerNameWeiss,
             long spielZeit1,
             long spielZeit2,
             int spielfeldGroesse) {
@@ -76,8 +74,8 @@ public class Steuerung implements SteuerungIntface {
     }
 
     public void initMitEinstellungenFuerStartformation(
-            String spielerName1,
-            String spielerName2,
+            String spielerNameSchwarz,
+            String spielerNameWeiss,
             long spielZeit1,
             long spielZeit2,
             float komiFuerWeiss,
@@ -87,8 +85,8 @@ public class Steuerung implements SteuerungIntface {
     }
 
     public void initMitEinstellungenFuerStartformation(
-            String spielerName1,
-            String spielerName2,
+            String spielerNameSchwarz,
+            String spielerNameWeiss,
             long spielZeit1,
             long spielZeit2,
             int spielfeldGroesse) {
@@ -98,8 +96,8 @@ public class Steuerung implements SteuerungIntface {
 
     public void initMitDatenModell(
             Spielfeld feld,
-            String spielerName1,
-            String spielerName2,
+            String spielerNameSchwarz,
+            String spielerNameWeiss,
             long spielZeit1,
             long spielZeit2,
             float komiFuerWeiss) {
