@@ -10,7 +10,7 @@ package interfaces;
  * @author steven
  * @version 0.1
  */
-public interface oberflaeche {
+public interface oberflaecheInterface {
     public void setBrettOberflaeche( int spielfeld[][], int spielfeldGroesse );
     public void updateGUITimerWeiss( long periodenZeitInMS, long spielerZeitInMS );
     public void updateGUITimerSchwarz( long periodenZeitInMS, long spielerZeitInMS );
