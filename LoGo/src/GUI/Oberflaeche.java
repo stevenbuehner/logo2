@@ -48,8 +48,8 @@ public class Oberflaeche extends Canvas implements oberflaecheInterface, MouseLi
 
 
     private int                         spielfeldGroesse    = 9;
-    private int                         spielfeldBreite     = 400;
-    private int                         spielfeldHoehe      = 400;
+    private int                         spielfeldBreite     = 480;
+    private int                         spielfeldHoehe      = 480;
     private int                         feldBreite          = spielfeldBreite/spielfeldGroesse;
     private int                         feldHoehe           = spielfeldHoehe/spielfeldGroesse;
 
@@ -60,7 +60,7 @@ public class Oberflaeche extends Canvas implements oberflaecheInterface, MouseLi
         this( "LoGo by DHBW", 678, 549, LoGoApp.meineSteuerung );
     }
 
-	public Oberflaeche (String fenstername, int width, int height, Steuerung pSteuerung) {
+    public Oberflaeche (String fenstername, int width, int height, Steuerung pSteuerung) {
 		meineSteuerung = pSteuerung;
 
 
@@ -130,42 +130,49 @@ public class Oberflaeche extends Canvas implements oberflaecheInterface, MouseLi
         // horizontales Gitter zeichnen
         for(int i=0;i<=x;i++)
         {
-            g.drawLine(xOffset , yOffset + feldHoehe*i, xOffset + spielfeldBreite , yOffset + feldHoehe*i);
+            g.drawLine(xOffset , yOffset + feldHoehe*i, xOffset + feldBreite*spielfeldGroesse , yOffset + feldHoehe*i);
         }
 
         // Zeichne die vertikalen Linien
         for(int i=0;i<=y;i++)
         {
-            g.drawLine(xOffset + feldBreite*i, yOffset, xOffset + feldBreite*i , yOffset + spielfeldBreite);
+            g.drawLine(xOffset + feldBreite*i, yOffset, xOffset + feldBreite*i , yOffset + feldHoehe*spielfeldGroesse);
         }
          
 
         
       // Zellen ausfüllen, bei denen das Array den Inhalt "1" hat
-        for(int k = 0; k < x; k++)
-        {
-            for(int l = 0; l < y; l++)
+        if( this.spielSteine != null){
+            for(int k = 0; k < x; k++)
             {
+                for(int l = 0; l < y; l++)
+                {
 
-                switch (this.spielSteine[k][l]){
-                    
-                    case Konstante.SCHNITTPUNKT_LEER:
-                        break;
-                    case Konstante.SCHNITTPUNKT_SCHWARZ:
-                        g.setColor(Color.BLACK);
-                        g.fillOval(feldBreite*k, feldHoehe*l, feldBreite, feldBreite);
-                        //g.fillRect(0+k*wert,0+l*wert,wert,wert);
-                        break;
-                    case Konstante.SCHNITTPUNKT_WEISS:
-                        g.setColor(Color.BLACK);
-                        g.drawOval(feldBreite*k, feldHoehe*l, feldBreite, feldBreite);
-                        break;
-                    default:
-                        break;
+                    switch (this.spielSteine[k][l]){
+
+                        case Konstante.SCHNITTPUNKT_LEER:
+                            break;
+                        case Konstante.SCHNITTPUNKT_SCHWARZ:
+                            g.setColor(Color.BLACK);
+                            g.fillOval(feldBreite*k, feldHoehe*l, feldBreite, feldHoehe);
+                            //g.fillRect(0+k*wert,0+l*wert,wert,wert);
+                            break;
+                        case Konstante.SCHNITTPUNKT_WEISS:
+                            g.setColor(Color.BLACK);
+                            g.drawOval(feldBreite*k, feldHoehe*l, feldBreite, feldHoehe);
+                            break;
+                        case Konstante.SCHNITTPUNKT_VERBOTEN:
+                            g.setColor(Color.BLACK);
+                            g.drawRect(feldBreite*k-feldBreite/2, feldHoehe*l-feldHoehe/2, feldBreite/2, feldHoehe/2);
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }
     }
+
 
 
     public void setBrettOberflaeche(int[][] spielfeld, int spielfeldGroesse) {
