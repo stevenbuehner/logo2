@@ -20,6 +20,8 @@ public class Spielfeld {
     private int gefangenenAnzahlWeiss;
     private int gefangenenAnzahlSchwarz;
     private List<Spielzug> spielZugCollection;
+    private int xPosVerboten;
+    private int yPosVerboten;
     
     // Chache Funktionen zum schnelleren Spielen
     private int[][] aktuellesSpielfeldCache;
@@ -31,6 +33,8 @@ public class Spielfeld {
         this.setGefangenenAnzahlSchwarz(0);
         this.setGefangenenAnzahlWeiss(0);
         this.spielZugCollection = new ArrayList<Spielzug>();
+        this.setXPosVerboten(-1); // noch nichts ist Verboten
+        this.setYPosVerboten(-1);
 
         // Chache Funktionen setzen
         aktuellesSpielfeldCache = new int[this.getSpielfeldGroesse()][this.getSpielfeldGroesse()];
@@ -346,6 +350,9 @@ public class Spielfeld {
                  * hat keine Freiheiten, aber die Gruppe hat welche. Deshalb
                  * kann der Stein gesetzt werden */
                 aktuellesSpielfeldCache[xKoord][yKoord] = spielerfarbe;
+                /* Falls es ein Feld gab, das Verboten war so muss dieses
+                 * Geloescht werden */
+                this.loescheVerbotenenPunkt();
                 return true;
             }
             else {
@@ -361,7 +368,88 @@ public class Spielfeld {
          * Gruppe gefangen hat, oder eine Freiheit besitzt. Daher kann der
          * Stein einfach gesetzt werden.*/
         aktuellesSpielfeldCache[xKoord][yKoord] = spielerfarbe;
-        return true;
+        /* Da zug OK ist, muss der letzte verbotene Punkt geloescht werden */
+        this.loescheVerbotenenPunkt();
+        /* Jetzt ist noch Ko abzufangen
+         * Wenn nichts gefangen wurde, ist es auch kein Ko */
+        if(gefangeneSteine == 0){
+            return true;
+        }
+        /* Wenn der Stein nicht einzeln ist, ist es auch kein Ko */
+        if(steinIstEinzeln == false){
+            return true;
+        }
+        /* Wenn mehr als ein Stein gefangen wurde ist es auch kein Ko */
+        if(gefangeneSteine > 1){
+            return true;
+        }
+
+        /* Jetzt ist klar: Es wurde genau ein stein gefangen und der Stein der
+         * gesetzt wurde bildet eine Gruppe aus genau einem Stein, naemlich
+         * sich selbst. (Ist also einzeln)
+         * Nun muss auf Ko geprueft werden. Wenn der Stein genau eine Freiheit
+         * besitzt, muss dort das Ko eingezeichnet werden. */
+
+         int freiheitDesSteins = 0;
+
+         /* Freiheiten des Einzelnen Steins werden gezaehlt. Sind diese genau
+          * 1 so ist es Ko! */
+         if(xKoord!=0){
+             if(this.aktuellesSpielfeldCache[xKoord - 1][yKoord] == Konstante.SCHNITTPUNKT_LEER){
+                 freiheitDesSteins++;
+             }
+         }
+         if(xKoord!=this.getSpielfeldGroesse()-1){
+             if(this.aktuellesSpielfeldCache[xKoord + 1][yKoord] == Konstante.SCHNITTPUNKT_LEER){
+                 freiheitDesSteins++;
+             }
+         }
+         if(yKoord!=0){
+             if(this.aktuellesSpielfeldCache[xKoord][yKoord - 1] == Konstante.SCHNITTPUNKT_LEER){
+                 freiheitDesSteins++;
+             }
+         }
+         if(yKoord!=this.getSpielfeldGroesse()-1){
+             if(this.aktuellesSpielfeldCache[xKoord][yKoord + 1] == Konstante.SCHNITTPUNKT_LEER){
+                 freiheitDesSteins++;
+             }
+         }
+
+         /* Wenn die Freiheiten nicht genau 1 sind, ist es kein Ko*/
+         if(freiheitDesSteins!=1){
+             return true;
+         }
+
+         /* Es ist also Ko. Das Muss markiert werden*/
+         if(xKoord!=0){
+             if(this.aktuellesSpielfeldCache[xKoord - 1][yKoord] == Konstante.SCHNITTPUNKT_LEER){
+                 this.setzeVerbotenenPunkt(xKoord-1, yKoord);
+                 this.aktuellesSpielfeldCache[xKoord - 1][yKoord] = Konstante.SCHNITTPUNKT_VERBOTEN;
+                 return true;
+             }
+         }
+         if(xKoord!=this.getSpielfeldGroesse()-1){
+             if(this.aktuellesSpielfeldCache[xKoord + 1][yKoord] == Konstante.SCHNITTPUNKT_LEER){
+                 this.setzeVerbotenenPunkt(xKoord+1, yKoord);
+                 this.aktuellesSpielfeldCache[xKoord + 1][yKoord] = Konstante.SCHNITTPUNKT_VERBOTEN;
+                 return true;
+             }
+         }
+         if(yKoord!=0){
+             if(this.aktuellesSpielfeldCache[xKoord][yKoord - 1] == Konstante.SCHNITTPUNKT_LEER){
+                 this.setzeVerbotenenPunkt(xKoord, yKoord - 1);
+                 this.aktuellesSpielfeldCache[xKoord][yKoord - 1] = Konstante.SCHNITTPUNKT_VERBOTEN;
+                 return true;
+             }
+         }
+         if(yKoord!=this.getSpielfeldGroesse()-1){
+             if(this.aktuellesSpielfeldCache[xKoord][yKoord + 1] == Konstante.SCHNITTPUNKT_LEER){
+                 this.setzeVerbotenenPunkt(xKoord, yKoord + 1);
+                 this.aktuellesSpielfeldCache[xKoord][yKoord + 1] = Konstante.SCHNITTPUNKT_VERBOTEN;
+                 return true;
+             }
+         }
+        return false; // Das darf nicht passieren
     }
 
     /*
@@ -607,6 +695,36 @@ public class Spielfeld {
      */
     private int versucheSteinZuNehmen(int XPos, int YPos, AnalyseSchnittpunkt feld[][]){
         return versucheSteinZuNehmen(XPos, YPos, feld, true);
+    }
+
+    private void setXPosVerboten(int xPosVerboten){
+        this.xPosVerboten = xPosVerboten;
+    }
+
+    private void setYPosVerboten(int yPosVerboten){
+        this.yPosVerboten = yPosVerboten;
+    }
+
+    private int getXPosVerboten(){
+        return this.xPosVerboten;
+    }
+
+    private int getYPosVerboten(){
+        return this.yPosVerboten;
+    }
+
+    private void loescheVerbotenenPunkt(){
+        if(this.getXPosVerboten()>=0 && this.getYPosVerboten()>=0){
+            if(this.aktuellesSpielfeldCache[this.getXPosVerboten()][this.getYPosVerboten()] == Konstante.SCHNITTPUNKT_VERBOTEN){
+                this.aktuellesSpielfeldCache[this.getXPosVerboten()][this.getYPosVerboten()] = Konstante.SCHNITTPUNKT_LEER;
+                this.setXPosVerboten(-1);
+                this.setYPosVerboten(-1);
+            }
+        }
+    }
+    private void setzeVerbotenenPunkt(int xArray, int yArray){
+        this.setXPosVerboten(xArray);
+        this.setYPosVerboten(yArray);
     }
 
 }
