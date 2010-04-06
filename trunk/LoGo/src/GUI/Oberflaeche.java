@@ -128,15 +128,15 @@ public class Oberflaeche extends Canvas implements oberflaecheInterface, MouseLi
         */
 
         // horizontales Gitter zeichnen
-        for(int i=0;i<=x;i++)
+        for(int i=0; i<x; i++)
         {
-            g.drawLine(xOffset , yOffset + feldHoehe*i, xOffset + feldBreite*spielfeldGroesse , yOffset + feldHoehe*i);
+            g.drawLine(xOffset , yOffset + feldHoehe*i, xOffset + feldBreite*(spielfeldGroesse-1) , yOffset + feldHoehe*i);
         }
 
         // Zeichne die vertikalen Linien
-        for(int i=0;i<=y;i++)
+        for(int i=0; i<y; i++)
         {
-            g.drawLine(xOffset + feldBreite*i, yOffset, xOffset + feldBreite*i , yOffset + feldHoehe*spielfeldGroesse);
+            g.drawLine(xOffset + feldBreite*i, yOffset, xOffset + feldBreite*i , yOffset + feldHoehe*(spielfeldGroesse-1));
         }
          
 

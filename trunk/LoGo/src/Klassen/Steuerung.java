@@ -36,6 +36,7 @@ public class Steuerung implements SteuerungIntface {
                 "Tommy",
                 30*60*1000,
                 30*60*1000,
+                60*1000,
                 0,
                 spielFeldGroesse);
     }
@@ -45,6 +46,7 @@ public class Steuerung implements SteuerungIntface {
             String spielerNameWeiss,
             long spielZeitSchwarz,
             long spielZeitWeiss,
+            long periodenZeit,
             float komiFuerWeiss,
             int spielfeldGroesse,
             int vorgabeSteineFuerSchwarz) {
@@ -52,7 +54,7 @@ public class Steuerung implements SteuerungIntface {
         this.spielerSchwarz = new Spieler(spielerNameSchwarz, spielZeitSchwarz, 0 );
         this.spielerWeiss   = new Spieler(spielerNameWeiss, spielZeitWeiss, komiFuerWeiss);
         this.dasSpielfeld   = new Spielfeld(spielfeldGroesse);
-        this.periodenZeit   = 60*2*1000;    //Standardwert 2 Min
+        this.periodenZeit   = periodenZeit;
 
 
         switch( vorgabeSteineFuerSchwarz ){
@@ -71,7 +73,7 @@ public class Steuerung implements SteuerungIntface {
 
 
 
-        throw new UnsupportedOperationException("Not fully supported yet.");
+//        throw new UnsupportedOperationException("Not fully supported yet.");
     }
 
     public void initMitEinstellungen(
@@ -79,6 +81,7 @@ public class Steuerung implements SteuerungIntface {
             String spielerNameWeiss,
             long spielZeitSchwarz,
             long spielZeitWeiss,
+            long periodenZeit,
             float komiFuerWeiss,
             int spielfeldGroesse) {
 
@@ -87,6 +90,7 @@ public class Steuerung implements SteuerungIntface {
                 spielerNameWeiss,
                 spielZeitSchwarz,
                 spielZeitWeiss,
+                periodenZeit,
                 komiFuerWeiss,
                 spielfeldGroesse,
                 0);
@@ -97,6 +101,7 @@ public class Steuerung implements SteuerungIntface {
             String spielerNameWeiss,
             long spielZeitSchwarz,
             long spielZeitWeiss,
+            long periodenZeit,
             int spielfeldGroesse) {
 
             this.initMitEinstellungen(
@@ -104,6 +109,7 @@ public class Steuerung implements SteuerungIntface {
                 spielerNameWeiss,
                 spielZeitSchwarz,
                 spielZeitWeiss,
+                periodenZeit,
                 0,
                 spielfeldGroesse,
                 0);
@@ -114,6 +120,7 @@ public class Steuerung implements SteuerungIntface {
             String spielerNameWeiss,
             long spielZeitSchwarz,
             long spielZeitWeiss,
+            long periodenZeit,
             float komiFuerWeiss,
             int spielfeldGroesse) {
 
@@ -125,6 +132,7 @@ public class Steuerung implements SteuerungIntface {
             String spielerNameWeiss,
             long spielZeitSchwarz,
             long spielZeitWeiss,
+            long periodenZeit,
             int spielfeldGroesse) {
 
         throw new UnsupportedOperationException("Not supported yet.");
@@ -136,6 +144,7 @@ public class Steuerung implements SteuerungIntface {
             String spielerNameWeiss,
             long spielZeitSchwarz,
             long spielZeitWeiss,
+            long periodenZeit,
             float komiFuerWeiss) {
 
         throw new UnsupportedOperationException("Not supported yet.");
@@ -147,11 +156,31 @@ public class Steuerung implements SteuerungIntface {
 
         Spielfeld brett = this.dasSpielfeld;
         
-        boolean returnWert = this.dasSpielfeld.setStein(xPos, yPos, Konstante.SCHNITTPUNKT_SCHWARZ);
+        int returnWert = this.dasSpielfeld.setStein(xPos, yPos);
 
-        LoGoApp.meineOberflaeche.setBrettOberflaeche(
-                this.dasSpielfeld.getAktuelesSpielFeld(),
-                this.dasSpielfeld.getSpielfeldGroesse());
+        switch (returnWert){
+            case 1:
+                // Rueckgabe erfolgreich! Spielerwechsel
+                LoGoApp.meineOberflaeche.setBrettOberflaeche(
+                    this.dasSpielfeld.getAktuelesSpielFeld(),
+                    this.dasSpielfeld.getSpielfeldGroesse());
+                break;
+            case -1:
+                break;
+            case -2:
+                break;
+            case -3:
+                break;
+            case -4:
+                break;
+            default:
+                // Das darf nicht vorkommen
+                throw new UnsupportedOperationException("Dieser Wert darf nie vorkommen");
+        }
+
+
+
+
        
         throw new UnsupportedOperationException("Not fully supported yet.");
     }

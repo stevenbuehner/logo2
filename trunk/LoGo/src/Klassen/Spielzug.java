@@ -24,7 +24,7 @@ public class Spielzug {
      * Konstante.SCHNITTPUNKT_WEISS. Wurde ein anderer Wert uebergeben wird
      * automatisch der Wert Konstante.SCHNITTPUNKT_LEER gesetzt.
      */
-    public void Spielzug(int xPos, int yPos, int farbe) {
+    public Spielzug(int xPos, int yPos, int farbe) {
         this.setXPosition(xPos);
         this.setYPosition(yPos);
         this.setFarbe(farbe);
