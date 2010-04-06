@@ -5,10 +5,9 @@
 package Klassen;
 
 /**
- *
+ * Speichert alle wesentlichen Daten zu einem Spielzug
  * @author steven
  * @version 0.1
- * @param Speichert alle wesentlichen Daten zu einem Spielzug
  */
 public class Spielzug {
 
@@ -18,9 +17,9 @@ public class Spielzug {
 
     /**
      * Konstruktur der Klasse
-     * @param X-Position des Spielzuges
-     * @param Y-Position des Spielzuges
-     * @param Spielerfarbe des Steins der gelegt wurde. zur Auswahl stehen
+     * @param xPos X-Position des Spielzuges
+     * @param yPos Y-Position des Spielzuges
+     * @param farbe Spielerfarbe des Steins der gelegt wurde. zur Auswahl stehen
      * NUR die Konstanten Konstante.SCHNITTPUNKT_SCHWARZ und
      * Konstante.SCHNITTPUNKT_WEISS. Wurde ein anderer Wert uebergeben wird
      * automatisch der Wert Konstante.SCHNITTPUNKT_LEER gesetzt.
@@ -41,7 +40,7 @@ public class Spielzug {
 
     /**
      *
-     * @param X-Position des Spielerzuges
+     * @param val X-Position des Spielerzuges
      */
     public void setXPosition(int val) {
         this.xPosition = val;
@@ -57,7 +56,7 @@ public class Spielzug {
 
     /**
      *
-     * @param Y-Position des Spielzuges
+     * @param val Y-Position des Spielzuges
      */
     public void setYPosition(int val) {
         this.yPosition = val;
@@ -74,7 +73,7 @@ public class Spielzug {
     }
     
     /**
-     * @param Spielerfarbe des Steins der gelegt wurde. zur Auswahl stehen
+     * @param farbe Spielerfarbe des Steins der gelegt wurde. zur Auswahl stehen
      * NUR die Konstanten Konstante.SCHNITTPUNKT_SCHWARZ und
      * Konstante.SCHNITTPUNKT_WEISS. Wurde ein anderer Wert uebergeben wird
      * automatisch der Wert Konstante.SCHNITTPUNKT_LEER gesetzt.
