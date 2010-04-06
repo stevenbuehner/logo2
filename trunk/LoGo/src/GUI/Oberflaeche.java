@@ -214,7 +214,23 @@ public class Oberflaeche extends Canvas implements oberflaecheInterface, MouseLi
     }
 
     public void mouseClicked(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
+
+        int xKlick = e.getX();
+        int yKlick = e.getY();
+
+        if( xKlick > 0 && xKlick < this.spielfeldBreite  && yKlick > 0 && yKlick < this.spielfeldHoehe){
+            // Klick ist im Wertebereich
+
+            //Berechne den angeklickten Schnittpunkt
+            //Einfache Version vorerst ...
+            int xPos = xKlick/this.feldBreite;
+            int yPos = yKlick/this.feldHoehe;
+
+            LoGoApp.meineSteuerung.klickAufFeld(xPos, yPos);
+        }
+
+
+        throw new UnsupportedOperationException("Not fully supported yet.");
     }
 
     public void mousePressed(MouseEvent e) {

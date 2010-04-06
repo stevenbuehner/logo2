@@ -54,7 +54,10 @@ public class Steuerung implements SteuerungIntface {
     }
 
     public void klickAufFeld(int xPos, int yPos) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
+        System.out.println( "Klick auf Punkt (" + xPos + "|" + yPos + ")" );
+
+        throw new UnsupportedOperationException("Not fully supported yet.");
     }
 
     public void buttonAufgeben() {
