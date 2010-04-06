@@ -163,7 +163,7 @@ public class Oberflaeche extends Canvas implements oberflaecheInterface, MouseLi
                             break;
                         case Konstante.SCHNITTPUNKT_VERBOTEN:
                             g.setColor(Color.BLACK);
-                            g.drawRect(feldBreite*k-feldBreite/2, feldHoehe*l-feldHoehe/2, feldBreite/2, feldHoehe/2);
+                            g.drawRect(feldBreite*k, feldHoehe*l, feldBreite, feldHoehe);
                             break;
                         default:
                             break;
