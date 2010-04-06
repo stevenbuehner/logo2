@@ -14,21 +14,98 @@ import Klassen.Spielfeld;
 public interface SteuerungIntface {
     /**
      * Am Anfang des Spieles muss ein Spielfeld initialisiert werden.
-     * @param spielerNameSchwarz
-     * @param spielerNameWeiss
-     * @param spielZeit1
-     * @param spielZeit2
-     * @param komiFuerWeiss
-     * @param spielfeldGroesse
-     * @param vorgabeSteineFuerSchwarz
+     * @param spielerNameSchwarz Name des schwarzen Spielers
+     * @param spielerNameWeiss Name des weissen Spielers
+     * @param spielZeitSchwarz Absolute Zeit des schwarzen Spielers
+     * @param spielZeitWeiss Absolute Zeit des weissen Spielers
+     * @param periodenZeit Byo-Yomi fuer beide Spieler
+     * @param komiFuerWeiss Punkte zum Spielstaerkenausgleich fuer Weiss
+     * @param spielfeldGroesse Groesse des Spielfeldes
+     * @param vorgabeSteineFuerSchwarz Vorgabe zum Spielstaerkeausgleich fuer
+     * Schwarz
      */
-    public void initMitEinstellungen(String spielerNameSchwarz, String spielerNameWeiss, long spielZeit1, long spielZeit2, float komiFuerWeiss, int spielfeldGroesse, int vorgabeSteineFuerSchwarz);
-    public void initMitEinstellungen(String spielerNameSchwarz, String spielerNameWeiss, long spielZeit1, long spielZeit2, float komiFuerWeiss, int spielfeldGroesse);
-    public void initMitEinstellungen(String spielerNameSchwarz, String spielerNameWeiss, long spielZeit1, long spielZeit2, int spielfeldGroesse);
-    public void initMitEinstellungenFuerStartformation(String spielerNameSchwarz, String spielerNameWeiss, long spielZeit1, long spielZeit2, float komiFuerWeiss, int spielfeldGroesse);
-    public void initMitEinstellungenFuerStartformation(String spielerNameSchwarz, String spielerNameWeiss, long spielZeit1, long spielZeit2, int spielfeldGroesse);
-    public void initMitDatenModell(Spielfeld feld, String spielerNameSchwarz, String spielerNameWeiss, long spielZeit1, long spielZeit2, float komiFuerWeiss);
+    public void initMitEinstellungen(String spielerNameSchwarz,
+                                     String spielerNameWeiss,
+                                     long spielZeitSchwarz,
+                                     long spielZeitWeiss,
+                                     long periodenZeit,
+                                     float komiFuerWeiss,
+                                     int spielfeldGroesse,
+                                     int vorgabeSteineFuerSchwarz);
+
+    public void initMitEinstellungen(String spielerNameSchwarz,
+                                     String spielerNameWeiss,
+                                     long spielZeitSchwarz,
+                                     long spielZeitWeiss,
+                                     long periodenZeit,
+                                     float komiFuerWeiss,
+                                     int spielfeldGroesse);
+
+    public void initMitEinstellungen(String spielerNameSchwarz,
+                                     String spielerNameWeiss,
+                                     long spielZeitSchwarz,
+                                     long spielZeitWeiss,
+                                     long periodenZeit,
+                                     int spielfeldGroesse);
+
+    /**
+     * Die Gleiche Funktion wie initMitEinstellungen, nur damit das Programm
+     * weiss, dass dem Benutzer noch die Moeglichkeit geboten werden muss
+     * eine eigene Startformation zu erstellen
+     * @param spielerNameSchwarz Name des schwarzen Spielers
+     * @param spielerNameWeiss Name des weissen Spielers
+     * @param spielZeitSchwarz Absolute Zeit des schwarzen Spielers
+     * @param spielZeitWeiss Absolute Zeit des weissen Spielers
+     * @param periodenZeit Byo-Yomi fuer beide Spieler
+     * @param komiFuerWeiss Punkte zum Spielstaerkenausgleich fuer Weiss
+     * @param spielfeldGroesse Groesse des Spielfeldes
+     */
+    public void initMitEinstellungenFuerStartformation(String spielerNameSchwarz,
+                                     String spielerNameWeiss,
+                                     long spielZeitSchwarz,
+                                     long spielZeitWeiss,
+                                     long periodenZeit,
+                                     float komiFuerWeiss,
+                                     int spielfeldGroesse);
+    public void initMitEinstellungenFuerStartformation(String spielerNameSchwarz,
+                                     String spielerNameWeiss,
+                                     long spielZeitSchwarz,
+                                     long spielZeitWeiss,
+                                     long periodenZeit,
+                                     int spielfeldGroesse);
+
+    /**
+     * Dient dafuer, ein Spiel zu laden und das komplette Feld zu uebergeben.
+     * Spielfeldgroesse muss nicht uebergeben werden, da diese im Spielfeld
+     * gespeichert ist.
+     * @param feld Spielfeld, welches schon fertig und gueltig konstruiert wurde
+     * @param spielerNameSchwarz Name des schwarzen Spielers
+     * @param spielerNameWeiss Name des weissen Spielers
+     * @param spielZeitSchwarz Absolute Zeit des schwarzen Spielers
+     * @param spielZeitWeiss Absolute Zeit des weissen Spielers
+     * @param periodenZeit Byo-Yomi fuer beide Spieler
+     * @param komiFuerWeiss Punkte zum Spielstaerkenausgleich fuer Weiss
+     */
+    public void initMitDatenModell(Spielfeld feld, 
+                                   String spielerNameSchwarz,
+                                   String spielerNameWeiss,
+                                   long spielZeitSchwarz,
+                                   long spielZeitWeiss,
+                                   long periodenZeit,
+                                   float komiFuerWeiss);
+
+    /**
+     * Wenn bei der GUI auf einen Schnittpunkt geklickt wurde, muss die
+     * Steuerung reagieren. Die Koordinaten werden dann uebermittelt
+     * @param xPos X-Koordinate (1-Spielfeldgroesse)
+     * @param yPos Y-Koordinate (1-Spielfeldgroesse)
+     */
     public void klickAufFeld(int xPos, int yPos);
+
+    /**
+     * Spieler klickt auf Aufgeben. Steuerung muss Dialogfeld od. Aehnliches
+     * Anzeigen und Spiel dann beenden
+     */
     public void buttonAufgeben();
     public void buttonPassen();
     public void buttonPause();
