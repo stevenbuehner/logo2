@@ -76,17 +76,22 @@ public class Oberflaeche extends Canvas implements oberflaecheInterface, MouseLi
 		createBackbuffer();
 
 		doInitializations();
-
-		// Thread anstoßen
-		if ( !once ) {
-			once = true;
-			Thread t = new Thread( this );
-			t.start();
-		}
 	}
 
     protected void doInitializations() {
      //   this.backgroundImage = new I
+    }
+
+    protected void createBackbuffer() {
+        if ( backbuffer != null ) {
+		backbuffer.flush();
+		backbuffer = null;
+	}
+        
+        // GraphicsConfiguration für VolatileImage
+	ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	gc = ge.getDefaultScreenDevice().getDefaultConfiguration();
+	backbuffer = gc.createCompatibleVolatileImage( getWidth(), getHeight() );
     }
 
 
