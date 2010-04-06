@@ -217,19 +217,19 @@ public class Steuerung implements SteuerungIntface {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void zeitAbgelaufenSpieler1Hauptzeit() {
+    public void zeitAbgelaufenSchwarzHauptzeit() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void zeitAbgelaufenSpieler1Periodenzeit() {
+    public void zeitAbgelaufenSchwarzPeriodenzeit() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void zeitAbgelaufenSpieler2Hauptzeit() {
+    public void zeitAbgelaufenWeissHauptzeit() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void zeitAbgelaufenSpieler2Periodenzeit() {
+    public void zeitAbgelaufenWeissPeriodenzeit() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
