@@ -27,7 +27,12 @@ public class Spielfeld {
     private int[][] aktuellesSpielfeldCache;
     private int spielfeldCacheMitZugnummerStand;
 
-    public void Spielfeld(int spielfeldGroesse) {
+
+    public Spielfeld(){
+        this( 9 );
+    }
+
+    public Spielfeld(int spielfeldGroesse) {
         this.spielfeldGroesse = spielfeldGroesse;
         this.letzteZugnummer = 0;
         this.setGefangenenAnzahlSchwarz(0);
