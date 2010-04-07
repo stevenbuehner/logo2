@@ -728,22 +728,47 @@ public class Spielfeld {
         return versucheSteinZuNehmen(XPos, YPos, feld, true);
     }
 
+    /**
+     * Bei Ko muss ein Spielpunkt verboten werden. Zum schnelleren Zugriff wird
+     * sich dieser Punkt gemerkt. Hiermit wird die X-Koordinate dieses Punktes
+     * gesetzt
+     * @param xPosVerboten X-Koordinate (Von 0 bis Feldgroesse-1)
+     */
     private void setXPosVerboten(int xPosVerboten){
         this.xPosVerboten = xPosVerboten;
     }
 
+    /**
+     * Bei Ko muss ein Spielpunkt verboten werden. Zum schnelleren Zugriff wird
+     * sich dieser Punkt gemerkt. Hiermit wird die Y-Koordinate dieses Punktes
+     * gesetzt
+     * @param yPosVerboten Y-Koordinate (Von 0 bis Feldgroesse-1)
+     */
     private void setYPosVerboten(int yPosVerboten){
         this.yPosVerboten = yPosVerboten;
     }
 
+    /**
+     * @return X-Koordinate des Verbotenen Zugs (Von 0 bis Spielfeldgroesse-1)
+     */
     private int getXPosVerboten(){
         return this.xPosVerboten;
     }
 
+    /**
+     * @return Y-Koordinate des Verbotenen Zugs (Von 0 bis Spielfeldgroesse-1)
+     */
     private int getYPosVerboten(){
         return this.yPosVerboten;
     }
 
+    /**
+     * Auf dem Go-Brett ist ein Punkt immer nur fuer einen Zug verboten. Daher
+     * muss der Punkt wieder freigegeben werden. Somit kann man beim naechsten
+     * Zug wieder auf diesen Spielpunkt spielen.
+     * Der verbotene Punkt wird natuerlich nur geloescht wenn er auch wirklich
+     * existiert (x- und y-koordinaten sind groesser gleich 0)
+     */
     private void loescheVerbotenenPunkt(){
         if(this.getXPosVerboten()>=0 && this.getYPosVerboten()>=0){
             if(this.aktuellesSpielfeldCache[this.getXPosVerboten()][this.getYPosVerboten()] == Konstante.SCHNITTPUNKT_VERBOTEN){
@@ -753,16 +778,39 @@ public class Spielfeld {
             }
         }
     }
+
+    /**
+     * Setzt den Wert fuer den verbotenen Punkt neu. Der verbotene Punkt entsteht
+     * durch eine Ko-Situation.
+     * @param xArray X-Koordinate (0 bis Feldgroesse-1)
+     * @param yArray Y-Koordinate (0 bis Feldgroesse-1)
+     */
     private void setzeVerbotenenPunkt(int xArray, int yArray){
         this.setXPosVerboten(xArray);
         this.setYPosVerboten(yArray);
     }
 
+    /**
+     * Nachdem ein Zug ausgefuehrt wurde, muss dieser in die Liste der bisherigen
+     * Zuege eingetragen werden. Somit kann aus der Liste der bisherigen Zuege
+     * einfach die Brettsituation wieder hergestellt werden.
+     * @param xPos X-Koordinate (1-Feldgroesse)
+     * @param yPos Y-Koordinate (1-Feldgroesse)
+     * @param farbe Farbe des Spielers, der Zug ausgefuehrt hat
+     */
     private void steinEintragen( int xPos, int yPos, int farbe ){
         this.spielZugCollection.add(new Spielzug(xPos, yPos, farbe));
         this.letzteZugnummer++;
     }
 
+    /**
+     * Nachdem Steine von einer bestimmten Farbe gefangen wurden, muss die
+     * Anzahl der gefangenen Steine dieser Farbe erhoeht werden. Wenn zum Beispiel
+     * 8 schwarze Steine gefangen wurden, muss die Anzahl der gefangenen schwarzen
+     * Steine um 8 erhoeht werden
+     * @param farbe Farbe der gefangenen Steine
+     * @param zahl Anzahl der Steine die gefangen wurden
+     */
     private void erhoeheGefangenenZahl(int farbe, int zahl){
         if(farbe == Konstante.SCHNITTPUNKT_SCHWARZ){
             this.gefangenenAnzahlSchwarz+=zahl;
