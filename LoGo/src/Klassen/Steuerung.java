@@ -174,9 +174,6 @@ public class Steuerung implements SteuerungIntface {
             case -3:
                 LoGoApp.meineOberflaeche.gibFehlermeldungAus("Selbstmord ist nicht erlaubt!" );
                 break;
-            case -4:
-                LoGoApp.meineOberflaeche.gibFehlermeldungAus("Dieser Punkt ist in der Programmlogik nicht vorgesehen :-)" );
-                break;
             default:
                 // Das darf nicht vorkommen
                 throw new UnsupportedOperationException("Dieser Wert darf nie vorkommen");
