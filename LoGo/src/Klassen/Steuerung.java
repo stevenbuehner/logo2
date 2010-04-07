@@ -165,6 +165,9 @@ public class Steuerung implements SteuerungIntface {
                     this.dasSpielfeld.getAktuelesSpielFeld(),
                     this.dasSpielfeld.getSpielfeldGroesse());
                 break;
+            case 0:
+                LoGoApp.meineOberflaeche.gibFehlermeldungAus("Verboten: Spielpunkt befindet sich nicht auf dem Brett" );
+                break;
             case -1:
                 LoGoApp.meineOberflaeche.gibFehlermeldungAus("Koregel: Verbotener Zug" );
                 break;
