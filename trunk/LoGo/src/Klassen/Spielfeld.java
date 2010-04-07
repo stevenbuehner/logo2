@@ -225,49 +225,101 @@ public class Spielfeld {
      * Diese kann Werte zwischen 1 und der Feldlänge enthalten
      * @param spielerfarbe Farbe des setzenden Spielers
      * @return Je nach Situarion signalisiert der Integer, was passiert ist:
-     * Zug wurde erfolgreich durchgefuehrt : 1 (OK)
-     * Zug war verboten : -1 (FEHLER)
-     * Schnittpunkt schon belegt : -2 (FEHLER)
-     * Selbstmord (verboten) : -3 (FEHLER)
-     * Programm kam zu Punkt, der unmoeglich zu erreichen ist : -4 (FEHLER)
+     *  1: Zug wurde erfolgreich durchgefuehrt : (OK)
+     *  0: Zug liegt nicht auf Spielfeld: (FEHLER)
+     * -1: Zug war verboten : (FEHLER)
+     * -2: Schnittpunkt schon belegt : (FEHLER)
+     * -3: Selbstmord (verboten) : (FEHLER)
      */
 
     public int setStein(int xPos, int yPos, int spielerfarbe) {
         /* Koordinaten umrechnen, da Array bei 0 beginnt */
         int xKoord = xPos - 1;
         int yKoord = yPos - 1;
-        boolean zugOK = false;
 
-        /* Testen auf Ko (Also verbotener Zug)*/
-        if(this.aktuellesSpielfeldCache[xKoord][yKoord]==Konstante.SCHNITTPUNKT_VERBOTEN) {
+        /* zugOk dient dazu um zu ermitteln ob der Zug valide ist. Faengt der
+         * Zug einen Stein so ist er gueltig, da der Stein danach mindestens
+         * eine Freiheit besitzt. Wird eine Nachbarfreiheit gefunden ist der
+         * Zug auch valide. Wenn der zug nicht als Ok markiert wird, muss dies
+         * allerdings nicht heissen das der Zug ungueltig ist. Es bedeutet
+         * lediglich, dass der Zug weiter untersucht werden muss.
+         */
+        boolean zugOK = false;
+        /* Als erstes wird auf Fehler getestet. Dies beinahltet Folgendes:
+         * - Zug ist nicht auf dem Spielfeld
+         * - Zug ist verboten (wegen Ko)
+         * - Stein steht schon an der Position
+         */
+
+        /* 1. Testen ob Zug auf dem Spielfeld ist, sonst Fehler */
+        if(xKoord < 0 || yKoord < 0 || xKoord >= this.getSpielfeldGroesse() || yKoord >= this.getSpielfeldGroesse()){
+            return 0;
+        }
+        /* 2. Testen auf Ko (Also verbotener Zug)*/
+        if(this.aktuellesSpielfeldCache[xKoord][yKoord] == Konstante.SCHNITTPUNKT_VERBOTEN) {
             return -1;
         }
-
-        /* Testen ob schon Stein da steht */
-        if(this.aktuellesSpielfeldCache[xKoord][yKoord]==Konstante.SCHNITTPUNKT_SCHWARZ ||
-                this.aktuellesSpielfeldCache[xKoord][yKoord]==Konstante.SCHNITTPUNKT_WEISS){
+        /* 3. Testen ob schon Stein da steht */
+        if(this.aktuellesSpielfeldCache[xKoord][yKoord] == Konstante.SCHNITTPUNKT_SCHWARZ ||
+           this.aktuellesSpielfeldCache[xKoord][yKoord] == Konstante.SCHNITTPUNKT_WEISS){
             return -2;
         }
 
-        /* Der Schnittpunkt ist also Leer und es ist erlaubt darauf zu spielen
-         * Jetzt wird ein AnalyseSpielfeld erstellt, damit wird dann gearbeitet */
+        /* Der Schnittpunkt ist also Leer und es ist erlaubt darauf zu spielen.
+         * Da nun die Situation auf dem Feld analysiert werden muss, wird extra
+         * dafuer ein Analysefeld erstellt. Dies ist wie das richtige Feld ein
+         * 2-Dimensionales Array, jedoch besteht es aus AnalyseSchnittpunkten.
+         * Damit hat man die moeglichkeit durch die Eigenschaften der Klasse
+         * AnalyseSchnittpunkt eine Breitensuche durchzufuehren.
+         */
+         
         AnalyseSchnittpunkt anaFeld[][];
         anaFeld = new AnalyseSchnittpunkt[this.getSpielfeldGroesse()][this.getSpielfeldGroesse()];
 
-        /* Nun das Feld initialisieren */
+        /* Nun das Feld initialisieren. Dabei wird eine Kopie des aktuellen
+         * Feldes erstellt. */
         for(int i=0; i<this.getSpielfeldGroesse(); i++){
             for(int j=0; j<this.getSpielfeldGroesse(); j++){
                 anaFeld[i][j] = new AnalyseSchnittpunkt(i,j,this.aktuellesSpielfeldCache[i][j]);
             }
         }
 
-        /* Stein setzen und die Situation auswerten */
+        /* Auf die Kopie (AnaFeld) wird jetzt der Stein gesetzt. Das wirkt sich
+         * nicht auf das momentane Feld aus, da nur auf der Kopie gearbeitet
+         * wird .*/
         anaFeld[xKoord][yKoord].setBelegungswert(spielerfarbe);
-        int gefangeneSteine = 0;
-        int momGefSteine = 0;
-        boolean steinIstEinzeln = true; // wegen Ko-Regel
 
-        /* Wenn Stein nicht am Rand, dann versuchen Steine zu fangen */
+        /* Nun werden einige Variablen eingefuehrt die das Auswerten erleichtern.
+         * --> gefangeneSteine: Anzahl der Gefangenen Steine. Ist die Funktion
+         * erfolgreich wird die Anzahl der gefangenen Steine zu den bereits
+         * Gefangenen addiert.
+         * --> momGefSteine: Um bei jedem Auswertungsschritt die Anzahl der
+         * gefangenen Steine zu ermitteln.
+         * --> steinIstEinzeln: Fuer die Ko-Regel ist es wichtig, ob der Stein
+         * eine Gruppe aus einem Stein darstellt. Also ob er einzeln ist.
+         * Wird waerend des Auswertens festgestellt, das ein Nachbarstein die
+         * gleiche Farbe hat, wird dieser Wert auf False gesetzt.
+         */
+        int gefangeneSteine     = 0;
+        int momGefSteine        = 0;
+        boolean steinIstEinzeln = true;
+
+        /* Jetzt werden die Nachbarsteine betrachtet. Wenn der Stein allerdings
+         * am Rand ist, besitzt er bezueglich dieses Randes keinen Nachbarn.
+         * Daher wird erst getestet ob sich ein Nachbarschnittpunkt befindet.
+         * Ist der Nachbarstein ungleich der Spielfarbe, wird Versucht ein Stein
+         * vom Brett zu nehmen. Je nach Rueckgabewert der Funktion
+         * versucheSteinZuNehmen wird dann weitergearbeitet. Wenn der Wert 0 ist,
+         * wurden keine Steine gefangen, es ist nichts zu tun. Ist der Wert -1
+         * so ist der Schnittpunkt leer.
+         * Besitzt der Nachbarstein die gleiche Farbe, so ist der Stein nicht
+         * einzeln.
+         * Es ist zu bemerken, dass wenn ein Stein gefangen wurd, das aktuelle
+         * Spielfeld veraendert wird. Das ist allerdings in Ordnung, da wenn
+         * ein Stein durch diesen Zug gefangen wird, er automatisch mindestens
+         * eine Freiheit haben muss. Daher ist der Zug gueltig. */
+
+        /* 1. Linke Seite */
         if(xKoord!=0){
             if(anaFeld[xKoord-1][yKoord].getBelegungswert()!=spielerfarbe){
                 momGefSteine = versucheSteinZuNehmen(xKoord-1, yKoord, anaFeld);
@@ -275,9 +327,7 @@ public class Spielfeld {
                     gefangeneSteine+=momGefSteine;
                     zugOK = true;
                 }
-                else if(momGefSteine == 0){
-                    /* nichts machen, da nichts zu tun ist */
-                }
+                else if(momGefSteine == 0){/* nichts */ }
                 else if(momGefSteine == -1){
                     zugOK = true;
                 }
@@ -286,7 +336,7 @@ public class Spielfeld {
                 steinIstEinzeln = false;
             }
         }
-
+        /* 2. Rechte Seite */
         if(xKoord!=this.getSpielfeldGroesse()-1){
             if(anaFeld[xKoord+1][yKoord].getBelegungswert()!=spielerfarbe){
                 momGefSteine = versucheSteinZuNehmen(xKoord+1, yKoord, anaFeld);
@@ -294,9 +344,7 @@ public class Spielfeld {
                     gefangeneSteine+=momGefSteine;
                     zugOK = true;
                 }
-                else if(momGefSteine == 0){
-                    /* nichts machen, da nichts zu tun ist */
-                }
+                else if(momGefSteine == 0){/* nichts */}
                 else if(momGefSteine == -1){
                     zugOK = true;
                 }
@@ -305,7 +353,7 @@ public class Spielfeld {
                 steinIstEinzeln = false;
             }
         }
-
+        /* 3. Untere Seite */
         if(yKoord!=0){
             if(anaFeld[xKoord][yKoord-1].getBelegungswert()!=spielerfarbe){
                 momGefSteine = versucheSteinZuNehmen(xKoord, yKoord-1, anaFeld);
@@ -313,9 +361,7 @@ public class Spielfeld {
                     gefangeneSteine+=momGefSteine;
                     zugOK = true;
                 }
-                else if(momGefSteine == 0){
-                    /* nichts machen, da nichts zu tun ist */
-                }
+                else if(momGefSteine == 0){/* nichts */}
                 else if(momGefSteine == -1){
                     zugOK = true;
                 }
@@ -324,7 +370,7 @@ public class Spielfeld {
                 steinIstEinzeln = false;
             }
         }
-
+        /* 4. Obere Seite */
         if(yKoord!=this.getSpielfeldGroesse()-1){
            if(anaFeld[xKoord][yKoord+1].getBelegungswert()!=spielerfarbe){
                 momGefSteine = versucheSteinZuNehmen(xKoord, yKoord+1, anaFeld);
@@ -332,9 +378,7 @@ public class Spielfeld {
                     gefangeneSteine+=momGefSteine;
                     zugOK = true;
                 }
-                else if(momGefSteine == 0){
-                    /* nichts machen, da nichts zu tun ist */
-                }
+                else if(momGefSteine == 0){/* nichts */}
                 else if(momGefSteine == -1){
                     zugOK = true;
                 }
@@ -344,18 +388,18 @@ public class Spielfeld {
             }
         }
 
-        /* Ist zugOK immer noch false, muss betrachtet werden, ob die Gruppe
-         * eine Freiheit hat, wenn nicht so ist es Selbstmord und somit ungueltig */
+        /* Ist zugOK immer noch false, hat der Stein weder einen Anderen gefangen,
+         * noch besitzt er selbst freiheiten. Daher muss betrachtet werden, ob
+         * die Gruppe in der sich der Stein befindet eine Freiheit hat, wenn
+         * dies nicht so ist, ist der Zug Selbstmord und somit ungueltig */
         if(zugOK == false){
             if(versucheSteinZuNehmen(xKoord, yKoord, anaFeld, false) == 0){
                 /* Dann hat der Zug zwar keine Steine gefangen und der Stein
                  * hat keine Freiheiten, aber die Gruppe hat welche. Deshalb
                  * kann der Stein gesetzt werden */
                 this.aktuellesSpielfeldCache[xKoord][yKoord] = spielerfarbe;
-                this.steinEintragen(xPos, yPos, spielerfarbe);  // steinEintragen erhoeht die Zugnummer
-                this.spielfeldCacheMitZugnummerStand = this.letzteZugnummer;
-                /* Falls es ein Feld gab, das Verboten war so muss dieses
-                 * Geloescht werden */
+                this.spielfeldCacheMitZugnummerStand = this.letzteZugnummer+1;
+                this.steinEintragen(xPos, yPos, spielerfarbe);
                 this.loescheVerbotenenPunkt();
                 this.erhoeheGefangenenZahl(spielerfarbe, gefangeneSteine);
                 return 1;
@@ -370,29 +414,21 @@ public class Spielfeld {
         }
 
         /* Wenn man bis hier kommt, wurde ein Stein gesetzt der entweder eine
-         * Gruppe gefangen hat, oder eine Freiheit besitzt. Daher kann der
-         * Stein einfach gesetzt werden.*/
+         * Gruppe gefangen hat, oder mindestens eine Freiheit besitzt. Daher
+         * kann der Stein einfach gesetzt werden.
+         * Zu diesem Zeitpunkt ist der Chache auf jeden Fall veraendert worden
+         * Die Zugnummer selbst wird mit steinEintragen eins nach oben gezaehlt.
+         * Da zug OK ist, muss der letzte verbotene Punkt geloescht werden!
+         */
         aktuellesSpielfeldCache[xKoord][yKoord] = spielerfarbe;
-        // Zu diesem Zeitpunkt ist der Chache auf jeden Fall veraendert worden
-        // Die Zugnummer selbst wird mit steinEintragen eins nach oben gezaehlt.
         this.spielfeldCacheMitZugnummerStand = this.letzteZugnummer+1;
-        /* Da zug OK ist, muss der letzte verbotene Punkt geloescht werden */
         this.loescheVerbotenenPunkt();
+
         /* Jetzt ist noch Ko abzufangen
-         * Wenn nichts gefangen wurde, ist es auch kein Ko */
-        if(gefangeneSteine == 0){
-            this.steinEintragen(xPos, yPos, spielerfarbe);
-            this.erhoeheGefangenenZahl(spielerfarbe, gefangeneSteine);
-            return 1;
-        }
-        /* Wenn der Stein nicht einzeln ist, ist es auch kein Ko */
-        if(steinIstEinzeln == false){
-            this.steinEintragen(xPos, yPos, spielerfarbe);
-            this.erhoeheGefangenenZahl(spielerfarbe, gefangeneSteine);
-            return 1;
-        }
-        /* Wenn mehr als ein Stein gefangen wurde ist es auch kein Ko */
-        if(gefangeneSteine > 1){
+         * Wenn nichts gefangen wurde, ist es auch kein Ko.
+         * Wenn der Stein nicht einzeln ist, ist es auch kein Ko.
+         * Wenn mehr als ein Stein gefangen wurde ist es auch kein Ko.*/
+        if(gefangeneSteine == 0 || gefangeneSteine > 1 || steinIstEinzeln == false ){
             this.steinEintragen(xPos, yPos, spielerfarbe);
             this.erhoeheGefangenenZahl(spielerfarbe, gefangeneSteine);
             return 1;
@@ -402,30 +438,45 @@ public class Spielfeld {
          * gesetzt wurde bildet eine Gruppe aus genau einem Stein, naemlich
          * sich selbst. (Ist also einzeln)
          * Nun muss auf Ko geprueft werden. Wenn der Stein genau eine Freiheit
-         * besitzt, muss dort das Ko eingezeichnet werden. */
-
+         * besitzt, muss dort das Ko eingezeichnet werden. Daher werden jetzt
+         * die Freiheiten des Steins gezaehlt. Sind diese am Ende 1 so ist es Ko
+         * Besitzt der Stein nur eine Freiheit, wird sich in freiXPos und freiYPos
+         * der Wert dieser Freiheit gemerkt.
+         */
          int freiheitDesSteins = 0;
+         int freiXPos = -1;
+         int freiYPos = -1;
 
-         /* Freiheiten des Einzelnen Steins werden gezaehlt. Sind diese genau
-          * 1 so ist es Ko! */
+         /* 1. Linke Seite (Wenn sie existiert)*/
          if(xKoord!=0){
              if(this.aktuellesSpielfeldCache[xKoord - 1][yKoord] == Konstante.SCHNITTPUNKT_LEER){
                  freiheitDesSteins++;
+                 freiXPos = xKoord - 1;
+                 freiYPos = yKoord;
              }
          }
+         /* 2. Rechte Seite (Wenn sie existerit)*/
          if(xKoord!=this.getSpielfeldGroesse()-1){
              if(this.aktuellesSpielfeldCache[xKoord + 1][yKoord] == Konstante.SCHNITTPUNKT_LEER){
                  freiheitDesSteins++;
+                 freiXPos = xKoord + 1;
+                 freiYPos = yKoord;
              }
          }
+         /* 3. Untere Seite (Wenn sie existiert)*/
          if(yKoord!=0){
              if(this.aktuellesSpielfeldCache[xKoord][yKoord - 1] == Konstante.SCHNITTPUNKT_LEER){
                  freiheitDesSteins++;
+                 freiXPos = xKoord;
+                 freiYPos = yKoord - 1;
              }
          }
+         /* 4. Obere Seite (Wenn sie existiert)*/
          if(yKoord!=this.getSpielfeldGroesse()-1){
              if(this.aktuellesSpielfeldCache[xKoord][yKoord + 1] == Konstante.SCHNITTPUNKT_LEER){
                  freiheitDesSteins++;
+                 freiXPos = xKoord;
+                 freiYPos = yKoord + 1;
              }
          }
 
@@ -436,44 +487,13 @@ public class Spielfeld {
              return 1;
          }
 
-         /* Es ist also Ko. Das Muss markiert werden*/
-         if(xKoord!=0){
-             if(this.aktuellesSpielfeldCache[xKoord - 1][yKoord] == Konstante.SCHNITTPUNKT_LEER){
-                 this.setzeVerbotenenPunkt(xKoord-1, yKoord);
-                 this.aktuellesSpielfeldCache[xKoord - 1][yKoord] = Konstante.SCHNITTPUNKT_VERBOTEN;
-                 this.steinEintragen(xPos, yPos, spielerfarbe);
-                 this.erhoeheGefangenenZahl(spielerfarbe, gefangeneSteine);
-                 return 1;
-             }
-         }
-         if(xKoord!=this.getSpielfeldGroesse()-1){
-             if(this.aktuellesSpielfeldCache[xKoord + 1][yKoord] == Konstante.SCHNITTPUNKT_LEER){
-                 this.setzeVerbotenenPunkt(xKoord+1, yKoord);
-                 this.aktuellesSpielfeldCache[xKoord + 1][yKoord] = Konstante.SCHNITTPUNKT_VERBOTEN;
-                 this.steinEintragen(xPos, yPos, spielerfarbe);
-                 this.erhoeheGefangenenZahl(spielerfarbe, gefangeneSteine);
-                 return 1;
-             }
-         }
-         if(yKoord!=0){
-             if(this.aktuellesSpielfeldCache[xKoord][yKoord - 1] == Konstante.SCHNITTPUNKT_LEER){
-                 this.setzeVerbotenenPunkt(xKoord, yKoord - 1);
-                 this.aktuellesSpielfeldCache[xKoord][yKoord - 1] = Konstante.SCHNITTPUNKT_VERBOTEN;
-                 this.steinEintragen(xPos, yPos, spielerfarbe);
-                 this.erhoeheGefangenenZahl(spielerfarbe, gefangeneSteine);
-                 return 1;
-             }
-         }
-         if(yKoord!=this.getSpielfeldGroesse()-1){
-             if(this.aktuellesSpielfeldCache[xKoord][yKoord + 1] == Konstante.SCHNITTPUNKT_LEER){
-                 this.setzeVerbotenenPunkt(xKoord, yKoord + 1);
-                 this.aktuellesSpielfeldCache[xKoord][yKoord + 1] = Konstante.SCHNITTPUNKT_VERBOTEN;
-                 this.steinEintragen(xPos, yPos, spielerfarbe);
-                 this.erhoeheGefangenenZahl(spielerfarbe, gefangeneSteine);
-                 return 1;
-             }
-         }
-        return -4; // Das darf nicht passieren
+         /* Es ist also Ko. Das Muss markiert werden. Der Wert dafuer ist in
+          * freiXPos und freiYPos gespeichert. */
+         this.setzeVerbotenenPunkt(freiXPos, freiYPos);
+         this.aktuellesSpielfeldCache[freiXPos][freiYPos] = Konstante.SCHNITTPUNKT_VERBOTEN;
+         this.steinEintragen(xPos, yPos, spielerfarbe);
+         this.erhoeheGefangenenZahl(spielerfarbe, gefangeneSteine);
+         return 1;
     }
 
     /*
