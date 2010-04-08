@@ -914,5 +914,17 @@ public class Spielfeld {
     public boolean spielfeldValidiert(){
         return true;
     }
+
+    /**
+     *
+     * @return Gibt die Anzahl der Spielzüge in denen der
+     * aktuelle Spieler direkt hintereinander zuletzt gepasst hat.
+     * (Bei GO ist das Spiel nach zweimaligem passen eines Spielers zu Ende).
+     * 
+     * Die Funktion muss noch implementiert werden
+     */
+    public int getAnzahlLetzterPassZuege(){
+        return 0;
+    }
     
 }
