@@ -900,5 +900,19 @@ public class Spielfeld {
             this.gefangenenAnzahlWeiss+=zahl;
         }
     }
+
+    /**
+     *
+     * @return Die Funktion ueberprueft
+     * - den Spielzustand
+     * - die spielZugCollection mit den gemachten Zügen
+     * - die Objekte spielerSchwarz und spielerWeiss
+     * - sowie die gefangenenAnzahl der beiden Spieler
+     *
+     * Die Funktion muss erst noch implementiert werden
+     */
+    public boolean spielfeldValidiert(){
+        return true;
+    }
     
 }
