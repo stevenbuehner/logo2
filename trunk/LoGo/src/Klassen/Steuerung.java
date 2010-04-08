@@ -1,5 +1,10 @@
 package Klassen;
 
+import Timer.Countdown;
+import Timer.CountdownPeriodenZeitSchwarz;
+import Timer.CountdownPeriodenZeitWeiss;
+import Timer.CountdownSpielerZeitSchwarz;
+import Timer.CountdownSpielerZeitWeiss;
 import interfaces.SteuerungIntface;
 import logo.LoGoApp;
 
@@ -15,6 +20,13 @@ public class Steuerung implements SteuerungIntface {
     private Spielfeld dasSpielfeld;
 
 
+    // Timer fuer Spieler und PeriodenZeiten.
+    Countdown   periodenZeitSchwarz;
+    Countdown   periodenZeitWeiss;
+    Countdown   spielerZeitSchwarz;
+    Countdown   spielerZeitWeiss;
+
+    
     public Steuerung( ){
         this( 9, 60*1000 );     // Standardwerte
     }
@@ -131,6 +143,29 @@ public class Steuerung implements SteuerungIntface {
          * Diese muessen noch programmiert werden ...
         */
         this.dasSpielfeld = bereitsInitialisiertesSpielfeld;
+
+        // Timer initialisieren
+        // Vorraussetzung zum Initialisieren ist ein Objekt vom Typ Spieler in this.dasSpielfeld
+        if (this.dasSpielfeld.getSpielerSchwarz() != null ||
+                this.dasSpielfeld.getSpielerWeiss() != null ){
+        this.periodenZeitSchwarz    = new CountdownPeriodenZeitSchwarz(
+                false,
+                this.dasSpielfeld.getPeriodenZeit());
+        this.periodenZeitWeiss      = new CountdownPeriodenZeitWeiss(
+                false,
+                this.dasSpielfeld.getPeriodenZeit());
+        this.spielerZeitSchwarz     = new CountdownSpielerZeitSchwarz(
+                false,
+                this.dasSpielfeld.getSpielerSchwarz().getVerbleibendeSpielzeitInMS());
+        this.spielerZeitSchwarz     = new CountdownSpielerZeitWeiss(
+                false,
+                this.dasSpielfeld.getSpielerWeiss().getVerbleibendeSpielzeitInMS());
+        }
+        else{
+            throw new UnsupportedOperationException("Timer können nicht initialisiert werden: Fehlendes Spieler-Objekt in Spielfeld");
+        }
+
+
     }
 
    /**

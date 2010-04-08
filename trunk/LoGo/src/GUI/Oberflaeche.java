@@ -7,7 +7,7 @@ package GUI;
 
 import Klassen.Konstante;
 import Klassen.Steuerung;
-import interfaces.oberflaecheInterface;
+import interfaces.OberflaecheInterface;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -31,7 +31,7 @@ import logo.LoGoApp;
  * @author steven
  * @version 0.1
  */
-public class Oberflaeche extends Canvas implements oberflaecheInterface, MouseListener, KeyListener {
+public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseListener, KeyListener {
 
     private Steuerung                   meineSteuerung;
 
@@ -189,11 +189,19 @@ public class Oberflaeche extends Canvas implements oberflaecheInterface, MouseLi
         throw new UnsupportedOperationException("Not filly supported yet.");
     }
 
-    public void updateGUITimerWeiss(long periodenZeitInMS, long spielerZeitInMS) {
+    public void setAnzeigePeriodenZeitWeiss(long periodenZeitInMS ) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void updateGUITimerSchwarz(long periodenZeitInMS, long spielerZeitInMS) {
+    public void setAnzeigePeriodenZeitSchwarz(long periodenZeitInMS ) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setAnzeigeSpielerZeitWeiss(long periodenZeitInMS ) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setAnzeigeSpielerZeitSchwarz(long periodenZeitInMS ) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

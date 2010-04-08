@@ -15,8 +15,8 @@ import javax.swing.Timer;
  */
 public abstract class Countdown {
 
-	Timer       countdownTimer;
-	long        remainingTime;
+	protected Timer       countdownTimer;
+	protected long        remainingTime;
 
 	public Countdown(boolean starteSofort) {
 		this( starteSofort, 30 ); // Starte mit Standarzeit, 30 Sekunden
