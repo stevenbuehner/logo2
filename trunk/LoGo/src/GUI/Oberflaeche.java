@@ -54,6 +54,10 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
     private String debugSpielerZeitWeiss            = "";
     private String debugSpielerPeriodenZeitSchwarz  = "";
     private String debugSpielerPeriodenZeitWeiss    = "";
+    private String debugGefangeneSteineSchwarz      = "";
+    private String debugGefangeneSteineWeiss        = "";
+    private String debugAmZugIst                    = "nobody";
+
 
     public Oberflaeche() {
         this("LoGo by DHBW", 678, 549, LoGoApp.meineSteuerung);
@@ -182,42 +186,52 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
 
     public void setAnzeigePeriodenZeitWeiss(long periodenZeitInMS) {
         this.debugSpielerPeriodenZeitWeiss = "P-Zeit-W: " + periodenZeitInMS/60 + " Sek";
+        this.debugAktualisiereAnzeige();
     }
 
     public void setAnzeigePeriodenZeitSchwarz(long periodenZeitInMS) {
         this.debugSpielerPeriodenZeitWeiss = "P-Zeit-S: " + periodenZeitInMS/60 + " Sek";
+        this.debugAktualisiereAnzeige();
     }
 
     public void setAnzeigeSpielerZeitWeiss(long spielerZeitInMS) {
         this.debugSpielerZeitWeiss = "S-Zeit-W: " + spielerZeitInMS/60 + " Sek";
+        this.debugAktualisiereAnzeige();
     }
 
     public void setAnzeigeSpielerZeitSchwarz(long spielerZeitInMS) {
         this.debugSpielerZeitSchwarz = "S-Zeit-S: " + spielerZeitInMS/60 + " Sek";
+        this.debugAktualisiereAnzeige();
     }
 
     public void setSpielernameWeiss(String spielername) {
         this.debugSpielerNameWeiss = spielername;
+        this.debugAktualisiereAnzeige();
     }
 
     public void setSpielernameSchwarz(String spielername) {
         this.debugSpielerNameSchwarz = spielername;
+        this.debugAktualisiereAnzeige();
     }
 
     public void setGefangeneSteineWeiss(int anzGefangenerSteiner) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.debugGefangeneSteineWeiss = ""+anzGefangenerSteiner;
+        this.debugAktualisiereAnzeige();
     }
 
     public void setGefangeneSteineSchwarz(int anzGefangenerSteiner) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.debugGefangeneSteineSchwarz = ""+anzGefangenerSteiner;
+        this.debugAktualisiereAnzeige();
     }
 
     public void setSchwarzAmZug() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.debugAmZugIst = "SCHWARZ";
+        this.debugAktualisiereAnzeige();
     }
 
     public void setWeissAmZug() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.debugAmZugIst = "WEISS";
+        this.debugAktualisiereAnzeige();
     }
 
     public void mouseClicked(MouseEvent e) {
@@ -259,7 +273,12 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
     }
 
     public void keyTyped(KeyEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (e.getKeyCode() == KeyEvent.VK_1){
+            LoGoApp.meineSteuerung.buttonSpielStarten();
+            System.out.println("Spiel starten geklickt");
+        }
+
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void keyPressed(KeyEvent e) {
@@ -276,6 +295,15 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
     }
 
     private void debugAktualisiereAnzeige(){
+
+        System.out.println("----- ES SPIELT GERADE: " + debugAmZugIst + "------");
+        System.out.println("Schwarz: " + debugSpielerNameSchwarz);
+        System.out.println("Zeit: " + debugSpielerZeitSchwarz);
+        System.out.println("Periode: " + debugSpielerPeriodenZeitSchwarz);
+        System.out.println("----------------------------------");
+        System.out.println("Weiss: " + debugSpielerNameWeiss);
+        System.out.println("Zeit: " + debugSpielerPeriodenZeitWeiss);
+        System.out.println("Periode: " + debugSpielerPeriodenZeitWeiss);
         
     }
 }
