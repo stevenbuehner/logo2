@@ -107,6 +107,19 @@ public class Steuerung implements SteuerungIntface {
                 0);
     }
 
+    /**
+     *
+     * @param Bevorzugter Initialisierer des Spieles, der gleich eingesamtes
+     * Spielfeld als bereitsInitialisiertesSpielfeld ueberigbt.
+     */
+    public void initMitSpielfeld( Spielfeld bereitsInitialisiertesSpielfeld ){
+        /*
+         * Ueberpruefroutinen fuer das Spielfeld
+         * Diese muessen noch programmiert werden ...
+        */
+        this.dasSpielfeld = bereitsInitialisiertesSpielfeld;
+    }
+
     public void initMitEinstellungenFuerStartformation(
             String spielerNameSchwarz,
             String spielerNameWeiss,
@@ -226,5 +239,12 @@ public class Steuerung implements SteuerungIntface {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * 
+     * @return Getter-Funktion für das Spielfeld
+     */
+    public Spielfeld getSpielfeld(){
+        return this.dasSpielfeld;
+    }
 
 }
