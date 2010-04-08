@@ -68,8 +68,8 @@ public class Steuerung implements SteuerungIntface {
 
         Spielfeld tmpSpielfeld   = new Spielfeld(spielfeldGroesse);
 
-        tmpSpielfeld.setSpielerSchwarz( new Spieler(spielerNameSchwarz, spielZeitSchwarz, 0 ) );
-        tmpSpielfeld.setSpielerWeiss( new Spieler(spielerNameWeiss, spielZeitWeiss, komiFuerWeiss) );
+        tmpSpielfeld.setSpielerSchwarz( new Spieler(spielerNameSchwarz, spielZeitSchwarz, 0, 0 ) );
+        tmpSpielfeld.setSpielerWeiss( new Spieler(spielerNameWeiss, spielZeitWeiss, 0, komiFuerWeiss) );
         tmpSpielfeld.setPeriodenZeit(periodenZeit);
 
 
@@ -233,12 +233,30 @@ public class Steuerung implements SteuerungIntface {
      * @param yPos Y-Koordinate (1-Spielfeldgroesse)
      */
     public void klickAufFeld(int xPos, int yPos) {
-        
+
+        // Zum Debuggen
         System.out.println( "Klick auf Punkt (" + xPos + "|" + yPos + ")" );
 
-        Spielfeld brett = this.dasSpielfeld;
-        
-        int returnWert = this.dasSpielfeld.setStein(xPos, yPos);
+        // Variablendeklaration
+        Spielfeld brett         = this.dasSpielfeld;
+        int returnWert          = Konstante.FEHLER;
+        int klickenderSpieler   = brett.getSpielerAnDerReihe();
+
+
+        // Timer während der Berechnung stoppen und die Zeiten zum Spieler zurückspeichern
+        if( brett.getSpielerAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ ){
+            this.spielerZeitSchwarz.stoppeCountdown();
+            this.periodenZeitSchwarz.stoppeCountdown();
+            brett.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(this.spielerZeitSchwarz.getRemainingTime());
+        }
+        else{
+            this.spielerZeitWeiss.stoppeCountdown();
+            this.spielerZeitSchwarz.stoppeCountdown();
+            brett.getSpielerWeiss().setVerbleibendeSpielzeitInMS(this.spielerZeitWeiss.getRemainingTime());
+        }
+
+        // Versuche den Stein zu setzen und speichere das Resulatat in returnWert
+        returnWert = this.dasSpielfeld.setStein(xPos, yPos);
 
         switch (returnWert){
             case 1:
@@ -265,7 +283,109 @@ public class Steuerung implements SteuerungIntface {
         }
 
 
-        throw new UnsupportedOperationException("Not fully supported yet.");
+        // aktualisiere die GefangenenAnzahl
+        LoGoApp.meineOberflaeche.setGefangeneSteineSchwarz(brett.getSpielerSchwarz().getGefangenenAnzahl());
+        LoGoApp.meineOberflaeche.setGefangeneSteineWeiss(brett.getSpielerWeiss().getGefangenenAnzahl());
+
+
+        // Setze das Spiel wieder fort und starte die nötigen Timer
+        if( this.dasSpielfeld.getSpielerAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ ){
+            // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
+            if( brett.getSpielerSchwarz().getVerbleibendeSpielzeitInMS() > 0 ){
+                this.spielerZeitSchwarz.setRemainingTime( brett.getSpielerSchwarz().getVerbleibendeSpielzeitInMS() );
+            }
+            else{
+                // Wenn der Spieler einen ungültigen Zug geklickt hat, spiele mit den vorherigen Periodenzeiten weiter
+                // Bei Spielerwechsel, bekommt der Timer wieder die Periodenzeit auf Maximal gesetzt
+                if( klickenderSpieler != brett.getSpielerAnDerReihe() )
+                    this.periodenZeitSchwarz.setRemainingTime(brett.getPeriodenZeit());
+
+                // Starte den Countdown, bzw. setze den Countdown fort
+                this.periodenZeitSchwarz.starteCountdown();
+            }
+            // Hat der Spieler noch eigene Spielzeit, dann mache mit dieser weiter
+            this.spielerZeitSchwarz.setRemainingTime(brett.getSpielerSchwarz().getVerbleibendeSpielzeitInMS());
+            this.spielerZeitSchwarz.starteCountdown();
+        }
+        else{
+            // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
+            if( brett.getSpielerWeiss().getVerbleibendeSpielzeitInMS() > 0 ){
+                this.spielerZeitWeiss.setRemainingTime( brett.getSpielerWeiss().getVerbleibendeSpielzeitInMS() );
+            }
+            else{
+                // Wenn der Spieler einen ungültigen Zug geklickt hat, spiele mit den vorherigen Periodenzeiten weiter
+                // Bei Spielerwechsel, bekommt der Timer wieder die Periodenzeit auf Maximal gesetzt
+                if( klickenderSpieler != brett.getSpielerAnDerReihe() )
+                    this.periodenZeitWeiss.setRemainingTime(brett.getPeriodenZeit());
+
+                // Starte den Countdown, bzw. setze den Countdown fort
+                this.periodenZeitWeiss.starteCountdown();
+            }
+            // Hat der Spieler noch eigene Spielzeit, dann mache mit dieser weiter
+            this.spielerZeitWeiss.setRemainingTime(brett.getSpielerWeiss().getVerbleibendeSpielzeitInMS());
+            this.spielerZeitWeiss.starteCountdown();        }
+
+    }
+
+     /**
+     * Spieler klickt auf "Spiel Starten" damit wird dann die Validierung
+     * des Spielfelds vorgenommen und bei Erfolg das Spiel gestartet.
+     */
+    public void buttonSpielStarten(){
+        // Überprüfe ob die Initialisierung korrekt war
+
+        if( this.dasSpielfeld != null ){
+            this.dasSpielfeld.spielfeldValidiert();
+
+            // Wenn das Spiel validiert ist, starte ein neues Spiel
+            if(this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_VALIDIERT){
+                this.dasSpielfeld.setSpielZustand( Konstante.SPIEL_LAUEFT);
+
+                // Oberfläche füllen
+                LoGoApp.meineOberflaeche.setGefangeneSteineSchwarz(
+                        this.dasSpielfeld.getSpielerSchwarz().getGefangenenAnzahl());
+                LoGoApp.meineOberflaeche.setGefangeneSteineWeiss(
+                        this.dasSpielfeld.getSpielerWeiss().getGefangenenAnzahl());
+                LoGoApp.meineOberflaeche.setSpielernameSchwarz(
+                        this.dasSpielfeld.getSpielerSchwarz().getSpielerName());
+                LoGoApp.meineOberflaeche.setSpielernameWeiss(
+                        this.dasSpielfeld.getSpielerWeiss().getSpielerName());
+
+                // Zeiten auf der Oberfläche anzeigen
+                LoGoApp.meineOberflaeche.setAnzeigePeriodenZeitSchwarz(
+                        this.dasSpielfeld.getPeriodenZeit());
+                LoGoApp.meineOberflaeche.setAnzeigePeriodenZeitWeiss(
+                        this.dasSpielfeld.getPeriodenZeit());
+                LoGoApp.meineOberflaeche.setAnzeigeSpielerZeitSchwarz(
+                        this.dasSpielfeld.getSpielerSchwarz().getVerbleibendeSpielzeitInMS());
+                LoGoApp.meineOberflaeche.setAnzeigeSpielerZeitWeiss(
+                        this.dasSpielfeld.getSpielerWeiss().getVerbleibendeSpielzeitInMS());
+
+                // Initialisiere alle benötigten Timer neu
+                this.periodenZeitSchwarz.setRemainingTime(this.dasSpielfeld.getPeriodenZeit());
+                this.periodenZeitWeiss.setRemainingTime(this.dasSpielfeld.getPeriodenZeit());
+                this.spielerZeitSchwarz.setRemainingTime(this.dasSpielfeld.getSpielerSchwarz().getVerbleibendeSpielzeitInMS());
+                this.spielerZeitWeiss.setRemainingTime(this.dasSpielfeld.getSpielerWeiss().getVerbleibendeSpielzeitInMS());
+
+
+                
+                // Der Oberfläche den Spieler der am Zug ist übergeben und benötigte Timer starten
+                if( this.dasSpielfeld.getSpielerAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ ){
+                    this.spielerZeitSchwarz.starteCountdown();
+                    LoGoApp.meineOberflaeche.setSchwarzAmZug();
+                }
+                else{
+                    this.spielerZeitWeiss.starteCountdown();
+                    LoGoApp.meineOberflaeche.setWeissAmZug();
+                }
+
+            }
+        }
+        else{
+            // Es existiert noch kein Objekt vom Typ Spielfeld
+            LoGoApp.meineOberflaeche.gibFehlermeldungAus( "Fehler: Es existiert noch kein Spielfeld! Bitte erstellen Sie erst ein neues Spiel.");
+            throw new UnsupportedOperationException("Es existiert noch kein Spielfeld.");
+        }
     }
 
     /**
@@ -318,7 +438,7 @@ public class Steuerung implements SteuerungIntface {
     /**
      * Spieler klickt auf Zu-Start-Button. Anfangssituation wird geladen.
      */
-    public void buttonToStart() {
+    public void buttonSpringeZumStart() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -326,7 +446,7 @@ public class Steuerung implements SteuerungIntface {
      * Spieler klickt auf Zu-Ende-Button. Letzte Situation auf Brett wird
      * hergestellt.
      */
-    public void buttonToEnd() {
+    public void buttonSpringeZumEnde() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
