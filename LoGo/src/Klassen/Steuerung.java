@@ -43,10 +43,11 @@ public class Steuerung implements SteuerungIntface {
             int spielfeldGroesse,
             int vorgabeSteineFuerSchwarz) {
 
-        this.dasSpielfeld   = new Spielfeld(spielfeldGroesse);
-        this.dasSpielfeld.setSpielerSchwarz( new Spieler(spielerNameSchwarz, spielZeitSchwarz, 0 ) );
-        this.dasSpielfeld.setSpielerWeiss( new Spieler(spielerNameWeiss, spielZeitWeiss, komiFuerWeiss) );
-        this.dasSpielfeld.setPeriodenZeit(periodenZeit);
+        Spielfeld tmpSpielfeld   = new Spielfeld(spielfeldGroesse);
+
+        tmpSpielfeld.setSpielerSchwarz( new Spieler(spielerNameSchwarz, spielZeitSchwarz, 0 ) );
+        tmpSpielfeld.setSpielerWeiss( new Spieler(spielerNameWeiss, spielZeitWeiss, komiFuerWeiss) );
+        tmpSpielfeld.setPeriodenZeit(periodenZeit);
 
 
         switch( vorgabeSteineFuerSchwarz ){
@@ -62,9 +63,9 @@ public class Steuerung implements SteuerungIntface {
                 break;
         }
 
+        this.initMitSpielfeld(tmpSpielfeld);
 
-
-
+          //Zum Testen wurde dies hier auskommentiert, da es sonst nicht funktionieren wuerde
 //        throw new UnsupportedOperationException("Not fully supported yet.");
     }
 
