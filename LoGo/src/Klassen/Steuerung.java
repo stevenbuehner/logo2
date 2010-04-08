@@ -480,7 +480,9 @@ public class Steuerung implements SteuerungIntface {
      * Spieler klickt auf Zu-Start-Button. Anfangssituation wird geladen.
      */
     public void buttonSpringeZumStart() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.setAktuellerAnzeigeZug(0);
+        LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellerAnzeigeZug()),
+                                                     this.dasSpielfeld.getSpielfeldGroesse());
     }
 
     /**
@@ -488,7 +490,9 @@ public class Steuerung implements SteuerungIntface {
      * hergestellt.
      */
     public void buttonSpringeZumEnde() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.setAktuellerAnzeigeZug(this.dasSpielfeld.getLetzteZugnummer());
+        LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellerAnzeigeZug()),
+                                                     this.dasSpielfeld.getSpielfeldGroesse());
     }
 
     /**
