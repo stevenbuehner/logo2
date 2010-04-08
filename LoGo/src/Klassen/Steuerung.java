@@ -147,6 +147,7 @@ public class Steuerung implements SteuerungIntface {
         // Vorraussetzung zum Initialisieren ist ein Objekt vom Typ Spieler in this.dasSpielfeld
         if (this.dasSpielfeld.getSpielerSchwarz() != null ||
                 this.dasSpielfeld.getSpielerWeiss() != null ){
+            /*
         this.periodenZeitSchwarz    = new CountdownPeriodenZeitSchwarz(
                 false,
                 this.dasSpielfeld.getPeriodenZeit());
@@ -156,10 +157,10 @@ public class Steuerung implements SteuerungIntface {
         this.spielerZeitSchwarz     = new CountdownSpielerZeitSchwarz(
                 false,
                 this.dasSpielfeld.getSpielerSchwarz().getVerbleibendeSpielzeitInMS());
-        this.spielerZeitSchwarz     = new CountdownSpielerZeitWeiss(
+        this.spielerZeitWeiss     = new CountdownSpielerZeitWeiss(
                 false,
                 this.dasSpielfeld.getSpielerWeiss().getVerbleibendeSpielzeitInMS());
-        }
+       */ }
         else{
             throw new UnsupportedOperationException("Timer können nicht initialisiert werden: Fehlendes Spieler-Objekt in Spielfeld");
         }
@@ -259,7 +260,7 @@ public class Steuerung implements SteuerungIntface {
         }
 
         // Versuche den Stein zu setzen und speichere das Resulatat in returnWert
-        returnWert = this.dasSpielfeld.setStein(xPos, yPos);
+        returnWert = this.dasSpielfeld.macheZug(xPos, yPos);
 
         switch (returnWert){
             case 1:
@@ -344,6 +345,26 @@ public class Steuerung implements SteuerungIntface {
             if(this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_VALIDIERT){
                 this.dasSpielfeld.setSpielZustand( Konstante.SPIEL_LAUEFT);
 
+
+                // Timer initialisieren
+                // Vorraussetzung zum Initialisieren ist ein Objekt vom Typ Spieler in this.dasSpielfeld
+                if (this.dasSpielfeld.getSpielerSchwarz() != null ||
+                        this.dasSpielfeld.getSpielerWeiss() != null ){
+                this.periodenZeitSchwarz    = new CountdownPeriodenZeitSchwarz(
+                        false,
+                        this.dasSpielfeld.getPeriodenZeit());
+                this.periodenZeitWeiss      = new CountdownPeriodenZeitWeiss(
+                        false,
+                        this.dasSpielfeld.getPeriodenZeit());
+                this.spielerZeitSchwarz     = new CountdownSpielerZeitSchwarz(
+                        false,
+                        this.dasSpielfeld.getSpielerSchwarz().getVerbleibendeSpielzeitInMS());
+                this.spielerZeitWeiss     = new CountdownSpielerZeitWeiss(
+                        false,
+                        this.dasSpielfeld.getSpielerWeiss().getVerbleibendeSpielzeitInMS());
+                }
+
+                
                 // Oberfläche füllen
                 LoGoApp.meineOberflaeche.setGefangeneSteineSchwarz(
                         this.dasSpielfeld.getSpielerSchwarz().getGefangenenAnzahl());

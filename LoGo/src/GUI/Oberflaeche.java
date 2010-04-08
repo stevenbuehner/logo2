@@ -22,6 +22,7 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import logo.LoGoApp;
 
@@ -57,6 +58,8 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
     private String debugGefangeneSteineSchwarz      = "";
     private String debugGefangeneSteineWeiss        = "";
     private String debugAmZugIst                    = "nobody";
+    private boolean debugStart = false;
+    private JLabel  debugAusgabe;
 
 
     public Oberflaeche() {
@@ -169,6 +172,15 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
                 }
             }
         }
+
+
+        // Debug-Strings ausgeben
+        g.drawString(debugSpielerNameSchwarz + "(" + debugSpielerZeitSchwarz + " | " + debugSpielerPeriodenZeitSchwarz + ")",
+                xOffset,
+                yOffset + spielfeldHoehe + 10);
+        g.drawString(debugSpielerNameWeiss + "(" + debugSpielerZeitSchwarz + " | " + debugSpielerPeriodenZeitSchwarz + ")",
+                xOffset  ,
+                yOffset + spielfeldHoehe + 30);
     }
 
     public void setBrettOberflaeche(int[][] spielfeld, int spielfeldGroesse) {
@@ -185,22 +197,22 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
     }
 
     public void setAnzeigePeriodenZeitWeiss(long periodenZeitInMS) {
-        this.debugSpielerPeriodenZeitWeiss = "P-Zeit-W: " + periodenZeitInMS/60 + " Sek";
+        this.debugSpielerPeriodenZeitWeiss = periodenZeitInMS/60 + " Sek";
         this.debugAktualisiereAnzeige();
     }
 
     public void setAnzeigePeriodenZeitSchwarz(long periodenZeitInMS) {
-        this.debugSpielerPeriodenZeitWeiss = "P-Zeit-S: " + periodenZeitInMS/60 + " Sek";
+        this.debugSpielerPeriodenZeitWeiss = periodenZeitInMS/60 + " Sek";
         this.debugAktualisiereAnzeige();
     }
 
     public void setAnzeigeSpielerZeitWeiss(long spielerZeitInMS) {
-        this.debugSpielerZeitWeiss = "S-Zeit-W: " + spielerZeitInMS/60 + " Sek";
+        this.debugSpielerZeitWeiss = spielerZeitInMS/60 + " Sek";
         this.debugAktualisiereAnzeige();
     }
 
     public void setAnzeigeSpielerZeitSchwarz(long spielerZeitInMS) {
-        this.debugSpielerZeitSchwarz = "S-Zeit-S: " + spielerZeitInMS/60 + " Sek";
+        this.debugSpielerZeitSchwarz = spielerZeitInMS/60 + " Sek";
         this.debugAktualisiereAnzeige();
     }
 
@@ -265,7 +277,12 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
     }
 
     public void mouseEntered(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
+            if( !debugStart ){
+                LoGoApp.meineSteuerung.buttonSpielStarten();
+                System.out.println("Spiel starten geklickt");
+                debugStart = true;
+           }
+
     }
 
     public void mouseExited(MouseEvent e) {
@@ -273,7 +290,9 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
     }
 
     public void keyTyped(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_1){
+        System.out.println("KeyTyped-Event:");
+
+        if (e.getKeyCode() == KeyEvent.VK_S){
             LoGoApp.meineSteuerung.buttonSpielStarten();
             System.out.println("Spiel starten geklickt");
         }
@@ -295,15 +314,15 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
     }
 
     private void debugAktualisiereAnzeige(){
-
-        System.out.println("----- ES SPIELT GERADE: " + debugAmZugIst + "------");
+    /*
+        System.out.println("\n\n\n----- ES SPIELT GERADE: " + debugAmZugIst + "------");
         System.out.println("Schwarz: " + debugSpielerNameSchwarz);
         System.out.println("Zeit: " + debugSpielerZeitSchwarz);
         System.out.println("Periode: " + debugSpielerPeriodenZeitSchwarz);
-        System.out.println("----------------------------------");
+        System.out.println("--");
         System.out.println("Weiss: " + debugSpielerNameWeiss);
         System.out.println("Zeit: " + debugSpielerPeriodenZeitWeiss);
         System.out.println("Periode: " + debugSpielerPeriodenZeitWeiss);
-        
+     */
     }
 }

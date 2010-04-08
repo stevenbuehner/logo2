@@ -902,7 +902,7 @@ public class Spielfeld {
      */
     public boolean spielfeldValidiert(){
 
-        boolean validiert = false;
+        boolean validiert = true;
 
         // Wenn die Validierung geklappt hat und vorher noch unvollständig war,
         // wird der Spielzustand auf Validiert gesetzt.
