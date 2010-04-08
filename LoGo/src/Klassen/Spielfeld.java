@@ -231,25 +231,54 @@ public class Spielfeld {
     public int[][] getSpielfeldZumZeitpunkt(int zeitpunkt) {
 
         int spielfeld[][];
-
+        spielfeld = new int[this.getSpielfeldGroesse()][this.getSpielfeldGroesse()];
+        /* Wenn der Zeitpunkt dem des Caches entspricht, wird einfach der aktuelle
+         * Feld zurueckgegeben.
+         *
         if (zeitpunkt == this.spielfeldCacheMitZugnummerStand) {
             spielfeld = this.aktuellesSpielfeldCache;
-        } else {
-            spielfeld = new int[this.getSpielfeldGroesse()][this.getSpielfeldGroesse()];
-
-            // Spielfeld initialisieren
-            for (int i = this.getSpielfeldGroesse() - 1; i >= 0; i--) {
-                for (int j = this.getSpielfeldGroesse() - 1; j >= 0; j--) {
-                    spielfeld[j][i] = Konstante.SCHNITTPUNKT_LEER;
+        } 
+        
+        else if(zeitpunkt > this.spielfeldCacheMitZugnummerStand) {
+            while(zeitpunkt > this.spielfeldCacheMitZugnummerStand){
+                /* Auf Passen abpruefen *
+                if(this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getXPosition() == -1 &&
+                   this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getYPosition() == -1){
+                    this.zugPassen(this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getFarbe());
+                }
+                else {this.setStein(this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getXPosition(),
+                                    this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getYPosition(),
+                                    this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getFarbe());
                 }
             }
+            spielfeld = this.aktuellesSpielfeldCache;
+        }
+        else if (zeitpunkt < this.spielfeldCacheMitZugnummerStand && zeitpunkt >=0){
+            this.aktuellesSpielfeldCache = new int[this.getSpielfeldGroesse()][this.getSpielfeldGroesse()];
+            this.spielfeldCacheMitZugnummerStand = 0;
+            /* Spielfeld muss neu erzeugt werden. Alle werte werden daher
+             * zurueckgesetzt *
+            for(int i=0; i<this.getSpielfeldGroesse(); i++){
+                for(int j=0; j<this.getSpielfeldGroesse(); j++){
+                    this.aktuellesSpielfeldCache[i][j] = Konstante.SCHNITTPUNKT_LEER;
+                }
+            }
+            this.loescheVerbotenenPunkt();
 
+            /*Abdem Zug 1 bis zum zeitpunkt Stein setzen*/
             /*
              * Hier muss jetzt noch nach dem initialisieren die Werte aus der Collection
              * abgefragt werden und ins Feld eingetragen werden
-             */
+             *
         }
-
+        else {
+            throw new UnsupportedOperationException("Zeitpunkt ist Nicht moeglich, da kleiner 0 !");
+        }*/
+        for(int i=0; i<this.getSpielfeldGroesse(); i++){
+            for(int j=0; j<this.getSpielfeldGroesse(); j++){
+                spielfeld[i][j]=Konstante.SCHNITTPUNKT_LEER;
+            }
+        }
         return spielfeld;
     }
 
@@ -887,14 +916,16 @@ public class Spielfeld {
      * Nachdem ein Zug ausgefuehrt wurde, muss dieser in die Liste der bisherigen
      * Zuege eingetragen werden. Somit kann aus der Liste der bisherigen Zuege
      * einfach die Brettsituation wieder hergestellt werden.
-     * @param xPos X-Koordinate (1-Feldgroesse)
-     * @param yPos Y-Koordinate (1-Feldgroesse)
+     * @param xPos X-Koordinate (1-Feldgroesse) (-1 Bei Passen)
+     * @param yPos Y-Koordinate (1-Feldgroesse) (-1 Bei Passen)
      * @param farbe Farbe des Spielers, der Zug ausgefuehrt hat
      */
     private void steinEintragen( int xPos, int yPos, int farbe ){
         this.spielZugCollection.add(new Spielzug(xPos, yPos, farbe));
         this.letzteZugnummer++;
     }
+
+
 
     /**
      * Nachdem Steine von einer bestimmten Farbe gefangen wurden, muss die
@@ -911,6 +942,15 @@ public class Spielfeld {
         if(farbe == Konstante.SCHNITTPUNKT_WEISS){
             this.spielerWeiss.addGefangenenAnzahl(zahl);
         }
+    }
+
+    public void zugPassen(int spielerFarbe){
+        /* Da gepasst wurde, muss der Verbotene Zug geloescht werden*/
+        this.loescheVerbotenenPunkt();
+        /* Der Counter des Caches muss erhoeht werden */
+        this.spielfeldCacheMitZugnummerStand = this.letzteZugnummer+1;
+        /* Nun wird der Stein eingetragen, mit Koordinate (-1,-1) fuer Passen */
+        this.steinEintragen(-1, -1, spielerFarbe);
     }
 
     /**
@@ -946,7 +986,17 @@ public class Spielfeld {
      * Die Funktion muss noch implementiert werden
      */
     public int getAnzahlLetzterPassZuege(){
-        return 0;
+        int anzahlDerZuege;
+        int anzahlLetzterPassZuege = 0;
+        anzahlDerZuege = this.spielZugCollection.size();
+        int i=1;
+        while(this.spielZugCollection.get(anzahlDerZuege-i).getXPosition() == -1 &&
+              this.spielZugCollection.get(anzahlDerZuege-i).getYPosition() == -1 &&
+              anzahlDerZuege-i >= 0){
+            anzahlLetzterPassZuege++;
+            i++;
+        }
+        return anzahlLetzterPassZuege;
     }
     
 }
