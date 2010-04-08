@@ -120,9 +120,7 @@ public class Spielfeld {
 
     /**
      *
-     * @param Speichern der periodenZeit (fuer beide Spieler)
-     * Wenn die Spielerzeit aufgebraucht ist gibt es noch die Periodenzeit.
-     * Diese ist fuer alle Spieler gleich. In wirklich heisst dieser Wert Byo-yomi.
+     * @param Speichern der periodenZeit
      */
     public void setPeriodenZeit( long periodenZeit ){
         this.periodenZeit = periodenZeit;

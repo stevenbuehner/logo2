@@ -67,17 +67,17 @@ public class Spielzug {
      * NUR die Konstanten Konstante.SCHNITTPUNKT_SCHWARZ und
      * Konstante.SCHNITTPUNKT_WEISS. Wurde ein anderer Wert uebergeben wird
      * automatisch der Wert Konstante.SCHNITTPUNKT_LEER gesetzt.
-    */
+     */
     public int getFarbe() {
         return this.farbe;
     }
-    
+
     /**
      * @param farbe Spielerfarbe des Steins der gelegt wurde. zur Auswahl stehen
      * NUR die Konstanten Konstante.SCHNITTPUNKT_SCHWARZ und
      * Konstante.SCHNITTPUNKT_WEISS. Wurde ein anderer Wert uebergeben wird
      * automatisch der Wert Konstante.SCHNITTPUNKT_LEER gesetzt.
-    */
+     */
     public void setFarbe(int farbe) {
         if (farbe == Konstante.SCHNITTPUNKT_SCHWARZ ||
                 farbe == Konstante.SCHNITTPUNKT_WEISS) {

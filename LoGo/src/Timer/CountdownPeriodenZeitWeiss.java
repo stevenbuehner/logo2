@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Timer;
 
 import logo.LoGoApp;
@@ -13,23 +12,22 @@ import logo.LoGoApp;
  */
 public class CountdownPeriodenZeitWeiss extends Countdown {
 
-    public CountdownPeriodenZeitWeiss( boolean starteSofort ){
-        super( starteSofort );
+    public CountdownPeriodenZeitWeiss(boolean starteSofort) {
+        super(starteSofort);
     }
 
-    public CountdownPeriodenZeitWeiss( boolean starteSofort, long remainingTime ){
+    public CountdownPeriodenZeitWeiss(boolean starteSofort, long remainingTime) {
         super(true, remainingTime);
     }
-    
+
     @Override
     protected void doWhenCountdownFinished() {
-        LoGoApp.meineOberflaeche.setAnzeigePeriodenZeitWeiss( 0 );
+        LoGoApp.meineOberflaeche.setAnzeigePeriodenZeitWeiss(0);
         LoGoApp.meineSteuerung.zeitAbgelaufenWeissPeriodenzeit();
     }
 
     @Override
     protected void doEverySecondTimerRuns() {
-        LoGoApp.meineOberflaeche.setAnzeigePeriodenZeitWeiss( remainingTime );
+        LoGoApp.meineOberflaeche.setAnzeigePeriodenZeitWeiss(remainingTime);
     }
-
 }

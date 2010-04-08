@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Timer;
 
 import logo.LoGoApp;
@@ -13,23 +12,22 @@ import logo.LoGoApp;
  */
 public class CountdownSpielerZeitSchwarz extends Countdown {
 
-    public CountdownSpielerZeitSchwarz( boolean starteSofort ){
-        super( starteSofort );
+    public CountdownSpielerZeitSchwarz(boolean starteSofort) {
+        super(starteSofort);
     }
 
-    public CountdownSpielerZeitSchwarz( boolean starteSofort, long remainingTime ){
+    public CountdownSpielerZeitSchwarz(boolean starteSofort, long remainingTime) {
         super(true, remainingTime);
     }
-    
+
     @Override
     protected void doWhenCountdownFinished() {
-        LoGoApp.meineOberflaeche.setAnzeigeSpielerZeitSchwarz( 0 );
+        LoGoApp.meineOberflaeche.setAnzeigeSpielerZeitSchwarz(0);
         LoGoApp.meineSteuerung.zeitAbgelaufenSchwarzHauptzeit();
     }
 
     @Override
     protected void doEverySecondTimerRuns() {
-        LoGoApp.meineOberflaeche.setAnzeigeSpielerZeitSchwarz( remainingTime );
+        LoGoApp.meineOberflaeche.setAnzeigeSpielerZeitSchwarz(remainingTime);
     }
-
 }
