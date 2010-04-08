@@ -11,14 +11,6 @@ import logo.LoGoApp;
  */
 public class Steuerung implements SteuerungIntface {
 
-    private Spieler spielerSchwarz;
-    private Spieler spielerWeiss;
-
-    /* Wenn die Spielerzeit aufgebraucht ist gibt es noch die Periodenzeit.
-    * Diese ist fuer alle Spieler gleich. In wirklich heisst dieser Wert Byo-yomi.
-    */
-    private long    periodenZeit;
-
     // Die Datenklasse
     private Spielfeld dasSpielfeld;
 
@@ -28,7 +20,6 @@ public class Steuerung implements SteuerungIntface {
     }
 
     public Steuerung ( int spielFeldGroesse, long periodenZeit ){
-        this.periodenZeit   = periodenZeit;
 
         // Initialisiere nicht angegebenes mit Standardwerten
         this.initMitEinstellungen(
@@ -38,7 +29,8 @@ public class Steuerung implements SteuerungIntface {
                 30*60*1000,
                 60*1000,
                 0,
-                spielFeldGroesse);
+                spielFeldGroesse,
+                0);
     }
 
     public void initMitEinstellungen(
@@ -51,10 +43,10 @@ public class Steuerung implements SteuerungIntface {
             int spielfeldGroesse,
             int vorgabeSteineFuerSchwarz) {
 
-        this.spielerSchwarz = new Spieler(spielerNameSchwarz, spielZeitSchwarz, 0 );
-        this.spielerWeiss   = new Spieler(spielerNameWeiss, spielZeitWeiss, komiFuerWeiss);
         this.dasSpielfeld   = new Spielfeld(spielfeldGroesse);
-        this.periodenZeit   = periodenZeit;
+        this.dasSpielfeld.setSpielerSchwarz( new Spieler(spielerNameSchwarz, spielZeitSchwarz, 0 ) );
+        this.dasSpielfeld.setSpielerWeiss( new Spieler(spielerNameWeiss, spielZeitWeiss, komiFuerWeiss) );
+        this.dasSpielfeld.setPeriodenZeit(periodenZeit);
 
 
         switch( vorgabeSteineFuerSchwarz ){
