@@ -74,7 +74,10 @@ public abstract class Countdown {
 
         public void actionPerformed(ActionEvent e) {
 
-            if (--remainingTime > 0) {
+            // 1 Sekunde davon abziehen
+            remainingTime -= 1000;
+            
+            if (remainingTime > 0) {
                 doEverySecondTimerRuns();
 
                 /*

@@ -17,7 +17,7 @@ public class CountdownPeriodenZeitWeiss extends Countdown {
     }
 
     public CountdownPeriodenZeitWeiss(boolean starteSofort, long remainingTime) {
-        super(true, remainingTime);
+        super(starteSofort, remainingTime);
     }
 
     @Override

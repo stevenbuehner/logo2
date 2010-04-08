@@ -17,7 +17,7 @@ public class CountdownSpielerZeitSchwarz extends Countdown {
     }
 
     public CountdownSpielerZeitSchwarz(boolean starteSofort, long remainingTime) {
-        super(true, remainingTime);
+        super(starteSofort, remainingTime);
     }
 
     @Override
