@@ -925,6 +925,13 @@ public class Spielfeld {
             this.spielerWeiss.addGefangenenAnzahl(zahl);
         }
     }
+    
+    /**
+     * Wird im Spiel gepasst, muss das in der Liste der Zuege eingetragen werden.
+     */
+    public void zugPassen(){
+        this.zugPassen( this.getSpielerFarbeAnDerReihe() );
+    }
 
     /**
      * Wird im Spiel gepasst, muss das in der Liste der Zuege eingetragen werden.
