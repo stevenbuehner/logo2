@@ -9,10 +9,9 @@ import interfaces.SteuerungIntface;
 import logo.LoGoApp;
 
 /**
- *
+ * Die Klasse dient zur Steuerung des Spielflusses
  * @author steven
  * @version 0.2
- * @param Die Klasse dient zur Steuerung des Spielflusses
  */
 public class Steuerung implements SteuerungIntface {
 
@@ -134,7 +133,7 @@ public class Steuerung implements SteuerungIntface {
 
     /**
      *
-     * @param Bevorzugter Initialisierer des Spieles, der gleich eingesamtes
+     * @param bereitsInitialisiertesSpielfeld Bevorzugter Initialisierer des Spieles, der gleich eingesamtes
      * Spielfeld als bereitsInitialisiertesSpielfeld ueberigbt.
      */
     public void initMitSpielfeld( Spielfeld bereitsInitialisiertesSpielfeld ){
