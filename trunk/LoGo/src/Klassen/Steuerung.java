@@ -36,8 +36,8 @@ public class Steuerung implements SteuerungIntface {
         // Initialisiere nicht angegebenes mit Standardwerten
         this.initMitEinstellungen(
                 "Steven",
-                "Tommy",
-                30*60*1000,
+                "Marit",
+                10*60*1000,
                 10*1000,
                 30*1000,
                 0,
@@ -257,7 +257,7 @@ public class Steuerung implements SteuerungIntface {
         }
         else{
             this.spielerZeitWeiss.stoppeCountdown();
-            this.spielerZeitSchwarz.stoppeCountdown();
+            this.periodenZeitWeiss.stoppeCountdown();
             brett.getSpielerWeiss().setVerbleibendeSpielzeitInMS(this.spielerZeitWeiss.getRemainingTime());
         }
 
