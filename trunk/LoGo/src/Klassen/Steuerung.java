@@ -506,6 +506,9 @@ public class Steuerung implements SteuerungIntface {
      * Spieler klickt auf Undo. Spielzug wird rueckgaengig gemacht
      */
     public void buttonUndo() {
+
+        /* In dieser Funktion muss noch der Timer einbebunden werden und
+         *vielleicht veraendert werden, welcher spieler an der Reihe ist.*/
        if(this.getAktuellerAnzeigeZug() > 0){
            this.setAktuellerAnzeigeZug(this.getAktuellerAnzeigeZug()-1);
        }
@@ -521,6 +524,8 @@ public class Steuerung implements SteuerungIntface {
      * gemacht (Es wir einfach um 1 nach vorn gegangen)
      */
     public void buttonRedo() {
+        /* In dieser Funktion muss noch der Timer einbebunden werden und
+         *vielleicht veraendert werden, welcher spieler an der Reihe ist.*/
         if(this.getAktuellerAnzeigeZug() < this.dasSpielfeld.getLetzteZugnummer()){
             this.setAktuellerAnzeigeZug(this.getAktuellerAnzeigeZug() + 1);
         }
