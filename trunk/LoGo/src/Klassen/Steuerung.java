@@ -37,8 +37,8 @@ public class Steuerung implements SteuerungIntface {
                 "Steven",
                 "Tommy",
                 30*60*1000,
-                30*60*1000,
-                60*1000,
+                10*1000,
+                5*1000,
                 0,
                 spielFeldGroesse,
                 0);
@@ -478,22 +478,26 @@ public class Steuerung implements SteuerungIntface {
      * Hauptzeit des schwarzen Spielers ist abgelaufen. Periodenzeit muss starten
      */
     public void zeitAbgelaufenSchwarzHauptzeit() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+        this.dasSpielfeld.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(0);
+        this.periodenZeitSchwarz.setRemainingTime(this.dasSpielfeld.getPeriodenZeit());
+        this.periodenZeitSchwarz.starteCountdown();    }
 
     /**
      * Periodenzeit des schwarzen Spielers ist abgelaufen. Schwarz verliert.
      * Spiel beendet.
      */
     public void zeitAbgelaufenSchwarzPeriodenzeit() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+        this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_BEENDET_DURCH_APP);
+        LoGoApp.meineOberflaeche.gibFehlermeldungAus("Zeit abgelaufen! Spiel wurde beendet!");
+       }
 
     /**
      * Hauptzeit des weissen Spielers ist abgelaufen. Periodenzeit muss starten
      */
     public void zeitAbgelaufenWeissHauptzeit() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(0);
+        this.periodenZeitWeiss.setRemainingTime(this.dasSpielfeld.getPeriodenZeit());
+        this.periodenZeitWeiss.starteCountdown();
     }
 
     /**
@@ -501,7 +505,8 @@ public class Steuerung implements SteuerungIntface {
      * Spiel beendet.
      */
     public void zeitAbgelaufenWeissPeriodenzeit() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_BEENDET_DURCH_APP);
+        LoGoApp.meineOberflaeche.gibFehlermeldungAus("Zeit abgelaufen! Spiel wurde beendet!");
     }
 
     /**
