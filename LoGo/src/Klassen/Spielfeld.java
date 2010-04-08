@@ -635,7 +635,7 @@ public class Spielfeld {
         return true;
     }
 
-    private int getSpielerAnDerReihe(){
+    public int getSpielerAnDerReihe(){
 
         int letzterSpieler = getSpielerVonLetztemZug();
         
@@ -653,7 +653,7 @@ public class Spielfeld {
 
     }
 
-    private int getSpielerVonLetztemZug(){
+    public int getSpielerVonLetztemZug(){
         /* Ich bin mir nicht ganz sicher ob die Funktion funktioniert
              und ob sie auch noch funktioniert, wenn mal Elemente in der Collection
              gelöscht wurden.

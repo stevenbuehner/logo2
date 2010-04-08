@@ -47,6 +47,14 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
     private int feldHoehe = spielfeldHoehe / spielfeldGroesse;
     private int spielSteine[][];
 
+    // Nur zum debuggen
+    private String debugSpielerNameSchwarz          = "";
+    private String debugSpielerNameWeiss            = "";
+    private String debugSpielerZeitSchwarz          = "";
+    private String debugSpielerZeitWeiss            = "";
+    private String debugSpielerPeriodenZeitSchwarz  = "";
+    private String debugSpielerPeriodenZeitWeiss    = "";
+
     public Oberflaeche() {
         this("LoGo by DHBW", 678, 549, LoGoApp.meineSteuerung);
     }
@@ -173,27 +181,27 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
     }
 
     public void setAnzeigePeriodenZeitWeiss(long periodenZeitInMS) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.debugSpielerPeriodenZeitWeiss = "P-Zeit-W: " + periodenZeitInMS/60 + " Sek";
     }
 
     public void setAnzeigePeriodenZeitSchwarz(long periodenZeitInMS) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.debugSpielerPeriodenZeitWeiss = "P-Zeit-S: " + periodenZeitInMS/60 + " Sek";
     }
 
-    public void setAnzeigeSpielerZeitWeiss(long periodenZeitInMS) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void setAnzeigeSpielerZeitWeiss(long spielerZeitInMS) {
+        this.debugSpielerZeitWeiss = "S-Zeit-W: " + spielerZeitInMS/60 + " Sek";
     }
 
-    public void setAnzeigeSpielerZeitSchwarz(long periodenZeitInMS) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void setAnzeigeSpielerZeitSchwarz(long spielerZeitInMS) {
+        this.debugSpielerZeitSchwarz = "S-Zeit-S: " + spielerZeitInMS/60 + " Sek";
     }
 
     public void setSpielernameWeiss(String spielername) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.debugSpielerNameWeiss = spielername;
     }
 
     public void setSpielernameSchwarz(String spielername) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.debugSpielerNameSchwarz = spielername;
     }
 
     public void setGefangeneSteineWeiss(int anzGefangenerSteiner) {
@@ -265,5 +273,9 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
     public void gibFehlermeldungAus(String fehlertext) {
         // Gib Fehlermeldung aus Popup-Box aus
         JOptionPane.showMessageDialog(this, fehlertext);
+    }
+
+    private void debugAktualisiereAnzeige(){
+        
     }
 }
