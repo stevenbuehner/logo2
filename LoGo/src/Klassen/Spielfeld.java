@@ -163,7 +163,6 @@ public class Spielfeld {
 
     }
 
-
     /**
      * 
      * @return Die Nummer des zuletzt gespielten Zuges
@@ -238,32 +237,39 @@ public class Spielfeld {
         if (zeitpunkt < 0){
             throw new UnsupportedOperationException("Zeitpunkt ist Nicht moeglich, da kleiner 0 !");
         }
-
-        /* Wenn der zeitpunkt vor dem stand im Cache liegt, muss das Feld komplett
+        
+        /* Wenn der zeitpunkt vor dem Stand im Cache liegt, muss das Feld komplett
          * neu geladen werden. Ansonsten reicht es, vom momentanen Cache auszugehen.
          */
         if (zeitpunkt < this.spielfeldCacheMitZugnummerStand){
             this.spielfeldCacheMitZugnummerStand = 0;
+            this.loescheVerbotenenPunkt();
             for(int i=0; i<this.getSpielfeldGroesse(); i++){
                 for(int j=0; j<this.getSpielfeldGroesse(); j++){
                     this.aktuellesSpielfeldCache[i][j] = Konstante.SCHNITTPUNKT_LEER;
                 }
             }
-
-            while(zeitpunkt > this.spielfeldCacheMitZugnummerStand){
-                /* Auf Passen abpruefen */
-                if(this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getXPosition() == -1 &&
-                   this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getYPosition() == -1){
-                   this.loescheVerbotenenPunkt();
-                }
-                else {this.setStein(this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getXPosition(),
-                                    this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getYPosition(),
-                                    this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getFarbe());
-                      this.spielfeldCacheMitZugnummerStand++;
-                }
-            }
-            spielfeld = this.aktuellesSpielfeldCache;
         }
+        
+        /* Wenn der Zeitpunkt gleich 0 ist, so muss ein Leeres Brett zurueck 
+         * gegeben werden. */
+        if( zeitpunkt == 0){
+            return this.aktuellesSpielfeldCache;
+        }
+        
+        while(zeitpunkt > this.spielfeldCacheMitZugnummerStand){
+            /* Auf Passen abpruefen */
+            if(this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getXPosition() == -1 &&
+               this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getYPosition() == -1){
+               this.loescheVerbotenenPunkt();
+            }
+            else {this.setStein(this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getXPosition(),
+                                this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getYPosition(),
+                                this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getFarbe());
+                  this.spielfeldCacheMitZugnummerStand++;
+            }
+        }
+        spielfeld = this.aktuellesSpielfeldCache;
         return spielfeld;
     }
 
@@ -288,7 +294,13 @@ public class Spielfeld {
     }  
 
     /**
-     *
+     * Die Funktion setzt im Cache einen Stein, wenn dies auch moeglich ist.
+     * Folgende Variablen werden dabei veraendert:
+     * - aktuellesSpielfeldCache (Wenn Zug erfolgreich war)
+     * - xPosVerboten
+     * - yPosVerboten
+     * - gefangenenAnzahl der Spieler
+     * - spielfeldCacheMitZugnummerStand
      * @param xPos X-Position des Spielfelds.
      * Diese kann Werte zwischen 1 und der Feldlänge enthalten
      * @param yPos Y-Position des Spielfelds.
@@ -467,8 +479,7 @@ public class Spielfeld {
                  * hat keine Freiheiten, aber die Gruppe hat welche. Deshalb
                  * kann der Stein gesetzt werden */
                 this.aktuellesSpielfeldCache[xKoord][yKoord] = spielerfarbe;
-                //this.spielfeldCacheMitZugnummerStand = this.letzteZugnummer+1;
-                //this.steinEintragen(xPos, yPos, spielerfarbe);
+                this.spielfeldCacheMitZugnummerStand++;
                 this.loescheVerbotenenPunkt();
                 this.erhoeheGefangenenZahl(spielerfarbe, gefangeneSteine);
                 return 1;
@@ -490,7 +501,7 @@ public class Spielfeld {
          * Da zug OK ist, muss der letzte verbotene Punkt geloescht werden!
          */
         aktuellesSpielfeldCache[xKoord][yKoord] = spielerfarbe;
-        //this.spielfeldCacheMitZugnummerStand = this.letzteZugnummer+1;
+        this.spielfeldCacheMitZugnummerStand++;
         this.loescheVerbotenenPunkt();
 
         /* Jetzt ist noch Ko abzufangen
@@ -609,6 +620,9 @@ public class Spielfeld {
      * Dabei benoetigt sie eine Koordinate mit der sie beginnen kann, damit klar
      * ist, welche Gruppe gemeint ist. Von dieser Koordinate aus versucht sie dann
      * Steine vom Brett zu entfernen.
+     * Folgende Werte werden im Spielfeld veraendert:
+     *  - Feld (Die Eingabe)
+     *  - aktuellesSpielfeldCache (Nur wenn nehem(Eingabe) true ist)
      * @param xPos Ist die X-Koordinate des Steines, der zur Gruppe gehoert,
      * die vom Brett zu nehmen versucht wird. (Wert 0 bis feldgroesse-1)
      * @param yPos Ist die Y-Koordinate des Steins. (Wert 0 bis feldgroesse-1)
@@ -689,7 +703,6 @@ public class Spielfeld {
                      }
                  }
              }
-
              /* Wenn Stein rechten Nachbarn hat */
              if(listeSteine[momElement].getXPos()!=this.getSpielfeldGroesse()-1){
                  if(feld[listeSteine[momElement].getXPos()+1][listeSteine[momElement].getYPos()].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER ||
@@ -704,7 +717,6 @@ public class Spielfeld {
                      }
                  }
              }
-
              /* Wenn Stein oberen Nachbarn hat (Oben und unten werden vielleicht
               * umdefiniert, ist aber egal fuer den Algorithmus!)*/
              if(listeSteine[momElement].getYPos()!=this.getSpielfeldGroesse()-1){
@@ -720,7 +732,6 @@ public class Spielfeld {
                      }
                  }
              }
-
              /* Wenn Stein unteren Nachbarn hat */
              if(listeSteine[momElement].getYPos()!=0){
                  if(feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()-1].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER ||
@@ -957,7 +968,6 @@ public class Spielfeld {
         /* Wurde der Zug erfolgreich ausgefuehrt, muss das Spielfeld veraendert
          * werden */
         if(rueckgabe == 1){
-            this.spielfeldCacheMitZugnummerStand++;
             this.steinEintragen(xPos, yPos, spielerFarbe);
         }
         return rueckgabe;
@@ -993,5 +1003,5 @@ public class Spielfeld {
 
         //DUmmy
     }
-    
+        
 }
