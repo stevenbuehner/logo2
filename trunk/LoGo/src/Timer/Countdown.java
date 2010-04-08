@@ -15,15 +15,15 @@ import javax.swing.Timer;
  */
 public abstract class Countdown {
 
-	Timer	countdownTimer;
-	int     remainingTime;
+	Timer       countdownTimer;
+	long        remainingTime;
 
 	public Countdown(boolean starteSofort) {
 		this( starteSofort, 30 ); // Starte mit Standarzeit, 30 Sekunden
 	}
 
-	public Countdown(boolean starteSofort, int zeitInSekunden) {
-		this.remainingTime = zeitInSekunden;
+	public Countdown(boolean starteSofort, long zeitInMillesekunden) {
+		this.remainingTime = zeitInMillesekunden;
                 
 		countdownTimer = new Timer( 1000, new CountdownTimerListener() );
 		countdownTimer.setRepeats( true ); // Standard
@@ -33,12 +33,12 @@ public abstract class Countdown {
 		}
 	}
 
-	public int getRemainingTime() {
-		return remainingTime;
+	public long getRemainingTime() {
+		return this.remainingTime;
 	}
 
-	public void setRemainingTime(int remainingTime) {
-		this.remainingTime = remainingTime;
+	public void setRemainingTime(long remainingTimeInMillesekunden ) {
+		this.remainingTime = remainingTimeInMillesekunden;
 	}
 
 	/**
@@ -77,6 +77,17 @@ public abstract class Countdown {
 
 			if ( --remainingTime > 0 ) {
 				doEverySecondTimerRuns();
+
+                                /*
+                                 * Diese Abfrage macht die Funktion zwar exakter,
+                                 * koennte den Benutzer aber irritieren ...
+                                 * und wird darum auskommentiert
+
+                                if( remainingTime < 1000 ){
+                                    countdownTimer.setDelay( remainingTime );
+                                }
+                                 */
+                                
 				// label.setText(String.valueOf(remainingTime));
 			}
 			else {
