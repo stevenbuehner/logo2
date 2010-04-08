@@ -104,6 +104,12 @@ public interface SteuerungIntface {
     public void klickAufFeld(int xPos, int yPos);
 
     /**
+     * Spieler klickt auf "Spiel Starten" damit wird dann die Validierung
+     * des Spielfelds vorgenommen und bei Erfolg das Spiel gestartet.
+     */
+    public void buttonSpielStarten();
+
+    /**
      * Spieler klickt auf Aufgeben. Steuerung muss Dialogfeld od. Aehnliches
      * Anzeigen und Spiel dann beenden
      */
@@ -141,13 +147,13 @@ public interface SteuerungIntface {
     /**
      * Spieler klickt auf Zu-Start-Button. Anfangssituation wird geladen.
      */
-    public void buttonToStart();
+    public void buttonSpringeZumStart();
 
     /**
      * Spieler klickt auf Zu-Ende-Button. Letzte Situation auf Brett wird
      * hergestellt.
      */
-    public void buttonToEnd();
+    public void buttonSpringeZumEnde();
 
     /**
      * Hauptzeit des schwarzen Spielers ist abgelaufen. Periodenzeit muss starten
