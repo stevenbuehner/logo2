@@ -48,6 +48,14 @@ public class Spielfeld {
     private int[][] aktuellesSpielfeldCache;
     private int spielfeldCacheMitZugnummerStand;
 
+    /* Damit man sehr einfach mit einer Startformation beginnen kann, muss es
+     * ein Initialfeld geben. Wenn mit Vorgabe gespielt wird, werden auf das
+     * Initialfeld die Vorgabesteine gesetzt. Bei einer bestimmten Anfangsposition
+     * wird diese auf dem Initialfeld Platziert. Somit ist es sehr einfach
+     * beim neu Laden des Feldes einfach mit dem Initialfeld zu beginnen und
+     * dann der Reihe nach die Zuege auf das Brett zu setzen.
+     */
+    private int[][] initialfeld;
 
     public Spielfeld(){
         this( 9 );
@@ -62,13 +70,21 @@ public class Spielfeld {
         this.setSpielZustand(Konstante.SPIEL_UNVOLLSTAENDIG);
 
         // Chache Funktionen setzen
-        aktuellesSpielfeldCache = new int[this.getSpielfeldGroesse()][this.getSpielfeldGroesse()];
-        spielfeldCacheMitZugnummerStand = this.letzteZugnummer;
+        this.aktuellesSpielfeldCache = new int[this.getSpielfeldGroesse()][this.getSpielfeldGroesse()];
+        this.spielfeldCacheMitZugnummerStand = this.letzteZugnummer;
         /* Feld muss als Leeres Feld initialisiert werden */
         int i,j;
-        for(i=0; i<spielfeldGroesse; i++){
-            for(j=0; j<spielfeldGroesse; j++){
+        for(i=0; i<this.getSpielfeldGroesse(); i++){
+            for(j=0; j<this.getSpielfeldGroesse(); j++){
                 aktuellesSpielfeldCache[i][j] = Konstante.SCHNITTPUNKT_LEER;
+            }
+        }
+
+        /* Zunaechst Leer machen */
+        this.initialfeld = new int[this.getSpielfeldGroesse()][this.getSpielfeldGroesse()];
+        for(i=0; i<this.getSpielfeldGroesse(); i++){
+            for(j=0; j<this.getSpielfeldGroesse(); j++){
+                this.initialfeld[i][j] = Konstante.SCHNITTPUNKT_LEER;
             }
         }
     }
@@ -240,21 +256,22 @@ public class Spielfeld {
         
         /* Wenn der zeitpunkt vor dem Stand im Cache liegt, muss das Feld komplett
          * neu geladen werden. Ansonsten reicht es, vom momentanen Cache auszugehen.
+         * Wenn neu geladen wird, muss vom Initialfeld aus gegonnen werden.
          */
         if (zeitpunkt < this.spielfeldCacheMitZugnummerStand){
             this.spielfeldCacheMitZugnummerStand = 0;
             this.loescheVerbotenenPunkt();
             for(int i=0; i<this.getSpielfeldGroesse(); i++){
                 for(int j=0; j<this.getSpielfeldGroesse(); j++){
-                    this.aktuellesSpielfeldCache[i][j] = Konstante.SCHNITTPUNKT_LEER;
+                    this.aktuellesSpielfeldCache[i][j] = this.initialfeld[i][j];
                 }
             }
         }
         
-        /* Wenn der Zeitpunkt gleich 0 ist, so muss ein Leeres Brett zurueck 
+        /* Wenn der Zeitpunkt gleich 0 ist, so muss das Initialfeld zurueck
          * gegeben werden. */
         if( zeitpunkt == 0){
-            return this.aktuellesSpielfeldCache;
+            return this.initialfeld;
         }
         
         while(zeitpunkt > this.spielfeldCacheMitZugnummerStand){
@@ -262,6 +279,7 @@ public class Spielfeld {
             if(this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getXPosition() == -1 &&
                this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getYPosition() == -1){
                this.loescheVerbotenenPunkt();
+               this.spielfeldCacheMitZugnummerStand++;
             }
             else {this.setStein(this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getXPosition(),
                                 this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getYPosition(),
@@ -1023,5 +1041,530 @@ public class Spielfeld {
 
         //DUmmy
     }
-        
+   public boolean initialisiereFeldMitVorgabenFuerSchwarz( int vorgabenZahl ){
+       /* Wenn die Zahl der Vorgaben groesser als 9 ist, so ist die
+        * Vorgabezahl Falsch -> Rueckgabewert False
+        * Die Zahl der Vorgabesteine darf natuerlich auch nicht negativ sein.
+        */
+       if(vorgabenZahl < 0 || vorgabenZahl > 9){
+           return false;
+       }
+
+       /* In Abhaengigkeit der Feldgroesse werden nun die Vorgabesteine fuer
+        * Schwarz gesetzt. Dabei wird kein komplexer Algorithmus verwendet,
+        * sondern es werden einfach und stur die Steine gesetzt.
+        * Daher wird die Funktion zwar entsprechend lang, wird aber keine Fehler
+        * verursachen (hoffe ich mal)
+        */
+       switch(this.getSpielfeldGroesse()){
+           case 7:
+               switch(vorgabenZahl){
+                   case 0: break; /* nichts machen */
+                   case 1:
+                       this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 2:
+                       this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[1][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 3:
+                       this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[1][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[5][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 4:
+                       this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[1][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[5][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[1][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 5:
+                       this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[1][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[5][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[1][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 6:
+                       this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[1][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[5][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[1][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[5][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[1][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 7:
+                       this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[1][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[5][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[1][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[5][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[1][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 8:
+                       this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[1][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[5][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[1][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[5][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[1][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 9:
+                       this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[1][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[5][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[1][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[5][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[1][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   default: /* Bis hierher ist es nicht moeglich zu kommen,
+                             * wenn doch -> Fehler */
+                       return false;
+               }
+               break;
+           case 9:
+               switch(vorgabenZahl){
+                   case 0: break; /* nichts machen */
+                   case 1:
+                       this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 2:
+                       this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 3:
+                       this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[6][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 4:
+                       this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[6][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 5:
+                       this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[6][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[4][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 6:
+                       this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[6][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[6][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 7:
+                       this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[6][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[6][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[4][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 8:
+                       this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[6][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[6][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[4][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[4][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 9:
+                       this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[6][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[6][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[4][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[4][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[4][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   default: /* Bis hierher ist es nicht moeglich zu kommen,
+                             * wenn doch -> Fehler */
+                       return false;
+               }
+               break;
+           case 11:
+               switch(vorgabenZahl){
+                   case 0: break; /* nichts machen */
+                   case 1:
+                       this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 2:
+                       this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 3:
+                       this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[8][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 4:
+                       this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[8][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 5:
+                       this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[8][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 6:
+                       this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[8][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[8][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 7:
+                       this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[8][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[8][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 8:
+                       this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[8][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[8][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[5][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[5][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 9:
+                       this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[8][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[8][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[2][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[5][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[5][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   default: /* Bis hierher ist es nicht moeglich zu kommen,
+                             * wenn doch -> Fehler */
+                       return false;
+               }
+               break;
+           case 13:
+               switch(vorgabenZahl){
+                   case 0: break; /* nichts machen */
+                   case 1:
+                       this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 2:
+                       this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 3:
+                       this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[9][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 4:
+                       this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[9][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 5:
+                       this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[9][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 6:
+                       this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[9][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[9][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 7:
+                       this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[9][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[9][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 8:
+                       this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[9][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[9][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[6][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[6][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 9:
+                       this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[9][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[9][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[6][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[6][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   default: /* Bis hierher ist es nicht moeglich zu kommen,
+                             * wenn doch -> Fehler */
+                       return false;
+               }
+               break;
+           case 15:
+               switch(vorgabenZahl){
+                   case 0: break; /* nichts machen */
+                   case 1:
+                       this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 2:
+                       this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 3:
+                       this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[11][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 4:
+                       this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[11][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][11]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 5:
+                       this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[11][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][11]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[7][7]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 6:
+                       this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[11][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][11]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[11][7]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][7]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 7:
+                       this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[11][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][11]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[11][7]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[7][7]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 8:
+                       this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[11][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][11]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[11][7]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][7]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[7][11]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[7][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 9:
+                       this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[11][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][11]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[11][7]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][7]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[7][11]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[7][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[7][7]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   default: /* Bis hierher ist es nicht moeglich zu kommen,
+                             * wenn doch -> Fehler */
+                       return false;
+               }
+               break;
+           case 17:
+               switch(vorgabenZahl){
+                   case 0: break; /* nichts machen */
+                   case 1:
+                       this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 2:
+                       this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 3:
+                       this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[13][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 4:
+                       this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[13][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][13]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 5:
+                       this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[13][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][13]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[8][8]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 6:
+                       this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[13][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][13]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[13][8]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][8]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 7:
+                       this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[13][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][13]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[13][8]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][8]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[8][8]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 8:
+                       this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[13][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][13]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[13][8]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][8]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[8][13]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[8][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 9:
+                       this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[13][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][13]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[13][8]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][8]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[8][13]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[8][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[8][8]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   default: /* Bis hierher ist es nicht moeglich zu kommen,
+                             * wenn doch -> Fehler */
+                       return false;
+               }
+               break;
+
+           case 19:
+               switch(vorgabenZahl){
+                   case 0: break; /* nichts machen */
+                   case 1:
+                       this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 2:
+                       this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 3:
+                       this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[15][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 4:
+                       this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[15][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][15]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 5:
+                       this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[15][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][15]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[9][9]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 6:
+                       this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[15][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][15]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[15][9]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][9]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 7:
+                       this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[15][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][15]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[15][9]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][9]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[9][9]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 8:
+                       this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[15][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][15]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[15][9]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][9]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[9][15]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[9][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   case 9:
+                       this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[15][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][15]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[15][9]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[3][9]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[9][15]  = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[9][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       this.initialfeld[9][9]   = Konstante.SCHNITTPUNKT_SCHWARZ;
+                       break;
+                   default: /* Bis hierher ist es nicht moeglich zu kommen,
+                             * wenn doch -> Fehler */
+                       return false;
+               }
+               break;
+           default: /* Die Spielfeldgroesse ist Falsch! Es koennen keine
+                     * Vorgabesteine gesetzt werden */
+               return false;
+       }
+
+       /* Jetzt muss noch das Feld mit den Vorgabesteinen gefuellt werden.*/
+       for(int i=0; i<this.getSpielfeldGroesse(); i++){
+           for(int j=0; j<this.getSpielfeldGroesse(); j++){
+               this.aktuellesSpielfeldCache[i][j] = this.initialfeld[i][j];
+           }
+       }
+       return true;
+   }
 }
