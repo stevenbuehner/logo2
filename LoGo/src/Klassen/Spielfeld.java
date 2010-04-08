@@ -280,16 +280,13 @@ public class Spielfeld {
      * @return True, wenn die Funktion erfolgreich ausgeführt wurde, sonst false
      */
     public boolean setSpielfeldZumZeitpunkt(int zeitpunkt) {
-        /*
-         * Setzen des Spiels auf den Zeitpunkt:
-         * - prüfen ob Möglich
-         * - überflüssie Spielzüge aus der Collection löschen
-         * - Chache erneuern
-         * - ChachZähler erneuern
-         * - SpielZeitpunkt erneuern
-         * - Bei Erfolg true zurückgeben, sonst false
-         */
-
+        if(zeitpunkt > this.spielZugCollection.size() || zeitpunkt < 0){
+            return false;
+        }
+        for(int i=this.spielZugCollection.size(); i>zeitpunkt; i--){
+            this.spielZugCollection.remove(i-1);
+        }
+        this.letzteZugnummer = zeitpunkt;
         return true;
     }  
 
