@@ -582,9 +582,9 @@ public class Spielfeld {
      * jetzt Weiss an der Reihe.
      * @return Gibt zurueck wer als naechstes dran ist.
      */
-    public int getSpielerAnDerReihe(){
+    public int getSpielerFarbeAnDerReihe(){
 
-        int letzterSpieler = getSpielerVonLetztemZug();
+        int letzterSpieler = getSpielerFarbeVonLetztemZug();
         
         if (letzterSpieler == Konstante.SCHNITTPUNKT_SCHWARZ){
             return Konstante.SCHNITTPUNKT_WEISS;
@@ -604,7 +604,7 @@ public class Spielfeld {
      * @return Gibt zurueck, welche Farbe der Spieler hat, der den letzten Zug
      * setzte.
      */
-    public int getSpielerVonLetztemZug(){
+    public int getSpielerFarbeVonLetztemZug(){
         if (this.spielZugCollection.size() == 0){
             // Es wurde noch kein Zug eingetragen. Dann beginnt immer Spieler SCHWARZ.
             // Das heisst dass theoretisch Weiss davor dran gewesen waere.
@@ -614,6 +614,26 @@ public class Spielfeld {
             return this.spielZugCollection.get(this.spielZugCollection.size()-1).getFarbe();
         }
     }
+
+    /**
+     *
+     * @return Gibt den Spieler zurueck der aktuell an der Reihe ist.
+     */
+    public Spieler getSpielerAnDerReihe(){
+        // Hole den Spieler der als letztes dran war, dann ist der andere Spiele
+        // als nächstes an der Reihe
+        int spNichtAnDerReihe = this.getSpielerFarbeVonLetztemZug();
+
+        if( spNichtAnDerReihe == Konstante.SCHNITTPUNKT_SCHWARZ ){
+            // Weisser Spieler ist gerade am Zug
+            return this.getSpielerWeiss();
+        }
+        else{
+            // Schwarzer Spieler ist gerade am Zug
+            return this.getSpielerSchwarz();
+        }
+    }
+
 
     /**
      * Diese Funktion soll Steine vom Spielfeld nehmen, wenn dies moeglich ist.
@@ -993,7 +1013,7 @@ public class Spielfeld {
          * Wenn also Spieler schwarz den letzten Zug gesetzt hat, wird der neue
          * Zug für Spieler weiss eingetragen.
          */
-         return   this.macheZug( xPos, yPos, this.getSpielerAnDerReihe() );
+         return   this.macheZug( xPos, yPos, this.getSpielerFarbeAnDerReihe() );
          /* Weitere Aufgaben:
          *  - Prüfen des Zuges, ob er Möglich ist (Doppelzüge beachten)
          *      => Ueber die Funktion setSteinMoeglich( ... )
