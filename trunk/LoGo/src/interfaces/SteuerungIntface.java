@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package interfaces;
 
 import Klassen.Spielfeld;
@@ -12,6 +11,7 @@ import Klassen.Spielfeld;
  * @author tommy
  */
 public interface SteuerungIntface {
+
     /**
      * Am Anfang des Spieles muss ein Spielfeld initialisiert werden.
      * @param spielerNameSchwarz Name des schwarzen Spielers
@@ -25,28 +25,28 @@ public interface SteuerungIntface {
      * Schwarz
      */
     public void initMitEinstellungen(String spielerNameSchwarz,
-                                     String spielerNameWeiss,
-                                     long spielZeitSchwarz,
-                                     long spielZeitWeiss,
-                                     long periodenZeit,
-                                     float komiFuerWeiss,
-                                     int spielfeldGroesse,
-                                     int vorgabeSteineFuerSchwarz);
+            String spielerNameWeiss,
+            long spielZeitSchwarz,
+            long spielZeitWeiss,
+            long periodenZeit,
+            float komiFuerWeiss,
+            int spielfeldGroesse,
+            int vorgabeSteineFuerSchwarz);
 
     public void initMitEinstellungen(String spielerNameSchwarz,
-                                     String spielerNameWeiss,
-                                     long spielZeitSchwarz,
-                                     long spielZeitWeiss,
-                                     long periodenZeit,
-                                     float komiFuerWeiss,
-                                     int spielfeldGroesse);
+            String spielerNameWeiss,
+            long spielZeitSchwarz,
+            long spielZeitWeiss,
+            long periodenZeit,
+            float komiFuerWeiss,
+            int spielfeldGroesse);
 
     public void initMitEinstellungen(String spielerNameSchwarz,
-                                     String spielerNameWeiss,
-                                     long spielZeitSchwarz,
-                                     long spielZeitWeiss,
-                                     long periodenZeit,
-                                     int spielfeldGroesse);
+            String spielerNameWeiss,
+            long spielZeitSchwarz,
+            long spielZeitWeiss,
+            long periodenZeit,
+            int spielfeldGroesse);
 
     /**
      * Die Gleiche Funktion wie initMitEinstellungen, nur damit das Programm
@@ -61,18 +61,19 @@ public interface SteuerungIntface {
      * @param spielfeldGroesse Groesse des Spielfeldes
      */
     public void initMitEinstellungenFuerStartformation(String spielerNameSchwarz,
-                                     String spielerNameWeiss,
-                                     long spielZeitSchwarz,
-                                     long spielZeitWeiss,
-                                     long periodenZeit,
-                                     float komiFuerWeiss,
-                                     int spielfeldGroesse);
+            String spielerNameWeiss,
+            long spielZeitSchwarz,
+            long spielZeitWeiss,
+            long periodenZeit,
+            float komiFuerWeiss,
+            int spielfeldGroesse);
+
     public void initMitEinstellungenFuerStartformation(String spielerNameSchwarz,
-                                     String spielerNameWeiss,
-                                     long spielZeitSchwarz,
-                                     long spielZeitWeiss,
-                                     long periodenZeit,
-                                     int spielfeldGroesse);
+            String spielerNameWeiss,
+            long spielZeitSchwarz,
+            long spielZeitWeiss,
+            long periodenZeit,
+            int spielfeldGroesse);
 
     /**
      * Dient dafuer, ein Spiel zu laden und das komplette Feld zu uebergeben.
@@ -87,12 +88,12 @@ public interface SteuerungIntface {
      * @param komiFuerWeiss Punkte zum Spielstaerkenausgleich fuer Weiss
      */
     public void initMitDatenModell(Spielfeld feld,
-                                   String spielerNameSchwarz,
-                                   String spielerNameWeiss,
-                                   long spielZeitSchwarz,
-                                   long spielZeitWeiss,
-                                   long periodenZeit,
-                                   float komiFuerWeiss);
+            String spielerNameSchwarz,
+            String spielerNameWeiss,
+            long spielZeitSchwarz,
+            long spielZeitWeiss,
+            long periodenZeit,
+            float komiFuerWeiss);
 
     /**
      * Wenn bei der GUI auf einen Schnittpunkt geklickt wurde, muss die
