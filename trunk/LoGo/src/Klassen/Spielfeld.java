@@ -43,6 +43,8 @@ public class Spielfeld {
     */
     private long    periodenZeit;
 
+    // Zustand des Spiels
+    private int     spielZustand;
     
     // Chache Funktionen zum schnelleren Spielen
     private int[][] aktuellesSpielfeldCache;
@@ -61,6 +63,7 @@ public class Spielfeld {
         this.spielZugCollection = new ArrayList<Spielzug>();
         this.setXPosVerboten(-1); // noch nichts ist Verboten
         this.setYPosVerboten(-1);
+        this.setSpielZustand(Konstante.SPIEL_UNVOLLSTAENDIG);
 
         // Chache Funktionen setzen
         aktuellesSpielfeldCache = new int[this.getSpielfeldGroesse()][this.getSpielfeldGroesse()];
@@ -124,6 +127,49 @@ public class Spielfeld {
      */
     public void setPeriodenZeit( long periodenZeit ){
         this.periodenZeit = periodenZeit;
+    }
+
+    /**
+     *
+     * @return Gibt den aktuellen Spielzustand zurueck. Erlaubt sind nur die Konstanten:
+     *     - SPIEL_UNVOLLSTAENDIG
+           - SPIEL_VALIDIERT
+           - SPIEL_LAUEFT
+           - SPIEL_PAUSIERT
+           - SPIEL_AUFGEGEBEN
+           - SPIEL_BEENDET_DURCH_APP
+     */
+    public int getSpielZustand(){
+        return this.spielZustand;
+    }
+
+    public void setSpielZustand ( int neuerSpielZustand ){
+
+        // Überprüfen ob der Zustand erlaubt ist
+        switch( neuerSpielZustand){
+            case Konstante.SPIEL_UNVOLLSTAENDIG:
+                this.spielZustand = neuerSpielZustand;
+                break;
+            case Konstante.SPIEL_VALIDIERT:
+                this.spielZustand = neuerSpielZustand;
+                break;
+            case Konstante.SPIEL_LAUEFT:
+                this.spielZustand = neuerSpielZustand;
+                break;
+            case Konstante.SPIEL_PAUSIERT:
+                this.spielZustand = neuerSpielZustand;
+                break;
+            case Konstante.SPIEL_AUFGEGEBEN:
+                this.spielZustand = neuerSpielZustand;
+                break;
+            case Konstante.SPIEL_BEENDET_DURCH_APP:
+                this.spielZustand = neuerSpielZustand;
+                break;
+            default:
+                throw new UnsupportedOperationException("Fehlerhafter Wert in setSpielZustand.");
+
+        }
+
     }
 
 
@@ -912,6 +958,16 @@ public class Spielfeld {
      * Die Funktion muss erst noch implementiert werden
      */
     public boolean spielfeldValidiert(){
+
+        boolean validiert = false;
+
+        // Wenn die Validierung geklappt hat und vorher noch unvollständig war,
+        // wird der Spielzustand auf Validiert gesetzt.
+        // Ist der Spielzustand schon weiter, dann wird nichts gemacht ...
+        if(validiert && this.getSpielZustand() == Konstante.SPIEL_UNVOLLSTAENDIG){
+            this.setSpielZustand(Konstante.SPIEL_VALIDIERT);
+        }
+
         return true;
     }
 
