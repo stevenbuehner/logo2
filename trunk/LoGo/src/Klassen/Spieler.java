@@ -15,11 +15,13 @@ public class Spieler {
     private String spielerName;
     private long verbliebendeSpielzeitInMS;
     private float komiPunkte;
+    private int gefangenenAnzahl;
 
 
-    public Spieler( String spielerName, long spielzeitInMS, float komiPunkte ){
+    public Spieler( String spielerName, long spielzeitInMS, int gefangenenAnzahl, float komiPunkte  ){
         this.setSpielerName(spielerName);
         this.setVerbleibendeSpielzeitInMS(spielzeitInMS);
+        this.setGefangenenAnzahl(gefangenenAnzahl);
         this.setKomiPunkte(komiPunkte);
     }
 
@@ -100,5 +102,30 @@ public class Spieler {
     public void setKomiPunkte( float komiPunkte ){
         this.komiPunkte = komiPunkte;
     }
+
+    /**
+     *
+     * @return Gibt die aktuelle Gefangenenanzahl des Spielers zurück
+     */
+    public int getGefangenenAnzahl( ){
+        return this.gefangenenAnzahl;
+    }
+
+    /**
+     *
+     * @param Überschreibt die aktuelle Gefangenenanzahl mit neueGefangenenAnzahl
+     */
+    public void setGefangenenAnzahl( int neueGefangenenAnzahl ){
+        this.gefangenenAnzahl = neueGefangenenAnzahl;
+    }
+
+    /**
+     *
+     * @param Fügt der GefangenenAnzahl des Spielers zusaetzlicheGefangene hinzu.
+     */
+    public void addGefangenenAnzahl ( int zusaetzlicheGefangene ){
+        this.gefangenenAnzahl += zusaetzlicheGefangene;
+    }
+
 
 }

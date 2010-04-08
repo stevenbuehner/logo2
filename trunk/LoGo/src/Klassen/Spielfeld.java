@@ -29,8 +29,6 @@ public class Spielfeld {
      * Spielfeldarrays
      */
     private int spielfeldGroesse;
-    private int gefangenenAnzahlWeiss;
-    private int gefangenenAnzahlSchwarz;
     private List<Spielzug> spielZugCollection;
     private int xPosVerboten;
     private int yPosVerboten;
@@ -58,8 +56,6 @@ public class Spielfeld {
     public Spielfeld(int spielfeldGroesse) {
         this.spielfeldGroesse = spielfeldGroesse;
         this.letzteZugnummer = 0;
-        this.setGefangenenAnzahlSchwarz(0);
-        this.setGefangenenAnzahlWeiss(0);
         this.spielZugCollection = new ArrayList<Spielzug>();
         this.setXPosVerboten(-1); // noch nichts ist Verboten
         this.setYPosVerboten(-1);
@@ -187,36 +183,6 @@ public class Spielfeld {
      */
     public int getSpielfeldGroesse() {
         return this.spielfeldGroesse;
-    }
-
-    /**
-     *
-     * @return Anzahl der gefangenen schwarzen Stein (Punkte für weiss)
-     */
-    public int getGefangenenAnzahlWeiss() {
-        return this.gefangenenAnzahlWeiss;
-    }
-
-    /**
-     * @param gefangenenAnzahl Speichern der Anzahl der gefangenen schwarzen Stein (Punkte für weiss)
-     */
-    public void setGefangenenAnzahlWeiss(int gefangenenAnzahl) {
-        this.gefangenenAnzahlWeiss = gefangenenAnzahl;
-    }
-
-    /**
-     *
-     * @return Anzahl der gefangenen weissen Stein (Punkte für schwarz)
-     */
-    public int getGefangenenanzahlSchwarz() {
-        return this.gefangenenAnzahlSchwarz;
-    }
-
-    /**
-     * @param gefangenenAnzahl Anzahl der gefangenen weissen Stein (Punkte für schwarz)
-     */
-    public void setGefangenenAnzahlSchwarz(int gefangenenAnzahl) {
-        this.gefangenenAnzahlSchwarz = gefangenenAnzahl;
     }
 
     /**
@@ -940,10 +906,10 @@ public class Spielfeld {
      */
     private void erhoeheGefangenenZahl(int farbe, int zahl){
         if(farbe == Konstante.SCHNITTPUNKT_SCHWARZ){
-            this.gefangenenAnzahlSchwarz+=zahl;
+            this.spielerSchwarz.addGefangenenAnzahl(zahl);
         }
         if(farbe == Konstante.SCHNITTPUNKT_WEISS){
-            this.gefangenenAnzahlWeiss+=zahl;
+            this.spielerWeiss.addGefangenenAnzahl(zahl);
         }
     }
 
