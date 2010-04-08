@@ -406,7 +406,30 @@ public class Steuerung implements SteuerungIntface {
      * Anzeigen und Spiel dann beenden
      */
     public void buttonAufgeben() {
-        throw new UnsupportedOperationException("Not supported yet.");
+
+        // Timer stoppen und Restzeiten in das Spielfeld zurückspeichern
+        if ( Konstante.SCHNITTPUNKT_SCHWARZ == this.dasSpielfeld.getSpielerFarbeAnDerReihe() ){
+            // Schwarzer Spieler spielte gerade
+
+            // Stoppe Timer von Schwarz
+            this.spielerZeitSchwarz.stoppeCountdown();
+            this.periodenZeitSchwarz.stoppeCountdown();
+            this.dasSpielfeld.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(
+                    this.spielerZeitSchwarz.getRemainingTime());
+        }
+        else{
+            // Weisser Spieler spielte gerade
+
+            // Stoppe Timer von Weiss
+            this.spielerZeitWeiss.stoppeCountdown();
+            this.periodenZeitWeiss.stoppeCountdown();
+            this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(
+                    this.spielerZeitWeiss.getRemainingTime());
+        }
+        
+        // Spielstatus auf "Spiel aufgegeben" setzen
+        this.dasSpielfeld.setSpielZustand( Konstante.SPIEL_AUFGEGEBEN );
+
     }
 
     /**
@@ -415,7 +438,18 @@ public class Steuerung implements SteuerungIntface {
      * beendet und gezaehlt.
      */
     public void buttonPassen() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
+        this.klickAufFeld(-1, -1);
+
+        /*
+         * Alternativ dazu könnte man auch die Timer einzeln abprüfen und
+         * paussieren lassen.
+         *
+         * Im Anschluss die Funktion this.dasSpielfeld.zugPassen() aufrufen und
+         * dann dir richtigen Timer wieder starten. Als letztes sagt man der GUI
+         * wieder welcher Spieler am Zug ist.
+         *
+        */
     }
 
     /**
@@ -470,6 +504,7 @@ public class Steuerung implements SteuerungIntface {
                 // Setze den Countdown fort
                 this.periodenZeitSchwarz.starteCountdown();
             }
+            LoGoApp.meineOberflaeche.setSchwarzAmZug();
         }
         else{
             // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
@@ -480,8 +515,10 @@ public class Steuerung implements SteuerungIntface {
                 // Starte den Countdown, bzw. setze den Countdown fort
                 this.periodenZeitWeiss.starteCountdown();
             }
+            LoGoApp.meineOberflaeche.setWeissAmZug();
         }
 
+        // Spielstatus nach dem Aufnehmen des Spieles wieder auf "Spiel läuft" setzen
         this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_LAUEFT);
     }
 
