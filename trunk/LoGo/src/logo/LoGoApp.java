@@ -4,6 +4,7 @@
 
 package logo;
 
+import GUI.GrafikLib;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
 import GUI.Oberflaeche;
@@ -17,6 +18,7 @@ public class LoGoApp extends SingleFrameApplication {
 
     public static Oberflaeche   meineOberflaeche;
     public static Steuerung     meineSteuerung;
+    public static GrafikLib     meineGrafikLib = GrafikLib.getInstance();
     
 
     /**
