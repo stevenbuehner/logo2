@@ -178,7 +178,7 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
         g.drawString(debugSpielerNameSchwarz + "(" + debugSpielerZeitSchwarz + " | " + debugSpielerPeriodenZeitSchwarz + ")",
                 xOffset,
                 yOffset + spielfeldHoehe + 10);
-        g.drawString(debugSpielerNameWeiss + "(" + debugSpielerZeitSchwarz + " | " + debugSpielerPeriodenZeitSchwarz + ")",
+        g.drawString(debugSpielerNameWeiss + "(" + debugSpielerZeitWeiss + " | " + debugSpielerPeriodenZeitWeiss + ")",
                 xOffset  ,
                 yOffset + spielfeldHoehe + 30);
     }
@@ -193,26 +193,25 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
         // Feld neu zeichnen
         this.repaint();
 
-        throw new UnsupportedOperationException("Not filly supported yet.");
     }
 
     public void setAnzeigePeriodenZeitWeiss(long periodenZeitInMS) {
-        this.debugSpielerPeriodenZeitWeiss = periodenZeitInMS/60 + " Sek";
+        this.debugSpielerPeriodenZeitWeiss = periodenZeitInMS/1000/60 + ":" + periodenZeitInMS/1000%60;
         this.debugAktualisiereAnzeige();
     }
 
     public void setAnzeigePeriodenZeitSchwarz(long periodenZeitInMS) {
-        this.debugSpielerPeriodenZeitWeiss = periodenZeitInMS/60 + " Sek";
+        this.debugSpielerPeriodenZeitSchwarz = periodenZeitInMS/1000/60 + ":" + periodenZeitInMS/1000%60;
         this.debugAktualisiereAnzeige();
     }
 
     public void setAnzeigeSpielerZeitWeiss(long spielerZeitInMS) {
-        this.debugSpielerZeitWeiss = spielerZeitInMS/60 + " Sek";
+        this.debugSpielerZeitWeiss = spielerZeitInMS/1000/60 + ":" + spielerZeitInMS/1000%60;
         this.debugAktualisiereAnzeige();
     }
 
     public void setAnzeigeSpielerZeitSchwarz(long spielerZeitInMS) {
-        this.debugSpielerZeitSchwarz = spielerZeitInMS/60 + " Sek";
+        this.debugSpielerZeitSchwarz = spielerZeitInMS/1000/60 + ":" + spielerZeitInMS/1000%60;
         this.debugAktualisiereAnzeige();
     }
 
@@ -265,15 +264,15 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
         }
 
 
-        throw new UnsupportedOperationException("Not fully supported yet.");
+//        throw new UnsupportedOperationException("Not fully supported yet.");
     }
 
     public void mousePressed(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
+//        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void mouseReleased(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
+//        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void mouseEntered(MouseEvent e) {
@@ -286,7 +285,7 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
     }
 
     public void mouseExited(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
+//        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void keyTyped(KeyEvent e) {
@@ -324,5 +323,6 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
         System.out.println("Zeit: " + debugSpielerPeriodenZeitWeiss);
         System.out.println("Periode: " + debugSpielerPeriodenZeitWeiss);
      */
+        this.repaint();
     }
 }
