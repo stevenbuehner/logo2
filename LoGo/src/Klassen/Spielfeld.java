@@ -598,6 +598,8 @@ public class Spielfeld {
      * In abhaengigkeit davon, wer den letzten Zug gemacht hat, wird ermittelt,
      * wer als naechstes dran ist. Wenn Beispielsweise Schwarz dran war, ist
      * jetzt Weiss an der Reihe.
+     * Eine Ausnahme ist es, wenn mit einer Startformation gespielt wird, und
+     * es sich um den ersten richtigen Zug handelt. Dann ist weiss dran
      * @return Gibt zurueck wer als naechstes dran ist.
      */
     public int getSpielerFarbeAnDerReihe(){
@@ -624,9 +626,27 @@ public class Spielfeld {
      */
     public int getSpielerFarbeVonLetztemZug(){
         if (this.spielZugCollection.size() == 0){
-            // Es wurde noch kein Zug eingetragen. Dann beginnt immer Spieler SCHWARZ.
-            // Das heisst dass theoretisch Weiss davor dran gewesen waere.
-            return Konstante.SCHNITTPUNKT_WEISS;
+            /* Wenn ohne Vorgabe gespielt wird, ist Schwarz zu beginn dran.
+             * Daher war Weiss theoretisch vorher dran.
+             * Wird mit Vorgabe, oder Startformation gespielt, ist Weiss
+             * zu beginn an der Reihe. Daher war Schwarz theoretisch
+             * vorher dran.
+             * Ob mit Startformation gespielt wurde, erkennt man daran, dass
+             * das initialfeld nicht leer ist*/
+            boolean initFeldLeer = true;
+            for(int i=0; i<this.getSpielfeldGroesse(); i++){
+                for(int j=0; j<this.getSpielfeldGroesse(); j++){
+                    if(this.initialfeld[i][j] != Konstante.SCHNITTPUNKT_LEER){
+                        initFeldLeer = false;
+                    }
+                }
+            }
+            if(initFeldLeer == true){
+                return Konstante.SCHNITTPUNKT_WEISS; // da schwarz beginnt
+            }
+            else {
+                return Konstante.SCHNITTPUNKT_SCHWARZ; // da weiss beginnt
+            }
         }
         else{
             return this.spielZugCollection.get(this.spielZugCollection.size()-1).getFarbe();
@@ -651,7 +671,6 @@ public class Spielfeld {
             return this.getSpielerSchwarz();
         }
     }
-
 
     /**
      * Diese Funktion soll Steine vom Spielfeld nehmen, wenn dies moeglich ist.
@@ -1048,7 +1067,8 @@ public class Spielfeld {
 
         //DUmmy
     }
-   public boolean initialisiereFeldMitVorgabenFuerSchwarz( int vorgabenZahl ){
+
+    public boolean initialisiereFeldMitVorgabenFuerSchwarz( int vorgabenZahl ){
        /* Wenn die Zahl der Vorgaben groesser als 9 ist, so ist die
         * Vorgabezahl Falsch -> Rueckgabewert False
         * Die Zahl der Vorgabesteine darf natuerlich auch nicht negativ sein.
