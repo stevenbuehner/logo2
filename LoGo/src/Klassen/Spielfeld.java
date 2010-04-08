@@ -234,50 +234,40 @@ public class Spielfeld {
         spielfeld = new int[this.getSpielfeldGroesse()][this.getSpielfeldGroesse()];
         /* Wenn der Zeitpunkt dem des Caches entspricht, wird einfach der aktuelle
          * Feld zurueckgegeben.
-         *
+         */
         if (zeitpunkt == this.spielfeldCacheMitZugnummerStand) {
             spielfeld = this.aktuellesSpielfeldCache;
         } 
-        
-        else if(zeitpunkt > this.spielfeldCacheMitZugnummerStand) {
-            while(zeitpunkt > this.spielfeldCacheMitZugnummerStand){
-                /* Auf Passen abpruefen *
-                if(this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getXPosition() == -1 &&
-                   this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getYPosition() == -1){
-                    this.zugPassen(this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getFarbe());
-                }
-                else {this.setStein(this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getXPosition(),
-                                    this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getYPosition(),
-                                    this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getFarbe());
-                }
-            }
-            spielfeld = this.aktuellesSpielfeldCache;
+
+        /* Ist der Zeitpunkt kleiner als 0 ist dies Verboten! */
+        if (zeitpunkt < 0){
+            throw new UnsupportedOperationException("Zeitpunkt ist Nicht moeglich, da kleiner 0 !");
         }
-        else if (zeitpunkt < this.spielfeldCacheMitZugnummerStand && zeitpunkt >=0){
-            this.aktuellesSpielfeldCache = new int[this.getSpielfeldGroesse()][this.getSpielfeldGroesse()];
+
+        /* Wenn der zeitpunkt vor dem stand im Cache liegt, muss das Feld komplett
+         * neu geladen werden. Ansonsten reicht es, vom momentanen Cache auszugehen.
+         */
+        if (zeitpunkt < this.spielfeldCacheMitZugnummerStand){
             this.spielfeldCacheMitZugnummerStand = 0;
-            /* Spielfeld muss neu erzeugt werden. Alle werte werden daher
-             * zurueckgesetzt *
             for(int i=0; i<this.getSpielfeldGroesse(); i++){
                 for(int j=0; j<this.getSpielfeldGroesse(); j++){
                     this.aktuellesSpielfeldCache[i][j] = Konstante.SCHNITTPUNKT_LEER;
                 }
             }
-            this.loescheVerbotenenPunkt();
 
-            /*Abdem Zug 1 bis zum zeitpunkt Stein setzen*/
-            /*
-             * Hier muss jetzt noch nach dem initialisieren die Werte aus der Collection
-             * abgefragt werden und ins Feld eingetragen werden
-             *
-        }
-        else {
-            throw new UnsupportedOperationException("Zeitpunkt ist Nicht moeglich, da kleiner 0 !");
-        }*/
-        for(int i=0; i<this.getSpielfeldGroesse(); i++){
-            for(int j=0; j<this.getSpielfeldGroesse(); j++){
-                spielfeld[i][j]=Konstante.SCHNITTPUNKT_LEER;
+            while(zeitpunkt > this.spielfeldCacheMitZugnummerStand){
+                /* Auf Passen abpruefen */
+                if(this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getXPosition() == -1 &&
+                   this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getYPosition() == -1){
+                   this.loescheVerbotenenPunkt();
+                }
+                else {this.setStein(this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getXPosition(),
+                                    this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getYPosition(),
+                                    this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getFarbe());
+                      this.spielfeldCacheMitZugnummerStand++;
+                }
             }
+            spielfeld = this.aktuellesSpielfeldCache;
         }
         return spielfeld;
     }
@@ -301,41 +291,7 @@ public class Spielfeld {
          */
 
         return true;
-    }
-
-    /**
-     * 
-     * @param xPos X-Position des Spielfelds.
-     * Diese kann Werte zwischen 1 und der Feldlänge enthalten
-     * @param yPos Y-Position des Spielfelds.
-     * Diese kann Werte zwischen 1 und der Feldlänge enthalten
-     * @return Je nach Situarion signalisiert der Integer, was passiert ist:
-     *  1: Zug wurde erfolgreich durchgefuehrt : (OK)
-     *  0: Zug liegt nicht auf Spielfeld: (FEHLER)
-     * -1: Zug war verboten : (FEHLER)
-     * -2: Schnittpunkt schon belegt : (FEHLER)
-     * -3: Selbstmord (verboten) : (FEHLER)
-     */
-    public int setStein(int xPos, int yPos) {
-
-        /* Die Funktion setzt den Stein fuer abhaengig vom letzten gespielten Zug.
-         * Wenn also Spieler schwarz den letzten Zug gesetzt hat, wird der neue
-         * Zug für Spieler weiss eingetragen.
-         */
-
-
-         return   this.setStein( xPos, yPos, this.getSpielerAnDerReihe() );
-
-
-         /* Weitere Aufgaben:
-         *  - Prüfen des Zuges, ob er Möglich ist (Doppelzüge beachten)
-         *      => Ueber die Funktion setSteinMoeglich( ... )
-         *  - Prüfen wer am Zug ist
-         *  - Cache-Werte INKREMENTELL erneuern.
-         */
-        
-        //DUmmy
-    }
+    }  
 
     /**
      *
@@ -352,7 +308,7 @@ public class Spielfeld {
      * -3: Selbstmord (verboten) : (FEHLER)
      */
 
-    public int setStein(int xPos, int yPos, int spielerfarbe) {
+    private int setStein(int xPos, int yPos, int spielerfarbe) {
         /* Koordinaten umrechnen, da Array bei 0 beginnt */
         int xKoord = xPos - 1;
         int yKoord = yPos - 1;
@@ -518,8 +474,8 @@ public class Spielfeld {
                  * hat keine Freiheiten, aber die Gruppe hat welche. Deshalb
                  * kann der Stein gesetzt werden */
                 this.aktuellesSpielfeldCache[xKoord][yKoord] = spielerfarbe;
-                this.spielfeldCacheMitZugnummerStand = this.letzteZugnummer+1;
-                this.steinEintragen(xPos, yPos, spielerfarbe);
+                //this.spielfeldCacheMitZugnummerStand = this.letzteZugnummer+1;
+                //this.steinEintragen(xPos, yPos, spielerfarbe);
                 this.loescheVerbotenenPunkt();
                 this.erhoeheGefangenenZahl(spielerfarbe, gefangeneSteine);
                 return 1;
@@ -541,7 +497,7 @@ public class Spielfeld {
          * Da zug OK ist, muss der letzte verbotene Punkt geloescht werden!
          */
         aktuellesSpielfeldCache[xKoord][yKoord] = spielerfarbe;
-        this.spielfeldCacheMitZugnummerStand = this.letzteZugnummer+1;
+        //this.spielfeldCacheMitZugnummerStand = this.letzteZugnummer+1;
         this.loescheVerbotenenPunkt();
 
         /* Jetzt ist noch Ko abzufangen
@@ -549,7 +505,7 @@ public class Spielfeld {
          * Wenn der Stein nicht einzeln ist, ist es auch kein Ko.
          * Wenn mehr als ein Stein gefangen wurde ist es auch kein Ko.*/
         if(gefangeneSteine == 0 || gefangeneSteine > 1 || steinIstEinzeln == false ){
-            this.steinEintragen(xPos, yPos, spielerfarbe);
+            //this.steinEintragen(xPos, yPos, spielerfarbe);
             this.erhoeheGefangenenZahl(spielerfarbe, gefangeneSteine);
             return 1;
         }
@@ -602,7 +558,7 @@ public class Spielfeld {
 
          /* Wenn die Freiheiten nicht genau 1 sind, ist es kein Ko*/
          if(freiheitDesSteins!=1){
-             this.steinEintragen(xPos, yPos, spielerfarbe);
+             //this.steinEintragen(xPos, yPos, spielerfarbe);
              this.erhoeheGefangenenZahl(spielerfarbe, gefangeneSteine);
              return 1;
          }
@@ -611,7 +567,7 @@ public class Spielfeld {
           * freiXPos und freiYPos gespeichert. */
          this.setzeVerbotenenPunkt(freiXPos, freiYPos);
          this.aktuellesSpielfeldCache[freiXPos][freiYPos] = Konstante.SCHNITTPUNKT_VERBOTEN;
-         this.steinEintragen(xPos, yPos, spielerfarbe);
+         //this.steinEintragen(xPos, yPos, spielerfarbe);
          this.erhoeheGefangenenZahl(spielerfarbe, gefangeneSteine);
          return 1;
     }
@@ -997,6 +953,61 @@ public class Spielfeld {
             i++;
         }
         return anzahlLetzterPassZuege;
+    }
+
+    /**
+     *
+     * @param xPos X-Position des Spielfelds.
+     * Diese kann Werte zwischen 1 und der Feldlänge enthalten
+     * @param yPos Y-Position des Spielfelds.
+     * Diese kann Werte zwischen 1 und der Feldlänge enthalten
+     * @return Je nach Situarion signalisiert der Integer, was passiert ist:
+     *  1: Zug wurde erfolgreich durchgefuehrt : (OK)
+     *  0: Zug liegt nicht auf Spielfeld: (FEHLER)
+     * -1: Zug war verboten : (FEHLER)
+     * -2: Schnittpunkt schon belegt : (FEHLER)
+     * -3: Selbstmord (verboten) : (FEHLER)
+     */
+    public int macheZug(int xPos, int yPos, int spielerFarbe){
+        int rueckgabe;
+        rueckgabe = this.setStein(xPos, yPos, spielerFarbe);
+        /* Wurde der Zug erfolgreich ausgefuehrt, muss das Spielfeld veraendert
+         * werden */
+        if(rueckgabe == 1){
+            this.spielfeldCacheMitZugnummerStand++;
+            this.steinEintragen(xPos, yPos, spielerFarbe);
+        }
+        return rueckgabe;
+    }
+
+    /**
+     *
+     * @param xPos X-Position des Spielfelds.
+     * Diese kann Werte zwischen 1 und der Feldlänge enthalten
+     * @param yPos Y-Position des Spielfelds.
+     * Diese kann Werte zwischen 1 und der Feldlänge enthalten
+     * @return Je nach Situarion signalisiert der Integer, was passiert ist:
+     *  1: Zug wurde erfolgreich durchgefuehrt : (OK)
+     *  0: Zug liegt nicht auf Spielfeld: (FEHLER)
+     * -1: Zug war verboten : (FEHLER)
+     * -2: Schnittpunkt schon belegt : (FEHLER)
+     * -3: Selbstmord (verboten) : (FEHLER)
+     */
+    public int macheZug(int xPos, int yPos) {
+
+        /* Die Funktion setzt den Stein fuer abhaengig vom letzten gespielten Zug.
+         * Wenn also Spieler schwarz den letzten Zug gesetzt hat, wird der neue
+         * Zug für Spieler weiss eingetragen.
+         */
+         return   this.macheZug( xPos, yPos, this.getSpielerAnDerReihe() );
+         /* Weitere Aufgaben:
+         *  - Prüfen des Zuges, ob er Möglich ist (Doppelzüge beachten)
+         *      => Ueber die Funktion setSteinMoeglich( ... )
+         *  - Prüfen wer am Zug ist
+         *  - Cache-Werte INKREMENTELL erneuern.
+         */
+
+        //DUmmy
     }
     
 }
