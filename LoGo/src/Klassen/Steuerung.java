@@ -242,6 +242,9 @@ public class Steuerung implements SteuerungIntface {
         int returnWert          = Konstante.FEHLER;
         int klickenderSpieler   = brett.getSpielerAnDerReihe();
 
+        if(brett.getSpielZustand() != Konstante.SPIEL_LAUEFT)
+            return;
+
 
         // Timer während der Berechnung stoppen und die Zeiten zum Spieler zurückspeichern
         if( brett.getSpielerAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ ){
