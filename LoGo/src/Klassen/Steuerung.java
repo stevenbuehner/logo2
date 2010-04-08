@@ -37,7 +37,7 @@ public class Steuerung implements SteuerungIntface {
         this.initMitEinstellungen(
                 "Steven",
                 "Marit",
-                10*60*1000,
+                10*1000,
                 10*1000,
                 30*1000,
                 0,
@@ -234,6 +234,7 @@ public class Steuerung implements SteuerungIntface {
         Spielfeld brett         = this.dasSpielfeld;
         int returnWert          = Konstante.FEHLER;
         int klickenderSpieler   = brett.getSpielerFarbeAnDerReihe();
+        long periodenZeit       = brett.getPeriodenZeit();
 
         if(brett.getSpielZustand() != Konstante.SPIEL_LAUEFT)
             return;
@@ -293,13 +294,23 @@ public class Steuerung implements SteuerungIntface {
                 this.spielerZeitSchwarz.starteCountdown();
             }
             else{
-                // Wenn der Spieler einen ungültigen Zug geklickt hat, spiele mit den vorherigen Periodenzeiten weiter
-                // Bei Spielerwechsel, bekommt der Timer wieder die Periodenzeit auf Maximal gesetzt
-                if( klickenderSpieler != brett.getSpielerFarbeAnDerReihe() )
-                    this.periodenZeitSchwarz.setRemainingTime(brett.getPeriodenZeit());
+                /* Wenn der Spieler einen ungültigen Zug geklickt hat,
+                 * spiele mit den vorherigen Periodenzeiten weiter
+                 * Bei Spielerwechsel, bekommt der Timer wieder die Periodenzeit
+                 * auf Maximal gesetzt und der andere Spieler wieder die volle
+                 * Zeit angezeigt.
+                 * Damit der Spieler mit der aktuell herunterzaehlenden Periodenzeit
+                 * auch die Sekunden angezeigt bekommt, bevor der Timer ausloest,
+                 * muss auch dieser hier vorher extra uebermittelt werden
+                 */
+                if( klickenderSpieler != brett.getSpielerFarbeAnDerReihe() ){
+                    this.periodenZeitSchwarz.setRemainingTime(periodenZeit);
+                    LoGoApp.meineOberflaeche.setAnzeigePeriodenZeitSchwarz(periodenZeit);
+                }
 
                 // Starte den Countdown, bzw. setze den Countdown fort
                 this.periodenZeitSchwarz.starteCountdown();
+                LoGoApp.meineOberflaeche.setSchwarzAmZug();
             }
         }
         else{
@@ -309,13 +320,23 @@ public class Steuerung implements SteuerungIntface {
                 this.spielerZeitWeiss.starteCountdown();
             }
             else{
-                // Wenn der Spieler einen ungültigen Zug geklickt hat, spiele mit den vorherigen Periodenzeiten weiter
-                // Bei Spielerwechsel, bekommt der Timer wieder die Periodenzeit auf Maximal gesetzt
-                if( klickenderSpieler != brett.getSpielerFarbeAnDerReihe() )
+                /* Wenn der Spieler einen ungültigen Zug geklickt hat,
+                 * spiele mit den vorherigen Periodenzeiten weiter
+                 * Bei Spielerwechsel, bekommt der Timer wieder die Periodenzeit
+                 * auf Maximal gesetzt und der andere Spieler wieder die volle
+                 * Zeit angezeigt.
+                 * Damit der Spieler mit der aktuell herunterzaehlenden Periodenzeit
+                 * auch die Sekunden angezeigt bekommt, bevor der Timer ausloest,
+                 * muss auch dieser hier vorher extra uebermittelt werden
+                 */
+                if( klickenderSpieler != brett.getSpielerFarbeAnDerReihe() ){
                     this.periodenZeitWeiss.setRemainingTime(brett.getPeriodenZeit());
+                    LoGoApp.meineOberflaeche.setAnzeigePeriodenZeitWeiss(periodenZeit);
+                }
 
                 // Starte den Countdown, bzw. setze den Countdown fort
                 this.periodenZeitWeiss.starteCountdown();
+                LoGoApp.meineOberflaeche.setWeissAmZug();
             }
         }
     }
@@ -380,7 +401,12 @@ public class Steuerung implements SteuerungIntface {
                 this.spielerZeitSchwarz.setRemainingTime(this.dasSpielfeld.getSpielerSchwarz().getVerbleibendeSpielzeitInMS());
                 this.spielerZeitWeiss.setRemainingTime(this.dasSpielfeld.getSpielerWeiss().getVerbleibendeSpielzeitInMS());
 
-
+                /* Der Obeflaeche das aktuelle Spielfeld übergeben, damit
+                 * Vorgaben etc. eingezeichnet werden können
+                 */
+                LoGoApp.meineOberflaeche.setBrettOberflaeche(
+                        this.dasSpielfeld.getAktuelesSpielFeld(),
+                        this.dasSpielfeld.getSpielfeldGroesse());
                 
                 // Der Oberfläche den Spieler der am Zug ist übergeben und benötigte Timer starten
                 if( this.dasSpielfeld.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ ){

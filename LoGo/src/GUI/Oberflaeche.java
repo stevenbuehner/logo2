@@ -34,13 +34,15 @@ import logo.LoGoApp;
 public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseListener, KeyListener {
 
     private Steuerung meineSteuerung;
+    private GrafikLib lib = GrafikLib.getInstance();
     private VolatileImage backbuffer;
     private GraphicsEnvironment ge;
     private GraphicsConfiguration gc;
     private BufferStrategy strategy;
     protected Frame frame;
     protected boolean once = false;
-    private BufferedImage backgroundImage;						// Hintergrundbild
+    private BufferedImage backgroundImage   = lib.getSprite( "GUI/resources/GUI_v1.png");
+					// Hintergrundbild
     private int spielfeldGroesse = 9;
     private int spielfeldBreite = 480;
     private int spielfeldHoehe = 480;
@@ -63,7 +65,7 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
 
 
     public Oberflaeche() {
-        this("LoGo by DHBW", 678, 549, LoGoApp.meineSteuerung);
+        this("LoGo by DHBW", 678, 560, LoGoApp.meineSteuerung);
     }
 
     public Oberflaeche(String fenstername, int width, int height, Steuerung pSteuerung) {
@@ -115,6 +117,10 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
 
     @Override
     public void paint(Graphics g) {
+
+        // zu Unterst die Background-Grafik zeichnen
+        g.drawImage(this.backgroundImage, 0, 0, this);
+
         int x = spielfeldGroesse;
         int y = spielfeldGroesse;
         int wert = feldBreite;
@@ -181,10 +187,13 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
         // Debug-Strings ausgeben
         g.drawString(debugSpielerNameSchwarz + " ( " + debugSpielerZeitSchwarz + " | " + debugSpielerPeriodenZeitSchwarz + " )",
                 xOffset,
-                yOffset + spielfeldHoehe + 10);
+                yOffset + spielfeldHoehe + 0);
         g.drawString(debugSpielerNameWeiss + " ( " + debugSpielerZeitWeiss + " | " + debugSpielerPeriodenZeitWeiss + " )",
                 xOffset  ,
-                yOffset + spielfeldHoehe + 30);
+                yOffset + spielfeldHoehe + 20);
+        g.drawString( "Am Zug ist Spieler: " + debugAmZugIst,
+                xOffset  ,
+                yOffset + spielfeldHoehe + 40);
     }
 
     public void setBrettOberflaeche(int[][] spielfeld, int spielfeldGroesse) {
