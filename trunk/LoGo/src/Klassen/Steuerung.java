@@ -17,6 +17,7 @@ public class Steuerung implements SteuerungIntface {
 
     // Die Datenklasse
     private Spielfeld dasSpielfeld;
+    private int aktuellerAnzeigeZug;
 
 
     // Timer fuer Spieler und PeriodenZeiten.
@@ -66,6 +67,7 @@ public class Steuerung implements SteuerungIntface {
             int spielfeldGroesse,
             int vorgabeSteineFuerSchwarz) {
 
+        this.aktuellerAnzeigeZug = 0;
         Spielfeld tmpSpielfeld   = new Spielfeld(spielfeldGroesse);
 
         tmpSpielfeld.setSpielerSchwarz( new Spieler(spielerNameSchwarz, spielZeitSchwarz, 0, 0 ) );
@@ -265,6 +267,7 @@ public class Steuerung implements SteuerungIntface {
         switch (returnWert){
             case 1:
                 // Rueckgabe erfolgreich! Spielerwechsel
+                this.setAktuellerAnzeigeZug(this.dasSpielfeld.getLetzteZugnummer());
                 LoGoApp.meineOberflaeche.setBrettOberflaeche(
                     this.dasSpielfeld.getAktuelesSpielFeld(),
                     this.dasSpielfeld.getSpielfeldGroesse());
@@ -448,7 +451,14 @@ public class Steuerung implements SteuerungIntface {
      * Spieler klickt auf Undo. Spielzug wird rueckgaengig gemacht
      */
     public void buttonUndo() {
-        
+       if(this.getAktuellerAnzeigeZug() > 0){
+           this.setAktuellerAnzeigeZug(this.getAktuellerAnzeigeZug()-1);
+       }
+       else{
+           this.setAktuellerAnzeigeZug(0);
+       }
+       LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellerAnzeigeZug()),
+                                                    this.dasSpielfeld.getSpielfeldGroesse());
     }
 
     /**
@@ -456,7 +466,14 @@ public class Steuerung implements SteuerungIntface {
      * gemacht (Es wir einfach um 1 nach vorn gegangen)
      */
     public void buttonRedo() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if(this.getAktuellerAnzeigeZug() < this.dasSpielfeld.getLetzteZugnummer()){
+            this.setAktuellerAnzeigeZug(this.getAktuellerAnzeigeZug() + 1);
+        }
+        else {
+            this.setAktuellerAnzeigeZug(this.dasSpielfeld.getLetzteZugnummer());
+        }
+        LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellerAnzeigeZug()),
+                                                     this.dasSpielfeld.getSpielfeldGroesse());
     }
 
     /**
@@ -515,6 +532,20 @@ public class Steuerung implements SteuerungIntface {
      */
     public Spielfeld getSpielfeld(){
         return this.dasSpielfeld;
+    }
+
+    /**
+     * @param nummer Setzt die den Aktuellen Zug auf nummer
+     */
+    private void setAktuellerAnzeigeZug(int nummer){
+        this.aktuellerAnzeigeZug = nummer;
+    }
+
+    /**
+     * @return Gibt die Aktuelle Zugnummer der Anzeige zurueck.
+     */
+    private int getAktuellerAnzeigeZug() {
+        return this.aktuellerAnzeigeZug;
     }
 
 }
