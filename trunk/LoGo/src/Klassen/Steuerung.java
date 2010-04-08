@@ -42,7 +42,7 @@ public class Steuerung implements SteuerungIntface {
                 30*1000,
                 0,
                 spielFeldGroesse,
-                0);
+                4);
     }
 
         /**
@@ -74,20 +74,10 @@ public class Steuerung implements SteuerungIntface {
         tmpSpielfeld.setSpielerWeiss( new Spieler(spielerNameWeiss, spielZeitWeiss, 0, komiFuerWeiss) );
         tmpSpielfeld.setPeriodenZeit(periodenZeit);
 
-
-        switch( vorgabeSteineFuerSchwarz ){
-            case 0:
-                // Nichts zu tun
-                break;
-                /*
-                 * Hier muessen noch die Einstellungen fuer das Spielfeld in Form
-                 * von setzeStein();
-                 */
-                
-            default:
-                break;
-        }
-
+        /* Was intern Passiert: Im Spielfeld wird ein Initialfeld generiert,
+         * welches Festlegt, dass immer die Vorgabesteine auf dem Brett liegen
+         * muessen.*/
+        tmpSpielfeld.initialisiereFeldMitVorgabenFuerSchwarz(vorgabeSteineFuerSchwarz);
         this.initMitSpielfeld(tmpSpielfeld);
 
           //Zum Testen wurde dies hier auskommentiert, da es sonst nicht funktionieren wuerde
