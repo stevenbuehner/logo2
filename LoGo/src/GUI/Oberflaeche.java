@@ -93,10 +93,6 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
         createBackbuffer();
 
         doInitializations();
-
-        /* Am Ende der Initialisierung, wird das Spielfeld gezeichnet,
-         * da die Startformation dargestellt werden muss. */
-        this.setBrettOberflaeche(pSteuerung.getSpielfeld().getAktuelesSpielFeld(), pSteuerung.getSpielfeld().getSpielfeldGroesse());
     }
 
     protected void doInitializations() {
