@@ -73,7 +73,6 @@ public class Spielfeld {
         }
     }
 
-
     /**
      *
      * @return Den schwarzen Spieler mit dem Objekttyp Spieler
@@ -83,16 +82,13 @@ public class Spielfeld {
     }
 
     /**
-     *
-     * @param Setzen des schwarzerSpieler
+     * @param schwarzerSpieler Setzen des schwarzerSpieler
      */
     public void setSpielerSchwarz( Spieler schwarzerSpieler ){
         this.spielerSchwarz = schwarzerSpieler;
     }
 
-
     /**
-     *
      * @return Den Weissen Spieler mit dem Objekttyp Spieler
      */
     public Spieler getSpielerWeiss(){
@@ -101,10 +97,10 @@ public class Spielfeld {
 
     /**
      *
-     * @param Setzen des WeisserSpieler
+     * @param weisserSpieler Setzen des WeisserSpieler
      */
-    public void setSpielerWeiss( Spieler WeisserSpieler ){
-        this.spielerWeiss = WeisserSpieler;
+    public void setSpielerWeiss( Spieler weisserSpieler ){
+        this.spielerWeiss = weisserSpieler;
     }
 
     /**
@@ -118,8 +114,7 @@ public class Spielfeld {
     }
 
     /**
-     *
-     * @param Speichern der periodenZeit
+     * @param periodenZeit Speichern der periodenZeit
      */
     public void setPeriodenZeit( long periodenZeit ){
         this.periodenZeit = periodenZeit;
@@ -273,7 +268,9 @@ public class Spielfeld {
     }
 
     /**
-     *
+     * Diese Funktion loescht die Zuege aus der Liste der Spielzuege bis zum
+     * angegebenen Zeitpunkt. Ist der Zeitpunkt nich erlaubt, wird false
+     * zurueck gegeben. Ansonsten ist der Rueckgabewert true.
      * @param zeitpunkt Zeitpunkt auf den das Spielfeld FEST gesetzt werden soll.
      * Ein Redo ist dann nicht mehr möglich. Das Spiel wird zu diesem Zeitpunkt
      * weitergespielt.
@@ -304,7 +301,6 @@ public class Spielfeld {
      * -2: Schnittpunkt schon belegt : (FEHLER)
      * -3: Selbstmord (verboten) : (FEHLER)
      */
-
     private int setStein(int xPos, int yPos, int spielerfarbe) {
         /* Koordinaten umrechnen, da Array bei 0 beginnt */
         int xKoord = xPos - 1;
@@ -569,25 +565,12 @@ public class Spielfeld {
          return 1;
     }
 
-    /*
-     * Wollen wir die Funktion loeschen? Ich waere dafuer, da wir sie wahrscheinlich nicht
-     * brauchen. gez tommy
+    /**
+     * In abhaengigkeit davon, wer den letzten Zug gemacht hat, wird ermittelt,
+     * wer als naechstes dran ist. Wenn Beispielsweise Schwarz dran war, ist
+     * jetzt Weiss an der Reihe.
+     * @return Gibt zurueck wer als naechstes dran ist.
      */
-    public boolean setSteinMoeglich( int xPos, int yPos, int spielerfarbe ) {
-        /*
-         * Prüft ab ob an diesem Punkt ein Stein gesetzt werden darf.
-         * Funktion wird verwendet, wenn zum Beispiel über einen Schnittpunkt
-         * mit der Maus gefahren wird
-         *
-         * Evt. kann auch hierfür eine Cache-Collection aufgebaut werden,
-         * die mit dem setzen eines neuen Steines dann allerdings wieder gelöscht
-         * werden muss.
-         */
-
-
-        return true;
-    }
-
     public int getSpielerAnDerReihe(){
 
         int letzterSpieler = getSpielerVonLetztemZug();
@@ -606,11 +589,11 @@ public class Spielfeld {
 
     }
 
+    /**
+     * @return Gibt zurueck, welche Farbe der Spieler hat, der den letzten Zug
+     * setzte.
+     */
     public int getSpielerVonLetztemZug(){
-        /* Ich bin mir nicht ganz sicher ob die Funktion funktioniert
-             und ob sie auch noch funktioniert, wenn mal Elemente in der Collection
-             gelöscht wurden.
-         */
         if (this.spielZugCollection.size() == 0){
             // Es wurde noch kein Zug eingetragen. Dann beginnt immer Spieler SCHWARZ.
             // Das heisst dass theoretisch Weiss davor dran gewesen waere.
@@ -620,7 +603,6 @@ public class Spielfeld {
             return this.spielZugCollection.get(this.spielZugCollection.size()-1).getFarbe();
         }
     }
-
 
     /**
      * Diese Funktion soll Steine vom Spielfeld nehmen, wenn dies moeglich ist.
@@ -878,8 +860,6 @@ public class Spielfeld {
         this.letzteZugnummer++;
     }
 
-
-
     /**
      * Nachdem Steine von einer bestimmten Farbe gefangen wurden, muss die
      * Anzahl der gefangenen Steine dieser Farbe erhoeht werden. Wenn zum Beispiel
@@ -897,6 +877,10 @@ public class Spielfeld {
         }
     }
 
+    /**
+     * Wird im Spiel gepasst, muss das in der Liste der Zuege eingetragen werden.
+     * @param spielerFarbe Farbe des Spielers der gepasst hat
+     */
     public void zugPassen(int spielerFarbe){
         /* Da gepasst wurde, muss der Verbotene Zug geloescht werden*/
         this.loescheVerbotenenPunkt();
@@ -953,11 +937,13 @@ public class Spielfeld {
     }
 
     /**
-     *
+     * Es muss ein Zug auf dem Spielfeld gemacht werden. Dazu wird ein Stein
+     * gesetzt, und bei erfolgreichem setzen wird die Nummer
      * @param xPos X-Position des Spielfelds.
      * Diese kann Werte zwischen 1 und der Feldlänge enthalten
      * @param yPos Y-Position des Spielfelds.
      * Diese kann Werte zwischen 1 und der Feldlänge enthalten
+     * @param spielerFarbe Farbe des Spielers
      * @return Je nach Situarion signalisiert der Integer, was passiert ist:
      *  1: Zug wurde erfolgreich durchgefuehrt : (OK)
      *  0: Zug liegt nicht auf Spielfeld: (FEHLER)
@@ -978,7 +964,8 @@ public class Spielfeld {
     }
 
     /**
-     *
+     * Die kurze Variante von macheZug, fuehrt die Lange aus, jedoch mit
+     * alternierender Spielerfarbe
      * @param xPos X-Position des Spielfelds.
      * Diese kann Werte zwischen 1 und der Feldlänge enthalten
      * @param yPos Y-Position des Spielfelds.
