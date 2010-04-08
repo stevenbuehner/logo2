@@ -33,6 +33,18 @@ public class Steuerung implements SteuerungIntface {
                 0);
     }
 
+        /**
+     * Am Anfang des Spieles muss ein Spielfeld initialisiert werden.
+     * @param spielerNameSchwarz Name des schwarzen Spielers
+     * @param spielerNameWeiss Name des weissen Spielers
+     * @param spielZeitSchwarz Absolute Zeit des schwarzen Spielers
+     * @param spielZeitWeiss Absolute Zeit des weissen Spielers
+     * @param periodenZeit Byo-Yomi fuer beide Spieler
+     * @param komiFuerWeiss Punkte zum Spielstaerkenausgleich fuer Weiss
+     * @param spielfeldGroesse Groesse des Spielfeldes
+     * @param vorgabeSteineFuerSchwarz Vorgabe zum Spielstaerkeausgleich fuer
+     * Schwarz
+     */
     public void initMitEinstellungen(
             String spielerNameSchwarz,
             String spielerNameWeiss,
@@ -121,6 +133,18 @@ public class Steuerung implements SteuerungIntface {
         this.dasSpielfeld = bereitsInitialisiertesSpielfeld;
     }
 
+   /**
+     * Die Gleiche Funktion wie initMitEinstellungen, nur damit das Programm
+     * weiss, dass dem Benutzer noch die Moeglichkeit geboten werden muss
+     * eine eigene Startformation zu erstellen
+     * @param spielerNameSchwarz Name des schwarzen Spielers
+     * @param spielerNameWeiss Name des weissen Spielers
+     * @param spielZeitSchwarz Absolute Zeit des schwarzen Spielers
+     * @param spielZeitWeiss Absolute Zeit des weissen Spielers
+     * @param periodenZeit Byo-Yomi fuer beide Spieler
+     * @param komiFuerWeiss Punkte zum Spielstaerkenausgleich fuer Weiss
+     * @param spielfeldGroesse Groesse des Spielfeldes
+     */
     public void initMitEinstellungenFuerStartformation(
             String spielerNameSchwarz,
             String spielerNameWeiss,
@@ -144,6 +168,18 @@ public class Steuerung implements SteuerungIntface {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Dient dafuer, ein Spiel zu laden und das komplette Feld zu uebergeben.
+     * Spielfeldgroesse muss nicht uebergeben werden, da diese im Spielfeld
+     * gespeichert ist.
+     * @param feld Spielfeld, welches schon fertig und gueltig konstruiert wurde
+     * @param spielerNameSchwarz Name des schwarzen Spielers
+     * @param spielerNameWeiss Name des weissen Spielers
+     * @param spielZeitSchwarz Absolute Zeit des schwarzen Spielers
+     * @param spielZeitWeiss Absolute Zeit des weissen Spielers
+     * @param periodenZeit Byo-Yomi fuer beide Spieler
+     * @param komiFuerWeiss Punkte zum Spielstaerkenausgleich fuer Weiss
+     */
     public void initMitDatenModell(
             Spielfeld feld,
             String spielerNameSchwarz,
@@ -156,6 +192,12 @@ public class Steuerung implements SteuerungIntface {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Wenn bei der GUI auf einen Schnittpunkt geklickt wurde, muss die
+     * Steuerung reagieren. Die Koordinaten werden dann uebermittelt
+     * @param xPos X-Koordinate (1-Spielfeldgroesse)
+     * @param yPos Y-Koordinate (1-Spielfeldgroesse)
+     */
     public void klickAufFeld(int xPos, int yPos) {
         
         System.out.println( "Klick auf Punkt (" + xPos + "|" + yPos + ")" );
@@ -192,50 +234,94 @@ public class Steuerung implements SteuerungIntface {
         throw new UnsupportedOperationException("Not fully supported yet.");
     }
 
+    /**
+     * Spieler klickt auf Aufgeben. Steuerung muss Dialogfeld od. Aehnliches
+     * Anzeigen und Spiel dann beenden
+     */
     public void buttonAufgeben() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Spieler klickt auf Passen. Spielzug muss ausgefuehrt werden und der
+     * naechste ist dran. Wird 2 mal hintereinander gepasst, wird das Spiel
+     * beendet und gezaehlt.
+     */
     public void buttonPassen() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Spieler klickt auf Pause. Das Spiel, und damit die Spielzeit, wird
+     * angehalten. Das Brett wird abgedunkelt.
+     */
     public void buttonPause() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Spieler klickt auf Speichern. Spiel muss als sgf gespeichert werden.
+     */
     public void buttonSpielSpeichern() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Spieler klickt auf Undo. Spielzug wird rueckgaengig gemacht
+     */
     public void buttonUndo() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Spieler klickt auf Redo. Spielzug der geUndot wurde wird rueckgaengig
+     * gemacht (Es wir einfach um 1 nach vorn gegangen)
+     */
     public void buttonRedo() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Spieler klickt auf Zu-Start-Button. Anfangssituation wird geladen.
+     */
     public void buttonToStart() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Spieler klickt auf Zu-Ende-Button. Letzte Situation auf Brett wird
+     * hergestellt.
+     */
     public void buttonToEnd() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Hauptzeit des schwarzen Spielers ist abgelaufen. Periodenzeit muss starten
+     */
     public void zeitAbgelaufenSchwarzHauptzeit() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Periodenzeit des schwarzen Spielers ist abgelaufen. Schwarz verliert.
+     * Spiel beendet.
+     */
     public void zeitAbgelaufenSchwarzPeriodenzeit() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Hauptzeit des weissen Spielers ist abgelaufen. Periodenzeit muss starten
+     */
     public void zeitAbgelaufenWeissHauptzeit() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Periodenzeit des weissen Spielers ist abgelaufen. Weiss verliert.
+     * Spiel beendet.
+     */
     public void zeitAbgelaufenWeissPeriodenzeit() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
