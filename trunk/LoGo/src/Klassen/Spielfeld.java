@@ -15,13 +15,34 @@ import java.util.List;
 public class Spielfeld {
 
     // interne Speicherobjekte
+
+    /**
+     * Jeder Zug bekommt eine eindeutige fortlaufende Nummer. Das Attribut
+     * letzteZugnummer zeigt immer auf die zuletzt verwendete Zugnummer. Diese
+     * Nummer kann auch direkt als Array-Zeiger auf den Zug (gespeichert in
+     * spielZugCollection) zum zugehoerigen Zug verwendet werden.
+     */
     private int letzteZugnummer;
+
+    /**
+     * Groesse des Spielfeldes und damit auch Groesse der zweidimensionalen
+     * Spielfeldarrays
+     */
     private int spielfeldGroesse;
     private int gefangenenAnzahlWeiss;
     private int gefangenenAnzahlSchwarz;
     private List<Spielzug> spielZugCollection;
     private int xPosVerboten;
     private int yPosVerboten;
+
+    private Spieler spielerSchwarz;
+    private Spieler spielerWeiss;
+
+    /* Wenn die Spielerzeit aufgebraucht ist gibt es noch die Periodenzeit.
+    * Diese ist fuer alle Spieler gleich. In wirklich heisst dieser Wert Byo-yomi.
+    */
+    private long    periodenZeit;
+
     
     // Chache Funktionen zum schnelleren Spielen
     private int[][] aktuellesSpielfeldCache;
@@ -52,6 +73,61 @@ public class Spielfeld {
             }
         }
     }
+
+
+    /**
+     *
+     * @return Den schwarzen Spieler mit dem Objekttyp Spieler
+     */
+    public Spieler getSpielerSchwarz(){
+        return this.spielerSchwarz;
+    }
+
+    /**
+     *
+     * @param Setzen des schwarzerSpieler
+     */
+    public void setSpielerSchwarz( Spieler schwarzerSpieler ){
+        this.spielerSchwarz = schwarzerSpieler;
+    }
+
+
+    /**
+     *
+     * @return Den Weissen Spieler mit dem Objekttyp Spieler
+     */
+    public Spieler getSpielerWeiss(){
+        return this.spielerWeiss;
+    }
+
+    /**
+     *
+     * @param Setzen des WeisserSpieler
+     */
+    public void setSpielerWeiss( Spieler WeisserSpieler ){
+        this.spielerWeiss = WeisserSpieler;
+    }
+
+    /**
+     *
+     * @return Gibt den aktuellen Wert der Periodenzeit zurueck.
+     * Wenn die Spielerzeit aufgebraucht ist gibt es noch die Periodenzeit.
+     * Diese ist fuer alle Spieler gleich. In wirklich heisst dieser Wert Byo-yomi.
+     */
+    public long getPeriodenZeit(){
+        return this.periodenZeit;
+    }
+
+    /**
+     *
+     * @param Speichern der periodenZeit (fuer beide Spieler)
+     * Wenn die Spielerzeit aufgebraucht ist gibt es noch die Periodenzeit.
+     * Diese ist fuer alle Spieler gleich. In wirklich heisst dieser Wert Byo-yomi.
+     */
+    public void setPeriodenZeit( long periodenZeit ){
+        this.periodenZeit = periodenZeit;
+    }
+
 
     /**
      * 
