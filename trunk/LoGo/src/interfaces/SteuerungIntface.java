@@ -124,9 +124,19 @@ public interface SteuerungIntface {
 
     /**
      * Spieler klickt auf Pause. Das Spiel, und damit die Spielzeit, wird
-     * angehalten. Das Brett wird abgedunkelt.
+     * angehalten. Das Brett wird abgedunkelt. Nach dem Klicken auf Pause, wird
+     * wäre es gut, wenn in der GUI der Button deaktiviert wird und stattdessen
+     * der Button "Spiel Fortsetzen" aktiviert wird.
      */
     public void buttonPause();
+
+    /**
+     * Der Button "Spiel fortsetzen" steht zur Verfügung nachdem der Button
+     * Pause gedrückt wurde. Mit ihm kann das Spiel wieder aufgenommen werden.
+     * Nach dem Klick auf Fortsetzen, wird der Button Pause wieder freigegeben
+     * und der Button Fortsetzen wieder deaktiviert
+     */
+    public void buttonSpielForsetzen();
 
     /**
      * Spieler klickt auf Speichern. Spiel muss als sgf gespeichert werden.

@@ -243,14 +243,14 @@ public class Steuerung implements SteuerungIntface {
         // Variablendeklaration
         Spielfeld brett         = this.dasSpielfeld;
         int returnWert          = Konstante.FEHLER;
-        int klickenderSpieler   = brett.getSpielerAnDerReihe();
+        int klickenderSpieler   = brett.getSpielerFarbeAnDerReihe();
 
         if(brett.getSpielZustand() != Konstante.SPIEL_LAUEFT)
             return;
 
 
         // Timer während der Berechnung stoppen und die Zeiten zum Spieler zurückspeichern
-        if( brett.getSpielerAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ ){
+        if( brett.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ ){
             this.spielerZeitSchwarz.stoppeCountdown();
             this.periodenZeitSchwarz.stoppeCountdown();
             brett.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(this.spielerZeitSchwarz.getRemainingTime());
@@ -296,42 +296,38 @@ public class Steuerung implements SteuerungIntface {
 
 
         // Setze das Spiel wieder fort und starte die nötigen Timer
-        if( this.dasSpielfeld.getSpielerAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ ){
+        if( this.dasSpielfeld.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ ){
             // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
             if( brett.getSpielerSchwarz().getVerbleibendeSpielzeitInMS() > 0 ){
                 this.spielerZeitSchwarz.setRemainingTime( brett.getSpielerSchwarz().getVerbleibendeSpielzeitInMS() );
+                this.spielerZeitSchwarz.starteCountdown();
             }
             else{
                 // Wenn der Spieler einen ungültigen Zug geklickt hat, spiele mit den vorherigen Periodenzeiten weiter
                 // Bei Spielerwechsel, bekommt der Timer wieder die Periodenzeit auf Maximal gesetzt
-                if( klickenderSpieler != brett.getSpielerAnDerReihe() )
+                if( klickenderSpieler != brett.getSpielerFarbeAnDerReihe() )
                     this.periodenZeitSchwarz.setRemainingTime(brett.getPeriodenZeit());
 
                 // Starte den Countdown, bzw. setze den Countdown fort
                 this.periodenZeitSchwarz.starteCountdown();
             }
-            // Hat der Spieler noch eigene Spielzeit, dann mache mit dieser weiter
-            this.spielerZeitSchwarz.setRemainingTime(brett.getSpielerSchwarz().getVerbleibendeSpielzeitInMS());
-            this.spielerZeitSchwarz.starteCountdown();
         }
         else{
             // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
             if( brett.getSpielerWeiss().getVerbleibendeSpielzeitInMS() > 0 ){
                 this.spielerZeitWeiss.setRemainingTime( brett.getSpielerWeiss().getVerbleibendeSpielzeitInMS() );
+                this.spielerZeitWeiss.starteCountdown();
             }
             else{
                 // Wenn der Spieler einen ungültigen Zug geklickt hat, spiele mit den vorherigen Periodenzeiten weiter
                 // Bei Spielerwechsel, bekommt der Timer wieder die Periodenzeit auf Maximal gesetzt
-                if( klickenderSpieler != brett.getSpielerAnDerReihe() )
+                if( klickenderSpieler != brett.getSpielerFarbeAnDerReihe() )
                     this.periodenZeitWeiss.setRemainingTime(brett.getPeriodenZeit());
 
                 // Starte den Countdown, bzw. setze den Countdown fort
                 this.periodenZeitWeiss.starteCountdown();
             }
-            // Hat der Spieler noch eigene Spielzeit, dann mache mit dieser weiter
-            this.spielerZeitWeiss.setRemainingTime(brett.getSpielerWeiss().getVerbleibendeSpielzeitInMS());
-            this.spielerZeitWeiss.starteCountdown();        }
-
+        }
     }
 
      /**
@@ -397,7 +393,7 @@ public class Steuerung implements SteuerungIntface {
 
                 
                 // Der Oberfläche den Spieler der am Zug ist übergeben und benötigte Timer starten
-                if( this.dasSpielfeld.getSpielerAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ ){
+                if( this.dasSpielfeld.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ ){
                     this.spielerZeitSchwarz.starteCountdown();
                     LoGoApp.meineOberflaeche.setSchwarzAmZug();
                 }
@@ -434,10 +430,69 @@ public class Steuerung implements SteuerungIntface {
 
     /**
      * Spieler klickt auf Pause. Das Spiel, und damit die Spielzeit, wird
-     * angehalten. Das Brett wird abgedunkelt.
+     * angehalten. Das Brett wird abgedunkelt. Nach dem Klicken auf Pause, wird
+     * wäre es gut, wenn in der GUI der Button deaktiviert wird und stattdessen
+     * der Button "Spiel Fortsetzen" aktiviert wird.
      */
-    public void buttonPause() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void buttonPause(){
+        int aktuelerSpieler = this.dasSpielfeld.getSpielerFarbeAnDerReihe();
+
+        if ( Konstante.SCHNITTPUNKT_SCHWARZ == aktuelerSpieler ){
+            // Schwarzer Spieler spielt gerade
+
+            // Stoppe Timer von Schwarz
+            this.spielerZeitSchwarz.stoppeCountdown();
+            this.periodenZeitSchwarz.stoppeCountdown();
+            this.dasSpielfeld.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(
+                    this.spielerZeitSchwarz.getRemainingTime());
+        }
+        else{
+            // Weisser Spieler spielt gerade
+
+            // Stoppe Timer von Weiss
+            this.spielerZeitWeiss.stoppeCountdown();
+            this.periodenZeitWeiss.stoppeCountdown();
+            this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(
+                    this.spielerZeitWeiss.getRemainingTime());
+        }
+
+        // Spielstatus auf pausiert setzen.
+        this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_PAUSIERT);
+    }
+
+    /**
+     * Der Button "Spiel fortsetzen" steht zur Verfügung nachdem der Button
+     * Pause gedrückt wurde. Mit ihm kann das Spiel wieder aufgenommen werden.
+     * Nach dem Klick auf Fortsetzen, wird der Button Pause wieder freigegeben
+     * und der Button Fortsetzen wieder deaktiviert
+     */
+    public void buttonSpielForsetzen(){
+
+        Spielfeld brett         = this.dasSpielfeld;
+        
+        // Setze das Spiel wieder fort und starte die nötigen Timer
+        if( this.dasSpielfeld.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ ){
+            // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
+            if( brett.getSpielerSchwarz().getVerbleibendeSpielzeitInMS() > 0 ){
+                this.spielerZeitSchwarz.starteCountdown();
+            }
+            else{           
+                // Setze den Countdown fort
+                this.periodenZeitSchwarz.starteCountdown();
+            }
+        }
+        else{
+            // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
+            if( brett.getSpielerWeiss().getVerbleibendeSpielzeitInMS() > 0 ){
+                this.spielerZeitWeiss.starteCountdown();
+            }
+            else{
+                // Starte den Countdown, bzw. setze den Countdown fort
+                this.periodenZeitWeiss.starteCountdown();
+            }
+        }
+
+        this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_LAUEFT);
     }
 
     /**
