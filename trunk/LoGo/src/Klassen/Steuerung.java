@@ -38,7 +38,7 @@ public class Steuerung implements SteuerungIntface {
                 "Tommy",
                 30*60*1000,
                 10*1000,
-                5*1000,
+                30*1000,
                 0,
                 spielFeldGroesse,
                 0);

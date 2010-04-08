@@ -175,10 +175,10 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
 
 
         // Debug-Strings ausgeben
-        g.drawString(debugSpielerNameSchwarz + "(" + debugSpielerZeitSchwarz + " | " + debugSpielerPeriodenZeitSchwarz + ")",
+        g.drawString(debugSpielerNameSchwarz + " ( " + debugSpielerZeitSchwarz + " | " + debugSpielerPeriodenZeitSchwarz + " )",
                 xOffset,
                 yOffset + spielfeldHoehe + 10);
-        g.drawString(debugSpielerNameWeiss + "(" + debugSpielerZeitWeiss + " | " + debugSpielerPeriodenZeitWeiss + ")",
+        g.drawString(debugSpielerNameWeiss + " ( " + debugSpielerZeitWeiss + " | " + debugSpielerPeriodenZeitWeiss + " )",
                 xOffset  ,
                 yOffset + spielfeldHoehe + 30);
     }
