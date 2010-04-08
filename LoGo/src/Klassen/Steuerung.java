@@ -28,7 +28,7 @@ public class Steuerung implements SteuerungIntface {
 
     
     public Steuerung( ){
-        this( 19, 60*1000 );     // Standardwerte
+        this( 9, 60*1000 );     // Standardwerte
     }
 
     public Steuerung ( int spielFeldGroesse, long periodenZeit ){
