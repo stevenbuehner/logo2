@@ -448,7 +448,7 @@ public class Steuerung implements SteuerungIntface {
      * Spieler klickt auf Undo. Spielzug wird rueckgaengig gemacht
      */
     public void buttonUndo() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
     }
 
     /**
