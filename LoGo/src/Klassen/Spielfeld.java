@@ -724,16 +724,15 @@ public class Spielfeld {
          * werden. Dabei wird eine Gruppe von Steinen mit Hilfe von Breitensuche
          * durchsucht.
          */
-        AnalyseSchnittpunkt [] listeSteine;             // Das sollte man mit ner
-        listeSteine = new AnalyseSchnittpunkt[362];     // Collection auch loesen koennen
+        List<AnalyseSchnittpunkt> listeSteine;
+        listeSteine = new ArrayList<AnalyseSchnittpunkt>();
         int momElement = 0;
-        int endElement = 1;
 
         /* Als erstes wird der Stein, an dem begonnen wird zu suchen in die
          * Liste eingenommen
          */
         feld[xPos][yPos].setMarkiert(true);
-        listeSteine[0] = feld[xPos][yPos];
+        listeSteine.add(feld[xPos][yPos]);
         /* Jetzt solange nach Steinen suchen und diese in Liste aufnehmen,
          * bis keine Steine mehr da sind */
         do{
@@ -747,59 +746,56 @@ public class Spielfeld {
              * nicht markiert ist. */
 
             /* Wenn Stein linken Nachbarn hat*/
-             if(listeSteine[momElement].getXPos()!=0){
-                 if(feld[listeSteine[momElement].getXPos()-1][listeSteine[momElement].getYPos()].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER ||
-                    feld[listeSteine[momElement].getXPos()-1][listeSteine[momElement].getYPos()].getBelegungswert() == Konstante.SCHNITTPUNKT_VERBOTEN){
+
+             if(listeSteine.get(momElement).getXPos()!=0){
+                 if(feld[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER ||
+                    feld[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert() == Konstante.SCHNITTPUNKT_VERBOTEN){
                      fangbar=false; 
                  }
-                 else if(feld[listeSteine[momElement].getXPos()-1][listeSteine[momElement].getYPos()].getBelegungswert() == farbe){
-                     if(feld[listeSteine[momElement].getXPos()-1][listeSteine[momElement].getYPos()].getMarkiert() == false){
-                         feld[listeSteine[momElement].getXPos()-1][listeSteine[momElement].getYPos()].setMarkiert(true);
-                         listeSteine[endElement] = feld[listeSteine[momElement].getXPos()-1][listeSteine[momElement].getYPos()];
-                         ++endElement;
+                 else if(feld[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert() == farbe){
+                     if(feld[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getMarkiert() == false){
+                         feld[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
+                         listeSteine.add(feld[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()]);
                      }
                  }
              }
              /* Wenn Stein rechten Nachbarn hat */
-             if(listeSteine[momElement].getXPos()!=this.getSpielfeldGroesse()-1){
-                 if(feld[listeSteine[momElement].getXPos()+1][listeSteine[momElement].getYPos()].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER ||
-                    feld[listeSteine[momElement].getXPos()+1][listeSteine[momElement].getYPos()].getBelegungswert() == Konstante.SCHNITTPUNKT_VERBOTEN){
+             if(listeSteine.get(momElement).getXPos()!=this.getSpielfeldGroesse()-1){
+                 if(feld[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER ||
+                    feld[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert() == Konstante.SCHNITTPUNKT_VERBOTEN){
                      fangbar=false; 
                  }
-                 else if(feld[listeSteine[momElement].getXPos()+1][listeSteine[momElement].getYPos()].getBelegungswert() == farbe){
-                     if(feld[listeSteine[momElement].getXPos()+1][listeSteine[momElement].getYPos()].getMarkiert() == false){
-                         feld[listeSteine[momElement].getXPos()+1][listeSteine[momElement].getYPos()].setMarkiert(true);
-                         listeSteine[endElement] = feld[listeSteine[momElement].getXPos()+1][listeSteine[momElement].getYPos()];
-                         ++endElement;
+                 else if(feld[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert() == farbe){
+                     if(feld[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getMarkiert() == false){
+                         feld[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
+                         listeSteine.add(feld[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()]);
                      }
                  }
              }
              /* Wenn Stein oberen Nachbarn hat (Oben und unten werden vielleicht
               * umdefiniert, ist aber egal fuer den Algorithmus!)*/
-             if(listeSteine[momElement].getYPos()!=this.getSpielfeldGroesse()-1){
-                 if(feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()+1].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER ||
-                    feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()+1].getBelegungswert() == Konstante.SCHNITTPUNKT_VERBOTEN){
+             if(listeSteine.get(momElement).getYPos()!=this.getSpielfeldGroesse()-1){
+                 if(feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER ||
+                    feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert() == Konstante.SCHNITTPUNKT_VERBOTEN){
                      fangbar=false; 
                  }
-                 else if(feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()+1].getBelegungswert() == farbe){
-                     if(feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()+1].getMarkiert() == false){
-                         feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()+1].setMarkiert(true);
-                         listeSteine[endElement] = feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()+1];
-                         ++endElement;
+                 else if(feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert() == farbe){
+                     if(feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getMarkiert() == false){
+                         feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].setMarkiert(true);
+                         listeSteine.add(feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1]);
                      }
                  }
              }
              /* Wenn Stein unteren Nachbarn hat */
-             if(listeSteine[momElement].getYPos()!=0){
-                 if(feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()-1].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER ||
-                    feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()-1].getBelegungswert() == Konstante.SCHNITTPUNKT_VERBOTEN){
+             if(listeSteine.get(momElement).getYPos()!=0){
+                 if(feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER ||
+                    feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert() == Konstante.SCHNITTPUNKT_VERBOTEN){
                      fangbar=false;
                  }
-                 else if(feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()-1].getBelegungswert() == farbe){
-                     if(feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()-1].getMarkiert() == false){
-                         feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()-1].setMarkiert(true);
-                         listeSteine[endElement] = feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()-1];
-                         ++endElement;
+                 else if(feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert() == farbe){
+                     if(feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getMarkiert() == false){
+                         feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].setMarkiert(true);
+                         listeSteine.add(feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1]);
                      }
                  }
              }
@@ -808,7 +804,7 @@ public class Spielfeld {
               * also untersucht. Doch zuerst muss der jetzige sauber
               * abgeschlossen werden */
              ++momElement;
-        }while(momElement<endElement);
+        }while(momElement<=listeSteine.size()-1);
 
         /* Alle Steine der Gruppe sind jetzt in der Liste. Jetzt wird weiter
          * gemacht, je nachdem die Steine gefangen werden konnten */
@@ -817,7 +813,7 @@ public class Spielfeld {
              * da momElement gerade auf leeres Feld zeigt! dekrementieren */
             if(nehmen==true){
                 for(int i = momElement - 1; i>=0; --i) {
-                    feld[listeSteine[i].getXPos()][listeSteine[i].getYPos()].setSteinStatus(Konstante.STEIN_LEBENDIG);
+                    feld[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setSteinStatus(Konstante.STEIN_LEBENDIG);
                 }
             }
         return 0; // wurde ja kein Stein gefangen
@@ -828,8 +824,8 @@ public class Spielfeld {
              * Richtigen brett genommen werden sollen. */
             if(nehmen==true){
                 for(int i = momElement -1; i>=0; --i) {
-                    feld[listeSteine[i].getXPos()][listeSteine[i].getYPos()].setSteinStatus(Konstante.STEIN_GEFANGEN);
-                    aktuellesSpielfeldCache[listeSteine[i].getXPos()][listeSteine[i].getYPos()] = Konstante.SCHNITTPUNKT_LEER;
+                    feld[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setSteinStatus(Konstante.STEIN_GEFANGEN);
+                    aktuellesSpielfeldCache[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()] = Konstante.SCHNITTPUNKT_LEER;
                 }
             return momElement; // momElement ist gerade die Gefangenenzahl ;)
             }
