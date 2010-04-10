@@ -17,13 +17,11 @@ public class AnalyseSchnittpunkt {
     private int belegungswert;
     private int steinStatus;
     private boolean markiert;
-    private boolean analysiert;
 
     public AnalyseSchnittpunkt(){
         this.setXPos(-1);
         this.setYPos(-1);
         this.setSteinStatus(Konstante.STEIN_UNGEWISS);
-        this.setAnalysiert(false);
         this.setMarkiert(false);
         this.setBelegungswert(Konstante.SCHNITTPUNKT_LEER);
     }
@@ -34,7 +32,6 @@ public class AnalyseSchnittpunkt {
         this.setBelegungswert(Konstante.SCHNITTPUNKT_LEER);
         this.setSteinStatus(Konstante.STEIN_UNGEWISS);
         this.setMarkiert(false);
-        this.setAnalysiert(false);
     }
 
     public AnalyseSchnittpunkt(int xPos, int yPos, int belegungswert){
@@ -43,7 +40,6 @@ public class AnalyseSchnittpunkt {
         this.setBelegungswert(belegungswert);
         this.setSteinStatus(Konstante.STEIN_UNGEWISS);
         this.setMarkiert(false);
-        this.setAnalysiert(false);
     }
 
     /**
@@ -74,22 +70,6 @@ public class AnalyseSchnittpunkt {
      */
     public boolean getMarkiert(){
         return this.markiert;
-    }
-
-    /**
-     *
-     * @param analysiert Stellt ein ob der Schnittpunkt analysiert ist. Dient also
-     * als Flag.
-     */
-    public void setAnalysiert(boolean analysiert){
-        this.analysiert = analysiert;
-    }
-
-    /*
-     * @return Gibt den Status zurueck, ob der Schnittpunkt schon Analysiert wurde.
-     */
-    public boolean getAnalysiert(){
-        return this.analysiert;
     }
 
     /**

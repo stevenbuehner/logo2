@@ -807,7 +807,6 @@ public class Spielfeld {
              /* Jetzt wurden alle Nachbarn aufgenommen. Der naechste Stein wird
               * also untersucht. Doch zuerst muss der jetzige sauber
               * abgeschlossen werden */
-             feld[listeSteine[momElement].getXPos()][listeSteine[momElement].getYPos()].setAnalysiert(true);
              ++momElement;
         }while(momElement<endElement);
 

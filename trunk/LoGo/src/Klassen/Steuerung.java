@@ -42,7 +42,7 @@ public class Steuerung implements SteuerungIntface {
                 30*1000,
                 0,
                 spielFeldGroesse,
-                6);
+                3);
     }
 
         /**

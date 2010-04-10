@@ -12,7 +12,7 @@ package interfaces;
 public interface OberflaecheInterface {
 
     /**
-     *
+     * Das Brett wird hier Dargestellt. Dabei ist die Koordinate (0,0) links unten!
      * @param spielfeld ist ein zweidimensionales Integer-Array mit der Groesse
      * @param spielfeldGroesse Das Array kann die Werte SCHNITTPUNKT_LEER,
      * SCHNITTPUNKT_SCHWARZ, SCHNITTPUNKT_WEISS und SCHNITTPUNKT_VERBOTEN enthalten,

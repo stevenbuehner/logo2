@@ -23,6 +23,11 @@ public class Konstante {
     public final static int STEIN_GEFANGEN              = 5;
     public final static int STEIN_LEBENDIG              = 6;
 
+    // Konstanten fuer Spielauswertung
+    public final static int SCHNITTPUNKT_NEUTRAL        = 7;
+    public final static int SCHNITTPUNKT_GEBIET_SCHWARZ = 8;
+    public final static int SCHNITTPUNKT_GEBIET_WEISS   = 9;
+
     // Konstanten fuer den Zustand des Spielfeldes
     public final static int SPIEL_UNVOLLSTAENDIG        = 100;
     public final static int SPIEL_VALIDIERT             = 101;
