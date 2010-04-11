@@ -17,12 +17,14 @@ public class AnalyseSchnittpunkt {
     private int belegungswert;
     private int steinStatus;
     private boolean markiert;
+    private boolean analysiert;
 
     public AnalyseSchnittpunkt(){
         this.setXPos(-1);
         this.setYPos(-1);
         this.setSteinStatus(Konstante.STEIN_UNGEWISS);
         this.setMarkiert(false);
+
         this.setBelegungswert(Konstante.SCHNITTPUNKT_LEER);
     }
 
@@ -70,6 +72,22 @@ public class AnalyseSchnittpunkt {
      */
     public boolean getMarkiert(){
         return this.markiert;
+    }
+
+    /**
+     * Setzt den Schnittpunkt als analysiert, oder nicht analysiert. Dient also
+     * als Flag bei Suchalgorithmen
+     * @param analysiert Wurde der Schnittpunkt schon analysiert?
+     */
+    public void setAnalysiert(boolean analysiert){
+        this.analysiert = analysiert;
+    }
+
+    /**
+     * @return Status, ob Schnittpunkt schon analysiert wurde.
+     */
+    public boolean getAnalysiert(){
+        return this.analysiert;
     }
 
     /**
