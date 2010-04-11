@@ -187,4 +187,31 @@ public class SpielAuswertung {
          * markiert, wird versucht ein Reihnes Gebiet reinzulegen.
          */
     }
+
+    /**
+     * Diese Gruppe setzt neutrale Steine. Somit koennen alle Schnittpunkte
+     * analysiert werden.
+     */
+    private void setzeFuellsteine() {
+
+    }
+
+    /**
+     * Tricky: Wenn nach dem Fuellsteine setzen eine Gruppe nur eine Freiheit hat,
+     * aber trotzdem lebendig ist, so ist das Gebiet der Gruppe an dieser einen
+     * Freiheit leer. Dies kommt daher, dass wenn neutrale Steine gesetzt werden,
+     * diese Freiheit auch gefuellt werden muss.
+     */
+    private void findePseudoPunkte() {
+
+    }
+
+    /**
+     * Funktion, die die Auswertung intern steuert.
+     */
+    private void werteBrettAus(){
+        this.findeReihneGebiete();
+        this.setzeFuellsteine();
+        this.findePseudoPunkte();
+    }
 }
