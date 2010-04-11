@@ -127,11 +127,97 @@ public class SpielAuswertung {
     /**
      * Damit man das Feld auswerten kann, muss der Benutzer signalisieren, welche
      * Steine auf dem Brett tot sind.
-     * @param xPos X-Koordinate
-     * @param yPos Y-Koordinate
+     * Erstmal als einfache Variante. Rekursiv lohnt sich aber vielleicht doch.
+     * @param xPos X-Koordinate (von 1 bis Feldgroesse)
+     * @param yPos Y-Koordinate (von 1 bis Feldgroesse)
+     * @return Integer signalisiert wie funktion ausgegangen ist:
+     * 1  : Brett wurde erfolgreich veraendert
+     * 0  : Eingabe war Ok, aber Stein war schon gefangen: daher keine Aenderung
+     * -1 : Eingabe war falsch: Koordinaten nicht auf dem Brett!
+     * -2 : Koordinate auf die geklickt wurde ist nicht mit einem Stein belegt!
      */
-    public void markiereSteinAlsGefangen(int xPos, int yPos){
+    public int markiereSteinAlsGefangen(int xPos, int yPos){
+        /* Als erstes Testen, ob Koordinaten auf dem Brett sind, sonst abbrechen */
+        if( xPos <= 0 || xPos > this.getFeldGroesse() || yPos <= 0 || yPos > this.getFeldGroesse()){
+            return -1;
+        }
 
+        /* Nun werden die Koordinaten umgerechnet */
+        int xKoord = xPos-1;
+        int yKoord = yPos-1;
+
+        /* Als erstes muss untersucht werden, ob der Stein schon als Tot markiert
+         * wurde. Wenn ja kann abgebrochen werden*/
+        if( this.auswertungBrett[xKoord][yKoord].getBelegungswert() == Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN ||
+            this.auswertungBrett[xKoord][yKoord].getBelegungswert() == Konstante.SCHNITTPUNKT_WEISS_GEFANGEN){
+            return 0;
+        }
+
+        /* Nun noch testen, ob dort vielleicht gar kein Stein steht. */
+        if(this.auswertungBrett[xKoord][yKoord].getBelegungswert() == Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ ||
+           this.auswertungBrett[xKoord][yKoord].getBelegungswert() == Konstante.SCHNITTPUNKT_GEBIET_WEISS ||
+           this.auswertungBrett[xKoord][yKoord].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER){
+            return -2;
+        }
+
+        /* Wenn der Schnittpunkt jetzt kein lebender Stein ist, dann stimmt was
+         * mit den variablenbelegungen nicht*/
+        if(this.auswertungBrett[xKoord][yKoord].getBelegungswert() != Konstante.SCHNITTPUNKT_SCHWARZ &&
+           this.auswertungBrett[xKoord][yKoord].getBelegungswert() != Konstante.SCHNITTPUNKT_WEISS){
+            throw new UnsupportedOperationException("Variable im AuswertungsFeld unbekannt");
+        }
+
+        /* Der Schnittpunkt ist also ein (noch) lebender schwarzer od. weisser
+         * Stein. Nun wird dieser Stein, mit allen steinen der gleichen Farbe,
+         * im selben Gebiet als Tot markiert. Die Leeren Schnittpunkte werden
+         * der Gegenfarbe angerechnet. Als erstes werden Variablen definiert,
+         * die den Quelltext klarer machen.
+         */
+        int farbe = this.auswertungBrett[xKoord][yKoord].getBelegungswert();
+        int gegenfarbe = -1;
+        int gebietFarbe = -1;
+        int totFarbe = -1;
+        switch(farbe){
+            case Konstante.SCHNITTPUNKT_SCHWARZ :
+                gegenfarbe = Konstante.SCHNITTPUNKT_WEISS;
+                gebietFarbe = Konstante.SCHNITTPUNKT_GEBIET_WEISS;
+                totFarbe = Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN;
+                break;
+            case Konstante.SCHNITTPUNKT_WEISS :
+                gegenfarbe = Konstante.SCHNITTPUNKT_SCHWARZ;
+                gebietFarbe = Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ;
+                totFarbe = Konstante.SCHNITTPUNKT_WEISS_GEFANGEN;
+                break;
+            default: /* Das darf nicht passieren */
+                throw new UnsupportedOperationException("Variable im AuswertungsFeld unbekannt");
+        }
+        /* Am Anfang werden alle markierungen entfernt */
+        for(int i=0; i<this.getFeldGroesse(); i++){
+            for(int j=0; j<this.getFeldGroesse(); j++){
+                this.auswertungBrett[i][j].setMarkiert(false);
+            }
+        }
+
+        /* Alle Steine und Schnittpunkte im Gebiet (Exclusive umschliessende
+         * Steine) werden in eine Liste aufgenommen. Auf die Umschliessenden
+         * Steine wird eine Funktion angewandt, die sie als Lebendig markiert.
+         * Dabei werden sie markiert, wenn sie aufgenommen werden und koennen
+         * so nicht mehrmals aufgenommen werden. Begonnen wird mit dem
+         * angeklickten Element.
+         */
+        List<AnalyseSchnittpunkt> listeSteine = new ArrayList<AnalyseSchnittpunkt>();
+        int momElement = 0;
+        listeSteine.add(this.auswertungBrett[xKoord][yKoord]);
+        this.auswertungBrett[xKoord][yKoord].setMarkiert(true);
+
+        /* Solange die Liste nicht komplett abgearbeitet wurde untersuche weiter*/
+        do{
+            /* Nun werden die Nachbarelemente aufgenommen*/
+            momElement++;
+        }while(momElement<listeSteine.size());
+
+
+        return 0;
     }
 
     /**
@@ -501,6 +587,17 @@ public class SpielAuswertung {
      * diese Freiheit auch gefuellt werden muss.
      */
     private void findePseudoPunkte() {
+
+    }
+
+    /**
+     * Wenn eine Gruppe als Tot markiert wurd, koennen dadurch Felder als
+     * Punkte fuer den Gegner markiert bleiben.
+     * Diese Funktion findet daher Punkte, die von lebenden schwarzen und weissen
+     * Steinen umschlossen sind. Dabei werden die Gebietspunkte wieder als leer
+     * gekennzeichnet und tote Steine wieder zum leben erweckt.
+     */
+    private void findeNichtPunkte() {
 
     }
 }
