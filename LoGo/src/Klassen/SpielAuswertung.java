@@ -151,7 +151,24 @@ public class SpielAuswertung {
      * kann die Auswertung auch einfach neu gestartet werden.
      */
     public void initialisiereNeu(){
-
+        for(int i=0; i<this.getFeldGroesse(); i++){
+            for(int j=0; j<this.getFeldGroesse(); j++){
+                switch(this.eingegebenesFeld[i][j]){
+                    case Konstante.SCHNITTPUNKT_SCHWARZ :
+                        this.auswertungBrett[i][j].setBelegungswert(Konstante.SCHNITTPUNKT_SCHWARZ);
+                        break;
+                    case Konstante.SCHNITTPUNKT_WEISS :
+                        this.auswertungBrett[i][j].setBelegungswert(Konstante.SCHNITTPUNKT_WEISS);
+                        break;
+                    case Konstante.SCHNITTPUNKT_LEER :
+                        this.auswertungBrett[i][j].setBelegungswert(Konstante.SCHNITTPUNKT_LEER);
+                        break;
+                    default : /* Hierer darf man nicht kommen */
+                        throw new UnsupportedOperationException("Das eingegebene Feld enthaelt unerwartete Werte an Stelle (" + i + "|" + j + ")");
+                }
+            }
+        }
+        this.findeReineGebiete();
     }
 
     /**
@@ -168,12 +185,7 @@ public class SpielAuswertung {
         int rueckgabe[][] = new int[this.getFeldGroesse()][this.getFeldGroesse()];
         for(int i=0; i<this.getFeldGroesse(); i++){
             for(int j=0; j<this.getFeldGroesse(); j++){
-                if(this.auswertungBrett[i][j].getBelegungswert() == Konstante.SCHNITTPUNKT_NEUTRAL){
-                    rueckgabe[i][j] = Konstante.SCHNITTPUNKT_LEER;
-                }
-                else {
-                    rueckgabe[i][j] = this.auswertungBrett[i][j].getBelegungswert();
-                }
+              rueckgabe[i][j] = this.auswertungBrett[i][j].getBelegungswert();
             }
         }
         return rueckgabe;
@@ -183,6 +195,12 @@ public class SpielAuswertung {
      * Diese Funktion ist dafuer verantwortlich Gebiete am anfang der Auswertung
      * zu marikieren. Sie dient somit als Ausgangssituation der Analyse.
      * Diese Funktion macht somit einen Vorschlag zur Gebietsverteilung.
+     * Das Ergebnis dieser Funktion ist, dass das Auswertungsbrett veraendert
+     * wird und zwar sind die aenderungen wie folgt von anderen Funktionen zu
+     * interpretieren: Ist ein Schnittpunkt als schwarzes oder weisses Gebiet
+     * markiert, sind diese Punkte folglich nicht neutral. Ist nach der Funktion
+     * immer noch ein Feld als leer markiert, so kann man dieses Feld vorerst
+     * als neutral betrachten. Dies ist fuer Seki und Pseudopunkte wichtig.
      * Dafuer durfen auf dem Brett nur Felder mit Folgenden Werten sein:
      * Konstante.SCHNITTPUNKT_SCHWARZ
      * Konstante.SCHNITTPUNKT_WEISS
@@ -477,14 +495,6 @@ public class SpielAuswertung {
     }
 
     /**
-     * Diese Gruppe setzt neutrale Steine. Somit koennen alle Schnittpunkte
-     * analysiert werden.
-     */
-    private void setzeFuellsteine() {
-
-    }
-
-    /**
      * Tricky: Wenn nach dem Fuellsteine setzen eine Gruppe nur eine Freiheit hat,
      * aber trotzdem lebendig ist, so ist das Gebiet der Gruppe an dieser einen
      * Freiheit leer. Dies kommt daher, dass wenn neutrale Steine gesetzt werden,
@@ -492,13 +502,5 @@ public class SpielAuswertung {
      */
     private void findePseudoPunkte() {
 
-    }
-
-    /**
-     * Funktion, die die Auswertung intern steuert.
-     */
-    private void werteBrettAus(){
-        this.setzeFuellsteine();
-        this.findePseudoPunkte();
     }
 }
