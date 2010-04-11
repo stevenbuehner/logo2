@@ -153,7 +153,7 @@ public class SpielAuswertung {
 
     /**
      * Um das Ergebnis der Auswertung sichtbar zu machen, wird ein Feld zurueckgegeben,
-     * bei dem man sieht, welche Teile des Brettes schon wie ausgewertet wurden
+     * bei dem man sieht, welche Teile des Brettes schon wie ausgewertet wurden.
      * @return Brett mit folgenden moeglichen Werten:
      * - Konstante.SCHNITTPUNKT_SCHWARZ
      * - Konstante.SCHNITTPUNKT_WEISS
@@ -162,8 +162,29 @@ public class SpielAuswertung {
      * - Konstante.SCHNITTPUNKT_GEBIET_WEISS
      */
     public int[][] getAusgewertetesFeld(){
-        // damit NetBeans die klappe haelt
-        int a[][] = new int[1][1];
-        return a;
+        int rueckgabe[][] = new int[this.getFeldGroesse()][this.getFeldGroesse()];
+        for(int i=0; i<this.getFeldGroesse(); i++){
+            for(int j=0; j<this.getFeldGroesse(); j++){
+                if(this.auswertungBrett[i][j].getBelegungswert() == Konstante.SCHNITTPUNKT_NEUTRAL){
+                    rueckgabe[i][j] = Konstante.SCHNITTPUNKT_LEER;
+                }
+                else {
+                    rueckgabe[i][j] = this.auswertungBrett[i][j].getBelegungswert();
+                }
+            }
+        }
+        return rueckgabe;
+    }
+
+    /**
+     * Diese Funktion ist dafuer verantwortlich Gebiete am anfang der Auswertung
+     * zu marikieren. Sie dient somit als Ausgangssituation der Analyse.
+     * Diese Funktion macht somit einen Vorschlag zur Gebietsverteilung.
+     */
+    private void findeReihneGebiete() {
+        /**
+         * Hier muss jeder Schnittpunkt untersucht werden. Ist dieser als Leer
+         * markiert, wird versucht ein Reihnes Gebiet reinzulegen.
+         */
     }
 }
