@@ -121,7 +121,7 @@ public class SpielAuswertung {
                 }
             }
         }
-        this.findeReineGebiete();
+        this.findeGebiete();
     }
 
     /**
@@ -174,7 +174,7 @@ public class SpielAuswertung {
                 }
             }
         }
-        this.findeReineGebiete();
+        this.findeGebiete();
     }
 
     /**
@@ -198,24 +198,353 @@ public class SpielAuswertung {
     }
 
     /**
-     * Diese Funktion ist dafuer verantwortlich reine Gebiete (also eindeutige)
-     * zu marikieren. Sie kann jederzeit angewandt werden.
-     * Diese Funktion macht somit einen Vorschlag zur Gebietsverteilung und
-     * erkennt, wenn reines Gebiet beim Gefangenenklicken falsch gesetzt wurde.
-     * Das Ergebnis dieser Funktion ist, dass das Auswertungsbrett veraendert
-     * wird und zwar sind die aenderungen wie folgt von anderen Funktionen zu
-     * interpretieren: Ist ein Schnittpunkt als schwarzes oder weisses Gebiet
-     * markiert, sind diese Punkte folglich nicht neutral. Ist nach der Funktion
-     * immer noch ein Feld als leer markiert, so kann man dieses Feld vorerst
-     * als neutral betrachten. Dies ist fuer Seki und Pseudopunkte wichtig.
-     * Dafuer durfen auf dem Brett nur Felder mit Folgenden Werten sein:
-     * Konstante.SCHNITTPUNKT_SCHWARZ
-     * Konstante.SCHNITTPUNKT_WEISS
-     * Konstante.SCHNITTPUNKT_LEER
-     * Das bedeutet die Funktion wird nur beim initialisieren Aufgerufen!
+     * Diese Funktion findet Gebiete. Das bedeutet sich sucht nach "Flecken"
+     * auf dem Brett, die nur von einer Steinfarbe (lebende) umschlossen sind.
+     *
+     * Die suche beginnt bei einem leeren Schnittpunkt und setzt dann mit
+     * Breitensuche fort.
      */
-    private void findeReineGebiete() {
-    
+    private void findeGebiete() {
+        /* Als erstes werden alle Schnittpunkte als nicht analysiert und nicht
+         * markiert gekennzeichnet. */
+        for(int i=0; i<this.getFeldGroesse(); i++){
+            for(int j=0; j<this.getFeldGroesse(); j++){
+                this.auswertungBrett[i][j].setAnalysiert(false);
+                this.auswertungBrett[i][j].setMarkiert(false);
+            }
+        }
+
+
+        int farbe = -1;
+        boolean gebietMarkieren = true;
+        List<AnalyseSchnittpunkt> listeSteine = new ArrayList<AnalyseSchnittpunkt>();
+        int momElement = 0;
+
+        /* Jetzt wird jeder Schnittpunkt angesehen und versucht von ihm aus
+         * eine Breitensuche zu starten
+         */
+        for(int i=0; i<this.getFeldGroesse(); i++){
+            for(int j=0; j<this.getFeldGroesse(); j++){
+                /* Vorraussetzung, fuer die Analyse ist, das der Schnittpunkt
+                 * noch nicht analysiert wurd. Ist der Schnittpunkt Leer, beginnt
+                 * eine normale suche. Eine suche darf nur bei einem Leeren Feld
+                 * beginnen. Findet man waehrend der suche tote Steine
+                 */
+                if(this.auswertungBrett[i][j].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER  &&
+                   this.auswertungBrett[i][j].getAnalysiert() == false){
+                   /* Nun beginnt die suche bei diesem Schnittpunkt */
+                   farbe = -1;            // Farbe am anfang unbekannt
+                   gebietMarkieren = true;
+                   momElement = 0;
+
+                   /* Als erstes wird der Schnittpunkt (i,j) aufgenommen. Von
+                    * hier aus beginnt die Suche */
+                   listeSteine.add(this.auswertungBrett[i][j]);
+                   this.auswertungBrett[i][j].setMarkiert(true);
+
+                   /* Solange die Liste nicht abgearbeitet wurde, suche weiter */
+                   do{
+                       /* Nun werden nacheinander die Nachbarsteine durchsucht.
+                        * Vorrausgesetzt, er ist leer und nicht markiert, wird
+                        * er aufgenommen.
+                        * Findet man einen lebenden Stein, wird die Farbe und
+                        * vielleicht gebietMarkieren veraender.
+                        * Findet man einen toten Stein, oder einen als Gebiet
+                        * markierten Punkt, wird gebietMarkieren als false
+                        * gesetzt und am Ende wird somit nichts gemacht. Tote
+                        * Steine und Gebiet-Markierte-Punkte werden auch nicht
+                        * in die Liste aufgenommen.
+                        */
+
+                       /* 1. Linke Seite */
+                       if(listeSteine.get(momElement).getXPos()!=0){
+                           if(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_LEER &&
+                              this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getMarkiert()
+                                   == false){
+                               /* Stein aufnehmen */
+                               listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()]);
+                               this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
+                           }
+                           /* Ist nachbarstein lebendig */
+                           else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_SCHWARZ ||
+                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_WEISS){
+                                   switch(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()){
+                                       case Konstante.SCHNITTPUNKT_SCHWARZ :
+                                           switch(farbe){
+                                               case -1:
+                                                   farbe = Konstante.SCHNITTPUNKT_SCHWARZ;
+                                                   break;
+                                               case Konstante.SCHNITTPUNKT_SCHWARZ :
+                                                   /* nichts */
+                                                   break;
+                                               case Konstante.SCHNITTPUNKT_WEISS :
+                                                   gebietMarkieren = false;
+                                                   break;
+                                               default: /* Darf nicht passieren */
+                                                   throw new UnsupportedOperationException("Variable farbe enthaelt unerwartete Werte -> " + farbe);
+                                           }
+                                           break;
+                                       case Konstante.SCHNITTPUNKT_WEISS :
+                                           switch(farbe){
+                                               case -1:
+                                                   farbe = Konstante.SCHNITTPUNKT_WEISS;
+                                                   break;
+                                               case Konstante.SCHNITTPUNKT_SCHWARZ :
+                                                   gebietMarkieren = false;
+                                                   break;
+                                               case Konstante.SCHNITTPUNKT_WEISS :
+                                                   /* nichts */
+                                                   break;
+                                               default: /* Darf nicht passieren */
+                                                   throw new UnsupportedOperationException("Variable farbe enthaelt unerwartete Werte -> " + farbe);
+                                           }
+                                           break;
+                                       default : /* Darf nicht passieren */
+                                           throw new UnsupportedOperationException("Fehler in switch case, eigentlich muesste hier SCHNITTPUNKT_SCHWARZ oder SCHNITTPUNKT_WEISS stehen");
+                                   }
+                           }
+
+                           /* Komische Werte abfangen */
+                           else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                                            == Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ ||
+                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                                            == Konstante.SCHNITTPUNKT_GEBIET_WEISS ||
+                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                                            == Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN ||
+                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                                            == Konstante.SCHNITTPUNKT_WEISS_GEFANGEN){
+                               gebietMarkieren = false;
+                           }
+                       }
+
+                       /* 2. Rechte Seite */
+                       if(listeSteine.get(momElement).getXPos()!=this.getFeldGroesse()-1){
+                           if(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_LEER &&
+                              this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getMarkiert()
+                                   == false){
+                               /* Stein aufnehmen */
+                               listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()]);
+                               this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
+                           }
+                           /* Ist nachbarstein lebendig */
+                           else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_SCHWARZ ||
+                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_WEISS){
+                                   switch(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()){
+                                       case Konstante.SCHNITTPUNKT_SCHWARZ :
+                                           switch(farbe){
+                                               case -1:
+                                                   farbe = Konstante.SCHNITTPUNKT_SCHWARZ;
+                                                   break;
+                                               case Konstante.SCHNITTPUNKT_SCHWARZ :
+                                                   /* nichts */
+                                                   break;
+                                               case Konstante.SCHNITTPUNKT_WEISS :
+                                                   gebietMarkieren = false;
+                                                   break;
+                                               default: /* Darf nicht passieren */
+                                                   throw new UnsupportedOperationException("Variable farbe enthaelt unerwartete Werte -> " + farbe);
+                                           }
+                                           break;
+                                       case Konstante.SCHNITTPUNKT_WEISS :
+                                           switch(farbe){
+                                               case -1:
+                                                   farbe = Konstante.SCHNITTPUNKT_WEISS;
+                                                   break;
+                                               case Konstante.SCHNITTPUNKT_SCHWARZ :
+                                                   gebietMarkieren = false;
+                                                   break;
+                                               case Konstante.SCHNITTPUNKT_WEISS :
+                                                   /* nichts */
+                                                   break;
+                                               default: /* Darf nicht passieren */
+                                                   throw new UnsupportedOperationException("Variable farbe enthaelt unerwartete Werte -> " + farbe);
+                                           }
+                                           break;
+                                       default : /* Darf nicht passieren */
+                                           throw new UnsupportedOperationException("Fehler in switch case, eigentlich muesste hier SCHNITTPUNKT_SCHWARZ oder SCHNITTPUNKT_WEISS stehen");
+                                   }
+                           }
+
+                           /* Komische Werte abfangen */
+                           else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                                            == Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ ||
+                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                                            == Konstante.SCHNITTPUNKT_GEBIET_WEISS ||
+                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                                            == Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN ||
+                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                                            == Konstante.SCHNITTPUNKT_WEISS_GEFANGEN){
+                               gebietMarkieren = false;
+                           }
+                       }
+
+                       /* 3. Untere Seite */
+                       if(listeSteine.get(momElement).getYPos()!=0){
+                           if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_LEER &&
+                              this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getMarkiert()
+                                   == false){
+                               /* Stein aufnehmen */
+                               listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1]);
+                               this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].setMarkiert(true);
+                           }
+                           /* Ist nachbarstein lebendig */
+                           else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_SCHWARZ ||
+                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_WEISS){
+                                   switch(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()){
+                                       case Konstante.SCHNITTPUNKT_SCHWARZ :
+                                           switch(farbe){
+                                               case -1:
+                                                   farbe = Konstante.SCHNITTPUNKT_SCHWARZ;
+                                                   break;
+                                               case Konstante.SCHNITTPUNKT_SCHWARZ :
+                                                   /* nichts */
+                                                   break;
+                                               case Konstante.SCHNITTPUNKT_WEISS :
+                                                   gebietMarkieren = false;
+                                                   break;
+                                               default: /* Darf nicht passieren */
+                                                   throw new UnsupportedOperationException("Variable farbe enthaelt unerwartete Werte -> " + farbe);
+                                           }
+                                           break;
+                                       case Konstante.SCHNITTPUNKT_WEISS :
+                                           switch(farbe){
+                                               case -1:
+                                                   farbe = Konstante.SCHNITTPUNKT_WEISS;
+                                                   break;
+                                               case Konstante.SCHNITTPUNKT_SCHWARZ :
+                                                   gebietMarkieren = false;
+                                                   break;
+                                               case Konstante.SCHNITTPUNKT_WEISS :
+                                                   /* nichts */
+                                                   break;
+                                               default: /* Darf nicht passieren */
+                                                   throw new UnsupportedOperationException("Variable farbe enthaelt unerwartete Werte -> " + farbe);
+                                           }
+                                           break;
+                                       default : /* Darf nicht passieren */
+                                           throw new UnsupportedOperationException("Fehler in switch case, eigentlich muesste hier SCHNITTPUNKT_SCHWARZ oder SCHNITTPUNKT_WEISS stehen");
+                                   }
+                           }
+
+                           /* Komische Werte abfangen */
+                           else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                                            == Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ ||
+                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                                            == Konstante.SCHNITTPUNKT_GEBIET_WEISS ||
+                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                                            == Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN ||
+                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                                            == Konstante.SCHNITTPUNKT_WEISS_GEFANGEN){
+                               gebietMarkieren = false;
+                           }
+                       }
+
+                       /* 4. Obere Seite */
+                       if(listeSteine.get(momElement).getYPos()!=0){
+                           if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_LEER &&
+                              this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getMarkiert()
+                                   == false){
+                               /* Stein aufnehmen */
+                               listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1]);
+                               this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].setMarkiert(true);
+                           }
+                           /* Ist nachbarstein lebendig */
+                           else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_SCHWARZ ||
+                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_WEISS){
+                                   switch(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()){
+                                       case Konstante.SCHNITTPUNKT_SCHWARZ :
+                                           switch(farbe){
+                                               case -1:
+                                                   farbe = Konstante.SCHNITTPUNKT_SCHWARZ;
+                                                   break;
+                                               case Konstante.SCHNITTPUNKT_SCHWARZ :
+                                                   /* nichts */
+                                                   break;
+                                               case Konstante.SCHNITTPUNKT_WEISS :
+                                                   gebietMarkieren = false;
+                                                   break;
+                                               default: /* Darf nicht passieren */
+                                                   throw new UnsupportedOperationException("Variable farbe enthaelt unerwartete Werte -> " + farbe);
+                                           }
+                                           break;
+                                       case Konstante.SCHNITTPUNKT_WEISS :
+                                           switch(farbe){
+                                               case -1:
+                                                   farbe = Konstante.SCHNITTPUNKT_WEISS;
+                                                   break;
+                                               case Konstante.SCHNITTPUNKT_SCHWARZ :
+                                                   gebietMarkieren = false;
+                                                   break;
+                                               case Konstante.SCHNITTPUNKT_WEISS :
+                                                   /* nichts */
+                                                   break;
+                                               default: /* Darf nicht passieren */
+                                                   throw new UnsupportedOperationException("Variable farbe enthaelt unerwartete Werte -> " + farbe);
+                                           }
+                                           break;
+                                       default : /* Darf nicht passieren */
+                                           throw new UnsupportedOperationException("Fehler in switch case, eigentlich muesste hier SCHNITTPUNKT_SCHWARZ oder SCHNITTPUNKT_WEISS stehen");
+                                   }
+                           }
+
+                           /* Komische Werte abfangen */
+                           else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                                            == Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ ||
+                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                                            == Konstante.SCHNITTPUNKT_GEBIET_WEISS ||
+                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                                            == Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN ||
+                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                                            == Konstante.SCHNITTPUNKT_WEISS_GEFANGEN){
+                               throw new UnsupportedOperationException("Bei suche von reinen Gebieten ging man von unmarkierten Schnittpunkt aus und hat schon Markierte Steine / Gebiete gefunden -> Fehler");
+                           }
+                       }
+                       /* Alle Seiten untersucht. Nun zum naechsten Stein */
+                       listeSteine.get(momElement).setAnalysiert(true);
+                       momElement++;
+                   }while(momElement<listeSteine.size());
+                   /* Jetzt sind alle Steine aufgenommen worden. In abhaengigkeit
+                    * von gebietMarkieren wird fortgefahren. Wenn man das gebiet
+                    * Markieren soll, muss noch nach der farbe gefragt werden.
+                    * Diese darf dabei nicht undefiniert sein. (leeres Brett)*/
+                   if(gebietMarkieren == true && farbe != -1){
+                       int markierfarbe;
+                       if(farbe == Konstante.SCHNITTPUNKT_SCHWARZ) {
+                           markierfarbe = Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ;
+                       }
+                       else if(farbe == Konstante.SCHNITTPUNKT_WEISS) {
+                           markierfarbe = Konstante.SCHNITTPUNKT_GEBIET_WEISS;
+                       }
+                       else {
+                           /* Wenn unerwartet, einfach als Leer markieren! */
+                           markierfarbe = Konstante.SCHNITTPUNKT_LEER;
+                       }
+                       for(int k=listeSteine.size()-1; k>=0; k--){
+                           this.auswertungBrett[listeSteine.get(k).getXPos()][listeSteine.get(k).getYPos()].setBelegungswert(markierfarbe);
+                           listeSteine.remove(k);
+                       }
+                   }
+                   else {
+                       for(int k=listeSteine.size()-1; k>=0; k--){
+                           this.auswertungBrett[listeSteine.get(k).getXPos()][listeSteine.get(k).getYPos()].setBelegungswert(Konstante.SCHNITTPUNKT_LEER);
+                           listeSteine.remove(k);
+                       }
+                   }
+                }
+            }
+        }
     }
 
     /**
