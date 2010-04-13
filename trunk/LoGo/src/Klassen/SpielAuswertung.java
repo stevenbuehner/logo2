@@ -302,7 +302,8 @@ public class SpielAuswertung {
                         == farbe ||
                     this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
                         == Konstante.SCHNITTPUNKT_GEBIET_WEISS) &&
-                    this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getMarkiert() == false){
+                    this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getMarkiert()
+                        == false){
                     listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1]);
                     this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].setMarkiert(true);
                 }
@@ -600,7 +601,6 @@ public class SpielAuswertung {
             }
         }
 
-
         int farbe = -1;
         boolean gebietMarkieren = true;
         List<AnalyseSchnittpunkt> listeSteine = new ArrayList<AnalyseSchnittpunkt>();
@@ -652,13 +652,18 @@ public class SpielAuswertung {
                                listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()]);
                                this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
                            }
-                           /* Ist nachbarstein lebendig */
+                           /* Ist nachbarstein lebendig oder tot */
                            else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
                                    == Konstante.SCHNITTPUNKT_SCHWARZ ||
                                    this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                                   == Konstante.SCHNITTPUNKT_WEISS){
+                                   == Konstante.SCHNITTPUNKT_WEISS ||
+                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN ||
+                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_WEISS_GEFANGEN){
                                    switch(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()){
                                        case Konstante.SCHNITTPUNKT_SCHWARZ :
+                                       case Konstante.SCHNITTPUNKT_WEISS_GEFANGEN:
                                            switch(farbe){
                                                case -1:
                                                    farbe = Konstante.SCHNITTPUNKT_SCHWARZ;
@@ -674,6 +679,7 @@ public class SpielAuswertung {
                                            }
                                            break;
                                        case Konstante.SCHNITTPUNKT_WEISS :
+                                       case Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN:
                                            switch(farbe){
                                                case -1:
                                                    farbe = Konstante.SCHNITTPUNKT_WEISS;
@@ -699,41 +705,6 @@ public class SpielAuswertung {
                                    this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
                                             == Konstante.SCHNITTPUNKT_GEBIET_WEISS){
                                gebietMarkieren = false;
-                           }
-
-                           else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                                            == Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN ||
-                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                                            == Konstante.SCHNITTPUNKT_WEISS_GEFANGEN){
-                               switch(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()){
-                                   case Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN:
-                                       switch(farbe){
-                                           case -1:
-                                               farbe = Konstante.SCHNITTPUNKT_WEISS;
-                                               break;
-                                           case Konstante.SCHNITTPUNKT_SCHWARZ:
-                                               gebietMarkieren = false;
-                                               break;
-                                           case Konstante.SCHNITTPUNKT_WEISS:
-                                               /* nichts */
-                                               break;
-                                           default : /* Darf nicht passieren */
-                                               throw new UnsupportedOperationException("Farbe falsch gesetzt");
-                                       }
-                                       break;
-                                   case Konstante.SCHNITTPUNKT_WEISS_GEFANGEN:
-                                       switch(farbe){
-                                           case -1:
-                                               farbe = Konstante.SCHNITTPUNKT_SCHWARZ;
-                                               break;
-                                           case Konstante.SCHNITTPUNKT_SCHWARZ:
-                                               /* nichts */
-                                               break;
-                                           case Konstante.SCHNITTPUNKT_WEISS:
-                                               gebietMarkieren = false;
-                                       }
-                                       break;
-                               }
                            }
                        }
 
@@ -747,13 +718,19 @@ public class SpielAuswertung {
                                listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()]);
                                this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
                            }
-                           /* Ist nachbarstein lebendig */
+
+                           /* Ist nachbarstein lebendig oder tot */
                            else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
                                    == Konstante.SCHNITTPUNKT_SCHWARZ ||
                                    this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                                   == Konstante.SCHNITTPUNKT_WEISS){
+                                   == Konstante.SCHNITTPUNKT_WEISS ||
+                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN ||
+                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_WEISS_GEFANGEN){
                                    switch(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()){
                                        case Konstante.SCHNITTPUNKT_SCHWARZ :
+                                       case Konstante.SCHNITTPUNKT_WEISS_GEFANGEN:
                                            switch(farbe){
                                                case -1:
                                                    farbe = Konstante.SCHNITTPUNKT_SCHWARZ;
@@ -769,6 +746,7 @@ public class SpielAuswertung {
                                            }
                                            break;
                                        case Konstante.SCHNITTPUNKT_WEISS :
+                                       case Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN:
                                            switch(farbe){
                                                case -1:
                                                    farbe = Konstante.SCHNITTPUNKT_WEISS;
@@ -796,40 +774,7 @@ public class SpielAuswertung {
                                gebietMarkieren = false;
                            }
 
-                           else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                                            == Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN ||
-                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                                            == Konstante.SCHNITTPUNKT_WEISS_GEFANGEN){
-                                                              switch(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()){
-                                   case Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN:
-                                       switch(farbe){
-                                           case -1:
-                                               farbe = Konstante.SCHNITTPUNKT_WEISS;
-                                               break;
-                                           case Konstante.SCHNITTPUNKT_SCHWARZ:
-                                               gebietMarkieren = false;
-                                               break;
-                                           case Konstante.SCHNITTPUNKT_WEISS:
-                                               /* nichts */
-                                               break;
-                                           default : /* Darf nicht passieren */
-                                               throw new UnsupportedOperationException("Farbe falsch gesetzt");
-                                       }
-                                       break;
-                                   case Konstante.SCHNITTPUNKT_WEISS_GEFANGEN:
-                                       switch(farbe){
-                                           case -1:
-                                               farbe = Konstante.SCHNITTPUNKT_SCHWARZ;
-                                               break;
-                                           case Konstante.SCHNITTPUNKT_SCHWARZ:
-                                               /* nichts */
-                                               break;
-                                           case Konstante.SCHNITTPUNKT_WEISS:
-                                               gebietMarkieren = false;
-                                       }
-                                       break;
-                               }
-                           }
+                           
                        }
 
                        /* 3. Untere Seite */
@@ -842,13 +787,19 @@ public class SpielAuswertung {
                                listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1]);
                                this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].setMarkiert(true);
                            }
-                           /* Ist nachbarstein lebendig */
+                           
+                           /* Ist nachbarstein lebendig oder tot */
                            else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
                                    == Konstante.SCHNITTPUNKT_SCHWARZ ||
                                    this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
-                                   == Konstante.SCHNITTPUNKT_WEISS){
+                                   == Konstante.SCHNITTPUNKT_WEISS ||
+                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN ||
+                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_WEISS_GEFANGEN){
                                    switch(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()){
                                        case Konstante.SCHNITTPUNKT_SCHWARZ :
+                                       case Konstante.SCHNITTPUNKT_WEISS_GEFANGEN:
                                            switch(farbe){
                                                case -1:
                                                    farbe = Konstante.SCHNITTPUNKT_SCHWARZ;
@@ -864,6 +815,7 @@ public class SpielAuswertung {
                                            }
                                            break;
                                        case Konstante.SCHNITTPUNKT_WEISS :
+                                       case Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN:
                                            switch(farbe){
                                                case -1:
                                                    farbe = Konstante.SCHNITTPUNKT_WEISS;
@@ -889,41 +841,6 @@ public class SpielAuswertung {
                                    this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
                                             == Konstante.SCHNITTPUNKT_GEBIET_WEISS){
                                gebietMarkieren = false;
-                           }
-
-                           else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
-                                            == Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN ||
-                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
-                                            == Konstante.SCHNITTPUNKT_WEISS_GEFANGEN){
-                                                              switch(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()){
-                                   case Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN:
-                                       switch(farbe){
-                                           case -1:
-                                               farbe = Konstante.SCHNITTPUNKT_WEISS;
-                                               break;
-                                           case Konstante.SCHNITTPUNKT_SCHWARZ:
-                                               gebietMarkieren = false;
-                                               break;
-                                           case Konstante.SCHNITTPUNKT_WEISS:
-                                               /* nichts */
-                                               break;
-                                           default : /* Darf nicht passieren */
-                                               throw new UnsupportedOperationException("Farbe falsch gesetzt");
-                                       }
-                                       break;
-                                   case Konstante.SCHNITTPUNKT_WEISS_GEFANGEN:
-                                       switch(farbe){
-                                           case -1:
-                                               farbe = Konstante.SCHNITTPUNKT_SCHWARZ;
-                                               break;
-                                           case Konstante.SCHNITTPUNKT_SCHWARZ:
-                                               /* nichts */
-                                               break;
-                                           case Konstante.SCHNITTPUNKT_WEISS:
-                                               gebietMarkieren = false;
-                                       }
-                                       break;
-                               }
                            }
                        }
 
@@ -937,13 +854,19 @@ public class SpielAuswertung {
                                listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1]);
                                this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].setMarkiert(true);
                            }
-                           /* Ist nachbarstein lebendig */
+
+                           /* Ist nachbarstein lebendig oder tot */
                            else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
                                    == Konstante.SCHNITTPUNKT_SCHWARZ ||
                                    this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
-                                   == Konstante.SCHNITTPUNKT_WEISS){
+                                   == Konstante.SCHNITTPUNKT_WEISS ||
+                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN ||
+                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_WEISS_GEFANGEN){
                                    switch(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()){
                                        case Konstante.SCHNITTPUNKT_SCHWARZ :
+                                       case Konstante.SCHNITTPUNKT_WEISS_GEFANGEN:
                                            switch(farbe){
                                                case -1:
                                                    farbe = Konstante.SCHNITTPUNKT_SCHWARZ;
@@ -959,6 +882,7 @@ public class SpielAuswertung {
                                            }
                                            break;
                                        case Konstante.SCHNITTPUNKT_WEISS :
+                                       case Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN:
                                            switch(farbe){
                                                case -1:
                                                    farbe = Konstante.SCHNITTPUNKT_WEISS;
@@ -984,41 +908,6 @@ public class SpielAuswertung {
                                    this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
                                             == Konstante.SCHNITTPUNKT_GEBIET_WEISS){
                                gebietMarkieren = false;
-                           }
-
-                           else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
-                                            == Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN ||
-                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
-                                            == Konstante.SCHNITTPUNKT_WEISS_GEFANGEN){
-                                                              switch(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()){
-                                   case Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN:
-                                       switch(farbe){
-                                           case -1:
-                                               farbe = Konstante.SCHNITTPUNKT_WEISS;
-                                               break;
-                                           case Konstante.SCHNITTPUNKT_SCHWARZ:
-                                               gebietMarkieren = false;
-                                               break;
-                                           case Konstante.SCHNITTPUNKT_WEISS:
-                                               /* nichts */
-                                               break;
-                                           default : /* Darf nicht passieren */
-                                               throw new UnsupportedOperationException("Farbe falsch gesetzt");
-                                       }
-                                       break;
-                                   case Konstante.SCHNITTPUNKT_WEISS_GEFANGEN:
-                                       switch(farbe){
-                                           case -1:
-                                               farbe = Konstante.SCHNITTPUNKT_SCHWARZ;
-                                               break;
-                                           case Konstante.SCHNITTPUNKT_SCHWARZ:
-                                               /* nichts */
-                                               break;
-                                           case Konstante.SCHNITTPUNKT_WEISS:
-                                               gebietMarkieren = false;
-                                       }
-                                       break;
-                               }
                            }
                        }
                        /* Alle Seiten untersucht. Nun zum naechsten Stein */
