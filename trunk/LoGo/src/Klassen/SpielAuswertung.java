@@ -292,7 +292,7 @@ public class SpielAuswertung {
 
             }
 
-            /* Untere Seite */
+            /* 3. Untere Seite */
             if( listeSteine.get(momElement).getYPos() != 0){
                 if((this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
                         == Konstante.SCHNITTPUNKT_LEER ||
@@ -383,7 +383,158 @@ public class SpielAuswertung {
      * @param yPos Y-Koordinate
      */
     private int markiereSteinAlsNichtGefangen(int xPos, int yPos){
-     return 1;
+        /* Der Stein ist auf jeden Fall ein toter Stein auf dem Brett
+         * Nun muessen einige variablen gesetzt werden */
+        int farbe = -1;
+        int gegenfarbe = -1;
+        int farbeGefangen = -1;
+        int gegenfarbeGefangen = -1;
+        switch (this.auswertungBrett[xPos][yPos].getBelegungswert()){
+            case Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN:
+                farbe = Konstante.SCHNITTPUNKT_SCHWARZ;
+                gegenfarbe = Konstante.SCHNITTPUNKT_WEISS;
+                farbeGefangen = Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN;
+                gegenfarbeGefangen = Konstante.SCHNITTPUNKT_WEISS_GEFANGEN;
+                break;
+            case Konstante.SCHNITTPUNKT_WEISS_GEFANGEN:
+                farbe = Konstante.SCHNITTPUNKT_WEISS;
+                gegenfarbe = Konstante.SCHNITTPUNKT_SCHWARZ;
+                farbeGefangen = Konstante.SCHNITTPUNKT_WEISS_GEFANGEN;
+                gegenfarbeGefangen = Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN;
+                break;
+            default: /* darf nicht passieren */
+                 throw new UnsupportedOperationException("Farbe des Steins falsch definiert");
+        }
+        List<AnalyseSchnittpunkt> listeSteine = new ArrayList<AnalyseSchnittpunkt>();
+        int momElement = 0;
+
+        /* Der erste Stein wird auf jeden fall aufgenommen */
+        listeSteine.add(this.auswertungBrett[xPos][yPos]);
+        this.auswertungBrett[xPos][yPos].setMarkiert(true);
+
+        /* Solange die Liste noch nicht durchsucht ist: Weitersuchen */
+        do{
+            /* Nun werden die Nachbarn untersucht. Sind diese von der gleichen
+             * Farbe und gefangen, so werden sie aufgenommen. Sind sie schon
+             * lebendig, werden sie ignoriert.
+             * Ist der nachbar leer oder gebietsmarkiert, wird er aufgenommen
+             * Ist der Nachbar von der Anderen Farbe,  wird nichts gemacht
+             */
+
+            /* 1. Linker Nachbar */
+            if(listeSteine.get(momElement).getXPos()!=0){
+                if( (this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == farbeGefangen ||
+                     this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ ||
+                     this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == Konstante.SCHNITTPUNKT_GEBIET_WEISS ||
+                     this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == Konstante.SCHNITTPUNKT_LEER) &&
+                     this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getMarkiert()
+                        == false){
+                    listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()]);
+                    this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == farbe ||
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == gegenfarbe ||
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == gegenfarbeGefangen){
+                    /* nichts */
+                }
+            }
+
+            /* 2. Rechte Seite */
+            if(listeSteine.get(momElement).getXPos()!=this.getFeldGroesse()-1){
+                if( (this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == farbeGefangen ||
+                     this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ ||
+                     this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == Konstante.SCHNITTPUNKT_GEBIET_WEISS ||
+                     this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == Konstante.SCHNITTPUNKT_LEER) &&
+                     this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getMarkiert()
+                        == false){
+                    listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()]);
+                    this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == farbe ||
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == gegenfarbe ||
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == gegenfarbeGefangen){
+                    /* nichts */
+                }
+            }
+
+            /* 3. Untere Seite */
+            if(listeSteine.get(momElement).getYPos()!=0){
+                if( (this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                        == farbeGefangen ||
+                     this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                        == Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ ||
+                     this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                        == Konstante.SCHNITTPUNKT_GEBIET_WEISS ||
+                     this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                        == Konstante.SCHNITTPUNKT_LEER) &&
+                     this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getMarkiert()
+                        == false){
+                    listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1]);
+                    this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].setMarkiert(true);
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                        == farbe ||
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                        == gegenfarbe ||
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                        == gegenfarbeGefangen){
+                    /* nichts */
+                }
+            }
+
+            /* 4. Obere Seite */
+            if(listeSteine.get(momElement).getYPos()!=this.getFeldGroesse()-1){
+                if( (this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                        == farbeGefangen ||
+                     this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                        == Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ ||
+                     this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                        == Konstante.SCHNITTPUNKT_GEBIET_WEISS ||
+                     this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                        == Konstante.SCHNITTPUNKT_LEER) &&
+                     this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getMarkiert()
+                        == false){
+                    listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1]);
+                    this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].setMarkiert(true);
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                        == farbe ||
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                        == gegenfarbe ||
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                        == gegenfarbeGefangen){
+                    /* nichts */
+                }
+            }
+            this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()].setAnalysiert(true);
+            momElement++;
+        }while(momElement<listeSteine.size());
+        /* Alle Felder sind durchsucht */
+        for(int k=listeSteine.size()-1; k>=0; k--)
+        {
+            if(listeSteine.get(k).getBelegungswert() != farbeGefangen){
+                this.auswertungBrett[listeSteine.get(k).getXPos()][listeSteine.get(k).getYPos()].setBelegungswert(farbe);
+            }
+            else {
+                this.auswertungBrett[listeSteine.get(k).getXPos()][listeSteine.get(k).getYPos()].setBelegungswert(Konstante.SCHNITTPUNKT_LEER);
+            }
+            listeSteine.remove(k);
+        }
+        return 1;
     }
 
     /**
