@@ -15,7 +15,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Vector;
 
-public abstract class SpielStein extends Rectangle2D.Double implements Movable, Drawable {
+public class SpielStein extends Rectangle2D.Double implements Movable, Drawable {
 	long			delay;						// Bewegungsgeschwindigkeit
 	protected boolean	visible			= true;
 
