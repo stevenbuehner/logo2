@@ -6,9 +6,12 @@ import interfaces.Movable;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.Vector;
 
 public abstract class SpielStein extends Rectangle2D.Double implements Movable, Drawable {
@@ -25,20 +28,92 @@ public abstract class SpielStein extends Rectangle2D.Double implements Movable, 
 	protected int		loop_from		= 0;
 	protected int		loop_to			= 0;
 
+        // Zum merken, wo die urspruengliche Startposition war.
+        // Beim Aufruf von Reset, kann die Position hierauf zurueckgesetzt werden
 	protected double	startPositionX;
 	protected double	startPositionY;
 
         // Für Bewegungen
-	protected double	endPositionX;				
-	protected double	endPositionY;	
+	protected double	endPositionX;
+	protected double	endPositionY;
 
+        // Die Grafiken die anzuzeigen sind
+        protected BufferedImage[]	pics;
+
+        // Transformation und Rotationsvariablen
+	protected int                   angle;
+	protected int			rotationx;
+	protected int			rotationy;
+	protected AffineTransform       at;
+
+
+
+        // Objekt wird demnaechst geloescht
 	protected boolean	remove			= false;
 
-	public SpielStein(double x, double y, long delay) {
-		this.startPositionX = x;
+        /**
+         *
+         * Standardkonstruktor, bei dem gleich mehrere einzelne Bilder als Array
+         * (= spaetere Animation) uebergeben werden.
+         * @param i Ein Array mit den Bildern die das Objekt verarbeiten soll
+         * @param x X-Startposition der Animation (linke obere Ecke als Ausgangspunkt)
+         * @param y Y-Startposition der Animation (linke obere Ecke als Ausgangspunkt)
+         * @param delay Geschwindigkeit, mit der die Animationsbilder rotieren sollen
+         *
+         */
+        public SpielStein(BufferedImage[] i, double x, double y, long delay) {
+                this.startPositionX = x;
 		this.startPositionY = y;
 		this.delay = delay;
+
+                // Grafiken zuweisen
+		pics = i;
+
+                // Position des Rechtecks
+		this.x = x;
+		this.y = y;
+
+		this.width = pics[0].getWidth();
+		this.height = pics[0].getHeight();
+		loop_from = 0;
+		loop_to = pics.length - 1;
+		at = new AffineTransform();
+		rotationx = (int) (width / 2);
+		rotationy = (int) (height / 2);
 	}
+
+         /**
+         *
+         * Standardkonstruktor, bei dem nur ein Bild uebergeben wird. Es wird
+         * also spaeter nicht animiert
+         * @param i Ein Array mit den Bildern die das Objekt verarbeiten soll
+         * @param x X-Startposition der Animation (linke obere Ecke als Ausgangspunkt)
+         * @param y Y-Startposition der Animation (linke obere Ecke als Ausgangspunkt)
+         * @param delay Geschwindigkeit, mit der die Animationsbilder rotieren sollen
+         *
+         */
+        public SpielStein(BufferedImage i, double x, double y, long delay) {
+                this.startPositionX = x;
+		this.startPositionY = y;
+		this.delay = delay;
+
+                // Grafik zuweisen
+		pics = new BufferedImage[1];
+		pics[0] = i;
+
+                // Position des Rechtecks zuweisen
+		this.x = x;
+		this.y = y;
+                
+		this.width = pics[0].getWidth();
+		this.height = pics[0].getHeight();
+		loop_from = 0;
+		loop_to = pics.length - 1;
+		at = new AffineTransform();
+		rotationx = (int) (width / 2);
+		rotationy = (int) (height / 2);
+	}
+
 
 	public void doLogic(long delta) {
 
@@ -226,6 +301,18 @@ public abstract class SpielStein extends Rectangle2D.Double implements Movable, 
 
 	public void setY(double i) {
 		y = i;
+	}
+
+        public void setAngle(int a) {
+		angle = a;
+	}
+
+	public int getAngle() {
+		return angle;
+	}
+
+	public Point getRotation() {
+		return (new Point( rotationx, rotationy ));
 	}
 
 }
