@@ -60,7 +60,8 @@ public class Spielbrett extends Canvas implements Drawable, Movable{
         BufferedImage[] bi = lib.getSprite("Spielsteine_6x5.png", 6, 5);
         for (int m = 0; m < xOffset; m++) {
             for (int n = 0; n < xOffset; n++) {
-                feld[m][n] = new SpielStein(bi, xOffset+feldBreite*m, yOffset +feldHoehe*n, 20);
+                // Ausgangspunkt für das feld[0][0] ist die linke untere Ecke
+                feld[m][n] = new SpielStein(bi, xOffset+feldBreite*m, yOffset + this.brettHoehe - feldHoehe*n, 20);
             }
         }
 

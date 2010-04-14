@@ -17,7 +17,7 @@ public class Steuerung implements SteuerungIntface {
 
     // Die Datenklasse
     private Spielfeld dasSpielfeld;
-    private int aktuellerAnzeigeZug;
+    private int aktuellAngezeigteZugnummer;
 
 
     // Timer fuer Spieler und PeriodenZeiten.
@@ -45,17 +45,8 @@ public class Steuerung implements SteuerungIntface {
                 3);
     }
 
-        /**
-     * Am Anfang des Spieles muss ein Spielfeld initialisiert werden.
-     * @param spielerNameSchwarz Name des schwarzen Spielers
-     * @param spielerNameWeiss Name des weissen Spielers
-     * @param spielZeitSchwarz Absolute Zeit des schwarzen Spielers
-     * @param spielZeitWeiss Absolute Zeit des weissen Spielers
-     * @param periodenZeit Byo-Yomi fuer beide Spieler
-     * @param komiFuerWeiss Punkte zum Spielstaerkenausgleich fuer Weiss
-     * @param spielfeldGroesse Groesse des Spielfeldes
-     * @param vorgabeSteineFuerSchwarz Vorgabe zum Spielstaerkeausgleich fuer
-     * Schwarz
+    /**Implementierung des Interfaces
+     * @see SteuerungIntface
      */
     public void initMitEinstellungen(
             String spielerNameSchwarz,
@@ -67,7 +58,7 @@ public class Steuerung implements SteuerungIntface {
             int spielfeldGroesse,
             int vorgabeSteineFuerSchwarz) {
 
-        this.aktuellerAnzeigeZug = 0;
+        this.aktuellAngezeigteZugnummer = 0;
         Spielfeld tmpSpielfeld   = new Spielfeld(spielfeldGroesse);
 
         tmpSpielfeld.setSpielerSchwarz( new Spieler(spielerNameSchwarz, spielZeitSchwarz, 0, 0 ) );
@@ -123,10 +114,8 @@ public class Steuerung implements SteuerungIntface {
                 0);
     }
 
-    /**
-     *
-     * @param bereitsInitialisiertesSpielfeld Bevorzugter Initialisierer des Spieles, der gleich eingesamtes
-     * Spielfeld als bereitsInitialisiertesSpielfeld ueberigbt.
+    /**Implementierung des Interfaces
+     * @see SteuerungIntface
      */
     public void initMitSpielfeld( Spielfeld bereitsInitialisiertesSpielfeld ){
         /*
@@ -160,17 +149,8 @@ public class Steuerung implements SteuerungIntface {
 
     }
 
-   /**
-     * Die Gleiche Funktion wie initMitEinstellungen, nur damit das Programm
-     * weiss, dass dem Benutzer noch die Moeglichkeit geboten werden muss
-     * eine eigene Startformation zu erstellen
-     * @param spielerNameSchwarz Name des schwarzen Spielers
-     * @param spielerNameWeiss Name des weissen Spielers
-     * @param spielZeitSchwarz Absolute Zeit des schwarzen Spielers
-     * @param spielZeitWeiss Absolute Zeit des weissen Spielers
-     * @param periodenZeit Byo-Yomi fuer beide Spieler
-     * @param komiFuerWeiss Punkte zum Spielstaerkenausgleich fuer Weiss
-     * @param spielfeldGroesse Groesse des Spielfeldes
+    /**Implementierung des Interfaces
+     * @see SteuerungIntface
      */
     public void initMitEinstellungenFuerStartformation(
             String spielerNameSchwarz,
@@ -195,17 +175,8 @@ public class Steuerung implements SteuerungIntface {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    /**
-     * Dient dafuer, ein Spiel zu laden und das komplette Feld zu uebergeben.
-     * Spielfeldgroesse muss nicht uebergeben werden, da diese im Spielfeld
-     * gespeichert ist.
-     * @param feld Spielfeld, welches schon fertig und gueltig konstruiert wurde
-     * @param spielerNameSchwarz Name des schwarzen Spielers
-     * @param spielerNameWeiss Name des weissen Spielers
-     * @param spielZeitSchwarz Absolute Zeit des schwarzen Spielers
-     * @param spielZeitWeiss Absolute Zeit des weissen Spielers
-     * @param periodenZeit Byo-Yomi fuer beide Spieler
-     * @param komiFuerWeiss Punkte zum Spielstaerkenausgleich fuer Weiss
+    /**Implementierung des Interfaces
+     * @see SteuerungIntface
      */
     public void initMitDatenModell(
             Spielfeld feld,
@@ -219,11 +190,8 @@ public class Steuerung implements SteuerungIntface {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    /**
-     * Wenn bei der GUI auf einen Schnittpunkt geklickt wurde, muss die
-     * Steuerung reagieren. Die Koordinaten werden dann uebermittelt
-     * @param xPos X-Koordinate (1-Spielfeldgroesse)
-     * @param yPos Y-Koordinate (1-Spielfeldgroesse)
+    /**Implementierung des Interfaces
+     * @see SteuerungIntface
      */
     public void klickAufFeld(int xPos, int yPos) {
 
@@ -258,7 +226,7 @@ public class Steuerung implements SteuerungIntface {
         switch (returnWert){
             case 1:
                 // Rueckgabe erfolgreich! Spielerwechsel
-                this.setAktuellerAnzeigeZug(this.dasSpielfeld.getLetzteZugnummer());
+                this.setAktuelleAngeigteZugnummer(this.dasSpielfeld.getLetzteZugnummer());
                 LoGoApp.meineOberflaeche.setBrettOberflaeche(
                     this.dasSpielfeld.getAktuelesSpielFeld(),
                     this.dasSpielfeld.getSpielfeldGroesse());
@@ -341,9 +309,8 @@ public class Steuerung implements SteuerungIntface {
         }
     }
 
-     /**
-     * Spieler klickt auf "Spiel Starten" damit wird dann die Validierung
-     * des Spielfelds vorgenommen und bei Erfolg das Spiel gestartet.
+    /**Implementierung des Interfaces
+     * @see SteuerungIntface
      */
     public void buttonSpielStarten(){
         // Überprüfe ob die Initialisierung korrekt war
@@ -427,9 +394,8 @@ public class Steuerung implements SteuerungIntface {
         }
     }
 
-    /**
-     * Spieler klickt auf Aufgeben. Steuerung muss Dialogfeld od. Aehnliches
-     * Anzeigen und Spiel dann beenden
+    /**Implementierung des Interfaces
+     * @see SteuerungIntface
      */
     public void buttonAufgeben() {
 
@@ -458,10 +424,8 @@ public class Steuerung implements SteuerungIntface {
 
     }
 
-    /**
-     * Spieler klickt auf Passen. Spielzug muss ausgefuehrt werden und der
-     * naechste ist dran. Wird 2 mal hintereinander gepasst, wird das Spiel
-     * beendet und gezaehlt.
+    /**Implementierung des Interfaces
+     * @see SteuerungIntface
      */
     public void buttonPassen() {
         
@@ -478,11 +442,8 @@ public class Steuerung implements SteuerungIntface {
         */
     }
 
-    /**
-     * Spieler klickt auf Pause. Das Spiel, und damit die Spielzeit, wird
-     * angehalten. Das Brett wird abgedunkelt. Nach dem Klicken auf Pause, wird
-     * wäre es gut, wenn in der GUI der Button deaktiviert wird und stattdessen
-     * der Button "Spiel Fortsetzen" aktiviert wird.
+    /**Implementierung des Interfaces
+     * @see SteuerungIntface
      */
     public void buttonPause(){
         int aktuelerSpieler = this.dasSpielfeld.getSpielerFarbeAnDerReihe();
@@ -510,11 +471,8 @@ public class Steuerung implements SteuerungIntface {
         this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_PAUSIERT);
     }
 
-    /**
-     * Der Button "Spiel fortsetzen" steht zur Verfügung nachdem der Button
-     * Pause gedrückt wurde. Mit ihm kann das Spiel wieder aufgenommen werden.
-     * Nach dem Klick auf Fortsetzen, wird der Button Pause wieder freigegeben
-     * und der Button Fortsetzen wieder deaktiviert
+    /**Implementierung des Interfaces
+     * @see SteuerungIntface
      */
     public void buttonSpielForsetzen(){
 
@@ -548,85 +506,82 @@ public class Steuerung implements SteuerungIntface {
         this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_LAUEFT);
     }
 
-    /**
-     * Spieler klickt auf Speichern. Spiel muss als sgf gespeichert werden.
+    /**Implementierung des Interfaces
+     * @see SteuerungIntface
      */
     public void buttonSpielSpeichern() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    /**
-     * Spieler klickt auf Undo. Spielzug wird rueckgaengig gemacht
+    /**Implementierung des Interfaces
+     * @see SteuerungIntface
      */
     public void buttonUndo() {
 
         /* In dieser Funktion muss noch der Timer einbebunden werden und
          *vielleicht veraendert werden, welcher spieler an der Reihe ist.*/
-       if(this.getAktuellerAnzeigeZug() > 0){
-           this.setAktuellerAnzeigeZug(this.getAktuellerAnzeigeZug()-1);
+       if(this.getAktuellAngezeigteZugnummer() > 0){
+           this.setAktuelleAngeigteZugnummer(this.getAktuellAngezeigteZugnummer()-1);
        }
        else{
-           this.setAktuellerAnzeigeZug(0);
+           this.setAktuelleAngeigteZugnummer(0);
        }
-       LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellerAnzeigeZug()),
+       LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellAngezeigteZugnummer()),
                                                     this.dasSpielfeld.getSpielfeldGroesse());
     }
 
-    /**
-     * Spieler klickt auf Redo. Spielzug der geUndot wurde wird rueckgaengig
-     * gemacht (Es wir einfach um 1 nach vorn gegangen)
+    /**Implementierung des Interfaces
+     * @see SteuerungIntface
      */
     public void buttonRedo() {
         /* In dieser Funktion muss noch der Timer einbebunden werden und
          *vielleicht veraendert werden, welcher spieler an der Reihe ist.*/
-        if(this.getAktuellerAnzeigeZug() < this.dasSpielfeld.getLetzteZugnummer()){
-            this.setAktuellerAnzeigeZug(this.getAktuellerAnzeigeZug() + 1);
+        if(this.getAktuellAngezeigteZugnummer() < this.dasSpielfeld.getLetzteZugnummer()){
+            this.setAktuelleAngeigteZugnummer(this.getAktuellAngezeigteZugnummer() + 1);
         }
         else {
-            this.setAktuellerAnzeigeZug(this.dasSpielfeld.getLetzteZugnummer());
+            this.setAktuelleAngeigteZugnummer(this.dasSpielfeld.getLetzteZugnummer());
         }
-        LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellerAnzeigeZug()),
+        LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellAngezeigteZugnummer()),
                                                      this.dasSpielfeld.getSpielfeldGroesse());
     }
 
-    /**
-     * Spieler klickt auf Zu-Start-Button. Anfangssituation wird geladen.
+    /**Implementierung des Interfaces
+     * @see SteuerungIntface
      */
     public void buttonSpringeZumStart() {
-        this.setAktuellerAnzeigeZug(0);
-        LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellerAnzeigeZug()),
+        this.setAktuelleAngeigteZugnummer(0);
+        LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellAngezeigteZugnummer()),
                                                      this.dasSpielfeld.getSpielfeldGroesse());
     }
 
-    /**
-     * Spieler klickt auf Zu-Ende-Button. Letzte Situation auf Brett wird
-     * hergestellt.
+    /**Implementierung des Interfaces
+     * @see SteuerungIntface
      */
     public void buttonSpringeZumEnde() {
-        this.setAktuellerAnzeigeZug(this.dasSpielfeld.getLetzteZugnummer());
-        LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellerAnzeigeZug()),
+        this.setAktuelleAngeigteZugnummer(this.dasSpielfeld.getLetzteZugnummer());
+        LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellAngezeigteZugnummer()),
                                                      this.dasSpielfeld.getSpielfeldGroesse());
     }
 
-    /**
-     * Hauptzeit des schwarzen Spielers ist abgelaufen. Periodenzeit muss starten
+    /**Implementierung des Interfaces
+     * @see SteuerungIntface
      */
     public void zeitAbgelaufenSchwarzHauptzeit() {
         this.dasSpielfeld.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(0);
         this.periodenZeitSchwarz.setRemainingTime(this.dasSpielfeld.getPeriodenZeit());
         this.periodenZeitSchwarz.starteCountdown();    }
 
-    /**
-     * Periodenzeit des schwarzen Spielers ist abgelaufen. Schwarz verliert.
-     * Spiel beendet.
+    /**Implementierung des Interfaces
+     * @see SteuerungIntface
      */
     public void zeitAbgelaufenSchwarzPeriodenzeit() {
         this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_BEENDET_DURCH_APP);
         LoGoApp.meineOberflaeche.gibFehlermeldungAus("Zeit abgelaufen! Spiel wurde beendet!");
        }
 
-    /**
-     * Hauptzeit des weissen Spielers ist abgelaufen. Periodenzeit muss starten
+    /**Implementierung des Interfaces
+     * @see SteuerungIntface
      */
     public void zeitAbgelaufenWeissHauptzeit() {
         this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(0);
@@ -634,9 +589,8 @@ public class Steuerung implements SteuerungIntface {
         this.periodenZeitWeiss.starteCountdown();
     }
 
-    /**
-     * Periodenzeit des weissen Spielers ist abgelaufen. Weiss verliert.
-     * Spiel beendet.
+    /**Implementierung des Interfaces
+     * @see SteuerungIntface
      */
     public void zeitAbgelaufenWeissPeriodenzeit() {
         this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_BEENDET_DURCH_APP);
@@ -644,25 +598,17 @@ public class Steuerung implements SteuerungIntface {
     }
 
     /**
-     * 
-     * @return Getter-Funktion für das Spielfeld
-     */
-    public Spielfeld getSpielfeld(){
-        return this.dasSpielfeld;
-    }
-
-    /**
      * @param nummer Setzt die den Aktuellen Zug auf nummer
      */
-    private void setAktuellerAnzeigeZug(int nummer){
-        this.aktuellerAnzeigeZug = nummer;
+    private void setAktuelleAngeigteZugnummer(int nummer){
+        this.aktuellAngezeigteZugnummer = nummer;
     }
 
     /**
      * @return Gibt die Aktuelle Zugnummer der Anzeige zurueck.
      */
-    private int getAktuellerAnzeigeZug() {
-        return this.aktuellerAnzeigeZug;
+    private int getAktuellAngezeigteZugnummer() {
+        return this.aktuellAngezeigteZugnummer;
     }
 
 }
