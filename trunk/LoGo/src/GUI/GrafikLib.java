@@ -75,7 +75,7 @@ public class GrafikLib {
 
 	public BufferedImage[] getSprite(String path, int column, int row) {
 		URL location = getURLfromRessource( path );
-
+                
 		return getSprite( location, column, row );
 	}
 

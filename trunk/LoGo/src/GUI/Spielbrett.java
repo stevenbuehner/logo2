@@ -6,6 +6,7 @@ import interfaces.Movable;
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 /**
@@ -46,8 +47,8 @@ public class Spielbrett extends Canvas implements Drawable {
 
         // initialisiere das Spielfeld mit leeren Feldern
         this.spielFeldArray = new int[anzahlFelder][anzahlFelder];
-        for (int m = 0; m < xOffset; m++) {
-            for (int n = 0; n < xOffset; n++) {
+        for (int m = 0; m < this.anzahlFelder; m++) {
+            for (int n = 0; n < this.anzahlFelder; n++) {
                 spielFeldArray[m][n] = 0;
             }
         }
@@ -57,10 +58,11 @@ public class Spielbrett extends Canvas implements Drawable {
         double feldBreite = brettBreite/anzahlFelder;
 
         // Spielbrett-Grafiken laden
+        this.feld = new SpielStein[this.anzahlFelder][this.anzahlFelder];
         GrafikLib lib = GrafikLib.getInstance();
-        BufferedImage[] bi = lib.getSprite("Spielsteine_6x5.png", 6, 5);
-        for (int m = 0; m < xOffset; m++) {
-            for (int n = 0; n < xOffset; n++) {
+        BufferedImage[] bi = lib.getSprite("GUI/resources/Spielsteine_6x5.png", 6, 5);
+        for (int m = 0; m < this.anzahlFelder; m++) {
+            for (int n = 0; n < this.anzahlFelder; n++) {
                 // Ausgangspunkt für das feld[0][0] ist die linke untere Ecke
                 feld[m][n] = new SpielStein(bi, xOffset+feldBreite*m, yOffset + this.brettHoehe - feldHoehe*n, 20);
             }
@@ -135,10 +137,22 @@ public class Spielbrett extends Canvas implements Drawable {
     }
 
     /**
-     * @see interfaces.Movable
+     * Nur Logic (=Animationen) berechnen
      * @param delta
      */
-    public void doLogic(long delta, int[][] neuesSpielFeld) {
+    public void doLogic( long delta ){
+         // Logik auf alle Felder anwenden
+        for(int i=0; i < this.anzahlFelder; i++){
+            for(int j=0; j < this.anzahlFelder; j++){
+                this.feld[i][j].doLogic(delta);
+            }
+        }
+    }
+
+    /**
+     * @param neuesSpielFeld[][] Wenn sich das Spielfeld veraendert hat
+     */
+    public void updateSpielFeld(int[][] neuesSpielFeld) {
 
         // Logik auf alle Felder anwenden
         for(int i=0; i < this.anzahlFelder; i++){
@@ -198,6 +212,22 @@ public class Spielbrett extends Canvas implements Drawable {
             for(int j=0; j < this.anzahlFelder; j++){
                 feld[i][j].doLogic(delta);
             }
+        }
+    }
+
+    public Point berechneTreffer( int xPos, int yPos ){
+
+        int xPosRelativ = xPos-this.xOffset;
+        int yPosRelativ = yPos-this.yOffset;
+
+        int xPunkt = xPosRelativ/(this.brettBreite/this.anzahlFelder)+1;
+        int yPunkt = yPosRelativ/(this.brettHoehe/this.anzahlFelder)+1;
+
+        if (xPunkt > 0 && xPunkt <= this.anzahlFelder && yPunkt > 0 && yPunkt <= this.anzahlFelder){
+            return new Point(xPunkt, yPunkt);
+        }
+        else{
+            return null;
         }
     }
 

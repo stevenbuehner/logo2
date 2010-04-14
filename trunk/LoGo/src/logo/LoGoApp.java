@@ -8,6 +8,7 @@ import GUI.GrafikLib;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
 import GUI.Oberflaeche;
+import GUI.TestOberflaeche;
 import Klassen.Steuerung;
 
 
@@ -16,7 +17,7 @@ import Klassen.Steuerung;
  */
 public class LoGoApp extends SingleFrameApplication {
 
-    public static Oberflaeche   meineOberflaeche;
+    public static TestOberflaeche   meineOberflaeche;
     public static Steuerung     meineSteuerung;
     public static GrafikLib     meineGrafikLib = GrafikLib.getInstance();
     
@@ -50,7 +51,8 @@ public class LoGoApp extends SingleFrameApplication {
     public static void main(String[] args) {
 
         meineSteuerung      = new Steuerung();
-        meineOberflaeche    = new Oberflaeche();
+        meineOberflaeche    = new TestOberflaeche();
+        meineOberflaeche.run();
 
         //launch(LoGoApp.class, args);
     }
