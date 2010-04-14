@@ -395,4 +395,29 @@ public class SpielStein extends Rectangle2D.Double implements Movable, Drawable 
 		return true;
 	}
 
+
+        public synchronized void starteAnimationWeissSetzen(){
+
+        }
+
+        public synchronized void starteAnimationSchwarzSetzen(){
+
+        }
+
+        public synchronized void starteAnimationWeissEntfernen(){
+
+        }
+        
+        public synchronized void starteAnimationSchwarzEntfernen(){
+
+        }
+
+        public synchronized void starteAnimationVerbotenerZug(){
+
+        }
+
+
+
+
+
 }

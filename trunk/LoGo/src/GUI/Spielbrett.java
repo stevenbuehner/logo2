@@ -155,10 +155,12 @@ public class Spielbrett extends Canvas implements Drawable {
                         case Konstante.SCHNITTPUNKT_SCHWARZ:
                             // Ein schwarzer Stein wurde neu draufgesetzt
                             // Starte einblende Animation fuer Schwarz
+                            this.feld[i][j].starteAnimationSchwarzSetzen();
                             break;
                         case Konstante.SCHNITTPUNKT_WEISS:
                             // Ein weisser Stein wurde neu draufgesetzt
                             // Starte einblende Animation fuer Weiss
+                            this.feld[i][j].starteAnimationWeissSetzen();
                             break;
                         case Konstante.SCHNITTPUNKT_LEER:
                             // Der vorherige Stein wurde entfernt
@@ -166,13 +168,16 @@ public class Spielbrett extends Canvas implements Drawable {
                             if( this.spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_SCHWARZ){
                                 // Schwarzer Stein wurde entfernt
                                 // Starte ausblende Animation fuer Schwarz
+                                this.feld[i][j].starteAnimationSchwarzEntfernen();
                             } else{
                                 // Weisser Stein wurde entfernt
                                 // Starte ausblende Animation fuer Weiss
+                                this.feld[i][j].starteAnimationWeissEntfernen();
                             }
                             break;
                         case Konstante.SCHNITTPUNKT_VERBOTEN:
                             // Zeichne das Feld als verbotenen Schnittpunkt
+                            this.feld[i][j].starteAnimationVerbotenerZug();
                             break;
                         default:
                             // ungueltiger Wert
