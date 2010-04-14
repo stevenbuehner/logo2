@@ -13,7 +13,7 @@ import javax.imageio.ImageIO;
 
 /**
  *
- * @author steven
+ * @author $steven
  * @version 1.0
  */
 public class GrafikLib {
