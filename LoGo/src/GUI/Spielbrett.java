@@ -1,5 +1,6 @@
 package GUI;
 
+import Klassen.Konstante;
 import interfaces.Drawable;
 import interfaces.Movable;
 import java.awt.Canvas;
@@ -16,7 +17,7 @@ import java.awt.image.BufferedImage;
  *
  * Diese Klasse wird aktuell nirgends im Spiel verwedet!!!!
  */
-public class Spielbrett extends Canvas implements Drawable, Movable{
+public class Spielbrett extends Canvas implements Drawable {
 
     private int brettBreite;
     private int brettHoehe;
@@ -137,15 +138,48 @@ public class Spielbrett extends Canvas implements Drawable, Movable{
      * @see interfaces.Movable
      * @param delta
      */
-    public void doLogic(long delta) {
+    public void doLogic(long delta, int[][] neuesSpielFeld) {
 
         // Logik auf alle Felder anwenden
         for(int i=0; i < this.anzahlFelder; i++){
             for(int j=0; j < this.anzahlFelder; j++){
-                feld[i][j].doLogic(delta);
+                if(this.spielFeldArray[i][j] != neuesSpielFeld[i][j] ){
+
+                    if(this.spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_VERBOTEN){
+                        // war vorher ein verbotener Zug, dann wurde jetzt auch nichts gelegt
+                        // for-Schleife nach diesem Durchgang erst weiterlaufen lassen
+                        continue;
+                    }
+
+                    switch(neuesSpielFeld[i][j]){
+                        case Konstante.SCHNITTPUNKT_SCHWARZ:
+                            // Ein schwarzer Stein wurde neu draufgesetzt
+                            // Starte einblende Animation fuer Schwarz
+                            break;
+                        case Konstante.SCHNITTPUNKT_WEISS:
+                            // Ein weisser Stein wurde neu draufgesetzt
+                            // Starte einblende Animation fuer Weiss
+                            break;
+                        case Konstante.SCHNITTPUNKT_LEER:
+                            // Der vorherige Stein wurde entfernt
+                            // der Stein kann nicht Verboten gewesen sein, da dies weiter oben bereits abgefangen wurde
+                            if( this.spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_SCHWARZ){
+                                // Schwarzer Stein wurde entfernt
+                                // Starte ausblende Animation fuer Schwarz
+                            } else{
+                                // Weisser Stein wurde entfernt
+                                // Starte ausblende Animation fuer Weiss
+                            }
+                            break;
+                        case Konstante.SCHNITTPUNKT_VERBOTEN:
+                            // Zeichne das Feld als verbotenen Schnittpunkt
+                            break;
+                        default:
+                            // ungueltiger Wert
+                    }
+                }
             }
         }
-
     }
 
     /**
@@ -161,6 +195,5 @@ public class Spielbrett extends Canvas implements Drawable, Movable{
             }
         }
     }
-
 
 }
