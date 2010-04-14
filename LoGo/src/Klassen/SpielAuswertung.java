@@ -171,7 +171,10 @@ public class SpielAuswertung {
     /**
      * Damit man das Feld auswerten kann, muss der Benutzer signalisieren, welche
      * Steine auf dem Brett tot sind.
-     * Erstmal als einfache Variante. Rekursiv lohnt sich aber vielleicht doch.
+     * Das Resultat dieser Funktion ist, dass die Lebenden Steine die angeklickt
+     * werden also Tot eingestellt werden. Tote Steine des Gegners werden dabei
+     * wieder lebendig gemacht. Die suche endet beim Brettende oder bei lebendigen
+     * Steinen der Gegenfarbe.
      * @param xPos X-Koordinate (von 0 bis Feldgroesse-1)
      * @param yPos Y-Koordinate (von 0 bis Feldgroesse-1)
      * @return Integer signalisiert wie funktion ausgegangen ist:
@@ -181,8 +184,7 @@ public class SpielAuswertung {
      * -3 : Koordinate auf die geklickt wurde ist nicht mit einem Stein belegt!
      */
     private int markiereSteinAlsGefangen(int xPos, int yPos){
-        /* Bevor die Suche beginnt sind alle Schnittpunkte demarkiert
-         * Die Farbe des Steines der angeklickt wurde muss markiert werden,
+        /* Die Farbe des Steines der angeklickt wurde muss markiert werden,
          * damit man spaeter die Gebiete markieren kann*/
         int farbe = this.auswertungBrett[xPos][yPos].getBelegungswert();
         int farbeGefangen = -1;
@@ -236,7 +238,8 @@ public class SpielAuswertung {
                         == farbe ||
                     this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
                         == Konstante.SCHNITTPUNKT_GEBIET_WEISS) &&
-                    this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getMarkiert() == false){
+                    this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getMarkiert()
+                        == false){
                     listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()]);
                     this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
                 }
@@ -362,11 +365,14 @@ public class SpielAuswertung {
             this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()].setAnalysiert(true);
         }while(momElement<listeSteine.size());
         /* Jetzt sind nur Leere Steine, oder steine der Angeklickten farbe in
-         * der Liste. Diese werden jetzt ummarkiert */
+         * der Liste. Diese werden jetzt ummarkiert.
+         * Sind die Steine lebendig, so werden sie als tot markiert.
+         * Sind die Schnittpunkte nicht belegt (gebiet, oder leer) so werden
+         * sie als leer markiert */
 
         for(int k=listeSteine.size()-1; k>=0; k--){
             if(listeSteine.get(k).getBelegungswert() != farbe){
-                this.auswertungBrett[listeSteine.get(k).getXPos()][listeSteine.get(k).getYPos()].setBelegungswert(gebietMarkierung);
+                this.auswertungBrett[listeSteine.get(k).getXPos()][listeSteine.get(k).getYPos()].setBelegungswert(Konstante.SCHNITTPUNKT_LEER);
             }
             else {
                 this.auswertungBrett[listeSteine.get(k).getXPos()][listeSteine.get(k).getYPos()].setBelegungswert(farbeGefangen);
@@ -378,10 +384,11 @@ public class SpielAuswertung {
 
     /**
      * Moechte der Benutzer eine Markierung rueckgaengig machen, kann er das
-     * mit dieser Funktion. Es ist Aufgabe der Steuerung, ob der Benutzer
-     * einen Stein tot oder untot markieren will.
-     * @param xPos X-Koordinate
-     * @param yPos Y-Koordinate
+     * mit dieser Funktion. Es werden Steine und unbesetzte Schnittpunkte gesammelt.
+     * Trifft man auf einen Stein der Gegenfarbe, so wird dort nicht weiter gesucht
+     * Gebiet wird demarkiert, also als leer gekennzeichnet.
+     * @param xPos X-Koordinate ( 0 bis Brettgroesse-1 )
+     * @param yPos Y-Koordinate ( 0 bis Brettgroesse-1 )
      */
     private int markiereSteinAlsNichtGefangen(int xPos, int yPos){
         /* Der Stein ist auf jeden Fall ein toter Stein auf dem Brett
@@ -404,7 +411,7 @@ public class SpielAuswertung {
                 gegenfarbeGefangen = Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN;
                 break;
             default: /* darf nicht passieren */
-                 throw new UnsupportedOperationException("Farbe des Steins falsch definiert");
+                 throw new UnsupportedOperationException("Farbe des Steins (gefangen) falsch definiert");
         }
         List<AnalyseSchnittpunkt> listeSteine = new ArrayList<AnalyseSchnittpunkt>();
         int momElement = 0;
@@ -524,14 +531,18 @@ public class SpielAuswertung {
             this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()].setAnalysiert(true);
             momElement++;
         }while(momElement<listeSteine.size());
-        /* Alle Felder sind durchsucht */
+        /* Alle Felder sind durchsucht. In der Liste sind nun Tote Steine der
+         * angeklickten Farbe, oder unbesetzte Schnittpunkte. Gebietsmarkierungen
+         * werden rueckgaengig gemacht und die toten Steine werden als lebendig
+         * markiert.
+         */
         for(int k=listeSteine.size()-1; k>=0; k--)
         {
             if(listeSteine.get(k).getBelegungswert() != farbeGefangen){
-                this.auswertungBrett[listeSteine.get(k).getXPos()][listeSteine.get(k).getYPos()].setBelegungswert(farbe);
+                this.auswertungBrett[listeSteine.get(k).getXPos()][listeSteine.get(k).getYPos()].setBelegungswert(Konstante.SCHNITTPUNKT_LEER);
             }
             else {
-                this.auswertungBrett[listeSteine.get(k).getXPos()][listeSteine.get(k).getYPos()].setBelegungswert(Konstante.SCHNITTPUNKT_LEER);
+                this.auswertungBrett[listeSteine.get(k).getXPos()][listeSteine.get(k).getYPos()].setBelegungswert(farbe);
             }
             listeSteine.remove(k);
         }
@@ -589,7 +600,9 @@ public class SpielAuswertung {
      * auf dem Brett, die nur von einer Steinfarbe (lebende) umschlossen sind.
      *
      * Die suche beginnt bei einem leeren Schnittpunkt und setzt dann mit
-     * Breitensuche fort.
+     * Breitensuche fort. Trifft man auf einen Stein (lebendig oder tot), so
+     * wird die Farbe des Gebietes ermittelt. Widersprechen sich die Werte,
+     * so wird das Gebiet am Ende als leer gekennzeichnet.
      */
     private void findeGebiete() {
         /* Als erstes werden alle Schnittpunkte als nicht analysiert und nicht
@@ -607,7 +620,8 @@ public class SpielAuswertung {
         int momElement = 0;
 
         /* Jetzt wird jeder Schnittpunkt angesehen und versucht von ihm aus
-         * eine Breitensuche zu starten
+         * eine Breitensuche zu starten (Vorrausgesetzt der Schnittpunkt ist
+         * leer).
          */
         for(int i=0; i<this.getFeldGroesse(); i++){
             for(int j=0; j<this.getFeldGroesse(); j++){
