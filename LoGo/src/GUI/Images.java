@@ -30,7 +30,7 @@ public class Images extends JFrame{
         setForeground(Color.WHITE);
         setFont(new Font("Arial", Font.PLAIN, 24));
 
-        Screen s = new Screen();
+        ScreenManager s = new ScreenManager();
         try {
             s.setFullScreen(dm, this);
             try {

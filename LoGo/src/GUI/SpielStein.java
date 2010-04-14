@@ -397,23 +397,25 @@ public class SpielStein extends Rectangle2D.Double implements Movable, Drawable 
 
 
         public synchronized void starteAnimationWeissSetzen(){
-
+            this.setLoop(24, 29);
         }
 
         public synchronized void starteAnimationSchwarzSetzen(){
+            this.setLoop(18, 23);
 
         }
 
         public synchronized void starteAnimationWeissEntfernen(){
+            this.setLoop(12, 22);
 
         }
         
         public synchronized void starteAnimationSchwarzEntfernen(){
-
+            this.setLoop(6, 11);
         }
 
         public synchronized void starteAnimationVerbotenerZug(){
-
+            this.setLoop(0, 0);
         }
 
 
