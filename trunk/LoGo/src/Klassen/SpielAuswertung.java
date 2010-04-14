@@ -122,6 +122,7 @@ public class SpielAuswertung {
             }
         }
         this.findeGebiete();
+        this.suchePseudoPunkte();
     }
 
     /**
@@ -133,6 +134,7 @@ public class SpielAuswertung {
      * -1 -> Fehler, Koordinate nicht auf Brett
      */
     public int markiereStein(int xPos, int yPos){
+        int rueckgabe = 0;
         if(xPos>=1 && xPos<=this.getFeldGroesse() && yPos>=1 && yPos<=this.getFeldGroesse()){
             int xKoord = xPos-1;
             int yKoord = yPos-1;
@@ -145,7 +147,8 @@ public class SpielAuswertung {
                             this.auswertungBrett[i][j].setMarkiert(false);
                         }
                     }
-                    return this.markiereSteinAlsGefangen(xKoord, yKoord);
+                    rueckgabe = this.markiereSteinAlsGefangen(xKoord, yKoord);
+                    break;
                 case Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN:
                 case Konstante.SCHNITTPUNKT_WEISS_GEFANGEN:
                     for(int i=0; i<this.getFeldGroesse(); i++){
@@ -154,7 +157,8 @@ public class SpielAuswertung {
                             this.auswertungBrett[i][j].setMarkiert(false);
                         }
                     }
-                    return this.markiereSteinAlsNichtGefangen(xKoord, yKoord);
+                    rueckgabe = this.markiereSteinAlsNichtGefangen(xKoord, yKoord);
+                    break;
                 case Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ:
                 case Konstante.SCHNITTPUNKT_GEBIET_WEISS:
                 case Konstante.SCHNITTPUNKT_LEER:
@@ -166,6 +170,9 @@ public class SpielAuswertung {
         else {
             return -1;
         }
+        this.findeGebiete();
+        this.suchePseudoPunkte();
+        return rueckgabe;
     }
 
     /**
@@ -966,8 +973,262 @@ public class SpielAuswertung {
      * Freiheit leer. Dies kommt daher, dass wenn neutrale Steine gesetzt werden,
      * diese Freiheit auch gefuellt werden muss.
      */
-    private void findePseudoPunkte() {
+    private void suchePseudoPunkte() {
+        /* Brett initialisieren */
+        for(int i=0; i<this.getFeldGroesse(); i++){
+            for(int j=0; j<this.getFeldGroesse(); j++){
+                this.auswertungBrett[i][j].setMarkiert(false);
+                this.auswertungBrett[i][j].setAnalysiert(false);
+            }
+        }
+        
+        /* Ueberall suchen, aber nur wenn schnittpunkt noch nicht analysiert. */
+        boolean rueckgabeUp = true;
+        for(int i=0; i<this.getFeldGroesse(); i++){
+            for(int j=0; j<this.getFeldGroesse(); j++){
+                if((this.auswertungBrett[i][j].getBelegungswert() == Konstante.SCHNITTPUNKT_SCHWARZ ||
+                    this.auswertungBrett[i][j].getBelegungswert() == Konstante.SCHNITTPUNKT_WEISS) &&
+                    this.auswertungBrett[i][j].getAnalysiert()    == false){
+                    do{
+                    rueckgabeUp = this.findePseudePunkte(i, j);
+                    }while(rueckgabeUp == true);
+                }
+            }
+        }
+    }
 
+    /**
+     * Es wird an der Stelle (xPos, yPos) nach Pseudofreiheiten gesucht.
+     * Eine Pseudofreiheit ist dabei ein unwirklicher gebietspunkt, also ein
+     * als Gebietspunkt markierter Schnittpunkt, der noch zugesetzt werden muss.
+     * Der Ausgangsschnittpunkt ist ein Lebendiger Stein.
+     * @param xPos X-Koordinate (0 bis Brettgroesse-1)
+     * @param yPos Y-Koordinate (0 bis Brettgroesse-1)
+     * @return War suche and diesem Punkt erfolgreich? (Ja-> true)
+     */
+    private boolean findePseudePunkte(int xPos, int yPos) {
+        /* Testen, ob eingabe Korrekt */
+        if(xPos<0 || xPos>=this.getFeldGroesse() || yPos<0 || yPos>=this.getFeldGroesse() ||
+            ( this.auswertungBrett[xPos][yPos].getBelegungswert() != Konstante.SCHNITTPUNKT_SCHWARZ &&
+              this.auswertungBrett[xPos][yPos].getBelegungswert() != Konstante.SCHNITTPUNKT_WEISS)){
+            return false;
+        }
+
+        /* Eingabe ist richtig, suche beginnen. Vorraussetztung ist, das die
+         * Steine noch nicht markiert und nicht Analysiert sind.
+         * als erstes werden die variablen definiert um die suche zu vereinfachen*/
+        int farbe = -1;
+        int gegenfarbe = -1;
+        int gegenfarbeGefangen = -1;
+        int farbeGebiet = -1;
+        switch(this.auswertungBrett[xPos][yPos].getBelegungswert()){
+            case Konstante.SCHNITTPUNKT_SCHWARZ:
+                farbe = Konstante.SCHNITTPUNKT_SCHWARZ;
+                gegenfarbe = Konstante.SCHNITTPUNKT_WEISS;
+                gegenfarbeGefangen = Konstante.SCHNITTPUNKT_WEISS_GEFANGEN;
+                farbeGebiet = Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ;
+                break;
+            case Konstante.SCHNITTPUNKT_WEISS:
+                farbe = Konstante.SCHNITTPUNKT_WEISS;
+                gegenfarbe = Konstante.SCHNITTPUNKT_SCHWARZ;
+                gegenfarbeGefangen = Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN;
+                farbeGebiet = Konstante.SCHNITTPUNKT_GEBIET_WEISS;
+                break;
+            default: /* Darf nicht passieren */
+                return false;
+        }
+
+        /* Nun kann die Suche beginnen. Man nimmt nur Steine von "farbe", oder
+         * Leere Schnittpunkte, die nicht als Gebiet markiert sind auf.
+         * Dabei ist folgende Regel zu beachten. Ist der Schnittpunkt, von dem
+         * aus gerade gesucht wird Leer und unmarkiert, so kann er keine weiteren
+         * leeren Schnittpunkte aufnehmen, aber Steine von "farbe".
+         * Trifft man auf einen Stein der "gegenfarbe" so sucht man dort nicht
+         * weiter.
+         * Trifft man auf einen Stein der "gegenfarbeGefangen", so zaehlt dieser
+         * als Freiheit (kann noch geaendert werden)
+         * Trifft man auf einen Punkt "farbeGebiet" so ist dies auch eine Freiheit
+         */
+
+        List<AnalyseSchnittpunkt> listeSteine = new ArrayList<AnalyseSchnittpunkt>();
+        int momElement = 0;
+
+        /* Findet man Freiheiten, merkt man sich wo die letzte war. */
+        int freiheiten = 0;
+        int xPosFreiheit = -1;
+        int yPosFreiheit = -1;
+
+        /* Der erste Stein wird in die Liste aufgenommen, dann startet die
+         * suche */
+        listeSteine.add(this.auswertungBrett[xPos][yPos]);
+        this.auswertungBrett[xPos][yPos].setMarkiert(true);
+
+        do{
+            /* Man nimmt nur Steine auf, die noch nicht markiert sind. */
+
+            /* 1. Linke Seite */
+            if(listeSteine.get(momElement).getXPos()!=0){
+                if(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == Konstante.SCHNITTPUNKT_LEER &&
+                   this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getMarkiert()
+                        == false){
+                    /* Nur aufnehmen, wenn der Ausgangsstein nicht Leer ist! */
+                    if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                            != Konstante.SCHNITTPUNKT_LEER){
+                        listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()]);
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
+                    }
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == farbe &&
+                   this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getMarkiert()
+                        == false){
+                    listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()]);
+                    this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
+                }
+                /* Freiheit finden */
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == farbeGebiet ||
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == gegenfarbeGefangen){
+                    freiheiten++;
+                    xPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getXPos();
+                    yPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getYPos();
+                }
+                else {
+                    /* nichts */
+                }
+            }
+
+            /* 2. Rechte Seite */
+            if(listeSteine.get(momElement).getXPos()!=this.getFeldGroesse()-1){
+                if(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == Konstante.SCHNITTPUNKT_LEER &&
+                   this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getMarkiert()
+                        == false){
+                    /* Nur aufnehmen, wenn der Ausgangsstein nicht Leer ist! */
+                    if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                            != Konstante.SCHNITTPUNKT_LEER){
+                        listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()]);
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
+                    }
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == farbe &&
+                   this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getMarkiert()
+                        == false){
+                    listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()]);
+                    this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
+                }
+                /* Freiheit finden */
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == farbeGebiet ||
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == gegenfarbeGefangen){
+                    freiheiten++;
+                    xPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getXPos();
+                    yPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getYPos();
+                }
+                else {
+                    /* nichts */
+                }
+            }
+
+            /* 3. Untere Seite */
+            if(listeSteine.get(momElement).getYPos()!=0){
+                if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                        == Konstante.SCHNITTPUNKT_LEER &&
+                   this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getMarkiert()
+                        == false){
+                    /* Nur aufnehmen, wenn der Ausgangsstein nicht Leer ist! */
+                    if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                            != Konstante.SCHNITTPUNKT_LEER){
+                        listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1]);
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].setMarkiert(true);
+                    }
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                        == farbe &&
+                   this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getMarkiert()
+                        == false){
+                    listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1]);
+                    this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].setMarkiert(true);
+                }
+                /* Freiheit finden */
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                        == farbeGebiet ||
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                        == gegenfarbeGefangen){
+                    freiheiten++;
+                    xPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getXPos();
+                    yPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getYPos();
+                }
+                else {
+                    /* nichts */
+                }
+            }
+
+            /* 4. Obere Seite */
+            if(listeSteine.get(momElement).getXPos()!=0){
+                if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                        == Konstante.SCHNITTPUNKT_LEER &&
+                   this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getMarkiert()
+                        == false){
+                    /* Nur aufnehmen, wenn der Ausgangsstein nicht Leer ist! */
+                    if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                            != Konstante.SCHNITTPUNKT_LEER){
+                        listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1]);
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].setMarkiert(true);
+                    }
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                        == farbe &&
+                   this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getMarkiert()
+                        == false){
+                    listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1]);
+                    this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].setMarkiert(true);
+                }
+                /* Freiheit finden */
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                        == farbeGebiet ||
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                        == gegenfarbeGefangen){
+                    freiheiten++;
+                    xPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getXPos();
+                    yPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getYPos();
+                }
+                else {
+                    /* nichts */
+                }
+            }
+            momElement++;
+        }while(momElement<listeSteine.size());
+        /* Nun wurden alle Steine Aufgenommen. Ist die freiheitenzahl genau 1,
+         * so wurde eine Pseudofreiheit gefunden (wenn dort kein gefangener steht)
+         * Ist die Anzahl nicht 1, so wurde keine Pseudofreiheit gefunden, die
+         * Steine sind somit analysiert
+         * Wurden Pseudofreiheiten gefunden, werden die Steine nicht als analysiert
+         * gekennzeichnet und die markierung wird auch aufgehoben. So kann man
+         * die suche erneut anstossen und nach weiteren Pseudofreiheiten suchen.
+         */
+        if(freiheiten == 1){
+            if(this.auswertungBrett[xPosFreiheit][yPosFreiheit].getBelegungswert()
+                    == farbeGebiet){
+                /* Dann markiere die Pseudofreiheit */
+                this.auswertungBrett[xPosFreiheit][yPosFreiheit].setBelegungswert(Konstante.SCHNITTPUNKT_LEER);
+                for(int i=listeSteine.size()-1; i>=0; i--){
+                    this.auswertungBrett[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setMarkiert(false);
+                    listeSteine.remove(i);
+                }
+                return true;
+            }
+        }
+
+        for(int i=listeSteine.size()-1; i>=0; i--){
+            this.auswertungBrett[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setAnalysiert(true);
+            listeSteine.remove(i);
+        }
+        return false;
     }
 
 }
