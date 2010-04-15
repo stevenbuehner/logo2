@@ -1,6 +1,5 @@
 package Klassen;
 
-import GUI.TestOberflaeche;
 import Timer.Countdown;
 import Timer.CountdownPeriodenZeitSchwarz;
 import Timer.CountdownPeriodenZeitWeiss;
