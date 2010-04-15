@@ -1,7 +1,6 @@
 /*
  * LoGoApp.java
  */
-
 package logo;
 
 import GUI.GrafikLib;
@@ -13,21 +12,20 @@ import Klassen.Steuerung;
 import interfaces.OberflaecheInterface;
 import interfaces.SteuerungInterface;
 
-
 /**
  * The main class of the application.
  */
 public class LoGoApp extends SingleFrameApplication {
 
-    public static OberflaecheInterface   meineOberflaeche;
-    public static SteuerungInterface      meineSteuerung;
-    public static GrafikLib     meineGrafikLib = GrafikLib.getInstance();
-    
+    public static OberflaecheInterface meineOberflaeche;
+    public static SteuerungInterface meineSteuerung;
+    public static GrafikLib meineGrafikLib = GrafikLib.getInstance();
 
     /**
      * At startup create and show the main frame of the application.
      */
-    @Override protected void startup() {
+    @Override
+    protected void startup() {
         show(new LoGoView(this));
     }
 
@@ -36,7 +34,8 @@ public class LoGoApp extends SingleFrameApplication {
      * Windows shown in our application come fully initialized from the GUI
      * builder, so this additional configuration is not needed.
      */
-    @Override protected void configureWindow(java.awt.Window root) {
+    @Override
+    protected void configureWindow(java.awt.Window root) {
     }
 
     /**
@@ -52,8 +51,8 @@ public class LoGoApp extends SingleFrameApplication {
      */
     public static void main(String[] args) {
 
-        meineSteuerung      = new Steuerung();
-        meineOberflaeche    = new TestOberflaeche( "LoGo, by Steven Buehner and Tommy Schladitz :D");
+        meineSteuerung = new Steuerung();
+        meineOberflaeche = new TestOberflaeche("LoGo, by Steven Buehner and Tommy Schladitz :D");
 
         //launch(LoGoApp.class, args);
     }
