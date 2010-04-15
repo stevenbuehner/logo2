@@ -10,6 +10,8 @@ import org.jdesktop.application.SingleFrameApplication;
 import GUI.Oberflaeche;
 import GUI.TestOberflaeche;
 import Klassen.Steuerung;
+import interfaces.OberflaecheInterface;
+import interfaces.SteuerungInterface;
 
 
 /**
@@ -17,8 +19,8 @@ import Klassen.Steuerung;
  */
 public class LoGoApp extends SingleFrameApplication {
 
-    public static TestOberflaeche   meineOberflaeche;
-    public static Steuerung     meineSteuerung;
+    public static OberflaecheInterface   meineOberflaeche;
+    public static SteuerungInterface      meineSteuerung;
     public static GrafikLib     meineGrafikLib = GrafikLib.getInstance();
     
 
@@ -52,7 +54,6 @@ public class LoGoApp extends SingleFrameApplication {
 
         meineSteuerung      = new Steuerung();
         meineOberflaeche    = new TestOberflaeche( "LoGo, by Steven Buehner and Tommy Schladitz :D");
-        meineOberflaeche.run();
 
         //launch(LoGoApp.class, args);
     }

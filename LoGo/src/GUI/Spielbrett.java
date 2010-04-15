@@ -154,12 +154,6 @@ public class Spielbrett extends Canvas implements Drawable {
             for(int j=0; j < this.anzahlFelder; j++){
                 if(this.spielFeldArray[i][j] != neuesSpielFeld[i][j] ){
 
-                    if(this.spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_VERBOTEN){
-                        // war vorher ein verbotener Zug, dann wurde jetzt auch nichts gelegt
-                        // for-Schleife nach diesem Durchgang erst weiterlaufen lassen
-                        continue;
-                    }
-
                     switch(neuesSpielFeld[i][j]){
                         case Konstante.SCHNITTPUNKT_SCHWARZ:
                             // Ein schwarzer Stein wurde neu draufgesetzt
@@ -181,11 +175,13 @@ public class Spielbrett extends Canvas implements Drawable {
                                 // Starte ausblende Animation fuer Schwarz
                                 this.feld[i][j].starteAnimationSchwarzEntfernen();
                                 this.repaint();
-                            } else{
+                            } else if(this.spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_WEISS){
                                 // Weisser Stein wurde entfernt
                                 // Starte ausblende Animation fuer Weiss
                                 this.feld[i][j].starteAnimationWeissEntfernen();
                                 this.repaint();
+                            } else if (this.spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_VERBOTEN){
+                                this.feld[i][j].starteAnimationVerbotenerZugAufheben();
                             }
                             break;
                         case Konstante.SCHNITTPUNKT_VERBOTEN:

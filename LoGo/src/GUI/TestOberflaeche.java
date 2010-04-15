@@ -31,6 +31,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
     private Spielbrett dasBrett;
     private boolean threadLaeuf;
+    private static boolean once = false;
 
     String mess = "";
 
@@ -98,7 +99,12 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
 
     public void start(){
-        new Thread(this).start();
+        		// Thread anstoßen
+        if ( !once ) {
+            once = true;
+            Thread t = new Thread( this );
+            t.start();
+	}
     }
 
     public void stop(){
