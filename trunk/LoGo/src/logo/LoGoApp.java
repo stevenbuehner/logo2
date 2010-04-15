@@ -51,7 +51,7 @@ public class LoGoApp extends SingleFrameApplication {
     public static void main(String[] args) {
 
         meineSteuerung      = new Steuerung();
-        meineOberflaeche    = new TestOberflaeche();
+        meineOberflaeche    = new TestOberflaeche( "LoGo, by Steven Buehner and Tommy Schladitz :D");
         meineOberflaeche.run();
 
         //launch(LoGoApp.class, args);
