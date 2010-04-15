@@ -192,6 +192,7 @@ public class Spielbrett extends Canvas implements Drawable {
                         default:
                             // ungueltiger Wert
                     }
+                    this.spielFeldArray[i][j]=neuesSpielFeld[i][j];
                 }
             }
         }
