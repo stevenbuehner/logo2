@@ -1,20 +1,9 @@
 package GUI;
 
 import interfaces.Drawable;
-import interfaces.Movable;
-
-import java.awt.Color;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Polygon;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.util.Vector;
-
 public class SpielStein extends Rectangle2D.Double implements Drawable {
 	long			delay;						// Bewegungsgeschwindigkeit
 	protected boolean	visible;
@@ -53,10 +42,9 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
                 // Standardwerte setzen
 		this.width = pics[0].getWidth();
 		this.height = pics[0].getHeight();
-		loop_from = 0;
-		loop_to = 0;
                 this.visible = true;
                 this.remove = false;
+                this.starteAnimationVerbotenerZugAufheben();
 	}
 
          /**
@@ -83,8 +71,7 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
                 // Standardwerte setzen
 		this.width = pics[0].getWidth();
 		this.height = pics[0].getHeight();
-                loop_from = 0;
-		loop_to = 0;
+                this.starteAnimationVerbotenerZugAufheben();
                 this.visible = true;
                 this.remove = false;
 	}
@@ -185,7 +172,7 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
         }
         
         public synchronized void starteAnimationVerbotenerZugAufheben(){
-            this.setLoop(0, 0);
+            this.setLoop(4, 4);
         }
 
 

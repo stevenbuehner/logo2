@@ -2,7 +2,6 @@ package GUI;
 
 import Klassen.Konstante;
 import interfaces.Drawable;
-import interfaces.Movable;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
