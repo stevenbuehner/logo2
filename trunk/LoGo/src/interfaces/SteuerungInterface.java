@@ -10,7 +10,7 @@ import Klassen.Spielfeld;
  * Das ist das Interface fuer die Steuerung. Die folgenden Funktionen muessen daher implementiert sein.
  * @author tommy
  */
-public interface SteuerungIntface {
+public interface SteuerungInterface {
 
     /**
      * Am Anfang des Spieles muss ein Spielfeld initialisiert werden.

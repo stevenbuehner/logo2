@@ -7,6 +7,7 @@ package GUI;
 import Klassen.Konstante;
 import Klassen.Steuerung;
 import interfaces.OberflaecheInterface;
+import interfaces.SteuerungInterface;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -33,7 +34,7 @@ import logo.LoGoApp;
  */
 public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseListener, KeyListener {
 
-    private Steuerung meineSteuerung;
+    private SteuerungInterface meineSteuerung;
     private GrafikLib lib = GrafikLib.getInstance();
     private VolatileImage backbuffer;
     private GraphicsEnvironment ge;
@@ -68,7 +69,7 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
         this("LoGo by DHBW", 678, 560, LoGoApp.meineSteuerung);
     }
 
-    public Oberflaeche(String fenstername, int width, int height, Steuerung pSteuerung) {
+    public Oberflaeche(String fenstername, int width, int height, SteuerungInterface pSteuerung) {
         meineSteuerung = pSteuerung;
 
 

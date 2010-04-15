@@ -17,7 +17,7 @@ import javax.swing.JFrame;
  *
  * @author steven
  */
-public abstract class CoreWindow {
+public abstract class CoreFullscreen {
 
     private JFrame test;
 
@@ -49,7 +49,7 @@ public abstract class CoreWindow {
   }
 
   /**
-   * CoreWindow initialisieren
+   * CoreFullscreen initialisieren
    */
   protected void init(){
       this.s = new ScreenManager();

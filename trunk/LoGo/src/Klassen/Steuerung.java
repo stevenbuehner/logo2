@@ -1,11 +1,12 @@
 package Klassen;
 
+import GUI.TestOberflaeche;
 import Timer.Countdown;
 import Timer.CountdownPeriodenZeitSchwarz;
 import Timer.CountdownPeriodenZeitWeiss;
 import Timer.CountdownSpielerZeitSchwarz;
 import Timer.CountdownSpielerZeitWeiss;
-import interfaces.SteuerungIntface;
+import interfaces.SteuerungInterface;
 import logo.LoGoApp;
 
 /**
@@ -13,7 +14,7 @@ import logo.LoGoApp;
  * @author steven
  * @version 0.2
  */
-public class Steuerung implements SteuerungIntface {
+public class Steuerung implements SteuerungInterface {
 
     // Die Datenklasse
     private Spielfeld dasSpielfeld;
@@ -28,7 +29,7 @@ public class Steuerung implements SteuerungIntface {
 
     
     public Steuerung( ){
-        this( 19, 60*1000 );     // Standardwerte
+        this( 9, 60*1000 );     // Standardwerte
     }
 
     public Steuerung ( int spielFeldGroesse, long periodenZeit ){
@@ -46,7 +47,7 @@ public class Steuerung implements SteuerungIntface {
     }
 
     /**Implementierung des Interfaces
-     * @see SteuerungIntface
+     * @see SteuerungInterface
      */
     public void initMitEinstellungen(
             String spielerNameSchwarz,
@@ -115,7 +116,7 @@ public class Steuerung implements SteuerungIntface {
     }
 
     /**Implementierung des Interfaces
-     * @see SteuerungIntface
+     * @see SteuerungInterface
      */
     public void initMitSpielfeld( Spielfeld bereitsInitialisiertesSpielfeld ){
         /*
@@ -150,7 +151,7 @@ public class Steuerung implements SteuerungIntface {
     }
 
     /**Implementierung des Interfaces
-     * @see SteuerungIntface
+     * @see SteuerungInterface
      */
     public void initMitEinstellungenFuerStartformation(
             String spielerNameSchwarz,
@@ -176,7 +177,7 @@ public class Steuerung implements SteuerungIntface {
     }
 
     /**Implementierung des Interfaces
-     * @see SteuerungIntface
+     * @see SteuerungInterface
      */
     public void initMitDatenModell(
             Spielfeld feld,
@@ -191,7 +192,7 @@ public class Steuerung implements SteuerungIntface {
     }
 
     /**Implementierung des Interfaces
-     * @see SteuerungIntface
+     * @see SteuerungInterface
      */
     public void klickAufFeld(int xPos, int yPos) {
 
@@ -310,7 +311,7 @@ public class Steuerung implements SteuerungIntface {
     }
 
     /**Implementierung des Interfaces
-     * @see SteuerungIntface
+     * @see SteuerungInterface
      */
     public void buttonSpielStarten(){
         // Überprüfe ob die Initialisierung korrekt war
@@ -395,7 +396,7 @@ public class Steuerung implements SteuerungIntface {
     }
 
     /**Implementierung des Interfaces
-     * @see SteuerungIntface
+     * @see SteuerungInterface
      */
     public void buttonAufgeben() {
 
@@ -425,7 +426,7 @@ public class Steuerung implements SteuerungIntface {
     }
 
     /**Implementierung des Interfaces
-     * @see SteuerungIntface
+     * @see SteuerungInterface
      */
     public void buttonPassen() {
         
@@ -443,7 +444,7 @@ public class Steuerung implements SteuerungIntface {
     }
 
     /**Implementierung des Interfaces
-     * @see SteuerungIntface
+     * @see SteuerungInterface
      */
     public void buttonPause(){
         int aktuelerSpieler = this.dasSpielfeld.getSpielerFarbeAnDerReihe();
@@ -472,7 +473,7 @@ public class Steuerung implements SteuerungIntface {
     }
 
     /**Implementierung des Interfaces
-     * @see SteuerungIntface
+     * @see SteuerungInterface
      */
     public void buttonSpielForsetzen(){
 
@@ -507,14 +508,14 @@ public class Steuerung implements SteuerungIntface {
     }
 
     /**Implementierung des Interfaces
-     * @see SteuerungIntface
+     * @see SteuerungInterface
      */
     public void buttonSpielSpeichern() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**Implementierung des Interfaces
-     * @see SteuerungIntface
+     * @see SteuerungInterface
      */
     public void buttonUndo() {
 
@@ -531,7 +532,7 @@ public class Steuerung implements SteuerungIntface {
     }
 
     /**Implementierung des Interfaces
-     * @see SteuerungIntface
+     * @see SteuerungInterface
      */
     public void buttonRedo() {
         /* In dieser Funktion muss noch der Timer einbebunden werden und
@@ -547,7 +548,7 @@ public class Steuerung implements SteuerungIntface {
     }
 
     /**Implementierung des Interfaces
-     * @see SteuerungIntface
+     * @see SteuerungInterface
      */
     public void buttonSpringeZumStart() {
         this.setAktuelleAngeigteZugnummer(0);
@@ -556,7 +557,7 @@ public class Steuerung implements SteuerungIntface {
     }
 
     /**Implementierung des Interfaces
-     * @see SteuerungIntface
+     * @see SteuerungInterface
      */
     public void buttonSpringeZumEnde() {
         this.setAktuelleAngeigteZugnummer(this.dasSpielfeld.getLetzteZugnummer());
@@ -565,7 +566,7 @@ public class Steuerung implements SteuerungIntface {
     }
 
     /**Implementierung des Interfaces
-     * @see SteuerungIntface
+     * @see SteuerungInterface
      */
     public void zeitAbgelaufenSchwarzHauptzeit() {
         this.dasSpielfeld.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(0);
@@ -573,7 +574,7 @@ public class Steuerung implements SteuerungIntface {
         this.periodenZeitSchwarz.starteCountdown();    }
 
     /**Implementierung des Interfaces
-     * @see SteuerungIntface
+     * @see SteuerungInterface
      */
     public void zeitAbgelaufenSchwarzPeriodenzeit() {
         this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_BEENDET_DURCH_APP);
@@ -581,7 +582,7 @@ public class Steuerung implements SteuerungIntface {
        }
 
     /**Implementierung des Interfaces
-     * @see SteuerungIntface
+     * @see SteuerungInterface
      */
     public void zeitAbgelaufenWeissHauptzeit() {
         this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(0);
@@ -590,7 +591,7 @@ public class Steuerung implements SteuerungIntface {
     }
 
     /**Implementierung des Interfaces
-     * @see SteuerungIntface
+     * @see SteuerungInterface
      */
     public void zeitAbgelaufenWeissPeriodenzeit() {
         this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_BEENDET_DURCH_APP);
