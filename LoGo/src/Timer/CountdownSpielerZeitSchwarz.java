@@ -4,6 +4,7 @@
  */
 package Timer;
 
+import interfaces.OberflaecheInterface;
 import logo.LoGoApp;
 
 /**
@@ -28,6 +29,7 @@ public class CountdownSpielerZeitSchwarz extends Countdown {
 
     @Override
     protected void doEverySecondTimerRuns() {
-        LoGoApp.meineOberflaeche.setAnzeigeSpielerZeitSchwarz(remainingTime);
+        OberflaecheInterface of = LoGoApp.meineOberflaeche;
+        of.setAnzeigeSpielerZeitSchwarz(remainingTime);
     }
 }
