@@ -173,7 +173,7 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
         }
 
         public synchronized void starteAnimationWeissEntfernen(){
-            this.setLoop(12, 22);
+            this.setLoop(12, 17);
         }
         
         public synchronized void starteAnimationSchwarzEntfernen(){
