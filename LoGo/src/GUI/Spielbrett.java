@@ -26,18 +26,15 @@ public class Spielbrett extends Canvas implements Drawable {
     private int yOffset;
     private int anzahlFelder;
     private int[][] spielFeldArray;
-
     // Grafiken
     private Image backgoundImage;
     private SpielStein[][] feld;
-        
     //int state = 0;
     private int wert = 20;
-
     private int[][] array;
 
     // Array-Inhalte alle auf 0 setzen
-    public Spielbrett(int breite, int hoehe,int xOffset,int yOffset, int anzahlFelder, Image backgroundImage) {
+    public Spielbrett(int breite, int hoehe, int xOffset, int yOffset, int anzahlFelder, Image backgroundImage) {
         this.brettBreite = breite;
         this.brettHoehe = hoehe;
         this.xOffset = xOffset;
@@ -54,8 +51,8 @@ public class Spielbrett extends Canvas implements Drawable {
         }
 
         //Berechnung zur Initialisierung
-        double feldHoehe = brettHoehe/anzahlFelder;
-        double feldBreite = brettBreite/anzahlFelder;
+        double feldHoehe = brettHoehe / anzahlFelder;
+        double feldBreite = brettBreite / anzahlFelder;
 
         // Spielbrett-Grafiken laden
         this.feld = new SpielStein[this.anzahlFelder][this.anzahlFelder];
@@ -64,7 +61,7 @@ public class Spielbrett extends Canvas implements Drawable {
         for (int m = 0; m < this.anzahlFelder; m++) {
             for (int n = 0; n < this.anzahlFelder; n++) {
                 // Ausgangspunkt für das feld[0][0] ist die linke untere Ecke
-                feld[m][n] = new SpielStein(bi, xOffset+feldBreite*m, yOffset + this.brettHoehe - feldHoehe*(n+1), 20);
+                feld[m][n] = new SpielStein(bi, xOffset + feldBreite * m, yOffset + this.brettHoehe - feldHoehe * (n + 1), 20);
             }
         }
 
@@ -83,10 +80,9 @@ public class Spielbrett extends Canvas implements Drawable {
         // ACHTUNG! FUNKTION NOCH NICHT IM EINSATZ!
 
         //Checke ob sich was veraendert hat wen ja, kopiere gleich
-        for(int i=0; i < this.anzahlFelder; i++ ){
-            for(int j=0; j < this.anzahlFelder; j++ ){
-                if(this.spielFeldArray[i][j] != neuesFeld[i][j]){
-
+        for (int i = 0; i < this.anzahlFelder; i++) {
+            for (int j = 0; j < this.anzahlFelder; j++) {
+                if (this.spielFeldArray[i][j] != neuesFeld[i][j]) {
                 }
             }
         }
@@ -97,34 +93,35 @@ public class Spielbrett extends Canvas implements Drawable {
      * @param g
      */
     public void drawObjects(Graphics g) {
-        if(backgoundImage != null)
+        if (backgoundImage != null) {
             g.drawImage(backgoundImage, xOffset, yOffset, this);
+        }
 
         //Berechnung fuer das Feld
-        int feldHoehe = brettHoehe/anzahlFelder;
-        int feldBreite = brettBreite/anzahlFelder;
-        int halbeFeldHoehe = feldHoehe/2;
-        int halbeFeldBreite = feldBreite/2;
-        int linienBreite = this.brettBreite-feldBreite;     // eine Feldbreite kuerzer
-        int linienHoehe  = this.brettHoehe-feldHoehe;
-        
+        int feldHoehe = brettHoehe / anzahlFelder;
+        int feldBreite = brettBreite / anzahlFelder;
+        int halbeFeldHoehe = feldHoehe / 2;
+        int halbeFeldBreite = feldBreite / 2;
+        int linienBreite = this.brettBreite - feldBreite;     // eine Feldbreite kuerzer
+        int linienHoehe = this.brettHoehe - feldHoehe;
+
         g.setColor(Color.BLACK);
 
 
         // Horizontale Linien zeichnen
         for (int i = 0; i < this.anzahlFelder; i++) {
-            g.drawLine(this.xOffset + halbeFeldBreite, this.yOffset+i*feldHoehe + halbeFeldHoehe, xOffset+linienBreite +halbeFeldBreite, yOffset + i*feldHoehe + halbeFeldHoehe);
+            g.drawLine(this.xOffset + halbeFeldBreite, this.yOffset + i * feldHoehe + halbeFeldHoehe, xOffset + linienBreite + halbeFeldBreite, yOffset + i * feldHoehe + halbeFeldHoehe);
         }
 
         // Vertikale Linien zeichnen
         for (int i = 0; i < this.anzahlFelder; i++) {
-            g.drawLine(xOffset + i*feldBreite + halbeFeldBreite, yOffset+ halbeFeldHoehe, xOffset + i*feldBreite + halbeFeldBreite, yOffset+linienHoehe+ halbeFeldHoehe);
+            g.drawLine(xOffset + i * feldBreite + halbeFeldBreite, yOffset + halbeFeldHoehe, xOffset + i * feldBreite + halbeFeldBreite, yOffset + linienHoehe + halbeFeldHoehe);
         }
 
 
         // Jedes Feld soll sich selbst zeichnen
-        for(int i=0; i < this.anzahlFelder; i++){
-            for(int j=0; j < this.anzahlFelder; j++){
+        for (int i = 0; i < this.anzahlFelder; i++) {
+            for (int j = 0; j < this.anzahlFelder; j++) {
                 feld[i][j].drawObjects(g);
             }
         }
@@ -134,10 +131,10 @@ public class Spielbrett extends Canvas implements Drawable {
      * Nur Logic (=Animationen) berechnen
      * @param delta
      */
-    public synchronized void doLogic( long delta ){
-         // Logik auf alle Felder anwenden
-        for(int i=0; i < this.anzahlFelder; i++){
-            for(int j=0; j < this.anzahlFelder; j++){
+    public synchronized void doLogic(long delta) {
+        // Logik auf alle Felder anwenden
+        for (int i = 0; i < this.anzahlFelder; i++) {
+            for (int j = 0; j < this.anzahlFelder; j++) {
                 this.feld[i][j].doLogic(delta);
             }
         }
@@ -149,11 +146,11 @@ public class Spielbrett extends Canvas implements Drawable {
     public void updateSpielFeld(int[][] neuesSpielFeld) {
 
         // Logik auf alle Felder anwenden
-        for(int i=0; i < this.anzahlFelder; i++){
-            for(int j=0; j < this.anzahlFelder; j++){
-                if(this.spielFeldArray[i][j] != neuesSpielFeld[i][j] ){
+        for (int i = 0; i < this.anzahlFelder; i++) {
+            for (int j = 0; j < this.anzahlFelder; j++) {
+                if (this.spielFeldArray[i][j] != neuesSpielFeld[i][j]) {
 
-                    switch(neuesSpielFeld[i][j]){
+                    switch (neuesSpielFeld[i][j]) {
                         case Konstante.SCHNITTPUNKT_SCHWARZ:
                             // Ein schwarzer Stein wurde neu draufgesetzt
                             // Starte einblende Animation fuer Schwarz
@@ -169,17 +166,17 @@ public class Spielbrett extends Canvas implements Drawable {
                         case Konstante.SCHNITTPUNKT_LEER:
                             // Der vorherige Stein wurde entfernt
                             // der Stein kann nicht Verboten gewesen sein, da dies weiter oben bereits abgefangen wurde
-                            if( this.spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_SCHWARZ){
+                            if (this.spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_SCHWARZ) {
                                 // Schwarzer Stein wurde entfernt
                                 // Starte ausblende Animation fuer Schwarz
                                 this.feld[i][j].starteAnimationSchwarzEntfernen();
                                 this.repaint();
-                            } else if(this.spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_WEISS){
+                            } else if (this.spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_WEISS) {
                                 // Weisser Stein wurde entfernt
                                 // Starte ausblende Animation fuer Weiss
                                 this.feld[i][j].starteAnimationWeissEntfernen();
                                 this.repaint();
-                            } else if (this.spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_VERBOTEN){
+                            } else if (this.spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_VERBOTEN) {
                                 this.feld[i][j].starteAnimationVerbotenerZugAufheben();
                             }
                             break;
@@ -189,9 +186,9 @@ public class Spielbrett extends Canvas implements Drawable {
                             this.repaint();
                             break;
                         default:
-                            // ungueltiger Wert
+                        // ungueltiger Wert
                     }
-                    this.spielFeldArray[i][j]=neuesSpielFeld[i][j];
+                    this.spielFeldArray[i][j] = neuesSpielFeld[i][j];
                 }
             }
         }
@@ -204,27 +201,25 @@ public class Spielbrett extends Canvas implements Drawable {
      */
     public void move(long delta) {
         // Bewegungen ausführen bei allen Feldern
-        for(int i=0; i < this.anzahlFelder; i++){
-            for(int j=0; j < this.anzahlFelder; j++){
+        for (int i = 0; i < this.anzahlFelder; i++) {
+            for (int j = 0; j < this.anzahlFelder; j++) {
                 feld[i][j].doLogic(delta);
             }
         }
     }
 
-    public Point berechneTreffer( int xPos, int yPos ){
+    public Point berechneTreffer(int xPos, int yPos) {
 
-        int xPosRelativ = xPos-this.xOffset;
-        int yPosRelativ = yPos-this.yOffset;
+        int xPosRelativ = xPos - this.xOffset;
+        int yPosRelativ = yPos - this.yOffset;
 
-        int xPunkt = xPosRelativ/(this.brettBreite/this.anzahlFelder)+1;
-        int yPunkt = (this.brettHoehe-yPosRelativ)/(this.brettHoehe/this.anzahlFelder)+1;
+        int xPunkt = xPosRelativ / (this.brettBreite / this.anzahlFelder) + 1;
+        int yPunkt = (this.brettHoehe - yPosRelativ) / (this.brettHoehe / this.anzahlFelder) + 1;
 
-        if (xPunkt > 0 && xPunkt <= this.anzahlFelder && yPunkt > 0 && yPunkt <= this.anzahlFelder){
+        if (xPunkt > 0 && xPunkt <= this.anzahlFelder && yPunkt > 0 && yPunkt <= this.anzahlFelder) {
             return new Point(xPunkt, yPunkt);
-        }
-        else{
+        } else {
             return null;
         }
     }
-
 }
