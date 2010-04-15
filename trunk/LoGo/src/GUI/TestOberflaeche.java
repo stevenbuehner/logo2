@@ -9,6 +9,7 @@ import interfaces.OberflaecheInterface;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -32,6 +33,10 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     private Spielbrett dasBrett;
     private boolean threadLaeuf;
     private static boolean once = false;
+
+    /* Double Buffering */
+    private Image dbImage;
+    private Graphics dbGraphics;
 
     String mess = "";
 
@@ -99,6 +104,9 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
     }
 
+    @Override
+    public void update( Graphics g){
+    }
 
     public void start(){
         		// Thread anstoßen
