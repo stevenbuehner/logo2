@@ -11,12 +11,14 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferStrategy;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -34,9 +36,8 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     private boolean threadLaeuf;
     private static boolean once = false;
 
-    /* Double Buffering */
-    private Image dbImage;
-    private Graphics dbGraphics;
+
+   /* Double Buffering */
 
     String mess = "";
 
@@ -50,6 +51,13 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
 
     public void init(){
+
+        /* Buffern */
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	this.setUndecorated(true);
+	this.setSize(800,600);
+	this.setVisible(true);
+	this.createBufferStrategy(2);
 
         this.dasBrett = new Spielbrett(495, 495, 40, 40, 9, null);
         threadLaeuf = true;
@@ -81,8 +89,8 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
             cumTime += timePassed;
 
             this.doLogic(timePassed);
-            this.repaint();
-
+            //this.repaint();
+            this.drawStuff();
             try {
                 Thread.sleep(20);
             } catch (InterruptedException ex) {}
@@ -103,6 +111,30 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         g.drawString("MESS: "+mess, 30, 50);
 
     }
+
+    private void drawStuff() {
+	BufferStrategy bf = this.getBufferStrategy();
+	Graphics g = null;
+
+	try {
+		g = bf.getDrawGraphics();
+
+		// It is assumed that mySprite is created somewhere else.
+		// This is just an example for passing off the Graphics object.
+		this.dasBrett.drawObjects(g);
+
+	} finally {
+		// It is best to dispose() a Graphics object when done with it.
+		g.dispose();
+	}
+
+	// Shows the contents of the backbuffer on the screen.
+	bf.show();
+
+        //Tell the System to do the Drawing now, otherwise it can take a few extra ms until
+        //Drawing is done which looks very jerky
+        Toolkit.getDefaultToolkit().sync();
+}
 
     @Override
     public void update( Graphics g){
