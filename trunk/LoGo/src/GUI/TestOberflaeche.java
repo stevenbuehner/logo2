@@ -70,6 +70,21 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     public void run() {
 
         while(this.threadLaeuf){
+
+            long startTime = System.currentTimeMillis();
+            long cumTime = startTime;
+
+            while(running){
+                long timePassed = System.currentTimeMillis() - cumTime;
+                cumTime += timePassed;
+
+                doLogic(timePassed);
+
+              try{
+                  Thread.sleep(20);
+              }catch(Exception ex){}
+          }
+
             this.repaint();
             try {
                 Thread.sleep(20);
@@ -113,7 +128,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
 
 
-    public void update( long timePassed ){
+    public void doLogic( long timePassed ){
         this.dasBrett.doLogic(timePassed);
     }
 

@@ -10,6 +10,7 @@ import logo.LoGoApp;
 /**
  *
  * @author steven
+ * @version 0.1
  */
 public class CountdownPeriodenZeitSchwarz extends Countdown {
 
