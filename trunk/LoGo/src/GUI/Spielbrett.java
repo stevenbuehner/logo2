@@ -64,7 +64,7 @@ public class Spielbrett extends Canvas implements Drawable {
         for (int m = 0; m < this.anzahlFelder; m++) {
             for (int n = 0; n < this.anzahlFelder; n++) {
                 // Ausgangspunkt für das feld[0][0] ist die linke untere Ecke
-                feld[m][n] = new SpielStein(bi, xOffset+feldBreite*m, yOffset + this.brettHoehe - feldHoehe*n, 20);
+                feld[m][n] = new SpielStein(bi, xOffset+feldBreite*m, yOffset + this.brettHoehe - feldHoehe*(n+1), 20);
             }
         }
 
@@ -94,11 +94,6 @@ public class Spielbrett extends Canvas implements Drawable {
         // Vertikale Linien zeichnen
         for (int i = 0; i < this.anzahlFelder; i++) {
             g.drawLine(xOffset + i*feldBreite, yOffset, xOffset + i*feldBreite, yOffset+brettHoehe);
-        }
-
-        // Spielsteine zeichnen
-        for(int i=0; i< this.anzahlFelder; i++){
-
         }
 
     }
@@ -221,7 +216,7 @@ public class Spielbrett extends Canvas implements Drawable {
         int yPosRelativ = yPos-this.yOffset;
 
         int xPunkt = xPosRelativ/(this.brettBreite/this.anzahlFelder)+1;
-        int yPunkt = yPosRelativ/(this.brettHoehe/this.anzahlFelder)+1;
+        int yPunkt = (this.brettHoehe-yPosRelativ)/(this.brettHoehe/this.anzahlFelder)+1;
 
         if (xPunkt > 0 && xPunkt <= this.anzahlFelder && yPunkt > 0 && yPunkt <= this.anzahlFelder){
             return new Point(xPunkt, yPunkt);

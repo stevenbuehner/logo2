@@ -36,6 +36,7 @@ public class TestOberflaeche extends CoreWindow implements KeyListener, Oberflae
         // Alle Spezialbuttons wie TAB, werden wie normale Keys behandelt
         w.setFocusTraversalKeysEnabled(false);
         w.addKeyListener(this);
+        w.addMouseListener(this);
         
         
     }
@@ -149,10 +150,16 @@ public class TestOberflaeche extends CoreWindow implements KeyListener, Oberflae
         Point returnWert = this.testbrett.berechneTreffer(e.getX(), e.getY());
         if( returnWert != null){
             LoGoApp.meineSteuerung.klickAufFeld(returnWert.x, returnWert.y);
+            mess = "klick auf " + returnWert.x + " | " + returnWert.y;
+        }else{
+            mess = "kein Treffer mit Clicked-Koordinaten: " + e.getX() + " | " + e.getY();
         }
+        System.out.println(mess);
+
     }
 
     public void mousePressed(MouseEvent e) {
+
     }
 
     public void mouseReleased(MouseEvent e) {
