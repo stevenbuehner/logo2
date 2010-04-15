@@ -4,6 +4,7 @@ import Klassen.Konstante;
 import interfaces.Drawable;
 import interfaces.Movable;
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
@@ -72,32 +73,6 @@ public class Spielbrett extends Canvas implements Drawable {
 
     }
 
-    @Override
-    public void paint(Graphics g) {
-
-        if(backgoundImage != null)
-            g.drawImage(backgoundImage, xOffset, yOffset, this);
-        
-        //Berechnung fuer das Feld
-        int feldHoehe = brettHoehe/anzahlFelder;
-        int feldBreite = brettBreite/anzahlFelder;
-        int halbeFeldHoehe = feldHoehe/2;
-        int halbeFeldBreite = feldBreite/2;
-
-
-        
-        // Horizontale Linien zeichnen
-        for (int i = 0; i < this.anzahlFelder; i++) {
-            g.drawLine(this.xOffset, this.yOffset+i*feldHoehe, xOffset+brettBreite, yOffset);
-        }
-
-        // Vertikale Linien zeichnen
-        for (int i = 0; i < this.anzahlFelder; i++) {
-            g.drawLine(xOffset + i*feldBreite, yOffset, xOffset + i*feldBreite, yOffset+brettHoehe);
-        }
-
-    }
-
     /**
      * Versuch nur die benötigten / veränderten Felder neu zu zeiche ... mal
      * schaun ob sich das umsetzen lässt
@@ -123,6 +98,31 @@ public class Spielbrett extends Canvas implements Drawable {
      * @param g
      */
     public void drawObjects(Graphics g) {
+        if(backgoundImage != null)
+            g.drawImage(backgoundImage, xOffset, yOffset, this);
+
+        //Berechnung fuer das Feld
+        int feldHoehe = brettHoehe/anzahlFelder;
+        int feldBreite = brettBreite/anzahlFelder;
+        int halbeFeldHoehe = feldHoehe/2;
+        int halbeFeldBreite = feldBreite/2;
+        int linienBreite = this.brettBreite-feldBreite;     // eine Feldbreite kuerzer
+        int linienHoehe  = this.brettHoehe-feldHoehe;
+        
+        g.setColor(Color.BLACK);
+
+
+        // Horizontale Linien zeichnen
+        for (int i = 0; i < this.anzahlFelder; i++) {
+            g.drawLine(this.xOffset + halbeFeldBreite, this.yOffset+i*feldHoehe + halbeFeldHoehe, xOffset+linienBreite +halbeFeldBreite, yOffset + i*feldHoehe + halbeFeldHoehe);
+        }
+
+        // Vertikale Linien zeichnen
+        for (int i = 0; i < this.anzahlFelder; i++) {
+            g.drawLine(xOffset + i*feldBreite + halbeFeldBreite, yOffset+ halbeFeldHoehe, xOffset + i*feldBreite + halbeFeldBreite, yOffset+linienHoehe+ halbeFeldHoehe);
+        }
+
+
         // Jedes Feld soll sich selbst zeichnen
         for(int i=0; i < this.anzahlFelder; i++){
             for(int j=0; j < this.anzahlFelder; j++){
@@ -165,11 +165,13 @@ public class Spielbrett extends Canvas implements Drawable {
                             // Ein schwarzer Stein wurde neu draufgesetzt
                             // Starte einblende Animation fuer Schwarz
                             this.feld[i][j].starteAnimationSchwarzSetzen();
+                            this.repaint();
                             break;
                         case Konstante.SCHNITTPUNKT_WEISS:
                             // Ein weisser Stein wurde neu draufgesetzt
                             // Starte einblende Animation fuer Weiss
                             this.feld[i][j].starteAnimationWeissSetzen();
+                            this.repaint();
                             break;
                         case Konstante.SCHNITTPUNKT_LEER:
                             // Der vorherige Stein wurde entfernt
@@ -178,15 +180,18 @@ public class Spielbrett extends Canvas implements Drawable {
                                 // Schwarzer Stein wurde entfernt
                                 // Starte ausblende Animation fuer Schwarz
                                 this.feld[i][j].starteAnimationSchwarzEntfernen();
+                                this.repaint();
                             } else{
                                 // Weisser Stein wurde entfernt
                                 // Starte ausblende Animation fuer Weiss
                                 this.feld[i][j].starteAnimationWeissEntfernen();
+                                this.repaint();
                             }
                             break;
                         case Konstante.SCHNITTPUNKT_VERBOTEN:
                             // Zeichne das Feld als verbotenen Schnittpunkt
                             this.feld[i][j].starteAnimationVerbotenerZug();
+                            this.repaint();
                             break;
                         default:
                             // ungueltiger Wert

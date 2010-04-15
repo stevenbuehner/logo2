@@ -6,13 +6,19 @@
 package GUI;
 
 import interfaces.OberflaecheInterface;
-import java.awt.Graphics2D;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Window;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
 import logo.LoGoApp;
 
 
@@ -21,65 +27,88 @@ import logo.LoGoApp;
  * @author steven
  * @version 0.2
  */
-public class TestOberflaeche extends CoreWindow implements KeyListener, OberflaecheInterface, MouseListener{
+public class TestOberflaeche extends JFrame implements Runnable, KeyListener, OberflaecheInterface, MouseListener{
 
-    private Spielbrett testbrett;
+    private Spielbrett dasBrett;
+    private boolean threadLaeuf;
 
     String mess = "";
 
+    public TestOberflaeche( String pFenstername){
+        super( pFenstername );
+
+        init();
+        
+        this.start();
+    }
+
+
     public void init(){
-        super.init();
 
-        this.testbrett = new Spielbrett(495, 495, 50, 20, 9, null);
+        this.dasBrett = new Spielbrett(495, 495, 40, 40, 9, null);
+        threadLaeuf = true;
 
-        Window w = s.getFullScreenWindow();
         // Alle Spezialbuttons wie TAB, werden wie normale Keys behandelt
-        w.setFocusTraversalKeysEnabled(false);
-        w.addKeyListener(this);
-        w.addMouseListener(this);
-        
+        this.setFocusTraversalKeysEnabled(false);
+        this.addKeyListener(this);
+        this.addMouseListener(this);
+
+        this.setVisible(true);
+        this.setResizable(false);
+        this.setBackground(Color.GREEN);
+        this.setBounds(50, 50, 800, 600);
+
+
+        // Programm bei klick auf den roten Knopf beenden
+        this.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent e) { System.exit(0);
+        } });
         
     }
 
-   /*
-    public void run(DisplayMode dm){
-        setBackground(Color.PINK);
-        setForeground(Color.WHITE);
-        setFont(new Font("Arial", Font.PLAIN, 24));
+    public void run() {
 
-        ScreenManager s = new ScreenManager();
-        try {
-            s.setFullScreen(dm, this);
+        while(this.threadLaeuf){
+            this.repaint();
             try {
-                Thread.sleep(5000);
-            } catch (Exception e) {
+                Thread.sleep(20);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(TestOberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+            }finally{
+
             }
-        } finally{
-            s.restoreScreen();
         }
-
-        try{
-            testbrett.
-        }
-    }
-            */
-
-
-    @Override
-    public synchronized void draw(Graphics2D g) {
-        Window w = s.getFullScreenWindow();
-        g.setColor(w.getBackground());
-        g.fillRect(0, 0, s.getWidth(), s.getHeight());
-        g.setColor(w.getForeground());
-        g.drawString(mess, 30, 30);
-
-        this.testbrett.drawObjects(g);
 
     }
 
     @Override
+    public void paint( Graphics g){
+        super.paint(g);
+
+        g.setColor(this.getBackground());
+        g.fillRect(0, 0, this.getWidth(), this.getHeight());
+
+        this.dasBrett.drawObjects(g);
+
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial", Font.PLAIN, 20 ));
+        g.drawString("MESS: "+mess, 30, 50);
+
+    }
+
+
+    public void start(){
+        new Thread(this).start();
+    }
+
+    public void stop(){
+        this.threadLaeuf = false;
+    }
+
+
+
     public void update( long timePassed ){
-        this.testbrett.doLogic(timePassed);
+        this.dasBrett.doLogic(timePassed);
     }
 
     public void keyTyped(KeyEvent e) {
@@ -110,7 +139,7 @@ public class TestOberflaeche extends CoreWindow implements KeyListener, Oberflae
 
     public void setBrettOberflaeche(int[][] spielfeld, int spielfeldGroesse) {
         // ACHTUNG: Änderun der Spielfeldgroesse wird hier nciht abgefangen!
-        this.testbrett.updateSpielFeld(spielfeld);
+        this.dasBrett.updateSpielFeld(spielfeld);
     }
 
     public void setAnzeigePeriodenZeitWeiss(long periodenZeitInMS) {
@@ -144,22 +173,20 @@ public class TestOberflaeche extends CoreWindow implements KeyListener, Oberflae
     }
 
     public void gibFehlermeldungAus(String fehlertext) {
+        System.out.println(fehlertext);
     }
 
     public void mouseClicked(MouseEvent e) {
-        Point returnWert = this.testbrett.berechneTreffer(e.getX(), e.getY());
+        Point returnWert = this.dasBrett.berechneTreffer(e.getX(), e.getY());
         if( returnWert != null){
             LoGoApp.meineSteuerung.klickAufFeld(returnWert.x, returnWert.y);
             mess = "klick auf " + returnWert.x + " | " + returnWert.y;
         }else{
             mess = "kein Treffer mit Clicked-Koordinaten: " + e.getX() + " | " + e.getY();
         }
-        System.out.println(mess);
-
     }
 
     public void mousePressed(MouseEvent e) {
-
     }
 
     public void mouseReleased(MouseEvent e) {
@@ -170,4 +197,6 @@ public class TestOberflaeche extends CoreWindow implements KeyListener, Oberflae
 
     public void mouseExited(MouseEvent e) {
     }
+
+
 }
