@@ -68,33 +68,20 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     }
 
     public void run() {
+        long startTime = System.nanoTime();
+        long cumTime = startTime;
 
         while(this.threadLaeuf){
+            long timePassed = System.nanoTime() - cumTime;
+            cumTime += timePassed;
 
-            long startTime = System.currentTimeMillis();
-            long cumTime = startTime;
-
-            while(running){
-                long timePassed = System.currentTimeMillis() - cumTime;
-                cumTime += timePassed;
-
-                doLogic(timePassed);
-
-              try{
-                  Thread.sleep(20);
-              }catch(Exception ex){}
-          }
-
+            this.doLogic(timePassed);
             this.repaint();
+
             try {
                 Thread.sleep(20);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(TestOberflaeche.class.getName()).log(Level.SEVERE, null, ex);
-            }finally{
-
-            }
+            } catch (InterruptedException ex) {}
         }
-
     }
 
     @Override
@@ -128,7 +115,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
 
 
-    public void doLogic( long timePassed ){
+    public synchronized void doLogic( long timePassed ){
         this.dasBrett.doLogic(timePassed);
     }
 

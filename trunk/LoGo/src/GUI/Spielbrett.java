@@ -135,7 +135,7 @@ public class Spielbrett extends Canvas implements Drawable {
      * Nur Logic (=Animationen) berechnen
      * @param delta
      */
-    public void doLogic( long delta ){
+    public synchronized void doLogic( long delta ){
          // Logik auf alle Felder anwenden
         for(int i=0; i < this.anzahlFelder; i++){
             for(int j=0; j < this.anzahlFelder; j++){
