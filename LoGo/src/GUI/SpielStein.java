@@ -95,7 +95,7 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
          * der Animation so ein, wie es nach der Zeit @param delta zu sein hat.
          * @param delta
          */
-	public void doLogic(long delta) {
+	public synchronized void doLogic(long delta) {
 
 		if ( delay == -1 )
 			return;
