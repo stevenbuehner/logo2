@@ -28,7 +28,7 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="GUI.Oberflaeche" name="oberflaeche1">
+        <Component class="GUI.alteOberflaeche" name="oberflaeche1">
           <Properties>
             <Property name="name" type="java.lang.String" value="oberflaeche1" noResource="true"/>
           </Properties>

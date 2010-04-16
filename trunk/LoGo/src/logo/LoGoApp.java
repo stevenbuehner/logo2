@@ -6,7 +6,7 @@ package logo;
 import GUI.GrafikLib;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
-import GUI.Oberflaeche;
+import GUI.alteOberflaeche;
 import GUI.TestOberflaeche;
 import Klassen.Steuerung;
 import interfaces.OberflaecheInterface;
