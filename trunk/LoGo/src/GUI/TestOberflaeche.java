@@ -159,6 +159,14 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
             LoGoApp.meineSteuerung.buttonSpielStarten();
             mess = "Steuerung => Spiel starten";
         }
+        else if( keyCode == KeyEvent.VK_LEFT){
+            LoGoApp.meineSteuerung.buttonRedo();
+            mess = "Zug Rückgängig machen";
+        }
+        else if( keyCode == KeyEvent.VK_RIGHT){
+            LoGoApp.meineSteuerung.buttonUndo();
+            mess = "Zug wieder herstellen";
+        }
         else{
             mess = "Pressed: " + KeyEvent.getKeyText(keyCode);
             e.consume(); // Kombinierte Tasten sollen nicht behandlet werden.
