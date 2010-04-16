@@ -29,20 +29,17 @@ public class Spielbrett extends Canvas implements Drawable {
     // Grafiken
     private Image backgoundImage;
     private SpielStein[][] feld;
-    //int state = 0;
-    private int wert = 20;
-    private int[][] array;
 
     // Array-Inhalte alle auf 0 setzen
     public Spielbrett(int breite, int hoehe, int xOffset, int yOffset, int anzahlFelder, Image backgroundImage) {
 
         // Berechne Brettgroesse und Feldabstaende
-        int unpassend = breite%anzahlFelder;
-        this.brettBreite = breite-unpassend;
-        unpassend = hoehe%anzahlFelder;
-        this.brettHoehe = hoehe-unpassend;
-        this.xOffset = xOffset+unpassend/2;
-        this.yOffset = yOffset+unpassend/2;
+        int unpassend = breite % anzahlFelder;
+        this.brettBreite = breite - unpassend;
+        unpassend = hoehe % anzahlFelder;
+        this.brettHoehe = hoehe - unpassend;
+        this.xOffset = xOffset + unpassend / 2;
+        this.yOffset = yOffset + unpassend / 2;
         this.anzahlFelder = anzahlFelder;
         this.backgoundImage = backgroundImage;
 
@@ -55,19 +52,50 @@ public class Spielbrett extends Canvas implements Drawable {
         }
 
         //Berechnung zur Initialisierung
-        double feldHoehe = brettHoehe / anzahlFelder;
-        double feldBreite = brettBreite / anzahlFelder;
+        int feldHoehe = brettHoehe / anzahlFelder;
+        int feldBreite = brettBreite / anzahlFelder;
 
-        // Spielbrett-Grafiken laden
+        // Spielbrett-Grafiken abhanegig von der Feldbreite und Feldhoehe laden
         this.feld = new SpielStein[this.anzahlFelder][this.anzahlFelder];
         GrafikLib lib = GrafikLib.getInstance();
-       // BufferedImage[] bi = lib.getSprite("GUI/resources/Spielsteine_6x5.png", 6, 5);
-        BufferedImage[] bi = lib.getSprite("GUI/resources/spielSteineOrange_9.png", 14, 3);
+        // BufferedImage[] bi = lib.getSprite("GUI/resources/Spielsteine_6x5.png", 6, 5);
+
+        int minimaleAusdehnung;
+        String spielSteinImageName;
+        if (feldHoehe < feldBreite) {
+            minimaleAusdehnung = feldHoehe;
+        } else {
+            minimaleAusdehnung = feldBreite;
+        }
+
+        // Umrechnung: spielSteinGroesse = bildgroese/4200*108*14
+        if (minimaleAusdehnung < 5) {
+            throw new UnsupportedOperationException("Diese Spiellfeldgroesse wird nicht unterstuetzt.");
+        } else if (minimaleAusdehnung < 10) {
+            spielSteinImageName = "GUI/resources/Kugel_bgOrange_23px.png"; // Kugel hat ca. 8 pixel
+        } else if (minimaleAusdehnung < 18) {
+            spielSteinImageName = "GUI/resources/Kugel_bgOrange45px.png"; // Kugel hat ca. 17 Pixel
+        } else if (minimaleAusdehnung < 28) {
+            spielSteinImageName = "GUI/resources/Kugel_bgOrange_61_25px.png"; // Kugel hat ca. 25 Pixel
+        } else if (minimaleAusdehnung < 40) {
+            spielSteinImageName = "GUI/resources/Kugel_bgOrange_94px_34.png"; // Kugel hat ca. 34 Pixel
+        } else if (minimaleAusdehnung < 50) {
+            spielSteinImageName = "GUI/resources/Kugel_bgOrange_125px_45.png"; // Kugel hat ca. 45 Pixel
+        } else if (minimaleAusdehnung < 60) {
+            spielSteinImageName = "GUI/resources/Kugel_bgOrange_153px_55.png"; // Kugel hat ca. 55 Pixel
+        } else {
+            throw new UnsupportedOperationException("Diese Spiellfeldgroesse wird nicht unterstuetzt.");
+        }
+
+
+
+
+        BufferedImage[] bi = lib.getSprite(spielSteinImageName, 14, 3);
         for (int m = 0; m < this.anzahlFelder; m++) {
             for (int n = 0; n < this.anzahlFelder; n++) {
                 // Ausgangspunkt für das feld[0][0] ist die linke untere Ecke
                 // Ein Spielstein bekommt jeweils die Koordinaten der Mitte, auf der er liegt.
-                feld[m][n] = new SpielStein(bi, xOffset + feldBreite * m + feldBreite/2, yOffset + this.brettHoehe - feldHoehe * (n + 1) + feldHoehe/2, 10);
+                feld[m][n] = new SpielStein(bi, xOffset + feldBreite * m + feldBreite / 2, yOffset + this.brettHoehe - feldHoehe * (n + 1) + feldHoehe / 2, 10);
             }
         }
 
@@ -100,7 +128,7 @@ public class Spielbrett extends Canvas implements Drawable {
      */
     public void drawObjects(Graphics g) {
         if (backgoundImage != null) {
-            g.drawImage(backgoundImage, xOffset-10, yOffset-8, this);
+            g.drawImage(backgoundImage, xOffset - 10, yOffset - 8, this);
         }
 
         //Berechnung fuer das Feld
@@ -227,4 +255,9 @@ public class Spielbrett extends Canvas implements Drawable {
             return null;
         }
     }
+
+    public int getAnzahlFelder(){
+        return this.anzahlFelder;
+    }
+
 }

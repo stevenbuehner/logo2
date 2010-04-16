@@ -28,6 +28,12 @@ import logo.LoGoApp;
  */
 public class TestOberflaeche extends JFrame implements Runnable, KeyListener, OberflaecheInterface, MouseListener{
 
+    // Wenn nicht anders angegeben, verwende diese Masse zum zeichnen des Spielbretts
+    private final static int STANDARD_SPIELFELD_HOEHE = 495;
+    private final static int STANDARD_SPIELFELD_BREITE = 495;
+    private final static int STANDARD_SPIELFELD_XPOS = 40;
+    private final static int STANDARD_SPIELFELD_YPOS = 40;
+
     private Spielbrett dasBrett;
     private boolean threadLaeuf;
     private static boolean once = false;
@@ -56,9 +62,9 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         this.setBackground(Color.ORANGE);
 	this.createBufferStrategy(2);
 
-        GrafikLib lib = GrafikLib.getInstance();
-        BufferedImage brett_bg= lib.getSprite("GUI/resources/brett_bg.png");
-        this.dasBrett = new Spielbrett(495, 495, 40, 40, 19, brett_bg);
+        // GrafikLib lib = GrafikLib.getInstance();
+        // BufferedImage brett_bg= lib.getSprite("GUI/resources/brett_bg.png");
+        // this.dasBrett = new Spielbrett(495, 495, 40, 40, 19, brett_bg);
         
         threadLaeuf = true;
 
@@ -73,6 +79,9 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         // Programm bei klick auf den roten Knopf beenden
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+    }
+
+    public void createMenue(){
         
     }
 
@@ -105,7 +114,8 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
 		// It is assumed that mySprite is created somewhere else.
 		// This is just an example for passing off the Graphics object.
-		this.dasBrett.drawObjects(g);
+                if(this.dasBrett != null)
+                    this.dasBrett.drawObjects(g);
 
                 g.setColor(Color.BLACK);
                 g.setFont(new Font("Arial", Font.PLAIN, 20 ));
@@ -144,7 +154,8 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
 
     public synchronized void doLogic( long timePassed ){
-        this.dasBrett.doLogic(timePassed);
+        if(this.dasBrett != null)
+            this.dasBrett.doLogic(timePassed);
     }
 
     public void keyTyped(KeyEvent e) {
@@ -183,7 +194,18 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
     public void setBrettOberflaeche(int[][] spielfeld, int spielfeldGroesse) {
         // ACHTUNG: Änderun der Spielfeldgroesse wird hier nciht abgefangen!
-        this.dasBrett.updateSpielFeld(spielfeld);
+        if(this.dasBrett != null && this.dasBrett.getAnzahlFelder() == spielfeldGroesse){
+            this.dasBrett.updateSpielFeld(spielfeld);
+        }
+        else{
+            this.dasBrett = new Spielbrett(STANDARD_SPIELFELD_BREITE,
+                    STANDARD_SPIELFELD_HOEHE, 
+                    STANDARD_SPIELFELD_XPOS, 
+                    STANDARD_SPIELFELD_YPOS, 
+                    spielfeldGroesse, 
+                    GrafikLib.getInstance().getSprite("GUI/resources/brett_bg.png"));
+        }
+
     }
 
     public void setAnzeigePeriodenZeitWeiss(long periodenZeitInMS) {
@@ -221,12 +243,14 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     }
 
     public void mouseClicked(MouseEvent e) {
-        Point returnWert = this.dasBrett.berechneTreffer(e.getX(), e.getY());
-        if( returnWert != null){
-            LoGoApp.meineSteuerung.klickAufFeld(returnWert.x, returnWert.y);
-            mess = "klick auf " + returnWert.x + " | " + returnWert.y;
-        }else{
-            mess = "kein Treffer mit Clicked-Koordinaten: " + e.getX() + " | " + e.getY();
+        if( this.dasBrett != null ){
+            Point returnWert = this.dasBrett.berechneTreffer(e.getX(), e.getY());
+            if( returnWert != null){
+                LoGoApp.meineSteuerung.klickAufFeld(returnWert.x, returnWert.y);
+                mess = "klick auf " + returnWert.x + " | " + returnWert.y;
+            }else{
+                mess = "kein Treffer mit Clicked-Koordinaten: " + e.getX() + " | " + e.getY();
+            }
         }
     }
 
