@@ -11,13 +11,20 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.KeyStroke;
+import javax.swing.ToolTipManager;
 import logo.LoGoApp;
 
 
@@ -26,7 +33,7 @@ import logo.LoGoApp;
  * @author steven
  * @version 0.2
  */
-public class TestOberflaeche extends JFrame implements Runnable, KeyListener, OberflaecheInterface, MouseListener{
+public class TestOberflaeche extends JFrame implements Runnable, KeyListener, OberflaecheInterface, MouseListener, ActionListener{
 
     // Wenn nicht anders angegeben, verwende diese Masse zum zeichnen des Spielbretts
     private final static int STANDARD_SPIELFELD_HOEHE = 495;
@@ -34,15 +41,24 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     private final static int STANDARD_SPIELFELD_XPOS = 40;
     private final static int STANDARD_SPIELFELD_YPOS = 40;
 
-    private Spielbrett dasBrett;
     private boolean threadLaeuf;
     private static boolean once = false;
 
 
+    // GUI-Teile
+    private Spielbrett dasBrett;
+    protected JMenuBar dieMenueBar;
+    protected JMenuItem Einstellungen;
+    protected JMenuItem UeberLoGo;
+    protected JMenuItem SpielLaden;
+    protected JMenuItem SpielSpeichern;
+    protected JMenuItem Undo;
+    protected JMenuItem Redo;
+
    /* Double Buffering */
     String mess = "";
 
-    public TestOberflaeche( String pFenstername){
+    public TestOberflaeche( String pFenstername ){
         super( pFenstername );
 
         init();
@@ -53,19 +69,23 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
     public void init(){
 
+        // Schwere und leichte Komponenten
+        JPopupMenu.setDefaultLightWeightPopupEnabled( false );
+        ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
+        
         /* Buffern */
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	this.setUndecorated(true);
+	//this.setUndecorated(true);
 	this.setSize(800,600);
-        this.setResizable(false);
+        setLocationRelativeTo(null); // Fenster zentrieren
+        //this.setResizable(false);
 	this.setVisible(true);
         this.setBackground(Color.ORANGE);
 	this.createBufferStrategy(2);
 
-        // GrafikLib lib = GrafikLib.getInstance();
-        // BufferedImage brett_bg= lib.getSprite("GUI/resources/brett_bg.png");
-        // this.dasBrett = new Spielbrett(495, 495, 40, 40, 19, brett_bg);
-        
+        // Menue-Bar erstellen
+        createMenue( this );
+
         threadLaeuf = true;
 
         // Alle Spezialbuttons wie TAB, werden wie normale Keys behandelt
@@ -73,17 +93,71 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         this.addKeyListener(this);
         this.addMouseListener(this);
 
-        //this.setBounds(50, 50, 800, 600);
-
-
         // Programm bei klick auf den roten Knopf beenden
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
 
-    public void createMenue(){
-        
+    public void createMenue( JFrame f){
+    
+        dieMenueBar = new JMenuBar();
+
+        // ------ LoGo-Menue -------
+        JMenu dasLoGoMenue = new JMenu( "LoGo" );
+
+	// Einstellungen
+	Einstellungen = new JMenuItem( "Einstellungen" );
+	Einstellungen.addActionListener( this );
+	setMenuAccelerator( Einstellungen, ',' );
+	dasLoGoMenue.add( Einstellungen );
+
+        // Ueber
+        UeberLoGo = new JMenuItem ("Über LoGo");
+        UeberLoGo.addActionListener(this);
+        setMenuAccelerator(UeberLoGo, 'a');
+        dasLoGoMenue.add(UeberLoGo);
+
+        // ------ Spiel-Menue -------
+        JMenu dasSpielMenue = new JMenu( "Spiel" );
+
+	// Spiel Laden
+	SpielLaden = new JMenuItem( "Spiel laden" );
+	SpielLaden.addActionListener( this );
+	setMenuAccelerator( SpielLaden, 'l' );
+	dasSpielMenue.add( SpielLaden );
+
+        // Spiel Speichern
+        SpielSpeichern = new JMenuItem ("Spiel speichern");
+        SpielSpeichern.addActionListener(this);
+        setMenuAccelerator(SpielSpeichern, 's');
+        dasSpielMenue.add(SpielSpeichern);
+
+        // Trenner
+        dasSpielMenue.addSeparator();
+
+        // Spielzug Undo
+	Undo = new JMenuItem( "Spiel laden" );
+	Undo.addActionListener( this );
+	setMenuAccelerator( Undo, 'l' );
+	dasSpielMenue.add( Undo );
+
+        // Spielzug Redo
+        Redo = new JMenuItem ("Spiel speichern");
+        Redo.addActionListener(this);
+        setMenuAccelerator(Redo, 's');
+        dasSpielMenue.add(Redo);
+
+
+        dieMenueBar.add(dasLoGoMenue);
+        dieMenueBar.add(dasSpielMenue);
+        f.setJMenuBar( dieMenueBar );
     }
+
+    protected void setMenuAccelerator(JMenuItem pMenuItem, char pMnemonic) {
+	// Bei Windows und Linux mit STR, bei Apple mit Apfel
+	KeyStroke ks = KeyStroke.getKeyStroke( pMnemonic, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() );
+	pMenuItem.setAccelerator( ks );
+}
 
     public void run() {
         long startTime = System.nanoTime();
@@ -264,6 +338,10 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     }
 
     public void mouseExited(MouseEvent e) {
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 
