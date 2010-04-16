@@ -18,6 +18,9 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
     // Objekt wird demnaechst geloescht
     protected boolean remove;
 
+    protected int offsetLeft;
+    protected int offsetTop;
+
     /**
      *
      * Standardkonstruktor, bei dem gleich mehrere einzelne Bilder als Array
@@ -37,6 +40,9 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
         // Position des Rechtecks
         this.x = x;
         this.y = y;
+
+        this.offsetLeft = pics[0].getWidth()/2;
+        this.offsetTop = pics[0].getHeight()/2;
 
         // Standardwerte setzen
         this.width = pics[0].getWidth();
@@ -66,6 +72,9 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
         // Position des Rechtecks
         this.x = x;
         this.y = y;
+
+        this.offsetLeft = pics[0].getWidth()/2;
+        this.offsetTop = pics[0].getHeight()/2;
 
         // Standardwerte setzen
         this.width = pics[0].getWidth();
@@ -98,7 +107,7 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
             return;
         }
 
-        g.drawImage(pics[currentpic], (int) x, (int) y, null);
+        g.drawImage(pics[currentpic], (int) x-this.offsetLeft, (int) y-this.offsetTop, null);
     }
 
     /**
@@ -150,26 +159,26 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
     }
 
     public synchronized void starteAnimationWeissSetzen() {
-        this.setLoop(24, 29);
+        this.setLoop(36, 30);
     }
 
     public synchronized void starteAnimationSchwarzSetzen() {
-        this.setLoop(18, 23);
+        this.setLoop(0, 9);
     }
 
     public synchronized void starteAnimationWeissEntfernen() {
-        this.setLoop(12, 17);
+        this.setLoop(29, 21);
     }
 
     public synchronized void starteAnimationSchwarzEntfernen() {
-        this.setLoop(6, 11);
+        this.setLoop(8, 21);
     }
 
     public synchronized void starteAnimationVerbotenerZug() {
-        this.setLoop(1, 1);
+        this.setLoop(37, 37);
     }
 
     public synchronized void starteAnimationVerbotenerZugAufheben() {
-        this.setLoop(4, 4);
+        this.setLoop(21, 21);
     }
 }

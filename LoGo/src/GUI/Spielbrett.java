@@ -57,11 +57,13 @@ public class Spielbrett extends Canvas implements Drawable {
         // Spielbrett-Grafiken laden
         this.feld = new SpielStein[this.anzahlFelder][this.anzahlFelder];
         GrafikLib lib = GrafikLib.getInstance();
-        BufferedImage[] bi = lib.getSprite("GUI/resources/Spielsteine_6x5.png", 6, 5);
+       // BufferedImage[] bi = lib.getSprite("GUI/resources/Spielsteine_6x5.png", 6, 5);
+        BufferedImage[] bi = lib.getSprite("GUI/resources/spielSteineOrange_9.png", 14, 3);
         for (int m = 0; m < this.anzahlFelder; m++) {
             for (int n = 0; n < this.anzahlFelder; n++) {
                 // Ausgangspunkt für das feld[0][0] ist die linke untere Ecke
-                feld[m][n] = new SpielStein(bi, xOffset + feldBreite * m, yOffset + this.brettHoehe - feldHoehe * (n + 1), 20);
+                // Ein Spielstein bekommt jeweils die Koordinaten der Mitte, auf der er liegt.
+                feld[m][n] = new SpielStein(bi, xOffset + feldBreite * m + feldBreite/2, yOffset + this.brettHoehe - feldHoehe * (n + 1) + feldHoehe/2, 20);
             }
         }
 
