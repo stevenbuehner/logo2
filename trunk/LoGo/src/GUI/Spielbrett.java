@@ -63,7 +63,7 @@ public class Spielbrett extends Canvas implements Drawable {
             for (int n = 0; n < this.anzahlFelder; n++) {
                 // Ausgangspunkt für das feld[0][0] ist die linke untere Ecke
                 // Ein Spielstein bekommt jeweils die Koordinaten der Mitte, auf der er liegt.
-                feld[m][n] = new SpielStein(bi, xOffset + feldBreite * m + feldBreite/2, yOffset + this.brettHoehe - feldHoehe * (n + 1) + feldHoehe/2, 20);
+                feld[m][n] = new SpielStein(bi, xOffset + feldBreite * m + feldBreite/2, yOffset + this.brettHoehe - feldHoehe * (n + 1) + feldHoehe/2, 10);
             }
         }
 
@@ -119,7 +119,6 @@ public class Spielbrett extends Canvas implements Drawable {
         for (int i = 0; i < this.anzahlFelder; i++) {
             g.drawLine(xOffset + i * feldBreite + halbeFeldBreite, yOffset + halbeFeldHoehe, xOffset + i * feldBreite + halbeFeldBreite, yOffset + linienHoehe + halbeFeldHoehe);
         }
-
 
         // Jedes Feld soll sich selbst zeichnen
         for (int i = 0; i < this.anzahlFelder; i++) {
