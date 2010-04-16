@@ -284,7 +284,6 @@ public class Spielfeld {
             else {this.setStein(this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getXPosition(),
                                 this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getYPosition(),
                                 this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getFarbe());
-                  this.spielfeldCacheMitZugnummerStand++;
             }
         }
         spielfeld = this.aktuellesSpielfeldCache;

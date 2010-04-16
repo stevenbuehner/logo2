@@ -160,11 +160,11 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
             mess = "Steuerung => Spiel starten";
         }
         else if( keyCode == KeyEvent.VK_LEFT){
-            LoGoApp.meineSteuerung.buttonRedo();
+            LoGoApp.meineSteuerung.buttonUndo();
             mess = "Zug Rückgängig machen";
         }
         else if( keyCode == KeyEvent.VK_RIGHT){
-            LoGoApp.meineSteuerung.buttonUndo();
+            LoGoApp.meineSteuerung.buttonRedo();
             mess = "Zug wieder herstellen";
         }
         else{
