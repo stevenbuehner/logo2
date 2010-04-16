@@ -33,9 +33,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
 
    /* Double Buffering */
-
     String mess = "";
-    String mess2 = "";
 
     public TestOberflaeche( String pFenstername){
         super( pFenstername );
@@ -108,8 +106,6 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
                 g.setColor(Color.BLACK);
                 g.setFont(new Font("Arial", Font.PLAIN, 20 ));
                 g.drawString("MESS: "+mess, 30, 50);
-                g.drawString(mess2, 30, 65);
-
 
 	} finally {
 		// It is best to dispose() a Graphics object when done with it.
@@ -234,8 +230,6 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     }
 
     public void mouseReleased(MouseEvent e) {
-        // zum debuggen
-        mess2 = "Mausposition: (x|y) = ("+e.getPoint().x+"|"+e.getPoint().y+")";
     }
 
     public void mouseEntered(MouseEvent e) {
