@@ -16,6 +16,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import logo.LoGoApp;
 
@@ -55,7 +56,10 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         this.setBackground(Color.ORANGE);
 	this.createBufferStrategy(2);
 
-        this.dasBrett = new Spielbrett(495, 495, 40, 40, 9, null);
+        GrafikLib lib = GrafikLib.getInstance();
+        BufferedImage brett_bg= lib.getSprite("GUI/resources/brett_bg.png");
+        this.dasBrett = new Spielbrett(495, 495, 40, 40, 19, brett_bg);
+        
         threadLaeuf = true;
 
         // Alle Spezialbuttons wie TAB, werden wie normale Keys behandelt
