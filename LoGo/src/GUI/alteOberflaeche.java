@@ -32,7 +32,7 @@ import logo.LoGoApp;
  * @author steven
  * @version 0.1
  */
-public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseListener, KeyListener {
+public class alteOberflaeche extends Canvas implements OberflaecheInterface, MouseListener, KeyListener {
 
     private SteuerungInterface meineSteuerung;
     private GrafikLib lib = GrafikLib.getInstance();
@@ -65,11 +65,11 @@ public class Oberflaeche extends Canvas implements OberflaecheInterface, MouseLi
     private JLabel  debugAusgabe;
 
 
-    public Oberflaeche() {
+    public alteOberflaeche() {
         this("LoGo by DHBW", 678, 560, LoGoApp.meineSteuerung);
     }
 
-    public Oberflaeche(String fenstername, int width, int height, SteuerungInterface pSteuerung) {
+    public alteOberflaeche(String fenstername, int width, int height, SteuerungInterface pSteuerung) {
         meineSteuerung = pSteuerung;
 
 

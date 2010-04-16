@@ -9,7 +9,6 @@ import interfaces.OberflaecheInterface;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -19,8 +18,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import logo.LoGoApp;
 
@@ -56,7 +53,9 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	this.setUndecorated(true);
 	this.setSize(800,600);
+        this.setResizable(false);
 	this.setVisible(true);
+        this.setBackground(Color.GREEN);
 	this.createBufferStrategy(2);
 
         this.dasBrett = new Spielbrett(495, 495, 40, 40, 9, null);
@@ -67,16 +66,12 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         this.addKeyListener(this);
         this.addMouseListener(this);
 
-        this.setVisible(true);
-        this.setResizable(false);
-        this.setBackground(Color.GREEN);
-        this.setBounds(50, 50, 800, 600);
+        //this.setBounds(50, 50, 800, 600);
 
 
         // Programm bei klick auf den roten Knopf beenden
-        this.addWindowListener(new WindowAdapter(){
-            public void windowClosing(WindowEvent e) { System.exit(0);
-        } });
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         
     }
 
@@ -97,21 +92,6 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         }
     }
 
-    @Override
-    public void paint( Graphics g){
-        super.paint(g);
-
-        g.setColor(this.getBackground());
-        g.fillRect(0, 0, this.getWidth(), this.getHeight());
-
-        this.dasBrett.drawObjects(g);
-
-        g.setColor(Color.BLACK);
-        g.setFont(new Font("Arial", Font.PLAIN, 20 ));
-        g.drawString("MESS: "+mess, 30, 50);
-
-    }
-
     private void drawStuff() {
 	BufferStrategy bf = this.getBufferStrategy();
 	Graphics g = null;
@@ -119,9 +99,17 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 	try {
 		g = bf.getDrawGraphics();
 
+                g.setColor(this.getBackground());
+                g.fillRect(0, 0, this.getWidth(), this.getHeight());
+
 		// It is assumed that mySprite is created somewhere else.
 		// This is just an example for passing off the Graphics object.
 		this.dasBrett.drawObjects(g);
+
+                g.setColor(Color.BLACK);
+                g.setFont(new Font("Arial", Font.PLAIN, 20 ));
+                g.drawString("MESS: "+mess, 30, 50);
+
 
 	} finally {
 		// It is best to dispose() a Graphics object when done with it.

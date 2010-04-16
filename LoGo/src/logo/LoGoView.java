@@ -102,7 +102,7 @@ public class LoGoView extends FrameView {
     private void initComponents() {
 
         mainPanel = new javax.swing.JPanel();
-        oberflaeche1 = new GUI.Oberflaeche();
+        oberflaeche1 = new GUI.alteOberflaeche();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -258,7 +258,7 @@ public class LoGoView extends FrameView {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
-    private GUI.Oberflaeche oberflaeche1;
+    private GUI.alteOberflaeche oberflaeche1;
     private javax.swing.JProgressBar progressBar;
     private javax.swing.JLabel statusAnimationLabel;
     private javax.swing.JLabel statusMessageLabel;
