@@ -35,10 +35,14 @@ public class Spielbrett extends Canvas implements Drawable {
 
     // Array-Inhalte alle auf 0 setzen
     public Spielbrett(int breite, int hoehe, int xOffset, int yOffset, int anzahlFelder, Image backgroundImage) {
-        this.brettBreite = breite;
-        this.brettHoehe = hoehe;
-        this.xOffset = xOffset;
-        this.yOffset = yOffset;
+
+        // Berechne Brettgroesse und Feldabstaende
+        int unpassend = breite%anzahlFelder;
+        this.brettBreite = breite-unpassend;
+        unpassend = hoehe%anzahlFelder;
+        this.brettHoehe = hoehe-unpassend;
+        this.xOffset = xOffset+unpassend/2;
+        this.yOffset = yOffset+unpassend/2;
         this.anzahlFelder = anzahlFelder;
         this.backgoundImage = backgroundImage;
 
@@ -96,7 +100,7 @@ public class Spielbrett extends Canvas implements Drawable {
      */
     public void drawObjects(Graphics g) {
         if (backgoundImage != null) {
-            g.drawImage(backgoundImage, xOffset, yOffset, this);
+            g.drawImage(backgoundImage, xOffset-10, yOffset-8, this);
         }
 
         //Berechnung fuer das Feld
