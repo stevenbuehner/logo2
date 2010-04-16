@@ -15,8 +15,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 import logo.LoGoApp;
@@ -55,7 +53,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 	this.setSize(800,600);
         this.setResizable(false);
 	this.setVisible(true);
-        this.setBackground(Color.GREEN);
+        this.setBackground(Color.ORANGE);
 	this.createBufferStrategy(2);
 
         this.dasBrett = new Spielbrett(495, 495, 40, 40, 9, null);
@@ -129,7 +127,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     }
 
     public void start(){
-        		// Thread anstoßen
+        // Thread anstoßen
         if ( !once ) {
             once = true;
             Thread t = new Thread( this );
