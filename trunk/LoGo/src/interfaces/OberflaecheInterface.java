@@ -83,6 +83,18 @@ public interface OberflaecheInterface {
     public void setWeissAmZug();
 
     /**
+     *
+     * Sagt der Oberflaeche ob es grafisch eine @param undoMoeglich keit erlauben soll
+     */
+    public void setUndoErlaubt(boolean undoMoeglich);
+
+    /**
+     * 
+     * Sagt der Oberflaeche ob es grafisch eine @param redoMoeglich keit erlauben soll
+     */
+    public void setRedoErlaubt(boolean redoMoeglich);
+
+    /**
      * Gibt auf der GUI eine Fehlermeldung aus.
      * @param fehlertext Auszugebender Fehlertext
      */

@@ -226,6 +226,7 @@ public class Steuerung implements SteuerungInterface {
                 LoGoApp.meineOberflaeche.setBrettOberflaeche(
                         this.dasSpielfeld.getAktuelesSpielFeld(),
                         this.dasSpielfeld.getSpielfeldGroesse());
+                        this.updateUndoUndRedo();
                 break;
             case 0:
                 LoGoApp.meineOberflaeche.gibFehlermeldungAus("Verboten: Spielpunkt befindet sich nicht auf dem Brett");
@@ -347,6 +348,9 @@ public class Steuerung implements SteuerungInterface {
                 LoGoApp.meineOberflaeche.setSpielernameWeiss(
                         this.dasSpielfeld.getSpielerWeiss().getSpielerName());
 
+                // Schaltflaeche Undo und Redo einstellen
+                this.updateUndoUndRedo();
+
                 // Zeiten auf der Oberfläche anzeigen
                 LoGoApp.meineOberflaeche.setAnzeigePeriodenZeitSchwarz(
                         this.dasSpielfeld.getPeriodenZeit());
@@ -413,7 +417,7 @@ public class Steuerung implements SteuerungInterface {
 
         // Spielstatus auf "Spiel aufgegeben" setzen
         this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_AUFGEGEBEN);
-
+        this.updateUndoUndRedo();
     }
 
     /**Implementierung des Interfaces
@@ -461,6 +465,7 @@ public class Steuerung implements SteuerungInterface {
 
             // Spielstatus auf pausiert setzen.
             this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_PAUSIERT);
+            this.updateUndoUndRedo();
         }else{
             System.out.println("Spiel Pausieren in Steuerung aktiviert, aber das ist nicht erlaubt");
         }
@@ -496,6 +501,7 @@ public class Steuerung implements SteuerungInterface {
 
             // Spielstatus nach dem Aufnehmen des Spieles wieder auf "Spiel läuft" setzen
             this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_LAUEFT);
+            this.updateUndoUndRedo();
         }else{
             System.out.println("Spiel Fortsetzen in Steuerung aktiviert, aber das ist nicht erlaubt");
         }
@@ -505,56 +511,83 @@ public class Steuerung implements SteuerungInterface {
      * @see SteuerungInterface
      */
     public void buttonSpielSpeichern() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if( dasSpielfeld != null && dasSpielfeld.getSpielZustand() == Konstante.SPIEL_LAUEFT){
+
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
     }
 
     /**Implementierung des Interfaces
      * @see SteuerungInterface
      */
     public void buttonUndo() {
+        /* In dieser Funktion muss noch der Timer einbebunden werden und */
 
-        /* In dieser Funktion muss noch der Timer einbebunden werden und
-         *vielleicht veraendert werden, welcher spieler an der Reihe ist.*/
-        if (this.getAktuellAngezeigteZugnummer() > 0) {
-            this.setAktuelleAngeigteZugnummer(this.getAktuellAngezeigteZugnummer() - 1);
-        } else {
-            this.setAktuelleAngeigteZugnummer(0);
+        if(this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_LAUEFT){
+            if (this.getAktuellAngezeigteZugnummer() > 0) {
+                this.setAktuelleAngeigteZugnummer(this.getAktuellAngezeigteZugnummer() - 1);
+            } else {
+                this.setAktuelleAngeigteZugnummer(0);
+            }
+            LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellAngezeigteZugnummer()),
+                    this.dasSpielfeld.getSpielfeldGroesse());
+
+            // Undo und Redo legen
+            if( getAktuellAngezeigteZugnummer() != this.dasSpielfeld.getLetzteZugnummer() ){
+                LoGoApp.meineOberflaeche.setRedoErlaubt(true);
+            }
+            if (getAktuellAngezeigteZugnummer() > 0){
+                LoGoApp.meineOberflaeche.setUndoErlaubt(false);
+            }
         }
-        LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellAngezeigteZugnummer()),
-                this.dasSpielfeld.getSpielfeldGroesse());
     }
 
     /**Implementierung des Interfaces
      * @see SteuerungInterface
      */
     public void buttonRedo() {
-        /* In dieser Funktion muss noch der Timer einbebunden werden und
-         *vielleicht veraendert werden, welcher spieler an der Reihe ist.*/
-        if (this.getAktuellAngezeigteZugnummer() < this.dasSpielfeld.getLetzteZugnummer()) {
-            this.setAktuelleAngeigteZugnummer(this.getAktuellAngezeigteZugnummer() + 1);
-        } else {
-            this.setAktuelleAngeigteZugnummer(this.dasSpielfeld.getLetzteZugnummer());
+        /* In dieser Funktion muss noch der Timer einbebunden werden und */
+
+        if(this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_LAUEFT){
+            if (this.getAktuellAngezeigteZugnummer() < this.dasSpielfeld.getLetzteZugnummer()) {
+                this.setAktuelleAngeigteZugnummer(this.getAktuellAngezeigteZugnummer() + 1);
+            } else {
+                this.setAktuelleAngeigteZugnummer(this.dasSpielfeld.getLetzteZugnummer());
+            }
+            LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellAngezeigteZugnummer()),
+                    this.dasSpielfeld.getSpielfeldGroesse());
+
+            // Undo und Redo legen
+            this.updateUndoUndRedo();
         }
-        LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellAngezeigteZugnummer()),
-                this.dasSpielfeld.getSpielfeldGroesse());
     }
 
     /**Implementierung des Interfaces
      * @see SteuerungInterface
      */
     public void buttonSpringeZumStart() {
-        this.setAktuelleAngeigteZugnummer(0);
-        LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellAngezeigteZugnummer()),
-                this.dasSpielfeld.getSpielfeldGroesse());
+        if( dasSpielfeld != null && dasSpielfeld.getSpielZustand() == Konstante.SPIEL_LAUEFT){
+            this.setAktuelleAngeigteZugnummer(0);
+            LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellAngezeigteZugnummer()),
+                    this.dasSpielfeld.getSpielfeldGroesse());
+
+            // Undo und Redo legen
+            this.updateUndoUndRedo();
+        }
     }
 
     /**Implementierung des Interfaces
      * @see SteuerungInterface
      */
     public void buttonSpringeZumEnde() {
-        this.setAktuelleAngeigteZugnummer(this.dasSpielfeld.getLetzteZugnummer());
-        LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellAngezeigteZugnummer()),
-                this.dasSpielfeld.getSpielfeldGroesse());
+        if( dasSpielfeld != null && dasSpielfeld.getSpielZustand() == Konstante.SPIEL_LAUEFT){
+            this.setAktuelleAngeigteZugnummer(this.dasSpielfeld.getLetzteZugnummer());
+            LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellAngezeigteZugnummer()),
+                    this.dasSpielfeld.getSpielfeldGroesse());
+
+            // Undo und Redo legen
+            this.updateUndoUndRedo();
+        }
     }
 
     /**Implementierung des Interfaces
@@ -603,5 +636,24 @@ public class Steuerung implements SteuerungInterface {
      */
     private int getAktuellAngezeigteZugnummer() {
         return this.aktuellAngezeigteZugnummer;
+    }
+
+    private void updateUndoUndRedo(){
+        if( this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_LAUEFT){
+            // Undo und Redo legen
+            if( getAktuellAngezeigteZugnummer() < this.dasSpielfeld.getLetzteZugnummer() ){
+                LoGoApp.meineOberflaeche.setRedoErlaubt(true);
+            }else{
+                LoGoApp.meineOberflaeche.setRedoErlaubt(false);
+            }
+            if (getAktuellAngezeigteZugnummer() > 0){
+            LoGoApp.meineOberflaeche.setUndoErlaubt(true);
+            }else{
+                LoGoApp.meineOberflaeche.setUndoErlaubt(false);
+            }
+        }else{
+            LoGoApp.meineOberflaeche.setUndoErlaubt(false);
+            LoGoApp.meineOberflaeche.setRedoErlaubt(false);
+        }
     }
 }

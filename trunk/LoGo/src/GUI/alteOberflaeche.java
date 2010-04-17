@@ -5,7 +5,6 @@
 package GUI;
 
 import Klassen.Konstante;
-import Klassen.Steuerung;
 import interfaces.OberflaecheInterface;
 import interfaces.SteuerungInterface;
 import java.awt.Canvas;
@@ -334,5 +333,13 @@ public class alteOberflaeche extends Canvas implements OberflaecheInterface, Mou
         System.out.println("Periode: " + debugSpielerPeriodenZeitWeiss);
      */
         this.repaint();
+    }
+
+    public void setUndoErlaubt(boolean undoMoeglich) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setRedoErlaubt(boolean redoMoeglich) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
