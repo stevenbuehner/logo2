@@ -278,6 +278,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
                     STANDARD_SPIELFELD_YPOS, 
                     spielfeldGroesse, 
                     GrafikLib.getInstance().getSprite("GUI/resources/brett_bg.png"));
+            this.dasBrett.updateSpielFeld(spielfeld);
         }
 
     }
