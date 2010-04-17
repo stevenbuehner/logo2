@@ -25,7 +25,7 @@ public class Steuerung implements SteuerungInterface {
     Countdown spielerZeitWeiss;
 
     public Steuerung() {
-        this(19, 60 * 1000);     // Standardwerte
+        this(9, 60 * 1000);     // Standardwerte
     }
 
     public Steuerung(int spielFeldGroesse, long periodenZeit) {
@@ -438,60 +438,67 @@ public class Steuerung implements SteuerungInterface {
      * @see SteuerungInterface
      */
     public void buttonPause() {
-        int aktuelerSpieler = this.dasSpielfeld.getSpielerFarbeAnDerReihe();
+        if(this.dasSpielfeld != null && this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_LAUEFT){
+            int aktuelerSpieler = this.dasSpielfeld.getSpielerFarbeAnDerReihe();
 
-        if (Konstante.SCHNITTPUNKT_SCHWARZ == aktuelerSpieler) {
-            // Schwarzer Spieler spielt gerade
+            if (Konstante.SCHNITTPUNKT_SCHWARZ == aktuelerSpieler) {
+                // Schwarzer Spieler spielt gerade
 
-            // Stoppe Timer von Schwarz
-            this.spielerZeitSchwarz.stoppeCountdown();
-            this.periodenZeitSchwarz.stoppeCountdown();
-            this.dasSpielfeld.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(
-                    this.spielerZeitSchwarz.getRemainingTime());
-        } else {
-            // Weisser Spieler spielt gerade
+                // Stoppe Timer von Schwarz
+                this.spielerZeitSchwarz.stoppeCountdown();
+                this.periodenZeitSchwarz.stoppeCountdown();
+                this.dasSpielfeld.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(
+                        this.spielerZeitSchwarz.getRemainingTime());
+            } else {
+                // Weisser Spieler spielt gerade
 
-            // Stoppe Timer von Weiss
-            this.spielerZeitWeiss.stoppeCountdown();
-            this.periodenZeitWeiss.stoppeCountdown();
-            this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(
-                    this.spielerZeitWeiss.getRemainingTime());
+                // Stoppe Timer von Weiss
+                this.spielerZeitWeiss.stoppeCountdown();
+                this.periodenZeitWeiss.stoppeCountdown();
+                this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(
+                        this.spielerZeitWeiss.getRemainingTime());
+            }
+
+            // Spielstatus auf pausiert setzen.
+            this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_PAUSIERT);
+        }else{
+            System.out.println("Spiel Pausieren in Steuerung aktiviert, aber das ist nicht erlaubt");
         }
-
-        // Spielstatus auf pausiert setzen.
-        this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_PAUSIERT);
     }
 
     /**Implementierung des Interfaces
      * @see SteuerungInterface
      */
     public void buttonSpielForsetzen() {
+        if(this.dasSpielfeld != null && this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_PAUSIERT){
+            Spielfeld brett = this.dasSpielfeld;
 
-        Spielfeld brett = this.dasSpielfeld;
+            // Setze das Spiel wieder fort und starte die nötigen Timer
+            if (this.dasSpielfeld.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ) {
+                // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
+                if (brett.getSpielerSchwarz().getVerbleibendeSpielzeitInMS() > 0) {
+                    this.spielerZeitSchwarz.starteCountdown();
+                } else {
+                    // Setze den Countdown fort
+                    this.periodenZeitSchwarz.starteCountdown();
+                }
+                LoGoApp.meineOberflaeche.setSchwarzAmZug();
+            } else {
+                // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
+                if (brett.getSpielerWeiss().getVerbleibendeSpielzeitInMS() > 0) {
+                    this.spielerZeitWeiss.starteCountdown();
+                } else {
+                    // Starte den Countdown, bzw. setze den Countdown fort
+                    this.periodenZeitWeiss.starteCountdown();
+                }
+                LoGoApp.meineOberflaeche.setWeissAmZug();
+            }
 
-        // Setze das Spiel wieder fort und starte die nötigen Timer
-        if (this.dasSpielfeld.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ) {
-            // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
-            if (brett.getSpielerSchwarz().getVerbleibendeSpielzeitInMS() > 0) {
-                this.spielerZeitSchwarz.starteCountdown();
-            } else {
-                // Setze den Countdown fort
-                this.periodenZeitSchwarz.starteCountdown();
-            }
-            LoGoApp.meineOberflaeche.setSchwarzAmZug();
-        } else {
-            // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
-            if (brett.getSpielerWeiss().getVerbleibendeSpielzeitInMS() > 0) {
-                this.spielerZeitWeiss.starteCountdown();
-            } else {
-                // Starte den Countdown, bzw. setze den Countdown fort
-                this.periodenZeitWeiss.starteCountdown();
-            }
-            LoGoApp.meineOberflaeche.setWeissAmZug();
+            // Spielstatus nach dem Aufnehmen des Spieles wieder auf "Spiel läuft" setzen
+            this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_LAUEFT);
+        }else{
+            System.out.println("Spiel Fortsetzen in Steuerung aktiviert, aber das ist nicht erlaubt");
         }
-
-        // Spielstatus nach dem Aufnehmen des Spieles wieder auf "Spiel läuft" setzen
-        this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_LAUEFT);
     }
 
     /**Implementierung des Interfaces
