@@ -68,6 +68,9 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
 
     public void init(){
+        // Menue-Bar erstellen
+        createMenue( this );
+
         // Schwere und leichte Komponenten
         JPopupMenu.setDefaultLightWeightPopupEnabled( false );
         ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
@@ -81,9 +84,6 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 	this.setVisible(true);
         this.setBackground(Color.ORANGE);
 	this.createBufferStrategy(2);
-
-        // Menue-Bar erstellen
-        createMenue( this );
 
         threadLaeuf = true;
 
