@@ -317,8 +317,8 @@ public class Spielfeld {
         if(zeitpunkt > this.spielZugCollection.size() || zeitpunkt < 0){
             return false;
         }
-        for(int i=this.spielZugCollection.size(); i>zeitpunkt; i--){
-            this.spielZugCollection.remove(i-1);
+        for(int i=this.spielZugCollection.size()-1; i>=zeitpunkt; i--){
+            this.spielZugCollection.remove(i);
         }
         this.letzteZugnummer = zeitpunkt;
         return true;
@@ -638,7 +638,8 @@ public class Spielfeld {
      * setzte.
      */
     public int getSpielerFarbeVonLetztemZug(){
-        if (this.spielZugCollection.size() == 0){
+        if(this.spielfeldCacheMitZugnummerStand == 0){
+        //if (this.spielZugCollection.size() == 0){
             /* Wenn ohne Vorgabe gespielt wird, ist Schwarz zu beginn dran.
              * Daher war Weiss theoretisch vorher dran.
              * Wird mit Vorgabe, oder Startformation gespielt, ist Weiss
@@ -1731,4 +1732,26 @@ public class Spielfeld {
        }
        return true;
    }
+
+    /**
+     * Aus dem Feld, das momentan auf dem Spielbrett liegt, soll eine Initialfeld
+     * erstellt werden. Das Bedeutet, das das momentane Initialfeld umgeschrieben
+     * werden muss und die Liste der Zuege geloescht wird.
+     */
+    public void initialisiereFeldMitAktuellemFeld(){
+        /* Als erstes wird das aktuelle Feld (Cache) auf das Initialfeld
+         * kopiert. */
+        for(int i=0; i<this.getSpielfeldGroesse(); i++){
+            for(int j=0; j<this.getSpielfeldGroesse(); j++){
+                this.initialfeld[i][j]=this.aktuellesSpielfeldCache[i][j];
+            }
+        }
+
+        /* Da die Liste der Steine nicht mehr benötigt wird, muss sie geloescht
+         * werden */
+        this.setSpielfeldZumZeitpunkt(0);
+        this.spielfeldCacheMitZugnummerStand = 0;
+        this.setXPosVerboten(-1);
+        this.setYPosVerboten(-1);
+    }
 }
