@@ -73,7 +73,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
         // Schwere und leichte Komponenten
         JPopupMenu.setDefaultLightWeightPopupEnabled( false );
-        ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
+       //  ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
         
         /* Buffern */
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -167,7 +167,6 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
             cumTime += timePassed;
 
             this.doLogic(timePassed);
-            //this.repaint();
             this.drawStuff();
             try {
                 Thread.sleep(20);
@@ -182,15 +181,17 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 	try {
 		g = bf.getDrawGraphics();
 
-                g.setColor(this.getBackground());
-                g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
+                super.paint(g);
+                // g.setColor(this.getBackground());
+                // g.fillRect(0, 44, this.getWidth(), this.getHeight());
+                
                 if(this.dasBrett != null)
                     this.dasBrett.drawObjects(g);
 
                 g.setColor(Color.BLACK);
                 g.setFont(new Font("Arial", Font.PLAIN, 20 ));
-                g.drawString("MESS: "+mess, 30, 50);
+                g.drawString("MESS: "+mess, 55, 560);
 
 	} finally {
 		// Am Ende Disposen ist am besten ;)

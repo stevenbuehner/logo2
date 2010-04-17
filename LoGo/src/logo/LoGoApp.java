@@ -4,13 +4,16 @@
 package logo;
 
 import GUI.GrafikLib;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.UnsupportedLookAndFeelException;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
-import GUI.alteOberflaeche;
 import GUI.TestOberflaeche;
 import Klassen.Steuerung;
 import interfaces.OberflaecheInterface;
 import interfaces.SteuerungInterface;
+import javax.swing.UIManager;
 
 /**
  * The main class of the application.
@@ -50,6 +53,43 @@ public class LoGoApp extends SingleFrameApplication {
      * Main method launching the application.
      */
     public static void main(String[] args) {
+         try {
+	    // Set System L&F
+        UIManager.setLookAndFeel(
+            UIManager.getSystemLookAndFeelClassName());
+            }
+            catch (UnsupportedLookAndFeelException e) {
+               // handle exception
+            }
+            catch (ClassNotFoundException e) {
+               // handle exception
+            }
+            catch (InstantiationException e) {
+               // handle exception
+            }
+            catch (IllegalAccessException e) {
+               // handle exception
+            }
+            /*
+       try {
+	    // Set cross-platform Java L&F (also called "Metal")
+           UIManager.setLookAndFeel(
+                UIManager.getCrossPlatformLookAndFeelClassName());
+        }
+        catch (UnsupportedLookAndFeelException e) {
+           // handle exception
+        }
+        catch (ClassNotFoundException e) {
+           // handle exception
+        }
+        catch (InstantiationException e) {
+           // handle exception
+        }
+        catch (IllegalAccessException e) {
+           // handle exception
+        }
+        
+        */
 
         meineSteuerung = new Steuerung();
         meineOberflaeche = new TestOberflaeche("LoGo, by Steven Buehner and Tommy Schladitz :D");
