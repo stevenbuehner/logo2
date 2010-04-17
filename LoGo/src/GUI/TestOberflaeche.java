@@ -50,6 +50,8 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     protected JMenuItem SpielSpeichern;
     protected JMenuItem Undo;
     protected JMenuItem Redo;
+    protected JMenuItem Pause;
+    protected JMenuItem Fortsetzen;
 
     /* Double Buffering */
     String mess = "";
@@ -130,16 +132,34 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         dasSpielMenue.addSeparator();
 
         // Spielzug Undo
-        Undo = new JMenuItem("Spiel laden");
+        Undo = new JMenuItem("Spielzug rückgängig");
         Undo.addActionListener(this);
-        setMenuAccelerator(Undo, 'l');
+        Undo.setEnabled(false);
         dasSpielMenue.add(Undo);
 
         // Spielzug Redo
-        Redo = new JMenuItem("Spiel speichern");
+        Redo = new JMenuItem("Spielzug wieder herstellen");
         Redo.addActionListener(this);
-        setMenuAccelerator(Redo, 's');
+        Redo.setEnabled(false);
         dasSpielMenue.add(Redo);
+
+        // Trenner
+        dasSpielMenue.addSeparator();
+
+        // Spielzug Undo
+        Pause = new JMenuItem("Spiel pausieren");
+        Pause.addActionListener(this);
+        setMenuAccelerator(Pause, 'p');
+        Pause.setEnabled(false);
+        dasSpielMenue.add(Pause);
+
+        // Spielzug Redo
+        Fortsetzen = new JMenuItem("Spiel fortsetzen");
+        Fortsetzen.addActionListener(this);
+        setMenuAccelerator(Fortsetzen, 'p');
+        Fortsetzen.setEnabled(false);
+        dasSpielMenue.add(Fortsetzen);
+
 
 
         dieMenueBar.add(dasLoGoMenue);
@@ -179,7 +199,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
             super.paint(g);
             g.setColor(this.getBackground());
-            g.fillRect(0, dieMenueBar.getHeight()+this.getInsets().top, this.getWidth(), this.getHeight());
+            g.fillRect(0, dieMenueBar.getHeight() + this.getInsets().top, this.getWidth(), this.getHeight());
 
             if (this.dasBrett != null) {
                 this.dasBrett.drawObjects(g);
@@ -286,6 +306,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
                     spielfeldGroesse,
                     GrafikLib.getInstance().getSprite("GUI/resources/brett_bg.png"));
             this.dasBrett.updateSpielFeld(spielfeld);
+            this.Pause.setEnabled(true);
         }
 
     }
@@ -348,18 +369,30 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     public void mouseExited(MouseEvent e) {
     }
 
-    public void actionPerformed(ActionEvent e) {
-      //  if( e.getSource() == )
-
-    /*
+    /**
      *
-     *     protected JMenuItem Einstellungen;
-    protected JMenuItem UeberLoGo;
-    protected JMenuItem SpielLaden;
-    protected JMenuItem SpielSpeichern;
-    protected JMenuItem Undo;
-    protected JMenuItem Redo; 
+     * @param e
+     * @see ActionListener
      */
+    public void actionPerformed(ActionEvent e) {
+        // Aktions die ueber die Menue-Leiste eingegeben werden
+        if (e.getSource() == UeberLoGo) {
+            this.buttonUeberLogoGedrueckt();
+        } else if (e.getSource() == Einstellungen) {
+            this.buttonEinstellungenGedrueckt();
+        } else if (e.getSource() == SpielLaden) {
+            this.buttonSpielLadenGedrueckt();
+        } else if (e.getSource() == SpielSpeichern) {
+            this.buttonSpielSpeichernGedrueckt();
+        } else if (e.getSource() == Undo) {
+            this.buttonUndoGedrueckt();
+        } else if (e.getSource() == Redo) {
+            this.buttonRedoGedrueckt();
+        } else if (e.getSource() == Pause) {
+            this.buttonSpielPausierenGedrueckt();
+        } else if (e.getSource() == Fortsetzen) {
+            this.buttonSpielFortsetzenGedrueckt();
+        }
 
 
     }
@@ -367,35 +400,49 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     private void buttonSpielPausierenGedrueckt() {
         // Infos siehe hier: http://forum.fachinformatiker.de/java/13120-kennt-jemand-layeredpane-glasspane-animationen.html
         LoGoApp.meineSteuerung.buttonPause();
+
         this.spielOberflaechePausiert = true;
+        this.Pause.setEnabled(false);
+        this.Fortsetzen.setEnabled(true);
 
         // Hier dann die Glass-Pane zeichnen / aktivieren
     }
 
     private void buttonSpielFortsetzenGedrueckt() {
         LoGoApp.meineSteuerung.buttonSpielForsetzen();
+        
         this.spielOberflaechePausiert = false;
+        this.Pause.setEnabled(true);
+        this.Fortsetzen.setEnabled(false);
 
         // Hier dann die Glass-Pane wegnehmen / deaktivieren
     }
 
-    private void buttonNeuesSpielGedrueckt(){
-
+    private void buttonNeuesSpielGedrueckt() {
+        this.dasBrett = null;
+        this.Pause.setEnabled(false);
+        this.Fortsetzen.setEnabled(false);
+        this.Undo.setEnabled(false);
+        this.Redo.setEnabled(false);
+        LoGoApp.meineSteuerung.buttonSpielStarten();
     }
 
-    private void buttonSpielSpeichernGedrueckt(){
-
+    private void buttonSpielSpeichernGedrueckt() {
+        LoGoApp.meineSteuerung.buttonSpielSpeichern();
     }
 
-    private void buttonSpielLadenGedrueckt(){
-
+    private void buttonSpielLadenGedrueckt() {
     }
 
-    private void buttonEinstellungenGedrueckt(){
-
+    private void buttonEinstellungenGedrueckt() {
     }
 
-    private void buttonUeberLogoGedrueckt(){
-        
+    private void buttonUeberLogoGedrueckt() {
+    }
+
+    private void buttonUndoGedrueckt() {
+    }
+
+    private void buttonRedoGedrueckt() {
     }
 }
