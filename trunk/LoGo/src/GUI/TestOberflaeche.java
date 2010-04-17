@@ -349,7 +349,19 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     }
 
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
+      //  if( e.getSource() == )
+
+    /*
+     *
+     *     protected JMenuItem Einstellungen;
+    protected JMenuItem UeberLoGo;
+    protected JMenuItem SpielLaden;
+    protected JMenuItem SpielSpeichern;
+    protected JMenuItem Undo;
+    protected JMenuItem Redo; 
+     */
+
+
     }
 
     private void buttonSpielPausierenGedrueckt() {
