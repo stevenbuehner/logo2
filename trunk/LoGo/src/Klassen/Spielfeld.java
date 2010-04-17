@@ -1007,7 +1007,9 @@ public class Spielfeld {
 
     /**
      * Es muss ein Zug auf dem Spielfeld gemacht werden. Dazu wird ein Stein
-     * gesetzt, und bei erfolgreichem setzen wird die Nummer
+     * gesetzt, und bei erfolgreichem setzen wird die Nummer.
+     * Ist das Brett gerade nicht dem aktuellen Cache, wird das Spielfeld
+     * dem Cache angepasst.
      * @param xPos X-Position des Spielfelds.
      * Diese kann Werte zwischen 1 und der Feldlänge enthalten
      * @param yPos Y-Position des Spielfelds.
@@ -1026,6 +1028,7 @@ public class Spielfeld {
         /* Wurde der Zug erfolgreich ausgefuehrt, muss das Spielfeld veraendert
          * werden */
         if(rueckgabe == 1){
+            this.setSpielfeldZumZeitpunkt(this.spielfeldCacheMitZugnummerStand-1);
             this.steinEintragen(xPos, yPos, spielerFarbe);
         }
         return rueckgabe;
