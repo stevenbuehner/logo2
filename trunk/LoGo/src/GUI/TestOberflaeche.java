@@ -68,7 +68,6 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
 
     public void init(){
-
         // Schwere und leichte Komponenten
         JPopupMenu.setDefaultLightWeightPopupEnabled( false );
         ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
@@ -186,8 +185,6 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
                 g.setColor(this.getBackground());
                 g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
-		// It is assumed that mySprite is created somewhere else.
-		// This is just an example for passing off the Graphics object.
                 if(this.dasBrett != null)
                     this.dasBrett.drawObjects(g);
 
@@ -196,7 +193,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
                 g.drawString("MESS: "+mess, 30, 50);
 
 	} finally {
-		// It is best to dispose() a Graphics object when done with it.
+		// Am Ende Disposen ist am besten ;)
 		g.dispose();
 	}
 
