@@ -662,7 +662,12 @@ public class Spielfeld {
             }
         }
         else{
-            return this.spielZugCollection.get(this.spielZugCollection.size()-1).getFarbe();
+            /* return this.spielZugCollection.get(this.spielZugCollection.size()-1).getFarbe();
+             * Man darf nicht einfach die Farbe des letzten Steins zurueckgeben,
+             * da man im undo-modus sein koennt, aber nicht weiss ob er zug valide
+             * ist. Man kann die liste der Stein also nicht veraendern. Daher
+             * muss man die information aus dem Cache nehemen */
+            return this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand-1).getFarbe();
         }
     }
 
