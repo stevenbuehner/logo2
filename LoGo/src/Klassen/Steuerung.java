@@ -25,7 +25,7 @@ public class Steuerung implements SteuerungInterface {
     Countdown spielerZeitWeiss;
 
     public Steuerung() {
-        this(19, 60 * 1000);     // Standardwerte
+        this(9, 60 * 1000);     // Standardwerte
     }
 
     public Steuerung(int spielFeldGroesse, long periodenZeit) {
@@ -309,7 +309,9 @@ public class Steuerung implements SteuerungInterface {
         // Überprüfe ob die Initialisierung korrekt war
 
         if (this.dasSpielfeld != null) {
-            this.dasSpielfeld.spielfeldValidiert();
+            if(this.dasSpielfeld.spielfeldValidiert() == false){
+                throw new UnsupportedOperationException("Spielfeld nicht valide! Spiel kann nicht gestartet werden");
+            }
 
             // Wenn das Spiel validiert ist, starte ein neues Spiel
             if (this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_VALIDIERT) {

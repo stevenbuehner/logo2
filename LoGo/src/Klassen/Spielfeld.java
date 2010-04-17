@@ -246,7 +246,12 @@ public class Spielfeld {
          * Feld zurueckgegeben.
          */
         if (zeitpunkt == this.spielfeldCacheMitZugnummerStand) {
-            spielfeld = this.aktuellesSpielfeldCache;
+            for(int i=0; i<this.getSpielfeldGroesse(); i++){
+                for(int j=0; j<this.getSpielfeldGroesse(); j++){
+                    spielfeld[i][j]=this.aktuellesSpielfeldCache[i][j];
+                }
+            }
+            return spielfeld;
         } 
 
         /* Ist der Zeitpunkt kleiner als 0 ist dies Verboten! */
@@ -271,7 +276,12 @@ public class Spielfeld {
         /* Wenn der Zeitpunkt gleich 0 ist, so muss das Initialfeld zurueck
          * gegeben werden. */
         if( zeitpunkt == 0){
-            return this.initialfeld;
+            for(int i=0; i<this.getSpielfeldGroesse(); i++){
+                for(int j=0; j<this.getSpielfeldGroesse(); j++){
+                    spielfeld[i][j]=this.initialfeld[i][j];
+                }
+            }
+            return spielfeld;
         }
         
         while(zeitpunkt > this.spielfeldCacheMitZugnummerStand){
@@ -286,7 +296,11 @@ public class Spielfeld {
                                 this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getFarbe());
             }
         }
-        spielfeld = this.aktuellesSpielfeldCache;
+        for(int i=0; i<this.getSpielfeldGroesse(); i++){
+            for(int j=0; j<this.getSpielfeldGroesse(); j++){
+                spielfeld[i][j]=this.aktuellesSpielfeldCache[i][j];
+            }
+        }
         return spielfeld;
     }
 
@@ -517,7 +531,7 @@ public class Spielfeld {
          * Die Zugnummer selbst wird mit steinEintragen eins nach oben gezaehlt.
          * Da zug OK ist, muss der letzte verbotene Punkt geloescht werden!
          */
-        aktuellesSpielfeldCache[xKoord][yKoord] = spielerfarbe;
+        this.aktuellesSpielfeldCache[xKoord][yKoord] = spielerfarbe;
         this.spielfeldCacheMitZugnummerStand++;
         this.loescheVerbotenenPunkt();
 
@@ -960,7 +974,12 @@ public class Spielfeld {
     }
 
     /**
-     *
+     * Das Spielfeld wird von vorn aufgebaut, und es wird versucht die Zuege
+     * aus der ZugCollection auszufuehren. Ist nur ein Zug dabei nicht moeglich,
+     * ist das Feld nicht valide. Das Startfeld, darf nur Steine erhalten die
+     * mindestens eine Freiheit haben. Die Zuege muessen wie gesagt ausfuehrbar
+     * sein, und die Reihenfolge der Spieler muss auch stimmen. Wenn irgendwann
+     * 2 mal gepasst wurde, darf danach nicht weiter gespielt werden.
      * @return Die Funktion ueberprueft
      * - den Spielzustand
      * - die spielZugCollection mit den gemachten Zügen
@@ -972,15 +991,131 @@ public class Spielfeld {
     public boolean spielfeldValidiert(){
 
         boolean validiert = true;
+        this.spielerSchwarz.setGefangenenAnzahl(0);
+        this.spielerWeiss.setGefangenenAnzahl(0);
+        /* Als erstes wird getestet, ob alle Steine des Anfangsbrettes mindestens
+         * eine Freiheit haben */
+        this.aktuellesSpielfeldCache = this.getSpielfeldZumZeitpunkt(0);
+        this.spielfeldCacheMitZugnummerStand = 0;
+        this.loescheVerbotenenPunkt();
+        AnalyseSchnittpunkt feld[][] = new AnalyseSchnittpunkt[this.getSpielfeldGroesse()][this.getSpielfeldGroesse()];
+        /* Kopie fuer Anfangstest erstellen */
+        for(int i=0; i<this.getSpielfeldGroesse(); i++){
+            for(int j=0; j<this.getSpielfeldGroesse(); j++){
+                feld[i][j] = new AnalyseSchnittpunkt(i,j,this.aktuellesSpielfeldCache[i][j]);
+            }
+        }
+        for(int i=0; i<this.getSpielfeldGroesse(); i++){
+            for(int j=0; j<this.getSpielfeldGroesse(); j++){
+                if(this.versucheSteinZuNehmen(i,j,feld) == 1){
+                    validiert = false;
+                    System.out.println("Anfangsspielstellung nicht valide. Stelle "+ i + ","+j+". Gruppe hat keine Freiheiten");
+                    return validiert;
+                }
+            }
+        }
 
-        // Wenn die Validierung geklappt hat und vorher noch unvollständig war,
-        // wird der Spielzustand auf Validiert gesetzt.
-        // Ist der Spielzustand schon weiter, dann wird nichts gemacht ...
+        /* Gibt es noch keine Zuege, ist das Feld valide */
+        if(this.letzteZugnummer == 0){
+            this.setSpielfeldZumZeitpunkt(0);
+            this.setSpielZustand(Konstante.SPIEL_VALIDIERT);
+            return validiert;
+        }
+
+        /* Wenn man bis hier kommt, ist die Anfangsstellung valide. Jetz muessen
+         * zuege gemacht werden. Dabei ist auf die Reihenfolge zu achten, und
+         * ob die Zuege ausfuehrbar sind.
+         */
+         int momSpieler = this.spielZugCollection.get(0).getFarbe();
+         boolean letzterZugGepasst = false;
+         boolean vorletzterZugGepasst = false;
+
+         for(int i=0; i<this.spielZugCollection.size(); i++){
+             /* Reihenfolge der Spieler beachten */
+             if(this.spielZugCollection.get(i).getFarbe() != momSpieler){
+                 validiert = false;
+                 return validiert;
+             }
+
+             /* Es darf nur ein Zug gemacht werden, wenn die Letzten beiden Zuege
+              * nicht passen waren*/
+             if(letzterZugGepasst == true && vorletzterZugGepasst == true){
+                 validiert = false;
+                 return validiert;
+             }
+
+             /* Passen abfangen */
+             if(this.spielZugCollection.get(i).getXPosition() == -1 &&
+                this.spielZugCollection.get(i).getYPosition() == -1){
+                 if(letzterZugGepasst == true){
+                     vorletzterZugGepasst = true;
+                 }
+                 else{
+                     letzterZugGepasst = true;
+                 }
+                 /* Spieler wechseln */
+                 if(momSpieler == Konstante.SCHNITTPUNKT_SCHWARZ){
+                     momSpieler = Konstante.SCHNITTPUNKT_WEISS;
+                 }
+                 else{
+                     momSpieler = Konstante.SCHNITTPUNKT_SCHWARZ;
+                 }
+             }
+
+             /* Kein passen, also Zug*/
+             else{
+                 switch(this.setStein(this.spielZugCollection.get(i).getXPosition()-1,
+                        this.spielZugCollection.get(i).getYPosition()-1,
+                        momSpieler)){
+                     case 1: /* Zug erfolgreich */
+                         break;
+                     case 0: /* Liegt nicht auf Feld */
+                         System.out.println("Zug "+(i+1)+" liegt nicht auf dem Brett. Koordinaten "+this.spielZugCollection.get(i).getXPosition()+","+this.spielZugCollection.get(i).getYPosition());
+                         validiert = false;
+                         return validiert;
+                     case -1: /* War verboten (Ko) */
+                         System.out.println("Zug "+(i+1)+" ist verboten (Ko-Regel)");
+                         validiert = false;
+                         return validiert;
+                     case -2: /* Schon belegt gewesen */
+                         System.out.println("Zug "+(i+1)+" ist schon Belegt. Koordinaten "+this.spielZugCollection.get(i).getXPosition()+","+this.spielZugCollection.get(i).getYPosition());
+                         validiert = false;
+                         return validiert;
+                     case -3: /* Selbstmord */
+                         System.out.println("Zug "+(i+1)+" ist verboten (Selbstmord)");
+                         validiert = false;
+                         return validiert;
+                     default:
+                         throw new UnsupportedOperationException("Unbekannter return-Wert von setStein");
+                 }
+                 /* Bis hier wenn Zug erfolgreich. SetStei hat folgendes veraendert:
+                  * - aktuellesSpielfeldCache (Wenn Zug erfolgreich war)
+                  * - xPosVerboten
+                  * - yPosVerboten
+                  * - gefangenenAnzahl der Spieler
+                  * - spielfeldCacheMitZugnummerStand
+                  * Jetzt muss noch der Spieler veraendert werden und die
+                  * passen-Variablen angepasst werden */
+                 vorletzterZugGepasst = letzterZugGepasst;
+                 letzterZugGepasst = false;
+
+                 /* Spieler wechseln */
+                 if(momSpieler == Konstante.SCHNITTPUNKT_SCHWARZ){
+                     momSpieler = Konstante.SCHNITTPUNKT_WEISS;
+                 }
+                 else{
+                     momSpieler = Konstante.SCHNITTPUNKT_SCHWARZ;
+                 }
+             }
+         }
+
+         /* Wenn man bis hier kommt, ist das Spiel valide. Es wurde die Reihenfolge
+          * der Spieler, das Passen und die Zuege beachtet. Alles war korrekt
+          */
         if(validiert && this.getSpielZustand() == Konstante.SPIEL_UNVOLLSTAENDIG){
             this.setSpielZustand(Konstante.SPIEL_VALIDIERT);
         }
-
-        return true;
+        return validiert;
     }
 
     /**
