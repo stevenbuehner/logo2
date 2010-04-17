@@ -179,7 +179,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
             super.paint(g);
             g.setColor(this.getBackground());
-            g.fillRect(0, dieMenueBar.getHeight(), this.getWidth(), this.getHeight());
+            g.fillRect(0, dieMenueBar.getHeight()+this.getInsets().top, this.getWidth(), this.getHeight());
 
             if (this.dasBrett != null) {
                 this.dasBrett.drawObjects(g);
@@ -236,9 +236,9 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
             case KeyEvent.VK_ESCAPE:
                 // Wenn spiel pausiert, dann beende Pause, sonst starte Pause
                 if (this.spielOberflaechePausiert) {
-                    this.spielFortsetzenGedrueckt();
+                    this.buttonSpielFortsetzenGedrueckt();
                 } else {
-                    this.spielPausierenGedrueckt();
+                    this.buttonSpielPausierenGedrueckt();
                 }
                 break;
             case KeyEvent.VK_N:
@@ -257,9 +257,9 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
             case KeyEvent.VK_P:
                 // Pausieren (beenden) wurde gedrückt
                 if (this.spielOberflaechePausiert) {
-                    this.spielFortsetzenGedrueckt();
+                    this.buttonSpielFortsetzenGedrueckt();
                 } else {
-                    this.spielPausierenGedrueckt();
+                    this.buttonSpielPausierenGedrueckt();
                 }
                 break;
             default:
@@ -352,19 +352,38 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    private void spielPausierenGedrueckt() {
+    private void buttonSpielPausierenGedrueckt() {
         // Infos siehe hier: http://forum.fachinformatiker.de/java/13120-kennt-jemand-layeredpane-glasspane-animationen.html
         LoGoApp.meineSteuerung.buttonPause();
         this.spielOberflaechePausiert = true;
 
         // Hier dann die Glass-Pane zeichnen / aktivieren
-
     }
 
-    private void spielFortsetzenGedrueckt() {
+    private void buttonSpielFortsetzenGedrueckt() {
         LoGoApp.meineSteuerung.buttonSpielForsetzen();
         this.spielOberflaechePausiert = false;
 
         // Hier dann die Glass-Pane wegnehmen / deaktivieren
+    }
+
+    private void buttonNeuesSpielGedrueckt(){
+
+    }
+
+    private void buttonSpielSpeichernGedrueckt(){
+
+    }
+
+    private void buttonSpielLadenGedrueckt(){
+
+    }
+
+    private void buttonEinstellungenGedrueckt(){
+
+    }
+
+    private void buttonUeberLogoGedrueckt(){
+        
     }
 }
