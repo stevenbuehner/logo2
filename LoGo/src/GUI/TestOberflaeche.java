@@ -295,7 +295,8 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     }
 
     public void setBrettOberflaeche(int[][] spielfeld, int spielfeldGroesse) {
-        // ACHTUNG: Änderun der Spielfeldgroesse wird hier nciht abgefangen!
+        // Spielfeld updaten wenn es von der gleichen groesse ist, ansonsten
+        // ein neues Spielfeld erstellen
         if (this.dasBrett != null && this.dasBrett.getAnzahlFelder() == spielfeldGroesse) {
             this.dasBrett.updateSpielFeld(spielfeld);
         } else {
@@ -307,6 +308,9 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
                     GrafikLib.getInstance().getSprite("GUI/resources/brett_bg.png"));
             this.dasBrett.updateSpielFeld(spielfeld);
             this.Pause.setEnabled(true);
+            // Undo und Redo muessen erlaubt sein, fuer den Fall das ein Spiel geladen wurde
+            // this.Undo.setEnabled(false);
+            // this.Redo.setEnabled(false);
         }
 
     }
@@ -341,6 +345,14 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     public void setWeissAmZug() {
     }
 
+    public void setUndoErlaubt(boolean undoMoeglich) {
+        this.Undo.setEnabled(undoMoeglich);
+    }
+
+    public void setRedoErlaubt(boolean redoMoeglich) {
+        this.Redo.setEnabled(redoMoeglich);
+    }
+    
     public void gibFehlermeldungAus(String fehlertext) {
         System.out.println(fehlertext);
     }
@@ -422,8 +434,6 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         this.dasBrett = null;
         this.Pause.setEnabled(false);
         this.Fortsetzen.setEnabled(false);
-        this.Undo.setEnabled(false);
-        this.Redo.setEnabled(false);
         LoGoApp.meineSteuerung.buttonSpielStarten();
     }
 
@@ -445,4 +455,5 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
     private void buttonRedoGedrueckt() {
     }
+
 }
