@@ -43,6 +43,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
     private boolean threadLaeuf;
     private static boolean once = false;
+    private boolean spielOberflaechePausiert = false;
 
 
     // GUI-Teile
@@ -183,8 +184,8 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
 
                 super.paint(g);
-                // g.setColor(this.getBackground());
-                // g.fillRect(0, 44, this.getWidth(), this.getHeight());
+                g.setColor(this.getBackground());
+                g.fillRect(0, dieMenueBar.getHeight(), this.getWidth(), this.getHeight());
                 
                 if(this.dasBrett != null)
                     this.dasBrett.drawObjects(g);
@@ -236,25 +237,34 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
-        if(keyCode == KeyEvent.VK_ESCAPE){
-            this.stop();
-        }
-        else if(keyCode == KeyEvent.VK_N){
-            // neues Spiel
-            LoGoApp.meineSteuerung.buttonSpielStarten();
-            mess = "Steuerung => Spiel starten";
-        }
-        else if( keyCode == KeyEvent.VK_LEFT){
-            LoGoApp.meineSteuerung.buttonUndo();
-            mess = "Zug Rückgängig machen";
-        }
-        else if( keyCode == KeyEvent.VK_RIGHT){
-            LoGoApp.meineSteuerung.buttonRedo();
-            mess = "Zug wieder herstellen";
-        }
-        else{
-            mess = "Pressed: " + KeyEvent.getKeyText(keyCode);
-            e.consume(); // Kombinierte Tasten sollen nicht behandlet werden.
+
+        switch( keyCode ){
+            case KeyEvent.VK_ESCAPE:
+                break;
+            case KeyEvent.VK_N:
+                // neues Spiel
+                LoGoApp.meineSteuerung.buttonSpielStarten();
+                mess = "Steuerung => Spiel starten";
+                break;
+            case KeyEvent.VK_LEFT:
+                LoGoApp.meineSteuerung.buttonUndo();
+                mess = "Zug Rückgängig machen";
+                break;
+            case KeyEvent.VK_RIGHT:
+                LoGoApp.meineSteuerung.buttonRedo();
+                mess = "Zug wieder herstellen";
+                break;
+            case KeyEvent.VK_P:
+                // Pausieren (beenden) wurde gedrückt
+                if( this.spielOberflaechePausiert){
+                    this.spielFortsetzenGedrueckt();
+                }else{
+                    this.spielPausierenGedrueckt();
+                }
+                break;
+            default:
+                mess = "Pressed: " + KeyEvent.getKeyText(keyCode);
+                e.consume(); // Kombinierte Tasten sollen nicht behandlet werden.
         }
     }
 
@@ -341,6 +351,22 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
     public void actionPerformed(ActionEvent e) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    private void spielPausierenGedrueckt(){
+        // Infos siehe hier: http://forum.fachinformatiker.de/java/13120-kennt-jemand-layeredpane-glasspane-animationen.html
+        LoGoApp.meineSteuerung.buttonPause();
+        this.spielOberflaechePausiert = true;
+        
+        // Hier dann die Glass-Pane zeichnen / aktivieren
+
+    }
+
+    private void spielFortsetzenGedrueckt(){
+        LoGoApp.meineSteuerung.buttonSpielForsetzen();
+        this.spielOberflaechePausiert = false;
+
+        // Hier dann die Glass-Pane wegnehmen / deaktivieren
     }
 
 
