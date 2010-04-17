@@ -24,7 +24,7 @@ public class AnalyseSchnittpunkt {
         this.setYPos(-1);
         this.setSteinStatus(Konstante.STEIN_UNGEWISS);
         this.setMarkiert(false);
-
+        this.setAnalysiert(false);
         this.setBelegungswert(Konstante.SCHNITTPUNKT_LEER);
     }
 
@@ -34,6 +34,7 @@ public class AnalyseSchnittpunkt {
         this.setBelegungswert(Konstante.SCHNITTPUNKT_LEER);
         this.setSteinStatus(Konstante.STEIN_UNGEWISS);
         this.setMarkiert(false);
+        this.setAnalysiert(false);
     }
 
     public AnalyseSchnittpunkt(int xPos, int yPos, int belegungswert){
@@ -42,6 +43,7 @@ public class AnalyseSchnittpunkt {
         this.setBelegungswert(belegungswert);
         this.setSteinStatus(Konstante.STEIN_UNGEWISS);
         this.setMarkiert(false);
+        this.setAnalysiert(false);
     }
 
     /**
