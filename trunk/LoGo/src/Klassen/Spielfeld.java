@@ -1070,8 +1070,8 @@ public class Spielfeld {
 
              /* Kein passen, also Zug*/
              else{
-                 switch(this.setStein(this.spielZugCollection.get(i).getXPosition()-1,
-                        this.spielZugCollection.get(i).getYPosition()-1,
+                 switch(this.setStein(this.spielZugCollection.get(i).getXPosition(),
+                        this.spielZugCollection.get(i).getYPosition(),
                         momSpieler)){
                      case 1: /* Zug erfolgreich */
                          break;
