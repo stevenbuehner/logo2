@@ -16,6 +16,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -48,6 +50,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     protected JMenuItem UeberLoGo;
     protected JMenuItem SpielLaden;
     protected JMenuItem SpielSpeichern;
+    protected JMenuItem SpielBeenden;
     protected JMenuItem Undo;
     protected JMenuItem Redo;
     protected JMenuItem Pause;
@@ -69,8 +72,8 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         createMenue(this);
 
         // Schwere und leichte Komponenten
-        JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-        //  ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
+        // JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+        // ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
 
         /* Buffern */
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -89,9 +92,12 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         this.addKeyListener(this);
         this.addMouseListener(this);
 
-        // Programm bei klick auf den roten Knopf beenden
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        // Programm bei klick auf den roten Knopf nicht beenden sondern Event weiter verarbeiten
+        this.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent e) {
+                //System.exit(0);
+                LoGoApp.meineSteuerung.buttonSpielBeenden();
+        } });
     }
 
     public void createMenue(JFrame f) {
@@ -127,6 +133,12 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         SpielSpeichern.addActionListener(this);
         setMenuAccelerator(SpielSpeichern, 's');
         dasSpielMenue.add(SpielSpeichern);
+
+        // Spiel Speichern
+        SpielBeenden = new JMenuItem("Spiel beenden");
+        SpielBeenden.addActionListener(this);
+        setMenuAccelerator(SpielBeenden, 'q');
+        dasSpielMenue.add(SpielBeenden);
 
         // Trenner
         dasSpielMenue.addSeparator();
@@ -396,6 +408,8 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
             this.buttonSpielLadenGedrueckt();
         } else if (e.getSource() == SpielSpeichern) {
             this.buttonSpielSpeichernGedrueckt();
+        } else if( e.getSource() == SpielBeenden ){
+            this.buttonSpielBeendenGedrueckt();
         } else if (e.getSource() == Undo) {
             this.buttonUndoGedrueckt();
         } else if (e.getSource() == Redo) {
@@ -442,6 +456,10 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     }
 
     private void buttonSpielLadenGedrueckt() {
+    }
+
+    private void buttonSpielBeendenGedrueckt(){
+        LoGoApp.meineSteuerung.buttonSpielBeenden();
     }
 
     private void buttonEinstellungenGedrueckt() {

@@ -25,7 +25,7 @@ public class Steuerung implements SteuerungInterface {
     Countdown spielerZeitWeiss;
 
     public Steuerung() {
-        this(9, 60 * 1000);     // Standardwerte
+        this(15, 60 * 1000);     // Standardwerte
     }
 
     public Steuerung(int spielFeldGroesse, long periodenZeit) {
@@ -34,8 +34,8 @@ public class Steuerung implements SteuerungInterface {
         this.initMitEinstellungen(
                 "Steven",
                 "Marit",
-                100 * 1000,
-                100 * 1000,
+                30*60 * 1000,
+                30*600 * 1000,
                 200 * 1000,
                 0,
                 spielFeldGroesse,
@@ -524,6 +524,13 @@ public class Steuerung implements SteuerungInterface {
     /**Implementierung des Interfaces
      * @see SteuerungInterface
      */
+    public void buttonSpielBeenden() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**Implementierung des Interfaces
+     * @see SteuerungInterface
+     */
     public void buttonUndo() {
         /* In dieser Funktion muss noch der Timer einbebunden werden und */
 
@@ -660,4 +667,5 @@ public class Steuerung implements SteuerungInterface {
             LoGoApp.meineOberflaeche.setRedoErlaubt(false);
         }
     }
+    
 }
