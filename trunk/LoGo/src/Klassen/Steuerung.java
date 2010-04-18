@@ -313,6 +313,9 @@ public class Steuerung implements SteuerungInterface {
             if(this.dasSpielfeld.spielfeldValidiert() == false){
                 throw new UnsupportedOperationException("Spielfeld nicht valide! Spiel kann nicht gestartet werden");
             }
+            else{
+                this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_VALIDIERT);
+            }
 
             // Wenn das Spiel validiert ist, starte ein neues Spiel
             if (this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_VALIDIERT) {
@@ -371,7 +374,8 @@ public class Steuerung implements SteuerungInterface {
                  * Vorgaben etc. eingezeichnet werden können
                  */
                 LoGoApp.meineOberflaeche.setBrettOberflaeche(
-                        this.dasSpielfeld.getAktuelesSpielFeld(),
+                        /*this.dasSpielfeld.getAktuelesSpielFeld(),*/
+                        this.dasSpielfeld.getSpielfeldZumZeitpunkt(aktuellAngezeigteZugnummer),
                         this.dasSpielfeld.getSpielfeldGroesse());
 
                 // Der Oberfläche den Spieler der am Zug ist übergeben und benötigte Timer starten
