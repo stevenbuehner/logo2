@@ -144,6 +144,14 @@ public interface SteuerungInterface {
     public void buttonSpielSpeichern();
 
     /**
+     * Diese Methode wird ausgeloesst, wenn der User das beendigen des
+     * Spieles in der GUI signalisiert. Die Steuerung muss ueberpruefen,
+     * ob ein Spiel gerade laueft, etwas gespeichert werden muss oder vorher
+     * noch eine Abfrage an den User gemacht werden soll.
+     */
+    public void buttonSpielBeenden();
+
+    /**
      * Spieler klickt auf Undo. Spielzug wird rueckgaengig gemacht
      */
     public void buttonUndo();
