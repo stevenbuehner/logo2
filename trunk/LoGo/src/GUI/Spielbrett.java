@@ -95,7 +95,7 @@ public class Spielbrett extends Canvas implements Drawable {
             for (int n = 0; n < this.anzahlFelder; n++) {
                 // Ausgangspunkt für das feld[0][0] ist die linke untere Ecke
                 // Ein Spielstein bekommt jeweils die Koordinaten der Mitte, auf der er liegt.
-                feld[m][n] = new SpielStein(bi, xOffset + feldBreite * m + feldBreite / 2, yOffset + this.brettHoehe - feldHoehe * (n + 1) + feldHoehe / 2, 10);
+                feld[m][n] = new SpielStein(bi, xOffset + feldBreite * m + feldBreite / 2, yOffset + this.brettHoehe - feldHoehe * (n + 1) + feldHoehe / 2);
             }
         }
 
