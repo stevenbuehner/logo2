@@ -65,7 +65,8 @@ public class Spielfeld {
         this.spielfeldGroesse = spielfeldGroesse;
         this.letzteZugnummer = 0;
         this.spielZugCollection = new ArrayList<Spielzug>();
-        this.setXPosVerboten(-1); // noch nichts ist Verboten
+        /* Noch kein Feld verboten */
+        this.setXPosVerboten(-1);
         this.setYPosVerboten(-1);
         this.setSpielZustand(Konstante.SPIEL_UNVOLLSTAENDIG);
 
@@ -201,7 +202,7 @@ public class Spielfeld {
      */
     public int[][] getAktuelesSpielFeld() {
 
-        int spielfeld[][];
+        int spielfeld[][] = {{Konstante.SCHNITTPUNKT_LEER}};
 
         if (this.spielfeldCacheMitZugnummerStand != this.letzteZugnummer) {
             spielfeld = new int[this.getSpielfeldGroesse()][this.getSpielfeldGroesse()];
@@ -225,7 +226,11 @@ public class Spielfeld {
              */
 
         } else {
-            spielfeld = this.aktuellesSpielfeldCache;
+            for(int i=0; i<this.getSpielfeldGroesse(); i++){
+                for(int j=0; j<this.getSpielfeldGroesse(); j++){
+                    spielfeld[i][j] = this.aktuellesSpielfeldCache[i][j];
+                }
+            }
         }
 
         return spielfeld;
@@ -1753,5 +1758,17 @@ public class Spielfeld {
         this.spielfeldCacheMitZugnummerStand = 0;
         this.setXPosVerboten(-1);
         this.setYPosVerboten(-1);
+    }
+
+    /* Damit ein Feld markiert werden kann, muss man wissen, zu welchem Zeitpunkt
+     * welcher Zug gespielt wurde. Dazu kann man die Spielzuege auslesen */
+    public Spielzug getSpielzugZumZeitpunkt(int zeitpunkt){
+        if(zeitpunkt<=0 || zeitpunkt > this.letzteZugnummer){
+            return null;
+        }
+        Spielzug rueckgabe = new Spielzug( this.spielZugCollection.get(zeitpunkt).getXPosition(),
+                                           this.spielZugCollection.get(zeitpunkt).getYPosition(),
+                                           this.spielZugCollection.get(zeitpunkt).getFarbe());
+        return rueckgabe;
     }
 }
