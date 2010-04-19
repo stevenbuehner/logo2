@@ -61,17 +61,17 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
      *
      * Standardkonstruktor, bei dem nur ein Bild uebergeben wird. Es wird
      * also spaeter nicht animiert
-     * @param i Ein Array mit den Bildern die das Objekt verarbeiten soll
+     * @param image Ein Array mit den Bildern die das Objekt verarbeiten soll
      * @param x X-Startposition der Animation (linke obere Ecke als Ausgangspunkt)
      * @param y Y-Startposition der Animation (linke obere Ecke als Ausgangspunkt)
      * @param delay Geschwindigkeit, mit der die Animationsbilder rotieren sollen
      *
      */
-    public SpielStein(BufferedImage i, double x, double y) {
+    public SpielStein(BufferedImage image, double x, double y) {
 
         // Grafiken zuweisen
         storedImages = new BufferedImage[1];
-        storedImages[0] = i;
+        storedImages[0] = image;
 
         // Position des Rechtecks
         this.x = x;
@@ -210,7 +210,9 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
 
     protected synchronized void clearScenes(){
         this.restartAnimation();
-        this.szenen.clear();
+        if(this.szenen.size() > 0){
+            this.szenen.clear();
+        }
     }
 
     public synchronized void starteAnimationWeissSetzen() {
