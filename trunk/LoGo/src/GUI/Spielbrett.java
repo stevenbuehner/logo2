@@ -29,6 +29,7 @@ public class Spielbrett extends Canvas implements Drawable {
     // Grafiken
     private Image backgoundImage;
     private SpielStein[][] feld;
+    private SpielStein markierterStein;
 
     // Array-Inhalte alle auf 0 setzen
     public Spielbrett(int breite, int hoehe, int xOffset, int yOffset, int anzahlFelder, Image backgroundImage) {
@@ -88,6 +89,9 @@ public class Spielbrett extends Canvas implements Drawable {
         }
 
 
+        // Initialisierern des Spezial-Objektes zum markieren der Spielsteine
+        this.markierterStein = new SpielStein(lib.getSprite(spielSteinImageName), 0, 0);
+        this.markierterStein.setVisible(true);
 
 
         BufferedImage[] bi = lib.getSprite(spielSteinImageName, 14, 3);
@@ -95,7 +99,7 @@ public class Spielbrett extends Canvas implements Drawable {
             for (int n = 0; n < this.anzahlFelder; n++) {
                 // Ausgangspunkt für das feld[0][0] ist die linke untere Ecke
                 // Ein Spielstein bekommt jeweils die Koordinaten der Mitte, auf der er liegt.
-                feld[m][n] = new SpielStein(bi, xOffset + feldBreite * m + feldBreite / 2, yOffset + this.brettHoehe - feldHoehe * (n + 1) + feldHoehe / 2);
+                feld[m][n] = new SpielStein(bi, xOffset + feldBreite * m + feldBreite / 2, yOffset + this.brettHoehe - feldHoehe * (n + 0.5));
             }
         }
 
@@ -109,7 +113,7 @@ public class Spielbrett extends Canvas implements Drawable {
      * @param g
      * @param neuesFeld
      */
-    private void zeichneBenoetigteFelderNeu(Graphics g, int neuesFeld[][]) {
+    /* private void zeichneBenoetigteFelderNeu(Graphics g, int neuesFeld[][]) {
 
         // ACHTUNG! FUNKTION NOCH NICHT IM EINSATZ!
 
@@ -121,6 +125,8 @@ public class Spielbrett extends Canvas implements Drawable {
             }
         }
     }
+     
+     */
 
     /**
      * @see interfaces.Drawable
@@ -171,6 +177,9 @@ public class Spielbrett extends Canvas implements Drawable {
                 this.feld[i][j].doLogic(delta);
             }
         }
+
+        // Animationen im markierten Stein
+        this.markierterStein.doLogic(delta);
     }
 
     /**
@@ -225,6 +234,22 @@ public class Spielbrett extends Canvas implements Drawable {
                 }
             }
         }
+    }
+
+    public void setMarkierterStein(Point steinPos){
+        
+        if(steinPos == null){
+            this.markierterStein.visible = false;
+        }
+        else{
+            int feldHoehe = brettHoehe / anzahlFelder;
+            int feldBreite = brettBreite / anzahlFelder;
+
+            this.markierterStein.setX(xOffset + feldBreite * steinPos.x + feldBreite / 2);
+            this.markierterStein.setY(yOffset + this.brettHoehe - feldHoehe * (steinPos.y + 0.5));
+            this.markierterStein.setVisible(true);
+        }
+
     }
 
     /**

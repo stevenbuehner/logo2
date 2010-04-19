@@ -14,6 +14,7 @@ import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -192,7 +193,7 @@ public class alteOberflaeche extends Canvas implements OberflaecheInterface, Mou
                 yOffset + spielfeldHoehe + 40);
     }
 
-    public void setBrettOberflaeche(int[][] spielfeld, int spielfeldGroesse) {
+    public void setBrettOberflaeche(int[][] spielfeld, int spielfeldGroesse, Point markierterStein) {
 
         this.spielSteine = spielfeld;
         this.spielfeldGroesse = spielfeldGroesse;

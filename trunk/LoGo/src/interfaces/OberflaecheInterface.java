@@ -4,6 +4,8 @@
  */
 package interfaces;
 
+import java.awt.Point;
+
 /**
  *
  * @author steven
@@ -17,8 +19,10 @@ public interface OberflaecheInterface {
      * @param spielfeldGroesse Das Array kann die Werte SCHNITTPUNKT_LEER,
      * SCHNITTPUNKT_SCHWARZ, SCHNITTPUNKT_WEISS und SCHNITTPUNKT_VERBOTEN enthalten,
      * welche in der Klasse Konstante spezifiziert sind.
+     * Der Parameter @param marierterStein ist null wenn nichts zu markieren ist.
+     * Ansonsten gibt er den als zuletzt gelegtenStein zum markieren fest.
      */
-    public void setBrettOberflaeche(int spielfeld[][], int spielfeldGroesse);
+    public void setBrettOberflaeche(int spielfeld[][], int spielfeldGroesse, Point markierterStein);
 
     /**
      * Setzt die Zeitanzeige der Periodenzeit fuer den weissen Spieler

@@ -4,6 +4,7 @@
  */
 package Klassen;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -1770,5 +1771,19 @@ public class Spielfeld {
                                            this.spielZugCollection.get(zeitpunkt).getYPosition(),
                                            this.spielZugCollection.get(zeitpunkt).getFarbe());
         return rueckgabe;
+    }
+
+    /**
+     * Gib den zuletzt gelegten (markierten) Stein zu einem bestimmten
+     * @param zeitpunkt als @return Point zurück.
+     * Der Rückgabewert vom Typ Point hat einen Wertebereich von:
+     *  1 <= x <= spielFeldGroese
+     *  1 <= y <= spielFeldGroese
+     *
+     * ACHTUNG! MUSS NOCH IMPLEMENTIERT WERDEN!!! ... DANKE TOMMY :-)
+     */
+    public Point getMarkiertenSteinZumZeitpunkt( int zeitpunkt){
+        // new Point(1, 1); // usw. ...
+        return null;
     }
 }
