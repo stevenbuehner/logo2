@@ -92,7 +92,7 @@ public class LoGoApp extends SingleFrameApplication {
         */
 
         meineSteuerung = new Steuerung();
-        meineOberflaeche = new TestOberflaeche("LoGo, by Steven Buehner and Tommy Schladitz :D");
+        meineOberflaeche = new TestOberflaeche("LoGo, by Steven Buehner, Alex Jesche, Rebecca Kina and Tommy Schladitz");
 
         //launch(LoGoApp.class, args);
     }
