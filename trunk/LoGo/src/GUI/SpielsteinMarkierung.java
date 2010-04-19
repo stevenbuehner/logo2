@@ -16,8 +16,8 @@ public class SpielsteinMarkierung extends SpielStein {
 
     }
 
-    public SpielsteinMarkierung (BufferedImage i, double x, double y) {
-        super(i, x, y);
+    public SpielsteinMarkierung (BufferedImage image, double x, double y) {
+        super(image, x, y);
 
         this.addScene(this.storedImages[33], 0);
         this.loop = false;

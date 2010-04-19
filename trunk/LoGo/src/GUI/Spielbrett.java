@@ -29,7 +29,7 @@ public class Spielbrett extends Canvas implements Drawable {
     // Grafiken
     private Image backgoundImage;
     private SpielStein[][] feld;
-    private SpielStein markierterStein;
+    private SpielsteinMarkierung markierterStein;
 
     // Array-Inhalte alle auf 0 setzen
     public Spielbrett(int breite, int hoehe, int xOffset, int yOffset, int anzahlFelder, Image backgroundImage) {
@@ -89,12 +89,12 @@ public class Spielbrett extends Canvas implements Drawable {
         }
 
 
+        BufferedImage[] bi = lib.getSprite(spielSteinImageName, 14, 3);
+
         // Initialisierern des Spezial-Objektes zum markieren der Spielsteine
-        this.markierterStein = new SpielStein(lib.getSprite(spielSteinImageName), 0, 0);
+        this.markierterStein = new SpielsteinMarkierung(bi, 0, 0);
         this.markierterStein.setVisible(true);
 
-
-        BufferedImage[] bi = lib.getSprite(spielSteinImageName, 14, 3);
         for (int m = 0; m < this.anzahlFelder; m++) {
             for (int n = 0; n < this.anzahlFelder; n++) {
                 // Ausgangspunkt für das feld[0][0] ist die linke untere Ecke
