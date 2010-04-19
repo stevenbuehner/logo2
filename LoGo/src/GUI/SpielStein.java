@@ -175,7 +175,7 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
         y = i;
     }
 
-    private synchronized void addScene(BufferedImage image, long sceneDuration){
+    protected synchronized void addScene(BufferedImage image, long sceneDuration){
         this.szenen.add(new OneScene(image, sceneDuration));
     }
 
@@ -183,7 +183,7 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
      *
      * @return Das aktuelle Image der Animation
      */
-    private synchronized BufferedImage getImage(){
+    protected synchronized BufferedImage getImage(){
         if(szenen.size()==0){
             return null;
         }else{
@@ -196,19 +196,20 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
      * @param sceneIndex
      * @return Gibt Szene am sceneIndex zurueck
      */
-    private OneScene getScene(int sceneIndex) {
+    protected OneScene getScene(int sceneIndex) {
         return szenen.get(sceneIndex);
     }
 
     /**
      * Animationseinstellungen auf die erste Szene setzen (init)
      */
-    private synchronized void restartAnimation(){
+    public synchronized void restartAnimation(){
         this.currentSceneIndex = 0;
+        this.thisScenePlayedTime = 0;
     }
 
-    private synchronized void clearScenes(){
-        this.currentSceneIndex = 0;
+    protected synchronized void clearScenes(){
+        this.restartAnimation();
         this.szenen.clear();
     }
 

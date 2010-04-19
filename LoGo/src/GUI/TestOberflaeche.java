@@ -306,7 +306,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         e.consume();
     }
 
-    public void setBrettOberflaeche(int[][] spielfeld, int spielfeldGroesse) {
+    public void setBrettOberflaeche(int[][] spielfeld, int spielfeldGroesse, Point markierterStein ) {
         // Spielfeld updaten wenn es von der gleichen groesse ist, ansonsten
         // ein neues Spielfeld erstellen
         if (this.dasBrett != null && this.dasBrett.getAnzahlFelder() == spielfeldGroesse) {
@@ -319,6 +319,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
                     spielfeldGroesse,
                     GrafikLib.getInstance().getSprite("GUI/resources/brett_bg.png"));
             this.dasBrett.updateSpielFeld(spielfeld);
+            this.dasBrett.setMarkierterStein(markierterStein);
             this.Pause.setEnabled(true);
             // Undo und Redo muessen erlaubt sein, fuer den Fall das ein Spiel geladen wurde
             // this.Undo.setEnabled(false);

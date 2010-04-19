@@ -225,7 +225,8 @@ public class Steuerung implements SteuerungInterface {
                 this.setAktuelleAngeigteZugnummer(this.dasSpielfeld.getLetzteZugnummer());
                 LoGoApp.meineOberflaeche.setBrettOberflaeche(
                         this.dasSpielfeld.getAktuelesSpielFeld(),
-                        this.dasSpielfeld.getSpielfeldGroesse());
+                        this.dasSpielfeld.getSpielfeldGroesse(),
+                        this.dasSpielfeld.getMarkiertenSteinZumZeitpunkt(aktuellAngezeigteZugnummer));
                         this.updateUndoUndRedo();
                 break;
             case 0:
@@ -376,7 +377,8 @@ public class Steuerung implements SteuerungInterface {
                 LoGoApp.meineOberflaeche.setBrettOberflaeche(
                         /*this.dasSpielfeld.getAktuelesSpielFeld(),*/
                         this.dasSpielfeld.getSpielfeldZumZeitpunkt(aktuellAngezeigteZugnummer),
-                        this.dasSpielfeld.getSpielfeldGroesse());
+                        this.dasSpielfeld.getSpielfeldGroesse(),
+                        this.dasSpielfeld.getMarkiertenSteinZumZeitpunkt(aktuellAngezeigteZugnummer));
 
                 // Der Oberfläche den Spieler der am Zug ist übergeben und benötigte Timer starten
                 if (this.dasSpielfeld.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ) {
@@ -541,7 +543,8 @@ public class Steuerung implements SteuerungInterface {
                 this.setAktuelleAngeigteZugnummer(0);
             }
             LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellAngezeigteZugnummer()),
-                    this.dasSpielfeld.getSpielfeldGroesse());
+                    this.dasSpielfeld.getSpielfeldGroesse(),
+                    this.dasSpielfeld.getMarkiertenSteinZumZeitpunkt(aktuellAngezeigteZugnummer));
 
             // Undo und Redo legen
             if( getAktuellAngezeigteZugnummer() != this.dasSpielfeld.getLetzteZugnummer() ){
@@ -566,7 +569,8 @@ public class Steuerung implements SteuerungInterface {
                 this.setAktuelleAngeigteZugnummer(this.dasSpielfeld.getLetzteZugnummer());
             }
             LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellAngezeigteZugnummer()),
-                    this.dasSpielfeld.getSpielfeldGroesse());
+                    this.dasSpielfeld.getSpielfeldGroesse(),
+                    this.dasSpielfeld.getMarkiertenSteinZumZeitpunkt(aktuellAngezeigteZugnummer));
 
             // Undo und Redo legen
             this.updateUndoUndRedo();
@@ -580,7 +584,8 @@ public class Steuerung implements SteuerungInterface {
         if( dasSpielfeld != null && dasSpielfeld.getSpielZustand() == Konstante.SPIEL_LAUEFT){
             this.setAktuelleAngeigteZugnummer(0);
             LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellAngezeigteZugnummer()),
-                    this.dasSpielfeld.getSpielfeldGroesse());
+                    this.dasSpielfeld.getSpielfeldGroesse(),
+                    this.dasSpielfeld.getMarkiertenSteinZumZeitpunkt(aktuellAngezeigteZugnummer));
 
             // Undo und Redo legen
             this.updateUndoUndRedo();
@@ -594,7 +599,8 @@ public class Steuerung implements SteuerungInterface {
         if( dasSpielfeld != null && dasSpielfeld.getSpielZustand() == Konstante.SPIEL_LAUEFT){
             this.setAktuelleAngeigteZugnummer(this.dasSpielfeld.getLetzteZugnummer());
             LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellAngezeigteZugnummer()),
-                    this.dasSpielfeld.getSpielfeldGroesse());
+                    this.dasSpielfeld.getSpielfeldGroesse(),
+                    this.dasSpielfeld.getMarkiertenSteinZumZeitpunkt(aktuellAngezeigteZugnummer));
 
             // Undo und Redo legen
             this.updateUndoUndRedo();
