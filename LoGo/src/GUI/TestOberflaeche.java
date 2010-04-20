@@ -1,10 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 
 import interfaces.OberflaecheInterface;
+import interfaces.SpielerUhren;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -20,6 +17,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -48,6 +47,8 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     private boolean spielOberflaechePausiert = false;
     // GUI-Teile
     private Spielbrett dasBrett;
+    private SpielerUhren spielerUhrSchwarz;
+    private SpielerUhren spielerUhrWeiss;
     protected JMenuBar dieMenueBar;
     protected JMenuItem Einstellungen;
     protected JMenuItem UeberLoGo;
@@ -84,6 +85,9 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         this.setSize(1024, 768);
         // this.backgroundImage = GrafikLib.getInstance().getSprite("GUI/resources/SpielTisch.jpg");
         this.backgroundImage = GrafikLib.getInstance().getSprite("GUI/resources/SpielTisch2.jpg");
+        this.spielerUhrSchwarz = new SpielerUhr(316, 215, 66, 0);
+        this.spielerUhrWeiss = new SpielerUhr(112, 126, 65, 0);
+
         setLocationRelativeTo(null); // Fenster zentrieren
         //this.setResizable(false);
         this.setVisible(true);
@@ -225,6 +229,14 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
                 this.dasBrett.drawObjects(g);
             }
 
+            if (this.spielerUhrSchwarz != null){
+                this.spielerUhrSchwarz.zeichneZeiger(g);
+            }
+
+            if( this.spielerUhrWeiss != null ){
+                this.spielerUhrWeiss.zeichneZeiger(g);
+            }
+
             g.setColor(Color.BLACK);
             g.setFont(new Font("Arial", Font.PLAIN, 20));
             g.drawString("MESS: " + mess, 55, 560);
@@ -336,15 +348,27 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     }
 
     public void setAnzeigePeriodenZeitWeiss(long periodenZeitInMS) {
+        if(this.spielerUhrWeiss != null ){
+            this.spielerUhrWeiss.restzeitInMS(periodenZeitInMS);
+        }
     }
 
     public void setAnzeigePeriodenZeitSchwarz(long periodenZeitInMS) {
+        if(this.spielerUhrSchwarz != null ){
+            this.spielerUhrSchwarz.restzeitInMS(periodenZeitInMS);
+        }
     }
 
     public void setAnzeigeSpielerZeitWeiss(long spielerZeitInMS) {
+        if(this.spielerUhrWeiss != null ){
+            this.spielerUhrWeiss.restzeitInMS(spielerZeitInMS);
+        }
     }
 
     public void setAnzeigeSpielerZeitSchwarz(long spielerZeitInMS) {
+        if(this.spielerUhrSchwarz != null ){
+            this.spielerUhrSchwarz.restzeitInMS(spielerZeitInMS);
+        }
     }
 
     public void setSpielernameWeiss(String spielername) {
