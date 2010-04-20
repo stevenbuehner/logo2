@@ -1,5 +1,7 @@
 package interfaces;
 
+import java.awt.Graphics;
+
 /**
  *
  * @author steven
@@ -16,5 +18,7 @@ public interface SpielerZettel {
     public void setGefangenenAnzahl( int anzahl );
 
     public void setFehlermeldung( String fehlermeldung );
+
+    public void zeichneDich(Graphics g);
 
 }

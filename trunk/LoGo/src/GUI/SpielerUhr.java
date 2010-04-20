@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package Klassen;
+package GUI;
 
 import interfaces.SpielerUhren;
 import java.awt.Graphics;
@@ -11,8 +11,6 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
 
 /**
  *
@@ -37,25 +35,27 @@ public class SpielerUhr implements SpielerUhren{
     int stuZeigerXrotation;
     int stuZeigerYrotation;
 
-    public SpielerUhr(int xPos, int yPos, int radius, long anfangsZeit) throws Exception{
+    public SpielerUhr(int xPos, int yPos, int radius, long anfangsZeit) {
         this.xMittelPos = xPos;
         this.yMittelPos = yPos;
         this.radius = radius;
         this.anzeigeZeit = anfangsZeit;
         this.istAktiv = false;
 
+        GrafikLib lib = GrafikLib.getInstance();
+
         /* Bilder laden und skalieren */
-        this.BISekundenZeiger = ImageIO.read(new File("../GUI/resources/ZeigerGold.png"));
+        this.BISekundenZeiger = lib.getSprite("GUI/resources/ZeigerGold.png");
         /*this.BISekundenZeiger = (BufferedImage) this.BISekundenZeiger.getScaledInstance(
                 (radius * this.BISekundenZeiger.getWidth()) /this.BISekundenZeiger.getHeight(),
                 radius,
                 yPos);*/
-        this.BIMinutenZeiger  = ImageIO.read(new File("../GUI/resources/ZeigerGold.png"));
+        this.BIMinutenZeiger  = lib.getSprite("GUI/resources/ZeigerGold.png");
         /*this.BIMinutenZeiger = (BufferedImage) this.BIMinutenZeiger.getScaledInstance(
                 (radius * this.BIMinutenZeiger.getWidth()) /this.BIMinutenZeiger.getHeight(),
                 radius,
                 yPos);*/
-        this.BIStundenZeiger  = ImageIO.read(new File("../GUI/resources/ZeigerGold.png"));
+        this.BIStundenZeiger  = lib.getSprite("GUI/resources/ZeigerGold.png");
         /*this.BIStundenZeiger = (BufferedImage) this.BIStundenZeiger.getScaledInstance(
                 (radius * this.BIStundenZeiger.getWidth()) /this.BIStundenZeiger.getHeight(),
                 radius,
