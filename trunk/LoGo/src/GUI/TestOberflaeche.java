@@ -19,6 +19,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -40,6 +41,8 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     private final static int STANDARD_SPIELFELD_BREITE = 495;
     private final static int STANDARD_SPIELFELD_XPOS = 40;
     private final static int STANDARD_SPIELFELD_YPOS = 40;
+
+    private BufferedImage backgroundImage;
     private boolean threadLaeuf;
     private static boolean once = false;
     private boolean spielOberflaechePausiert = false;
@@ -78,7 +81,8 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         /* Buffern */
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //this.setUndecorated(true);
-        this.setSize(800, 600);
+        this.setSize(1024, 768);
+        this.backgroundImage = GrafikLib.getInstance().getSprite("GUI/resources/SpielTisch.jpg");
         setLocationRelativeTo(null); // Fenster zentrieren
         //this.setResizable(false);
         this.setVisible(true);
@@ -209,8 +213,12 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         try {
             g = bf.getDrawGraphics();
             super.paint(g);
-            g.setColor(this.getBackground());
-            g.fillRect(0, dieMenueBar.getHeight() + this.getInsets().top, this.getWidth(), this.getHeight());
+            // g.setColor(this.getBackground());
+            // g.fillRect(0, dieMenueBar.getHeight() + this.getInsets().top, this.getWidth(), this.getHeight());
+
+            if( this.backgroundImage != null ){
+                g.drawImage(this.backgroundImage, 0, 0, null);
+            }
 
             if (this.dasBrett != null) {
                 this.dasBrett.drawObjects(g);
