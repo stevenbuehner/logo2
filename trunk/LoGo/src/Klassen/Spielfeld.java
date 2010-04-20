@@ -203,7 +203,7 @@ public class Spielfeld {
      */
     public int[][] getAktuelesSpielFeld() {
 
-        int spielfeld[][] = {{Konstante.SCHNITTPUNKT_LEER}};
+        int spielfeld[][] = new int[this.getSpielfeldGroesse()][this.getSpielfeldGroesse()];
 
         if (this.spielfeldCacheMitZugnummerStand != this.letzteZugnummer) {
             spielfeld = new int[this.getSpielfeldGroesse()][this.getSpielfeldGroesse()];

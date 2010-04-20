@@ -208,7 +208,6 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
         try {
             g = bf.getDrawGraphics();
-
             super.paint(g);
             g.setColor(this.getBackground());
             g.fillRect(0, dieMenueBar.getHeight() + this.getInsets().top, this.getWidth(), this.getHeight());
@@ -220,7 +219,6 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
             g.setColor(Color.BLACK);
             g.setFont(new Font("Arial", Font.PLAIN, 20));
             g.drawString("MESS: " + mess, 55, 560);
-
         } finally {
             // Am Ende Disposen ist am besten ;)
             g.dispose();
