@@ -7,6 +7,9 @@ package Klassen;
 
 import interfaces.SpielerUhren;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
@@ -128,7 +131,33 @@ public class SpielerUhr implements SpielerUhren{
      * @param g Graphic zum Malen
      */
     public void zeichneZeiger(Graphics g){
+        /* Sekunden Zeichnen */
+        AffineTransform atSek = AffineTransform.getRotateInstance(
+                Math.toRadians(this.getSekundenPosInGrad()),
+                this.sekZeigerXrotation,
+                this.sekZeigerYrotation);
+        Graphics2D sekGraph = this.BISekundenZeiger.createGraphics();
+        sekGraph.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        sekGraph.drawImage(this.BISekundenZeiger, atSek, null);
+        g.drawImage(BISekundenZeiger, this.xMittelPos, this.yMittelPos, null);
 
+        AffineTransform atMin = AffineTransform.getRotateInstance(
+                Math.toRadians(this.getMinutenPosInGrad()),
+                this.minZeigerXrotation,
+                this.minZeigerYrotation);
+        Graphics2D minGraph = this.BIMinutenZeiger.createGraphics();
+        minGraph.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        minGraph.drawImage(BIMinutenZeiger, atMin, null);
+        g.drawImage(BIMinutenZeiger, this.xMittelPos, this.yMittelPos, null);
+
+        AffineTransform atStu = AffineTransform.getRotateInstance(
+                Math.toRadians(this.getStundenPosInGrad()),
+                this.stuZeigerXrotation,
+                this.stuZeigerYrotation);
+        Graphics2D stuGraph = this.BIStundenZeiger.createGraphics();
+        stuGraph.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        stuGraph.drawImage(BIStundenZeiger, atStu, null);
+        g.drawImage(BIStundenZeiger, this.xMittelPos, this.yMittelPos, null);
     }
 
 }
