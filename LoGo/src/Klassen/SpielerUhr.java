@@ -7,6 +7,9 @@ package Klassen;
 
 import interfaces.SpielerUhren;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -19,12 +22,49 @@ public class SpielerUhr implements SpielerUhren{
     private long anzeigeZeit;
     private boolean istAktiv;
 
-    public SpielerUhr(int xPos, int yPos, int radius, long anfangsZeit){
+    /* Verschiedene Bilder fuer die Zeiger */
+    BufferedImage BISekundenZeiger;
+    BufferedImage BIMinutenZeiger;
+    BufferedImage BIStundenZeiger;
+
+    int sekZeigerXrotation;
+    int sekZeigerYrotation;
+    int minZeigerXrotation;
+    int minZeigerYrotation;
+    int stuZeigerXrotation;
+    int stuZeigerYrotation;
+
+    public SpielerUhr(int xPos, int yPos, int radius, long anfangsZeit) throws Exception{
         this.xMittelPos = xPos;
         this.yMittelPos = yPos;
         this.radius = radius;
         this.anzeigeZeit = anfangsZeit;
         this.istAktiv = false;
+
+        /* Bilder laden und skalieren */
+        this.BISekundenZeiger = ImageIO.read(new File("../GUI/resources/ZeigerGold.png"));
+        /*this.BISekundenZeiger = (BufferedImage) this.BISekundenZeiger.getScaledInstance(
+                (radius * this.BISekundenZeiger.getWidth()) /this.BISekundenZeiger.getHeight(),
+                radius,
+                yPos);*/
+        this.BIMinutenZeiger  = ImageIO.read(new File("../GUI/resources/ZeigerGold.png"));
+        /*this.BIMinutenZeiger = (BufferedImage) this.BIMinutenZeiger.getScaledInstance(
+                (radius * this.BIMinutenZeiger.getWidth()) /this.BIMinutenZeiger.getHeight(),
+                radius,
+                yPos);*/
+        this.BIStundenZeiger  = ImageIO.read(new File("../GUI/resources/ZeigerGold.png"));
+        /*this.BIStundenZeiger = (BufferedImage) this.BIStundenZeiger.getScaledInstance(
+                (radius * this.BIStundenZeiger.getWidth()) /this.BIStundenZeiger.getHeight(),
+                radius,
+                yPos);*/
+
+        /* Rotationsachsen festlegen 27, 360?*/
+        this.sekZeigerXrotation = 27;
+        this.sekZeigerYrotation = 360;
+        this.minZeigerXrotation = 27;
+        this.minZeigerYrotation = 360;
+        this.stuZeigerXrotation = 27;
+        this.stuZeigerYrotation = 360;
     }
 
     /**
