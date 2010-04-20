@@ -37,10 +37,10 @@ import logo.LoGoApp;
 public class TestOberflaeche extends JFrame implements Runnable, KeyListener, OberflaecheInterface, MouseListener, ActionListener {
 
     // Wenn nicht anders angegeben, verwende diese Masse zum zeichnen des Spielbretts
-    private final static int STANDARD_SPIELFELD_HOEHE = 495;
-    private final static int STANDARD_SPIELFELD_BREITE = 495;
-    private final static int STANDARD_SPIELFELD_XPOS = 40;
-    private final static int STANDARD_SPIELFELD_YPOS = 40;
+    private final static int STANDARD_SPIELFELD_HOEHE = 496;
+    private final static int STANDARD_SPIELFELD_BREITE = 496;
+    private final static int STANDARD_SPIELFELD_XPOS = 496;
+    private final static int STANDARD_SPIELFELD_YPOS = 158;
 
     private BufferedImage backgroundImage;
     private boolean threadLaeuf;
@@ -82,7 +82,8 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //this.setUndecorated(true);
         this.setSize(1024, 768);
-        this.backgroundImage = GrafikLib.getInstance().getSprite("GUI/resources/SpielTisch.jpg");
+        // this.backgroundImage = GrafikLib.getInstance().getSprite("GUI/resources/SpielTisch.jpg");
+        this.backgroundImage = GrafikLib.getInstance().getSprite("GUI/resources/SpielTisch2.jpg");
         setLocationRelativeTo(null); // Fenster zentrieren
         //this.setResizable(false);
         this.setVisible(true);
@@ -323,7 +324,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
                     STANDARD_SPIELFELD_XPOS,
                     STANDARD_SPIELFELD_YPOS,
                     spielfeldGroesse,
-                    GrafikLib.getInstance().getSprite("GUI/resources/brett_bg.png"));
+                    null);
             this.dasBrett.updateSpielFeld(spielfeld);
             this.dasBrett.setMarkierterStein(markierterStein);
             this.Pause.setEnabled(true);
