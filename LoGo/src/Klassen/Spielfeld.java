@@ -1763,13 +1763,12 @@ public class Spielfeld {
 
     /* Damit ein Feld markiert werden kann, muss man wissen, zu welchem Zeitpunkt
      * welcher Zug gespielt wurde. Dazu kann man die Spielzuege auslesen */
-    public Spielzug getSpielzugZumZeitpunkt(int zeitpunkt){
+    public Point getMarkiertenSteinZumZeitpunkt(int zeitpunkt){
         if(zeitpunkt<=0 || zeitpunkt > this.letzteZugnummer){
             return null;
         }
-        Spielzug rueckgabe = new Spielzug( this.spielZugCollection.get(zeitpunkt).getXPosition(),
-                                           this.spielZugCollection.get(zeitpunkt).getYPosition(),
-                                           this.spielZugCollection.get(zeitpunkt).getFarbe());
+        Point rueckgabe = new Point( this.spielZugCollection.get(zeitpunkt-1).getXPosition(),
+                                     this.spielZugCollection.get(zeitpunkt-1).getYPosition());
         return rueckgabe;
     }
 
@@ -1782,8 +1781,5 @@ public class Spielfeld {
      *
      * ACHTUNG! MUSS NOCH IMPLEMENTIERT WERDEN!!! ... DANKE TOMMY :-)
      */
-    public Point getMarkiertenSteinZumZeitpunkt( int zeitpunkt){
-        // new Point(1, 1); // usw. ...
-        return null;
-    }
+
 }
