@@ -34,8 +34,8 @@ public class Steuerung implements SteuerungInterface {
         this.initMitEinstellungen(
                 "Steven",
                 "Marit",
-                45 * 1000,
-                30*60 * 1000,
+                45 * 60* 1000,
+                120 *60 * 1000,
                 200 * 1000,
                 0,
                 spielFeldGroesse,
