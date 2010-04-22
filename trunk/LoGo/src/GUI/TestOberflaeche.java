@@ -84,7 +84,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         // this.backgroundImage = GrafikLib.getInstance().getSprite("GUI/resources/SpielTisch.jpg");
         this.backgroundImage = GrafikLib.getInstance().getSprite("GUI/resources/SpielTisch2.jpg");
         this.spielerUhrSchwarz = new SpielerUhr(316, 215, 0, 4.5);
-        this.spielerUhrWeiss = new SpielerUhr(111, 124, 0, 1);
+        this.spielerUhrWeiss = new SpielerUhr(112, 144, 0, 1);
 
         setLocationRelativeTo(null); // Fenster zentrieren
         //this.setResizable(false);
