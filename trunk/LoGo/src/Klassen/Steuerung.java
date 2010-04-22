@@ -25,7 +25,7 @@ public class Steuerung implements SteuerungInterface {
     Countdown spielerZeitWeiss;
 
     public Steuerung() {
-        this(15, 60 * 1000);     // Standardwerte
+        this(19, 60 * 1000);     // Standardwerte
     }
 
     public Steuerung(int spielFeldGroesse, long periodenZeit) {
@@ -34,8 +34,8 @@ public class Steuerung implements SteuerungInterface {
         this.initMitEinstellungen(
                 "Steven",
                 "Marit",
+                45 * 1000,
                 30*60 * 1000,
-                30*600 * 1000,
                 200 * 1000,
                 0,
                 spielFeldGroesse,

@@ -23,6 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import javax.swing.ToolTipManager;
@@ -72,6 +73,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     }
 
     public void init() {
+
         // Menue-Bar erstellen
         createMenue(this);
 
@@ -85,8 +87,8 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         this.setSize(1024, 768);
         // this.backgroundImage = GrafikLib.getInstance().getSprite("GUI/resources/SpielTisch.jpg");
         this.backgroundImage = GrafikLib.getInstance().getSprite("GUI/resources/SpielTisch2.jpg");
-        this.spielerUhrSchwarz = new SpielerUhr(316, 215, 66, 0);
-        this.spielerUhrWeiss = new SpielerUhr(112, 126, 65, 0);
+        this.spielerUhrSchwarz = new SpielerUhr(316, 215, 66, 0, 4.5);
+        this.spielerUhrWeiss = new SpielerUhr(111, 124, 65, 0, 1);
 
         setLocationRelativeTo(null); // Fenster zentrieren
         //this.setResizable(false);
@@ -224,6 +226,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
             if( this.backgroundImage != null ){
                 g.drawImage(this.backgroundImage, 0, 0, null);
             }
+
 
             if (this.dasBrett != null) {
                 this.dasBrett.drawObjects(g);

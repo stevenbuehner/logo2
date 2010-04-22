@@ -8,6 +8,7 @@ package GUI;
 import interfaces.SpielerUhren;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -22,52 +23,34 @@ public class SpielerUhr implements SpielerUhren{
     private int radius;
     private long anzeigeZeit;
     private boolean istAktiv;
+    private double OwinkelInRad;
+
 
     /* Verschiedene Bilder fuer die Zeiger */
-    BufferedImage BISekundenZeiger;
-    BufferedImage BIMinutenZeiger;
-    BufferedImage BIStundenZeiger;
+    BufferedImage sekundenZeigerImage;
+
+    /* Zum drehen der Bilder */
+    AffineTransform at;
 
     int sekZeigerXrotation;
     int sekZeigerYrotation;
-    int minZeigerXrotation;
-    int minZeigerYrotation;
-    int stuZeigerXrotation;
-    int stuZeigerYrotation;
 
-    public SpielerUhr(int xPos, int yPos, int radius, long anfangsZeit) {
+
+    public SpielerUhr(int xPos, int yPos, int radius, long anfangsZeit, double offsetWinkel) {
         this.xMittelPos = xPos;
         this.yMittelPos = yPos;
         this.radius = radius;
         this.anzeigeZeit = anfangsZeit;
         this.istAktiv = false;
+        this.OwinkelInRad =  Math.toRadians(offsetWinkel);
 
         GrafikLib lib = GrafikLib.getInstance();
 
         /* Bilder laden und skalieren */
-        this.BISekundenZeiger = lib.getSprite("GUI/resources/ZeigerGold.png");
-        /*this.BISekundenZeiger = (BufferedImage) this.BISekundenZeiger.getScaledInstance(
-                (radius * this.BISekundenZeiger.getWidth()) /this.BISekundenZeiger.getHeight(),
-                radius,
-                yPos);*/
-        this.BIMinutenZeiger  = lib.getSprite("GUI/resources/ZeigerGold.png");
-        /*this.BIMinutenZeiger = (BufferedImage) this.BIMinutenZeiger.getScaledInstance(
-                (radius * this.BIMinutenZeiger.getWidth()) /this.BIMinutenZeiger.getHeight(),
-                radius,
-                yPos);*/
-        this.BIStundenZeiger  = lib.getSprite("GUI/resources/ZeigerGold.png");
-        /*this.BIStundenZeiger = (BufferedImage) this.BIStundenZeiger.getScaledInstance(
-                (radius * this.BIStundenZeiger.getWidth()) /this.BIStundenZeiger.getHeight(),
-                radius,
-                yPos);*/
+        this.sekundenZeigerImage = new BufferedImage( 500, 500, BufferedImage.TYPE_INT_ARGB);
+        this.sekundenZeigerImage =  lib.getSprite("GUI/resources/ZeigerBearb4.png");
 
-        /* Rotationsachsen festlegen 27, 360?*/
-        this.sekZeigerXrotation = 27;
-        this.sekZeigerYrotation = 360;
-        this.minZeigerXrotation = 27;
-        this.minZeigerYrotation = 360;
-        this.stuZeigerXrotation = 27;
-        this.stuZeigerYrotation = 360;
+
     }
 
     /**
@@ -131,33 +114,28 @@ public class SpielerUhr implements SpielerUhren{
      * @param g Graphic zum Malen
      */
     public void zeichneZeiger(Graphics g){
-        /* Sekunden Zeichnen */
-        AffineTransform atSek = AffineTransform.getRotateInstance(
-                Math.toRadians(this.getSekundenPosInGrad()),
-                this.sekZeigerXrotation,
-                this.sekZeigerYrotation);
-        Graphics2D sekGraph = this.BISekundenZeiger.createGraphics();
-        sekGraph.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        sekGraph.drawImage(this.BISekundenZeiger, atSek, null);
-        g.drawImage(BISekundenZeiger, this.xMittelPos, this.yMittelPos, null);
 
-        AffineTransform atMin = AffineTransform.getRotateInstance(
-                Math.toRadians(this.getMinutenPosInGrad()),
-                this.minZeigerXrotation,
-                this.minZeigerYrotation);
-        Graphics2D minGraph = this.BIMinutenZeiger.createGraphics();
-        minGraph.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        minGraph.drawImage(BIMinutenZeiger, atMin, null);
-        g.drawImage(BIMinutenZeiger, this.xMittelPos, this.yMittelPos, null);
+      this.at = AffineTransform.getRotateInstance(
+                -Math.toRadians(this.getSekundenPosInGrad())+this.OwinkelInRad,
+                xMittelPos,
+                yMittelPos);
 
-        AffineTransform atStu = AffineTransform.getRotateInstance(
-                Math.toRadians(this.getStundenPosInGrad()),
-                this.stuZeigerXrotation,
-                this.stuZeigerYrotation);
-        Graphics2D stuGraph = this.BIStundenZeiger.createGraphics();
-        stuGraph.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        stuGraph.drawImage(BIStundenZeiger, atStu, null);
-        g.drawImage(BIStundenZeiger, this.xMittelPos, this.yMittelPos, null);
+       Graphics2D g2 = (Graphics2D) g;
+       g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+       g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+       g2.setTransform(at);
+       BufferedImage rotatedImage =  this.sekundenZeigerImage;
+       g2.drawImage(rotatedImage, xMittelPos-(this.sekundenZeigerImage.getWidth()/2), yMittelPos-(this.sekundenZeigerImage.getHeight()/2),null);
+       at = AffineTransform.getRotateInstance(
+                0,
+                0,
+                0);
+       g2.setTransform(at);
+       g = (Graphics) g2;
     }
+
+
+
 
 }
