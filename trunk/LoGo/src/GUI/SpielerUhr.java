@@ -18,37 +18,50 @@ import java.awt.image.BufferedImage;
  * @author tommy
  */
 public class SpielerUhr implements SpielerUhren{
+    /* Wichtige Variablen zum Zeichnen. Geben an, um welchen
+     * Punkt der Zeiger gedreht wird, Offsetwinkel da Uhr schief liegen kann */
     private int xMittelPos;
     private int yMittelPos;
-    private int radius;
-    private long anzeigeZeit;
-    private boolean istAktiv;
     private double OwinkelInRad;
+
+    /* Zeit, die angezeigt werden soll */
+    private long anzeigeZeit;
+
+    private boolean istAktiv;
+
+    /* Wert, bei der die Uhr anfangen soll zu signalisieren, dass
+     * die Zeit kritisch ist */
+    private long kritischeZeitInMS;
 
 
     /* Verschiedene Bilder fuer die Zeiger */
-    BufferedImage sekundenZeigerImage;
+    BufferedImage sekundenZeigerBImage;
+    BufferedImage minutenZeigerBImage;
+    BufferedImage stundenZeigerBImage;
 
     /* Zum drehen der Bilder */
-    AffineTransform at;
+  //  AffineTransform at;
 
     int sekZeigerXrotation;
     int sekZeigerYrotation;
 
 
-    public SpielerUhr(int xPos, int yPos, int radius, long anfangsZeit, double offsetWinkel) {
+    public SpielerUhr(int xPos, int yPos, long anfangsZeit, double offsetWinkel) {
         this.xMittelPos = xPos;
         this.yMittelPos = yPos;
-        this.radius = radius;
         this.anzeigeZeit = anfangsZeit;
         this.istAktiv = false;
         this.OwinkelInRad =  Math.toRadians(offsetWinkel);
+        this.kritischeZeitInMS = 30000;
 
         GrafikLib lib = GrafikLib.getInstance();
 
-        /* Bilder laden und skalieren */
-        this.sekundenZeigerImage = new BufferedImage( 500, 500, BufferedImage.TYPE_INT_ARGB);
-        this.sekundenZeigerImage =  lib.getSprite("GUI/resources/ZeigerBearb4.png");
+        /* Bilder laden und nicht skalieren (sind schon skaliert) */
+       // this.sekundenZeigerBImage =  lib.getSprite("GUI/resources/ZeigerBearb4.png");
+        this.sekundenZeigerBImage =  lib.getSprite("GUI/resources/sekZeiger1.png");
+        this.minutenZeigerBImage = lib.getSprite("GUI/resources/ZeigerBearb4.png");
+
+
 
 
     }
@@ -115,7 +128,8 @@ public class SpielerUhr implements SpielerUhren{
      */
     public void zeichneZeiger(Graphics g){
 
-      this.at = AffineTransform.getRotateInstance(
+      /* Sekundenzeiger zeichnen */
+      AffineTransform at = AffineTransform.getRotateInstance(
                 -Math.toRadians(this.getSekundenPosInGrad())+this.OwinkelInRad,
                 xMittelPos,
                 yMittelPos);
@@ -125,8 +139,20 @@ public class SpielerUhr implements SpielerUhren{
        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
        g2.setTransform(at);
-       BufferedImage rotatedImage =  this.sekundenZeigerImage;
-       g2.drawImage(rotatedImage, xMittelPos-(this.sekundenZeigerImage.getWidth()/2), yMittelPos-(this.sekundenZeigerImage.getHeight()/2),null);
+       BufferedImage rotatedImage =  this.sekundenZeigerBImage;
+       g2.drawImage(rotatedImage, xMittelPos-(this.sekundenZeigerBImage.getWidth()/2), yMittelPos-(this.sekundenZeigerBImage.getHeight()/2),null);
+
+       at = AffineTransform.getRotateInstance(
+                -Math.toRadians(this.getMinutenPosInGrad())+this.OwinkelInRad,
+                xMittelPos,
+                yMittelPos);
+       g2.setTransform(at);
+       rotatedImage =  this.minutenZeigerBImage;
+       g2.drawImage(rotatedImage, xMittelPos-(this.minutenZeigerBImage.getWidth()/2), yMittelPos-(this.minutenZeigerBImage.getHeight()/2),null);
+
+
+
+       /* Transformation wieder loeschen */
        at = AffineTransform.getRotateInstance(
                 0,
                 0,
