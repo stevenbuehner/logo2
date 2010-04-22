@@ -17,16 +17,12 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
-import javax.swing.ToolTipManager;
 import logo.LoGoApp;
 
 /**
@@ -402,6 +398,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     
     public void gibFehlermeldungAus(String fehlertext) {
         System.out.println(fehlertext);
+        JOptionPane.showMessageDialog(this, fehlertext);
     }
 
     public void mouseClicked(MouseEvent e) {
@@ -504,9 +501,11 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     }
 
     private void buttonUndoGedrueckt() {
+        LoGoApp.meineSteuerung.buttonUndo();;
     }
 
     private void buttonRedoGedrueckt() {
+        LoGoApp.meineSteuerung.buttonRedo();;
     }
 
 }
