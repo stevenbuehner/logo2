@@ -60,6 +60,7 @@ public class SpielerUhr implements SpielerUhren{
        // this.sekundenZeigerBImage =  lib.getSprite("GUI/resources/ZeigerBearb4.png");
         this.sekundenZeigerBImage =  lib.getSprite("GUI/resources/sekZeiger1.png");
         this.minutenZeigerBImage = lib.getSprite("GUI/resources/ZeigerBearb4.png");
+        this.stundenZeigerBImage = lib.getSprite("GUI/resources/StZeigerEinfach1.png");
 
 
 
@@ -112,12 +113,12 @@ public class SpielerUhr implements SpielerUhren{
 
     /**
      * Gibt den Winkel des Stundenzeigers wieder. Dieser ist nicht in Intervalle
-     * unterteilt.
+     * unterteilt, und daher ein double.
      * @return Winkel des Stundenzeigers in Grad
      */
-    private int getStundenPosInGrad(){
-        long verbleibendeStunden = (this.anzeigeZeit / 1000) / 3600;
-        int rueckgabeWinkel = 30 * (int) verbleibendeStunden;
+    private double getStundenPosInGrad(){
+        double verbleibendeStunden = (double)this.anzeigeZeit / 1000/3600;
+        double rueckgabeWinkel = 30 * verbleibendeStunden;
         return rueckgabeWinkel;
     }
 
@@ -127,21 +128,21 @@ public class SpielerUhr implements SpielerUhren{
      * @param g Graphic zum Malen
      */
     public void zeichneZeiger(Graphics g){
+      Graphics2D g2 = (Graphics2D) g;
+      g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+      g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
       /* Sekundenzeiger zeichnen */
       AffineTransform at = AffineTransform.getRotateInstance(
                 -Math.toRadians(this.getSekundenPosInGrad())+this.OwinkelInRad,
                 xMittelPos,
                 yMittelPos);
-
-       Graphics2D g2 = (Graphics2D) g;
-       g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-       g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
        g2.setTransform(at);
        BufferedImage rotatedImage =  this.sekundenZeigerBImage;
        g2.drawImage(rotatedImage, xMittelPos-(this.sekundenZeigerBImage.getWidth()/2), yMittelPos-(this.sekundenZeigerBImage.getHeight()/2),null);
 
+       /* Minutenzeiger zeichnen */
        at = AffineTransform.getRotateInstance(
                 -Math.toRadians(this.getMinutenPosInGrad())+this.OwinkelInRad,
                 xMittelPos,
@@ -150,7 +151,14 @@ public class SpielerUhr implements SpielerUhren{
        rotatedImage =  this.minutenZeigerBImage;
        g2.drawImage(rotatedImage, xMittelPos-(this.minutenZeigerBImage.getWidth()/2), yMittelPos-(this.minutenZeigerBImage.getHeight()/2),null);
 
-
+       /* Stundenzeiger zeichnen */
+       at = AffineTransform.getRotateInstance(
+                -Math.toRadians(this.getStundenPosInGrad())+this.OwinkelInRad - Math.PI,
+                xMittelPos,
+                yMittelPos);
+       g2.setTransform(at);
+       rotatedImage =  this.stundenZeigerBImage;
+       g2.drawImage(rotatedImage, xMittelPos-(this.stundenZeigerBImage.getWidth()/2), yMittelPos-(this.stundenZeigerBImage.getHeight()/2),null);
 
        /* Transformation wieder loeschen */
        at = AffineTransform.getRotateInstance(
