@@ -41,7 +41,7 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
     private JTextField spielerZeitStundenSchwarz;
     private JTextField spielerZeitMinutenSchwarz;
 
-    private JComboBox spielermodus;
+    private JComboBox spielerModus;
     private JCheckBox spielMitZeitSpielen;
     private JTextField periodenZeitMinuten;
     private JTextField periodenZeitSekunden;
@@ -59,6 +59,7 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
     private JTextArea spielBrettHinweise;
 
     private JButton spielStarten;
+    private Spielbrett dasSpielbrett;
     
     // Panes
     private JPanel panelAllgemein;
@@ -69,6 +70,7 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
 
     // Datenhaltung
     private Spielfeld dasSpielfeld;
+
 
 
     public SpieleinstellungFenster(){
@@ -110,7 +112,7 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         this.periodenZeitMinuten       = new JTextField("1");
         this.periodenZeitSekunden      = new JTextField("0");
 
-        this.spielermodus              = new JComboBox();
+        this.spielerModus              = new JComboBox();
         this.spielMitZeitSpielen       = new JCheckBox("Mit Zeit spielen", true);
 
         this.spielFeldAuswahl          = new ButtonGroup();
@@ -129,7 +131,7 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
 
         /* Jetzt wurden alle werte zumindest initialisiert,
          * Nun die panel zuteilen */
-        this.panelAllgemein.add(this.spielermodus);
+        this.panelAllgemein.add(this.spielerModus);
         this.panelAllgemein.add(this.spielMitZeitSpielen);
         this.panelAllgemein.add(this.periodenZeitMinuten);
         this.panelAllgemein.add(this.periodenZeitSekunden);
@@ -157,6 +159,15 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
     }
 
     public void mouseClicked(MouseEvent e) {
+        // ueberpruefen ob ins Spielfeld geklickt wurde, wenn nicht normal
+        // weiter behandeln
+       /*
+        if( this.dasSpielbrett != null){
+            if( e.getX() > this.dasSpielbrett.getWidth() ){
+                
+            }
+        }
+        * */
     }
 
     public void mousePressed(MouseEvent e) {
@@ -176,11 +187,55 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         if(e.getSource() == this.spielMitZeitSpielen){
             this.toggleSpielMitZeitSpielen();
         }
-
+        if( e.getSource() == this.spielerModus ){
+            this.spielerModusChanged();
+        }
+        if( e.getSource() == this.spielerNameSchwarz ){
+            this.spielerNameSchwarzChanged();
+        }
+        if( e.getSource() == this.spielerZeitMinutenSchwarz ){
+            this.spielerZeitSchwarzChanged();
+        }
+        if( e.getSource() == this.spielerZeitStundenSchwarz ){
+            this.spielerZeitSchwarzChanged();
+        }
+        if( e.getSource() == this.spielerNameWeiss ){
+            this.spielerNameWeissChanged();
+        }
+        if( e.getSource() == this.spielerZeitMinutenWeiss ){
+            this.spielerZeitWeissChanged();
+        }
+        if( e.getSource() == this.spielerZeitStundenWeiss ){
+            this.spielerZeitWeissChanged();
+        }
+        if( e.getSource() == this.siebenXsieben ){
+            this.spielfeldGroesseChanged( 7 );
+        }
+        if( e.getSource() == this.neunXneun ){
+            this.spielfeldGroesseChanged( 9 );
+        }
+        if( e.getSource() == this.elfXelf ){
+            this.spielfeldGroesseChanged( 11 );
+        }
+        if( e.getSource() == this.dreizehnXdreizehn ){
+            this.spielfeldGroesseChanged( 13 );
+        }
+        if( e.getSource() == this.fuenfzehnXfuenfzehn ){
+            this.spielfeldGroesseChanged( 15 );
+        }
+        if( e.getSource() == this.siebzehnXsiebzehn ){
+            this.spielfeldGroesseChanged( 17 );
+        }
+        if( e.getSource() == this.neunzehnXneunzehn ){
+            this.spielfeldGroesseChanged( 19 );
+        }
+        if( e.getSource() == this.spielVorgabeSteine ){
+            this.vorgabeAnzahlChanged();
+        }
     }
 
 
-    private void spielmodusChanged(){
+    private void spielerModusChanged(){
 
     }
 
@@ -267,7 +322,7 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
      * Diese Funktion wird aufgerufen, wenn die Spielfeldgroesse verändert wurde.
      * Sie passt die Einstellungen für das Spielfeld an.
      */
-    private void spielfeldGroesseChanged(){
+    private void spielfeldGroesseChanged( int neueFeldGroesse ){
         
     }
 
