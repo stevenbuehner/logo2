@@ -7,6 +7,8 @@ package GUI;
 
 import Klassen.Spielfeld;
 import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -63,6 +65,7 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
     private JPanel panelSchwarz;
     private JPanel panelWeiss;
     private JPanel panelSpielfeld;
+    private JPanel spielgroessenWahl;
 
     // Datenhaltung
     private Spielfeld dasSpielfeld;
@@ -88,10 +91,11 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
 
     private void init(){
         /* Panels initialisieren */
-        this.panelAllgemein = new JPanel(new FlowLayout());
-        this.panelSchwarz   = new JPanel(new FlowLayout());
-        this.panelWeiss     = new JPanel(new FlowLayout());
-        this.panelSpielfeld = new JPanel(new FlowLayout());
+        this.panelAllgemein = new JPanel(new GridLayout(4,2));
+        this.panelSchwarz   = new JPanel(new GridLayout(3,2));
+        this.panelWeiss     = new JPanel(new GridLayout(3,3));
+        this.panelSpielfeld = new JPanel(new GridLayout(3,2));
+        this.spielgroessenWahl = new JPanel(new GridLayout(7, 1));
 
         /* Textfields Initialisieren */
         this.spielerNameWeiss          = new JTextField("Weiss");
@@ -138,6 +142,17 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         this.panelWeiss.add(this.spielerZeitStundenWeiss);
         this.panelWeiss.add(this.spielerZeitMinutenWeiss);
         this.panelWeiss.add(this.spielerKomiWeiss);
+        
+
+        this.spielgroessenWahl.add(this.siebenXsieben);
+        this.spielgroessenWahl.add(this.neunXneun);
+        this.spielgroessenWahl.add(this.elfXelf);
+        this.spielgroessenWahl.add(this.dreizehnXdreizehn);
+        this.spielgroessenWahl.add(this.fuenfzehnXfuenfzehn);
+        this.spielgroessenWahl.add(this.siebzehnXsiebzehn);
+        this.spielgroessenWahl.add(this.neunzehnXneunzehn);
+
+        this.panelSpielfeld.add(this.spielgroessenWahl);
 
     }
 
