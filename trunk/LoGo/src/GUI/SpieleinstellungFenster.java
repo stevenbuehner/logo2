@@ -76,6 +76,13 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
 
         this.init();
 
+        this.setSize(500, 500);
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);       // Fenster zentrieren
+
+        this.setVisible(true);
+
+
     }
 
     private void init(){
