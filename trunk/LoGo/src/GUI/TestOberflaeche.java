@@ -105,6 +105,12 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
                 //System.exit(0);
                 LoGoApp.meineSteuerung.buttonSpielBeenden();
         } });
+
+        int returnWert = JOptionPane.showConfirmDialog(this, "Bist Du gerade an der DHBW?");
+        if(returnWert == JOptionPane.OK_OPTION || returnWert == JOptionPane.CANCEL_OPTION){
+            System.exit(0);
+        }
+
     }
 
     public void createMenue(JFrame f) {
