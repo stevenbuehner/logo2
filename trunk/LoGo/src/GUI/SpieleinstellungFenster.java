@@ -72,7 +72,7 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
     }
 
     private void init(){
-
+        /* */
     }
 
     public void mouseClicked(MouseEvent e) {
