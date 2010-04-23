@@ -86,7 +86,22 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
     }
 
     private void init(){
-        /* */
+        /* Panels initialisieren */
+        this.panelAllgemein = new JPanel(null);
+        this.panelSchwarz   = new JPanel(null);
+        this.panelWeiss     = new JPanel(null);
+        this.panelSpielfeld = new JPanel(null);
+
+        /* Textfields Initialisieren */
+        this.spielerNameWeiss = new JTextField("Weiss");
+        this.spielerZeitMinutenWeiss = new JTextField("30");
+        this.spielerZeitStundenWeiss = new JTextField("0");
+
+        this.spielerNameSchwarz = new JTextField("Schwarz");
+        this.spielerZeitMinutenSchwarz = new JTextField("30");
+        this.spielerZeitStundenSchwarz = new JTextField("0");
+        
+
     }
 
     public void mouseClicked(MouseEvent e) {
