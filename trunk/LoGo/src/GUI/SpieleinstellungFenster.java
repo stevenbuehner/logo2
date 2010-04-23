@@ -68,6 +68,13 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
 
 
     public SpieleinstellungFenster(){
+        this( "Einstellungsfenster");
+    }
+
+    public SpieleinstellungFenster(String fenstername) {
+        super(fenstername);
+
+        this.init();
 
     }
 
