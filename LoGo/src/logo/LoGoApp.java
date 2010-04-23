@@ -4,8 +4,7 @@
 package logo;
 
 import GUI.GrafikLib;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import GUI.SpieleinstellungFenster;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
@@ -21,6 +20,7 @@ import javax.swing.UIManager;
 public class LoGoApp extends SingleFrameApplication {
 
     public static OberflaecheInterface meineOberflaeche;
+    public static SpieleinstellungFenster meinEinstellungsfenster;
     public static SteuerungInterface meineSteuerung;
     public static GrafikLib meineGrafikLib = GrafikLib.getInstance();
 
@@ -92,6 +92,7 @@ public class LoGoApp extends SingleFrameApplication {
         */
 
         meineSteuerung = new Steuerung();
+        meinEinstellungsfenster = new SpieleinstellungFenster( "Einstellungen");
         meineOberflaeche = new TestOberflaeche("LoGo, by Steven Buehner, Alex Jesche, Rebecca Kina and Tommy Schladitz");
 
         //launch(LoGoApp.class, args);
