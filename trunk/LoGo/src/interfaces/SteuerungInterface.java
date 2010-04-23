@@ -33,48 +33,6 @@ public interface SteuerungInterface {
             int spielfeldGroesse,
             int vorgabeSteineFuerSchwarz);
 
-    public void initMitEinstellungen(String spielerNameSchwarz,
-            String spielerNameWeiss,
-            long spielZeitSchwarz,
-            long spielZeitWeiss,
-            long periodenZeit,
-            float komiFuerWeiss,
-            int spielfeldGroesse);
-
-    public void initMitEinstellungen(String spielerNameSchwarz,
-            String spielerNameWeiss,
-            long spielZeitSchwarz,
-            long spielZeitWeiss,
-            long periodenZeit,
-            int spielfeldGroesse);
-
-    /**
-     * Die Gleiche Funktion wie initMitEinstellungen, nur damit das Programm
-     * weiss, dass dem Benutzer noch die Moeglichkeit geboten werden muss
-     * eine eigene Startformation zu erstellen
-     * @param spielerNameSchwarz Name des schwarzen Spielers
-     * @param spielerNameWeiss Name des weissen Spielers
-     * @param spielZeitSchwarz Absolute Zeit des schwarzen Spielers
-     * @param spielZeitWeiss Absolute Zeit des weissen Spielers
-     * @param periodenZeit Byo-Yomi fuer beide Spieler
-     * @param komiFuerWeiss Punkte zum Spielstaerkenausgleich fuer Weiss
-     * @param spielfeldGroesse Groesse des Spielfeldes
-     */
-    public void initMitEinstellungenFuerStartformation(String spielerNameSchwarz,
-            String spielerNameWeiss,
-            long spielZeitSchwarz,
-            long spielZeitWeiss,
-            long periodenZeit,
-            float komiFuerWeiss,
-            int spielfeldGroesse);
-
-    public void initMitEinstellungenFuerStartformation(String spielerNameSchwarz,
-            String spielerNameWeiss,
-            long spielZeitSchwarz,
-            long spielZeitWeiss,
-            long periodenZeit,
-            int spielfeldGroesse);
-
     /**
      * Dient dafuer, ein Spiel zu laden und das komplette Feld zu uebergeben.
      * Spielfeldgroesse muss nicht uebergeben werden, da diese im Spielfeld
