@@ -93,14 +93,31 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         this.panelSpielfeld = new JPanel(null);
 
         /* Textfields Initialisieren */
-        this.spielerNameWeiss = new JTextField("Weiss");
-        this.spielerZeitMinutenWeiss = new JTextField("30");
-        this.spielerZeitStundenWeiss = new JTextField("0");
+        this.spielerNameWeiss          = new JTextField("Weiss");
+        this.spielerZeitMinutenWeiss   = new JTextField("30");
+        this.spielerZeitStundenWeiss   = new JTextField("0");
+        this.spielerKomiWeiss          = new JTextField("6.5");
 
-        this.spielerNameSchwarz = new JTextField("Schwarz");
+        this.spielerNameSchwarz        = new JTextField("Schwarz");
         this.spielerZeitMinutenSchwarz = new JTextField("30");
         this.spielerZeitStundenSchwarz = new JTextField("0");
-        
+
+        this.periodenZeitMinuten       = new JTextField("1");
+        this.periodenZeitSekunden      = new JTextField("0");
+
+        this.spielermodus              = new JComboBox();
+        this.spielMitZeitSpielen       = new JCheckBox("Mit Zeit spielen", true);
+
+        this.spielFeldAuswahl          = new ButtonGroup();
+        this.siebenXsieben             = new JRadioButton("7 x 7",false);
+        this.neunXneun                 = new JRadioButton("9 x 9",false);
+        this.elfXelf                   = new JRadioButton("11 x 11",false);
+        this.dreizehnXdreizehn         = new JRadioButton("13 x 13",true);
+        this.fuenfzehnXfuenfzehn       = new JRadioButton("15 x 15",false);
+        this.siebzehnXsiebzehn         = new JRadioButton("17 x 17",false);
+        this.neunzehnXneunzehn         = new JRadioButton("19 x 19",false);
+
+        this.dasSpielfeld              = new Spielfeld(13);
 
     }
 
