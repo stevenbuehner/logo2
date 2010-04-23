@@ -142,27 +142,142 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
     }
 
     public void mouseClicked(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void mousePressed(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void mouseReleased(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void mouseEntered(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void mouseExited(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    
+        if(e.getSource() == this.spielMitZeitSpielen){
+            this.toggleSpielMitZeitSpielen();
+        }
+
     }
+
+
+    private void spielmodusChanged(){
+
+    }
+
+    /**
+     * Toggelt die Spiel-Einstellungs-Felder die mit der SPielzeit zu tun haben
+     * zwischen Enabled und Disabled hin und her.
+     */
+    private void toggleSpielMitZeitSpielen() {
+        JCheckBox box = (JCheckBox)this.spielMitZeitSpielen;
+        if( box.isSelected() ){
+            this.periodenZeitMinuten.setEnabled(false);
+            this.periodenZeitSekunden.setEnabled(false);
+            this.spielerZeitMinutenSchwarz.setEnabled(false);
+            this.spielerZeitMinutenWeiss.setEnabled(false);
+            this.spielerZeitStundenSchwarz.setEnabled(false);
+            this.spielerZeitStundenWeiss.setEnabled(false);
+        }
+        else{
+            this.periodenZeitMinuten.setEnabled(true);
+            this.periodenZeitSekunden.setEnabled(true);
+            this.spielerZeitMinutenSchwarz.setEnabled(true);
+            this.spielerZeitMinutenWeiss.setEnabled(true);
+            this.spielerZeitStundenSchwarz.setEnabled(true);
+            this.spielerZeitStundenWeiss.setEnabled(true);
+        }
+    }
+
+     /**
+     * Wird aufgerufen, wenn der User etwas an der periodenZeit geändert hat.
+     * Wird aufgerufen egal ob im Minuten oder Sekundenfeld etwas geänder wurde.
+     * Die Funktion validiert die Usereingaben dieser Felder und ändert sie
+     * gegebenenfalls ab.
+     */
+    private void periodenZeitChanged(){
+        
+    }
+
+    /**
+     * Wird aufgerufen wenn der Spielername von Schwarz geändert wurde.
+     * Die Funktion validiert die Usereingaben und ändert sie
+     * gegebenenfalls ab.
+     */
+    private void spielerNameSchwarzChanged(){
+        
+    }
+
+    /**
+     * Wird aufgerufen wenn entweder die Stunden- oder die Minutenangaben des
+     * schwarzen Spielers geändert wurden. Die Funktion validiert die
+     * Usereingaben dieser Felder und korrigiert sie gegebenenfalls.
+     */
+    private void spielerZeitSchwarzChanged(){
+        
+    }
+
+    /**
+     * Wird aufgerufen wenn der Spielername von Weiss geändert wurde.
+     * Die Funktion validiert die Usereingaben und ändert sie
+     * gegebenenfalls ab.
+     */
+    private void spielerNameWeissChanged(){
+        
+    }
+
+    /**
+     * Wird aufgerufen wenn entweder die Stunden- oder die Minutenangaben des
+     * weissen Spielers geändert wurden. Die Funktion validiert die
+     * Usereingaben dieser Felder und korrigiert sie gegebenenfalls.
+     */
+    private void spielerZeitWeissChanged(){
+        
+    }
+
+    /**
+     * Diese Funktion wird aufgerufen, wenn die Eingaben im Komi-Textfeld
+     * durch den User verändert wurden. Es wird überprüft, ob diese Einstellung
+     * im zulässigen Bereich > 0 ist und gegebenfalls werden die Werte angepasst.
+     */
+    private void spielerKomiWeissChanged(){
+        
+    }
+
+    /**
+     * Diese Funktion wird aufgerufen, wenn die Spielfeldgroesse verändert wurde.
+     * Sie passt die Einstellungen für das Spielfeld an.
+     */
+    private void spielfeldGroesseChanged(){
+        
+    }
+
+    /**
+     * Wird aufgerufen wenn das Textfeld mit den Vorgabesteinen geändert wird.
+     * Die Funktion validiert gleichzeitig den eingegebenen Wert.
+     */
+    private void vorgabeAnzahlChanged(){
+        
+    }
+
+    /**
+     * Wird aufgerufen wenn das Feld angeklickt wurde und übergibt die Pixelkoordinaten
+     * abhängig von der linken oberen Ecke des Spielfeldes.
+     * @param xPos
+     * @param yPos
+     */
+    private void klickAufFeld( int xPos, int yPos){
+        
+    }
+
+
+
+
+
+
 
 }
