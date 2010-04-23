@@ -6,6 +6,7 @@
 package GUI;
 
 import Klassen.Spielfeld;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -87,10 +88,10 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
 
     private void init(){
         /* Panels initialisieren */
-        this.panelAllgemein = new JPanel(null);
-        this.panelSchwarz   = new JPanel(null);
-        this.panelWeiss     = new JPanel(null);
-        this.panelSpielfeld = new JPanel(null);
+        this.panelAllgemein = new JPanel(new FlowLayout());
+        this.panelSchwarz   = new JPanel(new FlowLayout());
+        this.panelWeiss     = new JPanel(new FlowLayout());
+        this.panelSpielfeld = new JPanel(new FlowLayout());
 
         /* Textfields Initialisieren */
         this.spielerNameWeiss          = new JTextField("Weiss");
@@ -117,7 +118,26 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         this.siebzehnXsiebzehn         = new JRadioButton("17 x 17",false);
         this.neunzehnXneunzehn         = new JRadioButton("19 x 19",false);
 
+        this.spielVorgabeSteine        = new JTextField("0");
+        this.spielBrettHinweise        = new JTextArea("", 15, 5);
+        this.spielStarten              = new JButton("Start");
         this.dasSpielfeld              = new Spielfeld(13);
+
+        /* Jetzt wurden alle werte zumindest initialisiert,
+         * Nun die panel zuteilen */
+        this.panelAllgemein.add(this.spielermodus);
+        this.panelAllgemein.add(this.spielMitZeitSpielen);
+        this.panelAllgemein.add(this.periodenZeitMinuten);
+        this.panelAllgemein.add(this.periodenZeitSekunden);
+
+        this.panelSchwarz.add(this.spielerNameSchwarz);
+        this.panelSchwarz.add(this.spielerZeitStundenSchwarz);
+        this.panelSchwarz.add(this.spielerZeitMinutenSchwarz);
+
+        this.panelWeiss.add(this.spielerNameWeiss);
+        this.panelWeiss.add(this.spielerZeitStundenWeiss);
+        this.panelWeiss.add(this.spielerZeitMinutenWeiss);
+        this.panelWeiss.add(this.spielerKomiWeiss);
 
     }
 
