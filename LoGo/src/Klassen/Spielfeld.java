@@ -33,6 +33,7 @@ public class Spielfeld {
     private List<Spielzug> spielZugCollection;
     private int xPosVerboten;
     private int yPosVerboten;
+    private boolean ignoreTime;
 
     private Spieler spielerSchwarz;
     private Spieler spielerWeiss;
@@ -89,6 +90,7 @@ public class Spielfeld {
                 this.initialfeld[i][j] = Konstante.SCHNITTPUNKT_LEER;
             }
         }
+        this.setIgnoreTime(true);
     }
 
     /**
@@ -1772,14 +1774,11 @@ public class Spielfeld {
         return rueckgabe;
     }
 
-    /**
-     * Gib den zuletzt gelegten (markierten) Stein zu einem bestimmten
-     * @param zeitpunkt als @return Point zurück.
-     * Der Rückgabewert vom Typ Point hat einen Wertebereich von:
-     *  1 <= x <= spielFeldGroese
-     *  1 <= y <= spielFeldGroese
-     *
-     * ACHTUNG! MUSS NOCH IMPLEMENTIERT WERDEN!!! ... DANKE TOMMY :-)
-     */
+    public void setIgnoreTime(boolean ignore) {
+        this.ignoreTime = ignore;
+    }
 
+    public boolean getIgnoreTime(){
+        return this.ignoreTime;
+    }
 }

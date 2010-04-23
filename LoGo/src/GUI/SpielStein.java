@@ -217,9 +217,9 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
 
     public synchronized void starteAnimationWeissSetzen() {
         this.clearScenes();
-        this.addScene(storedImages[36], 100);
+        //this.addScene(storedImages[36], 100);
         // this.addScene(storedPics[35], 100);
-        this.addScene(storedImages[34], 100);
+        //this.addScene(storedImages[34], 100);
         // this.addScene(storedPics[33], 100);
         this.addScene(storedImages[32], 100);
         this.addScene(storedImages[31], 100);
@@ -230,11 +230,11 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
     public synchronized void starteAnimationSchwarzSetzen() {
         this.clearScenes();
         // this.addScene(storedPics[0], 100);
-        this.addScene(storedImages[1], 100);
+       // this.addScene(storedImages[1], 100);
         // this.addScene(storedPics[2], 100);
-        this.addScene(storedImages[3], 100);
+       // this.addScene(storedImages[3], 100);
         // this.addScene(storedPics[4], 100);
-        this.addScene(storedImages[5], 100);
+       // this.addScene(storedImages[5], 100);
         // this.addScene(storedPics[6], 100);
         this.addScene(storedImages[7], 100);
         this.addScene(storedImages[8], 100);
@@ -247,29 +247,29 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
         this.addScene(storedImages[29], 100);
         this.addScene(storedImages[28], 100);
         this.addScene(storedImages[27], 100);
-        this.addScene(storedImages[26], 100);
+        //this.addScene(storedImages[26], 100);
         this.addScene(storedImages[25], 100);
         this.addScene(storedImages[24], 100);
         this.addScene(storedImages[23], 100);
-        this.addScene(storedImages[22], 100);
+        //this.addScene(storedImages[22], 100);
         this.addScene(storedImages[21], 100);
         this.setLoop(false);
     }
 
     public synchronized void starteAnimationSchwarzEntfernen() {
         this.clearScenes();
-        this.addScene(storedImages[8], 100);
+        //this.addScene(storedImages[8], 100);
         this.addScene(storedImages[9], 100);
-        this.addScene(storedImages[10], 100);
+       // this.addScene(storedImages[10], 100);
         this.addScene(storedImages[11], 100);
-        this.addScene(storedImages[12], 100);
-        this.addScene(storedImages[13], 100);
+        //this.addScene(storedImages[12], 100);
+      //  this.addScene(storedImages[13], 100);
         this.addScene(storedImages[14], 100);
-        this.addScene(storedImages[15], 100);
+      //  this.addScene(storedImages[15], 100);
         this.addScene(storedImages[16], 100);
-        this.addScene(storedImages[17], 100);
+       // this.addScene(storedImages[17], 100);
         this.addScene(storedImages[18], 100);
-        this.addScene(storedImages[19], 100);
+       // this.addScene(storedImages[19], 100);
         this.addScene(storedImages[20], 100);
         this.addScene(storedImages[21], 100);
         this.setLoop(false);
