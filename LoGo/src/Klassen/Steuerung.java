@@ -72,45 +72,6 @@ public class Steuerung implements SteuerungInterface {
 //        throw new UnsupportedOperationException("Not fully supported yet.");
     }
 
-    public void initMitEinstellungen(
-            String spielerNameSchwarz,
-            String spielerNameWeiss,
-            long spielZeitSchwarz,
-            long spielZeitWeiss,
-            long periodenZeit,
-            float komiFuerWeiss,
-            int spielfeldGroesse) {
-
-        this.initMitEinstellungen(
-                spielerNameSchwarz,
-                spielerNameWeiss,
-                spielZeitSchwarz,
-                spielZeitWeiss,
-                periodenZeit,
-                komiFuerWeiss,
-                spielfeldGroesse,
-                0);
-    }
-
-    public void initMitEinstellungen(
-            String spielerNameSchwarz,
-            String spielerNameWeiss,
-            long spielZeitSchwarz,
-            long spielZeitWeiss,
-            long periodenZeit,
-            int spielfeldGroesse) {
-
-        this.initMitEinstellungen(
-                spielerNameSchwarz,
-                spielerNameWeiss,
-                spielZeitSchwarz,
-                spielZeitWeiss,
-                periodenZeit,
-                0,
-                spielfeldGroesse,
-                0);
-    }
-
     /**Implementierung des Interfaces
      * @see SteuerungInterface
      */
