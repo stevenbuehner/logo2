@@ -101,6 +101,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
         // Programm bei klick auf den roten Knopf nicht beenden sondern Event weiter verarbeiten
         this.addWindowListener(new WindowAdapter(){
+            @Override
             public void windowClosing(WindowEvent e) {
                 //System.exit(0);
                 LoGoApp.meineSteuerung.buttonSpielBeenden();
