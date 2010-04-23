@@ -22,6 +22,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import logo.LoGoApp;
 
@@ -74,7 +75,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         createMenue(this);
 
         // Schwere und leichte Komponenten
-        // JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+        //  JPopupMenu.setDefaultLightWeightPopupEnabled(false);
         // ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
 
         /* Buffern */
@@ -107,11 +108,12 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
                 LoGoApp.meineSteuerung.buttonSpielBeenden();
         } });
 
+        /*
         int returnWert = JOptionPane.showConfirmDialog(this, "Bist Du gerade an der DHBW?");
         if(returnWert == JOptionPane.OK_OPTION || returnWert == JOptionPane.CANCEL_OPTION){
-            System.exit(0);
+             System.exit(0);
         }
-
+        */
     }
 
     public void createMenue(JFrame f) {
@@ -222,14 +224,14 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
         try {
             g = bf.getDrawGraphics();
-            super.paint(g);
-            // g.setColor(this.getBackground());
-            // g.fillRect(0, dieMenueBar.getHeight() + this.getInsets().top, this.getWidth(), this.getHeight());
 
             if( this.backgroundImage != null ){
                 g.drawImage(this.backgroundImage, 0, 0, null);
             }
 
+            super.paint(g);
+            // g.setColor(this.getBackground());
+            // g.fillRect(0, dieMenueBar.getHeight() + this.getInsets().top, this.getWidth(), this.getHeight());
 
             if (this.dasBrett != null) {
                 this.dasBrett.drawObjects(g);
