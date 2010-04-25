@@ -1,13 +1,13 @@
 package GUI;
 
 import Klassen.Konstante;
-import interfaces.Drawable;
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import javax.swing.JComponent;
+import logo.LoGoApp;
 
 /**
  *
@@ -18,7 +18,7 @@ import java.awt.image.BufferedImage;
  *
  * Diese Klasse wird aktuell nirgends im Spiel verwedet!!!!
  */
-public class Spielbrett extends Canvas implements Drawable {
+public class Spielbrett extends JComponent {
 
     private int brettBreite;
     private int brettHoehe;
@@ -27,12 +27,11 @@ public class Spielbrett extends Canvas implements Drawable {
     private int anzahlFelder;
     private int[][] spielFeldArray;
     // Grafiken
-    private Image backgoundImage;
     private SpielStein[][] feld;
     private SpielsteinMarkierung markierterStein;
 
     // Array-Inhalte alle auf 0 setzen
-    public Spielbrett(int breite, int hoehe, int xOffset, int yOffset, int anzahlFelder, Image backgroundImage) {
+    public Spielbrett(int breite, int hoehe, int xOffset, int yOffset, int anzahlFelder) {
 
         // Berechne Brettgroesse und Feldabstaende
         int unpassend = breite % anzahlFelder;
@@ -42,7 +41,7 @@ public class Spielbrett extends Canvas implements Drawable {
         this.xOffset = xOffset + unpassend / 2;
         this.yOffset = yOffset + unpassend / 2;
         this.anzahlFelder = anzahlFelder;
-        this.backgoundImage = backgroundImage;
+        this.setSize(30, 30);
 
         // initialisiere das Spielfeld mit leeren Feldern
         this.spielFeldArray = new int[anzahlFelder][anzahlFelder];
@@ -60,6 +59,7 @@ public class Spielbrett extends Canvas implements Drawable {
         this.feld = new SpielStein[this.anzahlFelder][this.anzahlFelder];
         GrafikLib lib = GrafikLib.getInstance();
         // BufferedImage[] bi = lib.getSprite("GUI/resources/Spielsteine_6x5.png", 6, 5);
+        this.setBackground(null);
 
         int minimaleAusdehnung;
         String spielSteinImageName;
@@ -128,14 +128,15 @@ public class Spielbrett extends Canvas implements Drawable {
      
      */
 
-    /**
-     * @see interfaces.Drawable
-     * @param g
-     */
-    public void drawObjects(Graphics g) {
-        if (backgoundImage != null) {
-            g.drawImage(backgoundImage, xOffset - 10, yOffset - 8, this);
-        }
+    @Override
+    public void paint(Graphics g){
+        this.paintComponents(g);
+    }
+
+    @Override
+    public void paintComponents(Graphics g){
+        
+        g = (Graphics2D)g;
 
         //Berechnung fuer das Feld
         int feldHoehe = brettHoehe / anzahlFelder;
@@ -145,8 +146,14 @@ public class Spielbrett extends Canvas implements Drawable {
         int linienBreite = this.brettBreite - feldBreite;     // eine Feldbreite kuerzer
         int linienHoehe = this.brettHoehe - feldHoehe;
 
-        g.setColor(Color.BLACK);
+        if(LoGoApp.debug){
+            g.setColor(Color.gray);
+            g.fillRect(xOffset, yOffset, brettBreite, brettHoehe);
+            g.setColor(Color.red);
+            g.fillOval(874-5, 271-5, 10, 10);
+        }
 
+        g.setColor(Color.BLACK);
 
         // Horizontale Linien zeichnen
         for (int i = 0; i < this.anzahlFelder; i++) {
@@ -161,9 +168,19 @@ public class Spielbrett extends Canvas implements Drawable {
         // Jedes Feld soll sich selbst zeichnen
         for (int i = 0; i < this.anzahlFelder; i++) {
             for (int j = 0; j < this.anzahlFelder; j++) {
+
+                if( i ==8 && j == 8){
+                    int blub = 0;
+                }
                 feld[i][j].drawObjects(g);
             }
         }
+
+        g.setColor(Color.GREEN);
+        g.drawOval(520 , 620, 50, 50);
+        BufferedImage testImage[] = GrafikLib.getInstance().getSprite("GUI/resources/Kugel_bgOrange_153px_55.png", 14, 3);
+        g.drawImage(testImage[5], 1039, 242, this);
+
     }
 
     /**
@@ -285,4 +302,23 @@ public class Spielbrett extends Canvas implements Drawable {
         return this.anzahlFelder;
     }
 
+    /*
+    public void setX( int x){
+        this.xOffset = x;
+    }
+
+    @Override
+    public int getX (){
+        return this.xOffset;
+    }
+
+    public void setY( int y){
+        this.yOffset = y;
+    }
+
+    @Override
+    public int getY ( ){
+        return this.yOffset;
+    }
+    */
 }

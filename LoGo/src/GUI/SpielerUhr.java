@@ -1,23 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package GUI;
 
 import interfaces.SpielerUhren;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import javax.swing.JComponent;
 
 /**
  *
  * @author tommy
+ * @version 0.2
  */
-public class SpielerUhr implements SpielerUhren{
+public class SpielerUhr extends JComponent implements SpielerUhren{
     /* Wichtige Variablen zum Zeichnen. Geben an, um welchen
      * Punkt der Zeiger gedreht wird, Offsetwinkel da Uhr schief liegen kann */
     private int xMittelPos;
@@ -122,13 +118,18 @@ public class SpielerUhr implements SpielerUhren{
         return rueckgabeWinkel;
     }
 
-    /**
-     * Hier soll der Zeiger gezeichnet werden. Dafuer muss er eine Graphik bekommen,
-     * wo man drauf zeichnen kann.
-     * @param g Graphic zum Malen
-     */
-    public void zeichneZeiger(Graphics g){
-      Graphics2D g2 = (Graphics2D) g;
+    @Override
+    public void paint(Graphics g){
+        this.paintComponents(g);
+    }
+
+    @Override
+    public void paintComponents(Graphics g){
+        this.zeichneZeiger(g);
+    }
+
+    public void zeichneZeiger(Graphics g) {
+ Graphics2D g2 = (Graphics2D) g;
       g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
       g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -166,10 +167,6 @@ public class SpielerUhr implements SpielerUhren{
                 0,
                 0);
        g2.setTransform(at);
-       g = (Graphics) g2;
-    }
-
-
-
+       g = (Graphics) g2;    }
 
 }
