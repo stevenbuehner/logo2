@@ -3,7 +3,6 @@ package GUI;
 import interfaces.OberflaecheInterface;
 import interfaces.SpielerUhren;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -15,14 +14,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import logo.LoGoApp;
 
@@ -36,8 +33,8 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     // Wenn nicht anders angegeben, verwende diese Masse zum zeichnen des Spielbretts
     private final static int STANDARD_SPIELFELD_HOEHE = 496;
     private final static int STANDARD_SPIELFELD_BREITE = 496;
-    private final static int STANDARD_SPIELFELD_XPOS = 496;
-    private final static int STANDARD_SPIELFELD_YPOS = 158;
+    private final static int STANDARD_SPIELFELD_XPOS = 497;
+    private final static int STANDARD_SPIELFELD_YPOS = 135;
 
     private BufferedImage backgroundImage;
     private boolean threadLaeuf;
@@ -58,6 +55,8 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     protected JMenuItem Pause;
     protected JMenuItem Fortsetzen;
 
+    protected BackgroundImagePanel backgroundPanel;
+
     /* Double Buffering */
     String mess = "";
 
@@ -74,6 +73,16 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         // Menue-Bar erstellen
         createMenue(this);
 
+        backgroundPanel = new BackgroundImagePanel(
+                GrafikLib.getInstance().getSprite("GUI/resources/SpielTisch2.jpg"));
+        this.setContentPane(backgroundPanel);
+        this.dasBrett = new Spielbrett(STANDARD_SPIELFELD_BREITE,
+                    STANDARD_SPIELFELD_HOEHE,
+                    STANDARD_SPIELFELD_XPOS,
+                    STANDARD_SPIELFELD_YPOS,
+                    9);
+        backgroundPanel.add(dasBrett);
+
         // Schwere und leichte Komponenten
         //  JPopupMenu.setDefaultLightWeightPopupEnabled(false);
         // ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
@@ -84,6 +93,8 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         this.setSize(1024, 768);
         // this.backgroundImage = GrafikLib.getInstance().getSprite("GUI/resources/SpielTisch.jpg");
         this.backgroundImage = GrafikLib.getInstance().getSprite("GUI/resources/SpielTisch2.jpg");
+
+
         this.spielerUhrSchwarz = new SpielerUhr(316, 215, 0, 4.5);
         this.spielerUhrWeiss = new SpielerUhr(112, 144, 0, 1);
 
@@ -210,7 +221,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
             cumTime += timePassed;
 
             this.doLogic(timePassed);
-            this.drawStuff();
+            this.repaint();
             try {
                 Thread.sleep(20);
             } catch (InterruptedException ex) {
@@ -218,48 +229,15 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         }
     }
 
-    private void drawStuff() {
-        BufferStrategy bf = this.getBufferStrategy();
-        Graphics g = null;
+    @Override
+    public void paint(Graphics g){
+        super.paint(g);
 
-        try {
-            g = bf.getDrawGraphics();
+        this.spielerUhrSchwarz.zeichneZeiger(g);
+        this.spielerUhrWeiss.zeichneZeiger(g);
 
-            if( this.backgroundImage != null ){
-                g.drawImage(this.backgroundImage, 0, 0, null);
-            }
-
-            super.paint(g);
-            // g.setColor(this.getBackground());
-            // g.fillRect(0, dieMenueBar.getHeight() + this.getInsets().top, this.getWidth(), this.getHeight());
-
-            if (this.dasBrett != null) {
-                this.dasBrett.drawObjects(g);
-            }
-
-            if (this.spielerUhrSchwarz != null){
-                this.spielerUhrSchwarz.zeichneZeiger(g);
-            }
-
-            if( this.spielerUhrWeiss != null ){
-                this.spielerUhrWeiss.zeichneZeiger(g);
-            }
-
-            g.setColor(Color.BLACK);
-            g.setFont(new Font("Arial", Font.PLAIN, 20));
-            g.drawString("MESS: " + mess, 55, 560);
-        } finally {
-            // Am Ende Disposen ist am besten ;)
-            g.dispose();
-        }
-
-        // Shows the contents of the backbuffer on the screen.
-        bf.show();
-
-        //Tell the System to do the Drawing now, otherwise it can take a few extra ms until
-        //Drawing is done which looks very jerky
-        Toolkit.getDefaultToolkit().sync();
     }
+
 
     @Override
     public void update(Graphics g) {
@@ -339,12 +317,15 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         if (this.dasBrett != null && this.dasBrett.getAnzahlFelder() == spielfeldGroesse) {
             this.dasBrett.updateSpielFeld(spielfeld);
         } else {
+            this.remove(dasBrett);
+            this.dasBrett = null;
             this.dasBrett = new Spielbrett(STANDARD_SPIELFELD_BREITE,
                     STANDARD_SPIELFELD_HOEHE,
                     STANDARD_SPIELFELD_XPOS,
                     STANDARD_SPIELFELD_YPOS,
-                    spielfeldGroesse,
-                    null);
+                    spielfeldGroesse );
+            this.add(dasBrett);
+            this.validate();
             this.dasBrett.updateSpielFeld(spielfeld);
             this.dasBrett.setMarkierterStein(markierterStein);
             this.Pause.setEnabled(true);
@@ -486,6 +467,7 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     }
 
     private void buttonNeuesSpielGedrueckt() {
+        this.remove(dasBrett);
         this.dasBrett = null;
         this.Pause.setEnabled(false);
         this.Fortsetzen.setEnabled(false);
