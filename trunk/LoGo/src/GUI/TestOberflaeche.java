@@ -3,7 +3,14 @@ package GUI;
 import interfaces.OberflaecheInterface;
 import interfaces.SpielerUhren;
 import java.awt.Color;
+import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
+import java.awt.Menu;
+import java.awt.MenuBar;
+import java.awt.MenuItem;
+import java.awt.MenuShortcut;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -14,7 +21,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.awt.image.VolatileImage;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -28,7 +37,7 @@ import logo.LoGoApp;
  * @author steven
  * @version 0.2
  */
-public class TestOberflaeche extends JFrame implements Runnable, KeyListener, OberflaecheInterface, MouseListener, ActionListener {
+public class TestOberflaeche extends Frame implements Runnable, KeyListener, OberflaecheInterface, MouseListener, ActionListener {
 
     // Wenn nicht anders angegeben, verwende diese Masse zum zeichnen des Spielbretts
     private final static int STANDARD_SPIELFELD_HOEHE = 496;
@@ -40,6 +49,13 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     private boolean threadLaeuf;
     private static boolean once = false;
     private boolean spielOberflaechePausiert = false;
+
+    private VolatileImage			backbuffer;
+    private GraphicsEnvironment		ge;
+    private GraphicsConfiguration	gc;
+    private BufferStrategy			strategy;
+
+
     // GUI-Teile
     private Spielbrett dasBrett;
     private SpielerUhren spielerUhrSchwarz;
@@ -63,8 +79,18 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     public TestOberflaeche(String pFenstername) {
         super(pFenstername);
 
+        ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	gc = ge.getDefaultScreenDevice().getDefaultConfiguration();
+        this.setIgnoreRepaint( true );
+
         init();
 
+        this.createBufferStrategy( 2 );
+	strategy = getBufferStrategy();
+	createBackbuffer();
+
+
+        // Thread anstoßen
         this.start();
     }
 
@@ -75,28 +101,22 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
 
         backgroundPanel = new BackgroundImagePanel(
                 GrafikLib.getInstance().getSprite("GUI/resources/SpielTisch2.jpg"));
-        this.setContentPane(backgroundPanel);
-        this.dasBrett = new Spielbrett(STANDARD_SPIELFELD_BREITE,
-                    STANDARD_SPIELFELD_HOEHE,
-                    STANDARD_SPIELFELD_XPOS,
-                    STANDARD_SPIELFELD_YPOS,
-                    9);
-        backgroundPanel.add(dasBrett);
+
 
         // Schwere und leichte Komponenten
         //  JPopupMenu.setDefaultLightWeightPopupEnabled(false);
         // ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
 
         /* Buffern */
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      //  this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //this.setUndecorated(true);
         this.setSize(1024, 768);
         // this.backgroundImage = GrafikLib.getInstance().getSprite("GUI/resources/SpielTisch.jpg");
         this.backgroundImage = GrafikLib.getInstance().getSprite("GUI/resources/SpielTisch2.jpg");
 
 
-        this.spielerUhrSchwarz = new SpielerUhr(316, 215, 0, 4.5);
-        this.spielerUhrWeiss = new SpielerUhr(112, 144, 0, 1);
+        //this.spielerUhrSchwarz = new SpielerUhr(316, 215, 0, 4.5);
+       // this.spielerUhrWeiss = new SpielerUhr(112, 144, 0, 1);
 
         setLocationRelativeTo(null); // Fenster zentrieren
         //this.setResizable(false);
@@ -127,83 +147,82 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
         */
     }
 
-    public void createMenue(JFrame f) {
 
-        dieMenueBar = new JMenuBar();
+    	protected void createBackbuffer() {
+		if ( backbuffer != null ) {
+			backbuffer.flush();
+			backbuffer = null;
+		}
+		// GraphicsConfiguration für VolatileImage
+		ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		gc = ge.getDefaultScreenDevice().getDefaultConfiguration();
+		backbuffer = gc.createCompatibleVolatileImage( getWidth(), getHeight() );
 
-        // ------ LoGo-Menue -------
-        JMenu dasLoGoMenue = new JMenu("LoGo");
+	}
 
-        // Einstellungen
-        Einstellungen = new JMenuItem("Einstellungen");
-        Einstellungen.addActionListener(this);
-        setMenuAccelerator(Einstellungen, ',');
-        dasLoGoMenue.add(Einstellungen);
+    	protected void checkBackbuffer() {
+		if ( backbuffer == null ) {
+			createBackbuffer();
+		}
+		if ( backbuffer.validate( gc ) == VolatileImage.IMAGE_INCOMPATIBLE ) {
+			createBackbuffer();
+		}
+	}
 
-        // Ueber
-        UeberLoGo = new JMenuItem("Über LoGo");
-        UeberLoGo.addActionListener(this);
-        setMenuAccelerator(UeberLoGo, 'a');
-        dasLoGoMenue.add(UeberLoGo);
+    public void createMenue(Frame f) {
 
-        // ------ Spiel-Menue -------
-        JMenu dasSpielMenue = new JMenu("Spiel");
+       MenuBar mb = new MenuBar();
+		Menu men;
+		MenuItem mi;
 
-        // Spiel Laden
-        SpielLaden = new JMenuItem("Spiel laden");
-        SpielLaden.addActionListener(this);
-        setMenuAccelerator(SpielLaden, 'l');
-        dasSpielMenue.add(SpielLaden);
+		// Biblionaer
+		men = new Menu( "Biblionaer" );
 
-        // Spiel Speichern
-        SpielSpeichern = new JMenuItem("Spiel speichern");
-        SpielSpeichern.addActionListener(this);
-        setMenuAccelerator(SpielSpeichern, 's');
-        dasSpielMenue.add(SpielSpeichern);
+		// Neues Standard-Spiel
+		mi = new MenuItem( "Neues Standard-Spiel" );
+		mi.addActionListener( this );
+		mi.setShortcut( new MenuShortcut( KeyEvent.VK_S ) );
+		men.add( mi );
 
-        // Spiel Speichern
-        SpielBeenden = new JMenuItem("Spiel beenden");
-        SpielBeenden.addActionListener(this);
-        setMenuAccelerator(SpielBeenden, 'q');
-        dasSpielMenue.add(SpielBeenden);
+		// Neues Spiel aus dem Internet
+		mi = new MenuItem( "Neues Spiel aus dem Internet" );
+		mi.addActionListener( this );
+		mi.setShortcut( new MenuShortcut( KeyEvent.VK_N ) );
+		men.add( mi );
 
-        // Trenner
-        dasSpielMenue.addSeparator();
+		// Neues Spiel von Datei
+		mi = new MenuItem( "Neues Spiel von Datei" );
+		mi.addActionListener( this );
+		mi.setShortcut( new MenuShortcut( KeyEvent.VK_L ) );
+		men.add( mi );
 
-        // Spielzug Undo
-        Undo = new JMenuItem("Spielzug rückgängig");
-        Undo.addActionListener(this);
-        Undo.setEnabled(false);
-        dasSpielMenue.add(Undo);
+		// Trennstrich
+		men.addSeparator();
 
-        // Spielzug Redo
-        Redo = new JMenuItem("Spielzug wieder herstellen");
-        Redo.addActionListener(this);
-        Redo.setEnabled(false);
-        dasSpielMenue.add(Redo);
+		// Einstellungen
+		mi = new MenuItem( "Einstellungen" );
+		mi.addActionListener( this );
+		mi.setShortcut( new MenuShortcut( KeyEvent.VK_COMMA ) );
+		men.add( mi );
 
-        // Trenner
-        dasSpielMenue.addSeparator();
+		mb.add( men );
 
-        // Spielzug Undo
-        Pause = new JMenuItem("Spiel pausieren");
-        Pause.addActionListener(this);
-        setMenuAccelerator(Pause, 'p');
-        Pause.setEnabled(false);
-        dasSpielMenue.add(Pause);
+		// Admin-Tests
+		men = new Menu( "Admin-Tests " );
 
-        // Spielzug Redo
-        Fortsetzen = new JMenuItem("Spiel fortsetzen");
-        Fortsetzen.addActionListener(this);
-        setMenuAccelerator(Fortsetzen, 'p');
-        Fortsetzen.setEnabled(false);
-        dasSpielMenue.add(Fortsetzen);
+		// URLtest
+		mi = new MenuItem( "URLtest" );
+		mi.addActionListener( this );
+		men.add( mi );
 
+		// Spiel nach ID laden
+		mi = new MenuItem( "Lade Frage mit der ID" );
+		mi.addActionListener( this );
+		men.add( mi );
 
+		mb.add( men );
 
-        dieMenueBar.add(dasLoGoMenue);
-        dieMenueBar.add(dasSpielMenue);
-        f.setJMenuBar(dieMenueBar);
+		this.setMenuBar(mb);
     }
 
     protected void setMenuAccelerator(JMenuItem pMenuItem, char pMnemonic) {
@@ -221,7 +240,6 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
             cumTime += timePassed;
 
             this.doLogic(timePassed);
-            //this.repaint();
             this.draw();
             try {
                 Thread.sleep(10);
@@ -231,25 +249,34 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
     }
 
     private void draw(){
-        Graphics g = this.getGraphics();
-        this.dasBrett.paint(g);
-        g.dispose();
+        checkBackbuffer(); // Pr¸f-Methode f¸r VolatileImage
+
+		Graphics g = backbuffer.getGraphics(); // GraphicsObject vom
+		// VolatileImage holen
+		g.clearRect( 0, 0, getWidth(), getHeight() );
+		render( g ); // alle Zeichenoperationen: Map, Player, etc.
+		g.dispose(); // Graphics-Objekt verwerfen
+
+		Graphics g2 = strategy.getDrawGraphics(); // Zeichenobjekt der
+		// BufferStrategy holen
+		g2.drawImage( backbuffer, 0, 0, this ); // VolatileImage in den Buffer
+		// zeichnen
+		g2.dispose(); // GraphicsObject verwerfen
+
+		strategy.show(); // Bufferanzeigen.
     }
 
 
-    @Override
-    public void paint(Graphics g){
-        super.paint(g);
+    public void render(Graphics g) {
 
-        this.spielerUhrSchwarz.zeichneZeiger(g);
-        this.spielerUhrWeiss.zeichneZeiger(g);
+		g.drawImage( backgroundImage, 0, 0, this );
+
+      if(this.dasBrett != null){
+          dasBrett.paintComponents(g);
+      }
 
     }
 
-
-    @Override
-    public void update(Graphics g) {
-    }
 
     public void start() {
         // Thread anstoßen
