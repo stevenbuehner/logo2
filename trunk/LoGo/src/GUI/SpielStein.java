@@ -220,8 +220,8 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
         //this.addScene(storedImages[36], 100);
         // this.addScene(storedImages[35], 100);
         this.addScene(storedImages[34], 100);
-        this.addScene(storedImages[33], 100);
-        this.addScene(storedImages[32], 100);
+        //this.addScene(storedImages[33], 100);
+        //this.addScene(storedImages[32], 100);
         this.addScene(storedImages[31], 100);
         this.addScene(storedImages[30], 100);
         this.setLoop(false);
@@ -235,8 +235,8 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
        // this.addScene(storedImages[3], 100);
         // this.addScene(storedImages[4], 100);
         this.addScene(storedImages[5], 100);
-        this.addScene(storedImages[6], 100);
-        this.addScene(storedImages[7], 100);
+        //this.addScene(storedImages[6], 100);
+        //this.addScene(storedImages[7], 100);
         this.addScene(storedImages[8], 100);
         this.addScene(storedImages[9], 100);
         this.setLoop(false);
@@ -282,6 +282,24 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
     }
 
     public synchronized void starteAnimationVerbotenerZugAufheben() {
+        this.clearScenes();
+        this.addScene(storedImages[21], 100);
+        this.setLoop(false);
+    }
+
+    public synchronized void setSchwarzerStein(){
+        this.clearScenes();
+        this.addScene(storedImages[9], 100);
+        this.setLoop(false);
+    }
+
+    public synchronized void setWeisserStein(){
+        this.clearScenes();
+        this.addScene(storedImages[30], 100);
+        this.setLoop(false);
+    }
+
+    public synchronized void setLeeresFeld(){
         this.clearScenes();
         this.addScene(storedImages[21], 100);
         this.setLoop(false);
