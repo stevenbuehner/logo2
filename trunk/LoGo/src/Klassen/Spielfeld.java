@@ -1781,4 +1781,49 @@ public class Spielfeld {
     public boolean getIgnoreTime(){
         return this.ignoreTime;
     }
+
+    /**
+     * Damit man das Feld mit klicken initialisieren kann, muss man Steine
+     * auf das initialfeld legen. Ob das dann valide ist, muss noch getestet
+     * werden.
+     * @param xPos von 1-Brettgroesse
+     * @param yPos von 1-Brettgroesse
+     * @param farbe Schwarz oder Weiss
+     */
+    public void legeSteinAufInitBrett(int xPos, int yPos, int farbe){
+        int xKoord = xPos-1;
+        int yKoord = yPos-1;
+
+        if(xKoord <0 || xKoord >=this.getSpielfeldGroesse() ||
+           yKoord <0 || yKoord >=this.getSpielfeldGroesse() ||
+           (farbe != Konstante.SCHNITTPUNKT_SCHWARZ &&
+            farbe != Konstante.SCHNITTPUNKT_WEISS)){
+            return;
+        }
+
+        switch(this.initialfeld[xKoord][yKoord]){
+            case Konstante.SCHNITTPUNKT_LEER:
+                this.initialfeld[xKoord][yKoord] = farbe;
+                break;
+            case Konstante.SCHNITTPUNKT_SCHWARZ:
+                switch(farbe){
+                    case Konstante.SCHNITTPUNKT_SCHWARZ:
+                        this.initialfeld[xKoord][yKoord] = Konstante.SCHNITTPUNKT_LEER;
+                        break;
+                    default:
+                        this.initialfeld[xKoord][yKoord] = farbe;
+                }
+                break;
+            case Konstante.SCHNITTPUNKT_WEISS:
+                switch(farbe){
+                    case Konstante.SCHNITTPUNKT_WEISS:
+                        this.initialfeld[xKoord][yKoord] = Konstante.SCHNITTPUNKT_LEER;
+                        break;
+                    default:
+                        this.initialfeld[xKoord][yKoord] = farbe;
+                }
+                break;
+        }
+    }
+
 }
