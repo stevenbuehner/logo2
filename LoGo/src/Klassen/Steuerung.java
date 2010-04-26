@@ -131,8 +131,20 @@ public class Steuerung implements SteuerungInterface {
             long spielZeitWeiss,
             long periodenZeit,
             float komiFuerWeiss) {
+        this.aktuellAngezeigteZugnummer = 0;
+        Spielfeld tmpSpielfeld = feld;
 
-        throw new UnsupportedOperationException("Not supported yet.");
+        tmpSpielfeld.setSpielerSchwarz(new Spieler(spielerNameSchwarz, spielZeitSchwarz, 0, 0));
+        tmpSpielfeld.setSpielerWeiss(new Spieler(spielerNameWeiss, spielZeitWeiss, 0, komiFuerWeiss));
+        tmpSpielfeld.setPeriodenZeit(periodenZeit);
+
+        /* Was intern Passiert: Im Spielfeld wird ein Initialfeld generiert,
+         * welches Festlegt, dass immer die Vorgabesteine auf dem Brett liegen
+         * muessen.*/
+        this.initMitSpielfeld(tmpSpielfeld);
+
+        //Zum Testen wurde dies hier auskommentiert, da es sonst nicht funktionieren wuerde
+//        throw new UnsupportedOperationException("Not fully supported yet.");
     }
 
     /**Implementierung des Interfaces

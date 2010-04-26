@@ -54,12 +54,6 @@ public interface SteuerungInterface {
             float komiFuerWeiss);
 
     /**
-     * Es wird eine neues Spiel uebergeben, das schon komplett initialisiert ist
-     * @param bereitsInitialisiertesSpielfeld
-     */
-    public void initMitSpielfeld(Spielfeld bereitsInitialisiertesSpielfeld);
-
-    /**
      * Wenn bei der GUI auf einen Schnittpunkt geklickt wurde, muss die
      * Steuerung reagieren. Die Koordinaten werden dann uebermittelt
      * @param xPos X-Koordinate (1-Spielfeldgroesse)

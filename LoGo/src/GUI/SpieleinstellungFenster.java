@@ -790,11 +790,14 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
 
     private void versucheZuStarten() {
         this.fehlerBeiEingabe = false;
-        Spieler spielerSchwarz = new Spieler(this.getNameSchwarz(),this.getStundenSchwarz()+this.getMinutenSchwarz(), 0, 0);
-        Spieler spielerWeiss   = new Spieler(this.getNameWeiss(), this.getStundenWeiss()+this.getMinutenWeiss(),0, this.getKomi());
-        this.dasSpielfeld.setPeriodenZeit(this.getMinutenPeriode() + this.getSekundenPeriode());
-        this.dasSpielfeld.setSpielerSchwarz(spielerSchwarz);
-        this.dasSpielfeld.setSpielerWeiss(spielerWeiss);
+        long zeitSchwarz = this.getStundenSchwarz()+this.getMinutenSchwarz();
+        long zeitWeiss   = this.getStundenWeiss()+this.getMinutenWeiss();
+        long periodenzeit = this.getMinutenPeriode() + this.getSekundenPeriode();
+        Spieler sSchwarz = new Spieler(this.getNameSchwarz(), zeitSchwarz, 0, 0);
+        Spieler sWeiss = new Spieler(this.getNameWeiss(), zeitWeiss, 0, this.getKomi());
+        this.dasSpielfeld.setSpielerSchwarz(sSchwarz);
+        this.dasSpielfeld.setSpielerWeiss(sWeiss);
+        this.dasSpielfeld.setPeriodenZeit(periodenzeit);
         if(this.spielMitZeitSpielen.isSelected()==true){
             this.dasSpielfeld.setIgnoreTime(false);
         }
@@ -816,9 +819,16 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
             return;
         }
         else{
-            LoGoApp.meineSteuerung.initMitSpielfeld(this.dasSpielfeld);
-            /* Jetzt spiel Starten */
-            return;
+            if(this.dasSpielfeld.spielfeldValidiert() == true){
+                LoGoApp.meineSteuerung.initMitDatenModell(this.dasSpielfeld, this.getNameSchwarz(), this.getNameWeiss(), zeitSchwarz, zeitWeiss, periodenzeit, this.getKomi());
+                LoGoApp.meineSteuerung.buttonSpielStarten();
+                 /* Jetzt spiel Starten */
+                 this.setVisible(false);
+                return;
+            }
+            else{
+                System.out.println("Feld nicht valide");
+            }
         }
 
 
