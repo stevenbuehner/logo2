@@ -21,8 +21,8 @@ public class LoGoApp extends SingleFrameApplication {
 
     public static OberflaecheInterface meineOberflaeche;
     public static SpieleinstellungFenster meinEinstellungsfenster;
-    public static SteuerungInterface meineSteuerung;
     public static GrafikLib meineGrafikLib = GrafikLib.getInstance();
+    public static SteuerungInterface meineSteuerung;
 
     public static boolean debug = false;
 
