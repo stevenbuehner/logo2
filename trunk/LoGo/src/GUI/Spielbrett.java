@@ -20,15 +20,15 @@ import logo.LoGoApp;
  */
 public class Spielbrett extends JComponent {
 
-    private int brettBreite;
-    private int brettHoehe;
-    private int xOffset;
-    private int yOffset;
-    private int anzahlFelder;
-    private int[][] spielFeldArray;
+    protected int brettBreite;
+    protected int brettHoehe;
+    protected int xOffset;
+    protected int yOffset;
+    protected int anzahlFelder;
+    protected int[][] spielFeldArray;
     // Grafiken
-    private SpielStein[][] feld;
-    private SpielsteinMarkierung markierterStein;
+    protected SpielStein[][] feld;
+    protected SpielsteinMarkierung markierterStein;
 
     // Array-Inhalte alle auf 0 setzen
     public Spielbrett(int breite, int hoehe, int xOffset, int yOffset, int anzahlFelder) {
