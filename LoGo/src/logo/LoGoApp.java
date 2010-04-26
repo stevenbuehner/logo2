@@ -24,7 +24,7 @@ public class LoGoApp extends SingleFrameApplication {
     public static SteuerungInterface meineSteuerung;
     public static GrafikLib meineGrafikLib = GrafikLib.getInstance();
 
-    public static boolean debug = true;
+    public static boolean debug = false;
 
     /**
      * At startup create and show the main frame of the application.
