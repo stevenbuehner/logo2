@@ -115,8 +115,8 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
         this.backgroundImage = GrafikLib.getInstance().getSprite("GUI/resources/SpielTisch2.jpg");
 
 
-        //this.spielerUhrSchwarz = new SpielerUhr(316, 215, 0, 4.5);
-       // this.spielerUhrWeiss = new SpielerUhr(112, 144, 0, 1);
+        this.spielerUhrSchwarz = new SpielerUhr(316, 215, 0, 4.5);
+        this.spielerUhrWeiss = new SpielerUhr(112, 144, 0, 1);
 
         setLocationRelativeTo(null); // Fenster zentrieren
         //this.setResizable(false);
@@ -300,6 +300,9 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
         if(this.dasBrett != null){
             dasBrett.paintComponents(g);
         }
+
+        this.spielerUhrSchwarz.zeichneZeiger(g);
+        this.spielerUhrWeiss.zeichneZeiger(g);
 
     }
 
