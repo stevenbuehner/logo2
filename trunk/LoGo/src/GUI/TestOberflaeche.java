@@ -221,13 +221,21 @@ public class TestOberflaeche extends JFrame implements Runnable, KeyListener, Ob
             cumTime += timePassed;
 
             this.doLogic(timePassed);
-            this.repaint();
+            //this.repaint();
+            this.draw();
             try {
-                Thread.sleep(20);
+                Thread.sleep(10);
             } catch (InterruptedException ex) {
             }
         }
     }
+
+    private void draw(){
+        Graphics g = this.getGraphics();
+        this.dasBrett.paint(g);
+        g.dispose();
+    }
+
 
     @Override
     public void paint(Graphics g){
