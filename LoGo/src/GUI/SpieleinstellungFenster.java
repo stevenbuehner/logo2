@@ -8,9 +8,11 @@ package GUI;
 import Klassen.Konstante;
 import Klassen.Spieler;
 import Klassen.Spielfeld;
+import java.awt.ItemSelectable;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.ButtonGroup;
@@ -22,6 +24,8 @@ import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import logo.LoGoAboutBox;
+import logo.LoGoApp;
 
 
 /**
@@ -77,6 +81,7 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
     private JLabel labelGroessenWahl;
     private JLabel labelVorgabe;
 
+
     // Datenhaltung
     private String errorString;
     private boolean fehlerBeiEingabe;
@@ -86,6 +91,13 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
     private int brettXOffset;
     private int brettYOffset;
     private int bretthoehe;
+    private int paneloffset = 30;
+    private int seitenoffset = 5;
+    private String momSpielModus;
+
+    /* Zum zeichnen des Feldes */
+    private int frameMinhoehe = 340;
+    private int frameMaxhoehe = 700;
 
 
     public SpieleinstellungFenster(){
@@ -97,7 +109,7 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
 
         this.init();
         pack();
-        this.setSize(500, 700);
+        this.setSize(500, this.frameMaxhoehe);
         this.setResizable(false);
         this.setLocationRelativeTo(null);       // Fenster zentrieren
         this.setVisible(true);
@@ -120,9 +132,9 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
      */
     private void startwerteSetzen(){
         this.errorString = "";
+        this.momSpielModus = "Schnellstart";
         this.fehlerBeiEingabe = false;
         this.dasSpielfeld = new Spielfeld(13);
-        //this.dasSpielfeldGUI = new Spielbrett(WIDTH, WIDTH, NORMAL, NORMAL, ICONIFIED, null)
         this.spielerNameWeiss          = new JTextField("Weiss");
         this.spielerZeitMinutenWeiss   = new JTextField("30");
         this.spielerZeitStundenWeiss   = new JTextField("0");
@@ -408,8 +420,10 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
     }
 
     private void comboBoxenInit(){
+
         this.spielermodus.addItem("Schnellstart");
-        this.spielermodus.addItem("DefiniertesFeld");
+        this.spielermodus.addItem("Vorgabe");
+        this.spielermodus.addItem("Startfeld");
 
         this.spielVorgabeSteine.addItem("0");
         this.spielVorgabeSteine.addItem("2");
@@ -440,8 +454,10 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
     }
 
     public void mouseClicked(MouseEvent e) {
-        if(e.getX()>=this.brettXOffset && e.getX()<=this.brettXOffset+this.brettbreite &&
-           e.getY()>=this.brettYOffset && e.getY()<=this.brettYOffset+this.bretthoehe){
+        if(this.momSpielModus.equals("Startfeld") &&
+           e.getX()-this.seitenoffset>=this.brettXOffset && e.getX()-this.seitenoffset<=this.brettXOffset+this.brettbreite &&
+           e.getY()>=this.brettYOffset+this.paneloffset && e.getY()<=this.brettYOffset+this.bretthoehe+this.paneloffset){
+            System.out.print("Klicked "+ e.getX() + " " + e.getY()+ " : ");
             int farbe = 0;
             if(e.getButton()==MouseEvent.BUTTON1){
                 farbe = Konstante.SCHNITTPUNKT_SCHWARZ;
@@ -451,8 +467,12 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
             }
             int xKoord=1;
             int yKoord=1;
-            xKoord = (e.getX()-this.brettXOffset) / (this.brettbreite / this.getSelectedFeldgroesse()) + 1;
-            yKoord = (this.bretthoehe - (e.getY()-this.brettYOffset)) / (this.bretthoehe / this.getSelectedFeldgroesse()) + 1;
+            xKoord = (int) ((((double)e.getX()-this.seitenoffset-(double)this.brettXOffset)/(double)this.brettbreite)*(double)this.getSelectedFeldgroesse())+1;
+            yKoord = this.getSelectedFeldgroesse()- (int) ((((double)e.getY()-(double)this.brettYOffset)/(double)this.bretthoehe)*(double)this.getSelectedFeldgroesse())+1;
+            if(xKoord<1){xKoord=1;}
+            if(xKoord>this.getSelectedFeldgroesse()){xKoord=this.getSelectedFeldgroesse();}
+            if(yKoord<1){yKoord=1;}
+            if(yKoord>this.getSelectedFeldgroesse()){yKoord=this.getSelectedFeldgroesse();}
             System.out.println(xKoord + " " + yKoord);
             this.dasSpielfeld.legeSteinAufInitBrett(xKoord, yKoord, farbe );
             this.dasSpielfeldGUI.updateSpielFeld(this.dasSpielfeld.getSpielfeldZumZeitpunkt(0));
@@ -489,7 +509,11 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         }
 
         else if(e.getSource() == this.spielermodus){
+            this.updateSpielmodus(this.spielermodus.getSelectedItem().toString());
+        }
 
+        else if(e.getSource() == this.spielVorgabeSteine){
+            this.updateBrettVorgabe();
         }
 
         else if(e.getSource() == this.siebenXsieben ||
@@ -528,16 +552,6 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         }
     }
 
-    /**
-     * Wird aufgerufen wenn das Feld angeklickt wurde und übergibt die Pixelkoordinaten
-     * abhängig von der linken oberen Ecke des Spielfeldes.
-     * @param xPos
-     * @param yPos
-     */
-    private void klickAufFeld( int xPos, int yPos){
-
-    }
-
     private void neuesSpielfeld() {
         /* parameter herausfinden */
         int feldgroesse = this.getSelectedFeldgroesse();
@@ -547,8 +561,22 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         }
 
         this.dasSpielfeld = new Spielfeld(feldgroesse);
-        this.initFeld();
+        if(this.momSpielModus.equals("Vorgabe")){
+            this.dasSpielfeld.initialisiereFeldMitVorgabenFuerSchwarz(this.getVorgabeWert());
+        }
         /* Es muss noch eine neue Oberflaeche angelegt werden */
+
+        this.getContentPane().remove(this.dasSpielfeldGUI);
+        this.dasSpielfeldGUI = new SpielbrettNA(this.brettbreite,
+                this.bretthoehe,
+                this.brettXOffset,
+                this.brettYOffset,
+                this.getSelectedFeldgroesse());
+        this.dasSpielfeldGUI.updateSpielFeld(this.dasSpielfeld.getSpielfeldZumZeitpunkt(0));
+        this.getContentPane().add(this.dasSpielfeldGUI);
+        this.validate();
+        this.getContentPane().add(new JLabel());
+        this.repaint();
     }
 
     /**
@@ -750,7 +778,6 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         return rueckgabe;
     }
 
-
     /**
      * Will eine Funktion dem Benutzer etwas mittelen, kann diese Funktion genutzt
      * werden.
@@ -789,7 +816,7 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
             return;
         }
         else{
-            System.out.println("Alles Ok");
+            LoGoApp.meineSteuerung.initMitSpielfeld(this.dasSpielfeld);
             /* Jetzt spiel Starten */
             return;
         }
@@ -823,5 +850,73 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
 
     private int getVorgabeWert() {
         return Integer.valueOf(this.spielVorgabeSteine.getSelectedItem().toString());
+    }
+
+    private void updateSpielmodus(String modus) {
+        if(modus.equals(this.momSpielModus)){
+            return; // nichts aendert sich
+        }
+        this.momSpielModus = modus;
+        /* Da Spielermodus anders ist, muss Feld geleert werden. Da sich die Feldgroesse
+         * nicht geaendert hat, muss man nur das datenmodell auf leer setzen*/
+        this.dasSpielfeld = new Spielfeld(this.getSelectedFeldgroesse());
+
+        if(modus.equals( "Schnellstart")){
+            /* Das Feld ist jetzt leer, bereit fuer den Schnellstart */
+            this.animiereFrameStart();
+            /* Bei einem Schnellstart spielt man ohne Vorgaben */
+            this.spielVorgabeSteine.setSelectedItem("0");
+            this.dasSpielfeldGUI.updateSpielFeld(this.dasSpielfeld.getSpielfeldZumZeitpunkt(0));
+            this.repaint();
+
+        }
+        else if(modus.equals("Vorgabe")){
+            this.dasSpielfeld.initialisiereFeldMitVorgabenFuerSchwarz(this.getVorgabeWert());
+            this.dasSpielfeldGUI.updateSpielFeld(this.dasSpielfeld.getSpielfeldZumZeitpunkt(0));
+            this.spielVorgabeSteine.setEnabled(true);
+            /*this.getContentPane().remove(this.spielBrettHinweise);
+            this.spielBrettHinweise  = new JTextArea("Mit Vorgabe", 15, 5);
+            this.spielBrettHinweise.setBounds(this.spielVorgabeSteine.getX(),
+                                    this.spielVorgabeSteine.getY() + this.spielVorgabeSteine.getHeight() + 10,
+                                    this.spielVorgabeSteine.getWidth(),
+                                    100);
+            this.getContentPane().add(this.spielBrettHinweise);*/
+            this.repaint();
+            this.animiereFrameEnde();
+
+        }
+        else if(modus.equals("Startfeld")){
+            this.spielVorgabeSteine.setEnabled(false);
+            this.spielBrettHinweise.setName("Mit eigenem Feld spielen");
+            /*this.getContentPane().remove(this.spielBrettHinweise);
+            this.spielBrettHinweise  = new JTextArea("Mit Startfeld", 15, 5);
+            this.spielBrettHinweise.setBounds(this.spielVorgabeSteine.getX(),
+                                    this.spielVorgabeSteine.getY() + this.spielVorgabeSteine.getHeight() + 10,
+                                    this.spielVorgabeSteine.getWidth(),
+                                    100);*/
+            this.animiereFrameEnde();
+            this.spielVorgabeSteine.setSelectedItem(0);
+            this.dasSpielfeldGUI.updateSpielFeld(this.dasSpielfeld.getSpielfeldZumZeitpunkt(0));
+            //this.getContentPane().add(this.spielBrettHinweise);
+            this.repaint();
+        }
+    }
+
+    private void animiereFrameStart() {
+        System.out.println("Start");
+       // this.setSize(this.getWidth(), this.frameMinhoehe);
+    }
+
+    private void animiereFrameEnde() {
+        System.out.println("Ende");
+        //this.setSize(this.getWidth(), this.frameMaxhoehe);
+    }
+
+    private void updateBrettVorgabe() {
+        if(this.momSpielModus.equals("Vorgabe")){
+            this.dasSpielfeld = new Spielfeld(this.getSelectedFeldgroesse());
+            this.dasSpielfeld.initialisiereFeldMitVorgabenFuerSchwarz(this.getVorgabeWert());
+            this.dasSpielfeldGUI.updateSpielFeld(this.dasSpielfeld.getSpielfeldZumZeitpunkt(0));
+        }
     }
 }
