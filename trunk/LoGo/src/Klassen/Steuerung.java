@@ -6,6 +6,7 @@ import Timer.CountdownPeriodenZeitWeiss;
 import Timer.CountdownSpielerZeitSchwarz;
 import Timer.CountdownSpielerZeitWeiss;
 import interfaces.SteuerungInterface;
+import javax.swing.JOptionPane;
 import logo.LoGoApp;
 
 /**
@@ -86,20 +87,7 @@ public class Steuerung implements SteuerungInterface {
         // Vorraussetzung zum Initialisieren ist ein Objekt vom Typ Spieler in this.dasSpielfeld
         if (this.dasSpielfeld.getSpielerSchwarz() != null ||
                 this.dasSpielfeld.getSpielerWeiss() != null) {
-            /*
-            this.periodenZeitSchwarz    = new CountdownPeriodenZeitSchwarz(
-            false,
-            this.dasSpielfeld.getPeriodenZeit());
-            this.periodenZeitWeiss      = new CountdownPeriodenZeitWeiss(
-            false,
-            this.dasSpielfeld.getPeriodenZeit());
-            this.spielerZeitSchwarz     = new CountdownSpielerZeitSchwarz(
-            false,
-            this.dasSpielfeld.getSpielerSchwarz().getVerbleibendeSpielzeitInMS());
-            this.spielerZeitWeiss     = new CountdownSpielerZeitWeiss(
-            false,
-            this.dasSpielfeld.getSpielerWeiss().getVerbleibendeSpielzeitInMS());
-             */ } else {
+        } else {
             throw new UnsupportedOperationException("Timer können nicht initialisiert werden: Fehlendes Spieler-Objekt in Spielfeld");
         }
 
@@ -488,7 +476,17 @@ public class Steuerung implements SteuerungInterface {
      * @see SteuerungInterface
      */
     public void buttonSpielBeenden() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        int returnWert = JOptionPane.CANCEL_OPTION;
+        if(this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_LAUEFT ){
+            returnWert = JOptionPane.showConfirmDialog(null, "Das Spiel läuft noch, wollen Sie es wirklich beenden?");
+        }
+        if(this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_PAUSIERT ){
+            returnWert = JOptionPane.showConfirmDialog(null, "Das Spiel pausiert gerade, wollen Sie es wirklich beenden?");
+        }
+
+        if(returnWert == JOptionPane.OK_OPTION || returnWert == JOptionPane.YES_OPTION){
+            System.exit(0);
+        }
     }
 
     /**Implementierung des Interfaces

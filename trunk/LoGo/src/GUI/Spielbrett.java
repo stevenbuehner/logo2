@@ -168,19 +168,9 @@ public class Spielbrett extends JComponent {
         // Jedes Feld soll sich selbst zeichnen
         for (int i = 0; i < this.anzahlFelder; i++) {
             for (int j = 0; j < this.anzahlFelder; j++) {
-
-                if( i ==8 && j == 8){
-                    int blub = 0;
-                }
                 feld[i][j].drawObjects(g);
             }
         }
-
-        g.setColor(Color.GREEN);
-        g.drawOval(520 , 620, 50, 50);
-        BufferedImage testImage[] = GrafikLib.getInstance().getSprite("GUI/resources/Kugel_bgOrange_153px_55.png", 14, 3);
-        g.drawImage(testImage[5], 1039, 242, this);
-
     }
 
     /**

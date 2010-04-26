@@ -24,9 +24,6 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
@@ -43,19 +40,23 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
     private final static int STANDARD_SPIELFELD_HOEHE = 496;
     private final static int STANDARD_SPIELFELD_BREITE = 496;
     private final static int STANDARD_SPIELFELD_XPOS = 497;
-    private final static int STANDARD_SPIELFELD_YPOS = 135;
+    private final static int STANDARD_SPIELFELD_YPOS = 158;
+    // Damit dass Spiel fluessig laueft
+    private long delta = 0;
+    private long last = 0;
+    private long fps = 0;
 
     private BufferedImage backgroundImage;
-    private boolean threadLaeuf;
-    private static boolean once = false;
+    private BufferedImage pauseImage;
     private boolean spielOberflaechePausiert = false;
 
-    private VolatileImage			backbuffer;
-    private GraphicsEnvironment		ge;
-    private GraphicsConfiguration	gc;
-    private BufferStrategy			strategy;
-
-
+    private boolean threadLaeuf;
+    private static boolean once = false;
+    // Backbuffer und Anpassungen an die Performance der Grafikkarte
+    private VolatileImage backbuffer;
+    private GraphicsEnvironment ge;
+    private GraphicsConfiguration gc;
+    private BufferStrategy strategy;
     // GUI-Teile
     private Spielbrett dasBrett;
     private SpielerUhren spielerUhrSchwarz;
@@ -70,7 +71,6 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
     protected MenuItem Redo;
     protected MenuItem Pause;
     protected MenuItem Fortsetzen;
-
     protected BackgroundImagePanel backgroundPanel;
 
     /* Double Buffering */
@@ -80,14 +80,14 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
         super(pFenstername);
 
         ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-	gc = ge.getDefaultScreenDevice().getDefaultConfiguration();
-        this.setIgnoreRepaint( true );
+        gc = ge.getDefaultScreenDevice().getDefaultConfiguration();
+        this.setIgnoreRepaint(true);
 
         init();
 
-        this.createBufferStrategy( 2 );
-	strategy = getBufferStrategy();
-	createBackbuffer();
+        this.createBufferStrategy(2);
+        strategy = getBufferStrategy();
+        createBackbuffer();
 
 
         // Thread anstoßen
@@ -99,6 +99,11 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
         // Menue-Bar erstellen
         createMenue(this);
 
+        last = System.nanoTime(); // Ohne Initialisierung stimmt die Berechnung
+        // von delta nicht!!!
+        berechneDelta(); // delta wird unten bei den Images benötigt
+
+
         backgroundPanel = new BackgroundImagePanel(
                 GrafikLib.getInstance().getSprite("GUI/resources/SpielTisch2.jpg"));
 
@@ -108,7 +113,7 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
         // ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
 
         /* Buffern */
-      //  this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //  this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //this.setUndecorated(true);
         this.setSize(1024, 768);
         // this.backgroundImage = GrafikLib.getInstance().getSprite("GUI/resources/SpielTisch.jpg");
@@ -117,6 +122,7 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
 
         this.spielerUhrSchwarz = new SpielerUhr(316, 215, 0, 4.5);
         this.spielerUhrWeiss = new SpielerUhr(112, 144, 0, 1);
+        this.spielOberflaechePausiert = false;
 
         setLocationRelativeTo(null); // Fenster zentrieren
         //this.setResizable(false);
@@ -132,42 +138,43 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
         this.addMouseListener(this);
 
         // Programm bei klick auf den roten Knopf nicht beenden sondern Event weiter verarbeiten
-        this.addWindowListener(new WindowAdapter(){
+        this.addWindowListener(new WindowAdapter() {
+
             @Override
             public void windowClosing(WindowEvent e) {
                 //System.exit(0);
                 LoGoApp.meineSteuerung.buttonSpielBeenden();
-        } });
+            }
+        });
 
         /*
         int returnWert = JOptionPane.showConfirmDialog(this, "Bist Du gerade an der DHBW?");
         if(returnWert == JOptionPane.OK_OPTION || returnWert == JOptionPane.CANCEL_OPTION){
-             System.exit(0);
+        System.exit(0);
         }
-        */
+         */
     }
 
+    protected void createBackbuffer() {
+        if (backbuffer != null) {
+            backbuffer.flush();
+            backbuffer = null;
+        }
+        // GraphicsConfiguration für VolatileImage
+        ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        gc = ge.getDefaultScreenDevice().getDefaultConfiguration();
+        backbuffer = gc.createCompatibleVolatileImage(getWidth(), getHeight());
 
-    	protected void createBackbuffer() {
-		if ( backbuffer != null ) {
-			backbuffer.flush();
-			backbuffer = null;
-		}
-		// GraphicsConfiguration für VolatileImage
-		ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		gc = ge.getDefaultScreenDevice().getDefaultConfiguration();
-		backbuffer = gc.createCompatibleVolatileImage( getWidth(), getHeight() );
+    }
 
-	}
-
-    	protected void checkBackbuffer() {
-		if ( backbuffer == null ) {
-			createBackbuffer();
-		}
-		if ( backbuffer.validate( gc ) == VolatileImage.IMAGE_INCOMPATIBLE ) {
-			createBackbuffer();
-		}
-	}
+    protected void checkBackbuffer() {
+        if (backbuffer == null) {
+            createBackbuffer();
+        }
+        if (backbuffer.validate(gc) == VolatileImage.IMAGE_INCOMPATIBLE) {
+            createBackbuffer();
+        }
+    }
 
     public void createMenue(Frame f) {
 
@@ -179,13 +186,13 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
         // Einstellungen
         Einstellungen = new MenuItem("Einstellungen");
         Einstellungen.addActionListener(this);
-        Einstellungen.setShortcut( new MenuShortcut( KeyEvent.VK_COMMA ) );
+        Einstellungen.setShortcut(new MenuShortcut(KeyEvent.VK_COMMA));
         dasLoGoMenue.add(Einstellungen);
 
         // Ueber
         UeberLoGo = new MenuItem("Über LoGo");
         UeberLoGo.addActionListener(this);
-        UeberLoGo.setShortcut( new MenuShortcut( KeyEvent.VK_A ) );
+        UeberLoGo.setShortcut(new MenuShortcut(KeyEvent.VK_A));
         dasLoGoMenue.add(UeberLoGo);
 
         // ------ Spiel-Menue -------
@@ -194,19 +201,19 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
         // Spiel Laden
         SpielLaden = new MenuItem("Spiel laden");
         SpielLaden.addActionListener(this);
-        SpielLaden.setShortcut( new MenuShortcut( KeyEvent.VK_L ) );
+        SpielLaden.setShortcut(new MenuShortcut(KeyEvent.VK_L));
         dasSpielMenue.add(SpielLaden);
 
         // Spiel Speichern
         SpielSpeichern = new MenuItem("Spiel speichern");
         SpielSpeichern.addActionListener(this);
-        SpielSpeichern.setShortcut( new MenuShortcut( KeyEvent.VK_S ) );
+        SpielSpeichern.setShortcut(new MenuShortcut(KeyEvent.VK_S));
         dasSpielMenue.add(SpielSpeichern);
 
         // Spiel Speichern
         SpielBeenden = new MenuItem("Spiel beenden");
         SpielBeenden.addActionListener(this);
-        SpielBeenden.setShortcut( new MenuShortcut( KeyEvent.VK_Q ) );
+        SpielBeenden.setShortcut(new MenuShortcut(KeyEvent.VK_Q));
         dasSpielMenue.add(SpielBeenden);
 
         // Trenner
@@ -216,14 +223,14 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
         Undo = new MenuItem("Spielzug rückgängig");
         Undo.addActionListener(this);
         Undo.setEnabled(false);
-        Undo.setShortcut( new MenuShortcut( KeyEvent.VK_LEFT ) );
+        Undo.setShortcut(new MenuShortcut(KeyEvent.VK_LEFT));
         dasSpielMenue.add(Undo);
 
         // Spielzug Redo
         Redo = new MenuItem("Spielzug wieder herstellen");
         Redo.addActionListener(this);
         Redo.setEnabled(false);
-        Redo.setShortcut( new MenuShortcut( KeyEvent.VK_RIGHT ) );
+        Redo.setShortcut(new MenuShortcut(KeyEvent.VK_RIGHT));
         dasSpielMenue.add(Redo);
 
         // Trenner
@@ -232,14 +239,14 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
         // Spielzug Undo
         Pause = new MenuItem("Spiel pausieren");
         Pause.addActionListener(this);
-        Pause.setShortcut( new MenuShortcut( KeyEvent.VK_P ) );
+        Pause.setShortcut(new MenuShortcut(KeyEvent.VK_P));
         Pause.setEnabled(false);
         dasSpielMenue.add(Pause);
 
         // Spielzug Redo
         Fortsetzen = new MenuItem("Spiel fortsetzen");
         Fortsetzen.addActionListener(this);
-        Fortsetzen.setShortcut( new MenuShortcut( KeyEvent.VK_P ) );
+        Fortsetzen.setShortcut(new MenuShortcut(KeyEvent.VK_P));
         Fortsetzen.setEnabled(false);
         dasSpielMenue.add(Fortsetzen);
 
@@ -248,13 +255,23 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
         dieMenueBar.add(dasLoGoMenue);
         dieMenueBar.add(dasSpielMenue);
         this.setMenuBar(dieMenueBar);
-        
+
     }
 
     protected void setMenuAccelerator(JMenuItem pMenuItem, char pMnemonic) {
         // Bei Windows und Linux mit STR, bei Apple mit Apfel
         KeyStroke ks = KeyStroke.getKeyStroke(pMnemonic, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
         pMenuItem.setAccelerator(ks);
+    }
+
+    protected void berechneDelta() {
+
+        delta = System.nanoTime() - last;
+        last = System.nanoTime();
+
+        if (delta != 0) {
+            fps = ((long) 1e9) / delta;
+        }
     }
 
     public void run() {
@@ -274,38 +291,50 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
         }
     }
 
-    private void draw(){
+    private void draw() {
         checkBackbuffer(); // Pr¸f-Methode f¸r VolatileImage
 
-	Graphics g = backbuffer.getGraphics(); // GraphicsObject vom
-	// VolatileImage holen
-	g.clearRect( 0, 0, getWidth(), getHeight() );
-	this.render( g ); // alle Zeichenoperationen: Map, Player, etc.
-	g.dispose(); // Graphics-Objekt verwerfen
+        Graphics g = backbuffer.getGraphics(); // GraphicsObject vom
+        // VolatileImage holen
+        g.clearRect(0, 0, getWidth(), getHeight());
+        this.render(g); // alle Zeichenoperationen: Map, Player, etc.
+        g.dispose(); // Graphics-Objekt verwerfen
 
-	Graphics g2 = strategy.getDrawGraphics(); // Zeichenobjekt der
-	// BufferStrategy holen
-	g2.drawImage( backbuffer, 0, 0, this ); // VolatileImage in den Buffer
-	// zeichnen
-	g2.dispose(); // GraphicsObject verwerfen
+        Graphics g2 = strategy.getDrawGraphics(); // Zeichenobjekt der
+        // BufferStrategy holen
+        g2.drawImage(backbuffer, 0, 0, this); // VolatileImage in den Buffer
+        // zeichnen
+        g2.dispose(); // GraphicsObject verwerfen
 
-	strategy.show(); // Bufferanzeigen.
+        strategy.show(); // Bufferanzeigen.
     }
-
 
     public void render(Graphics g) {
 
-        g.drawImage( backgroundImage, 0, 0, this );
+        g.drawImage(backgroundImage, 0, 0, this);
 
-        if(this.dasBrett != null){
+        if (this.dasBrett != null) {
             dasBrett.paintComponents(g);
         }
 
-        this.spielerUhrSchwarz.zeichneZeiger(g);
-        this.spielerUhrWeiss.zeichneZeiger(g);
+        if (spielerUhrSchwarz != null) {
+            this.spielerUhrSchwarz.zeichneZeiger(g);
+        }
+
+        if (this.spielerUhrWeiss != null) {
+            this.spielerUhrWeiss.zeichneZeiger(g);
+        }
+
+        if(this.spielOberflaechePausiert){
+            g.setColor(Color.BLACK);
+            g.fillRect(0, 0, this.getWidth(), this.getHeight());
+            if(this.pauseImage != null){
+                g.drawImage(pauseImage, (this.getWidth()-pauseImage.getWidth())/2,
+                        (this.getHeight()-pauseImage.getHeight())/2, this);
+            }
+        }
 
     }
-
 
     public void start() {
         // Thread anstoßen
@@ -375,7 +404,7 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
         e.consume();
     }
 
-    public void setBrettOberflaeche(int[][] spielfeld, int spielfeldGroesse, Point markierterStein ) {
+    public void setBrettOberflaeche(int[][] spielfeld, int spielfeldGroesse, Point markierterStein) {
         // Spielfeld updaten wenn es von der gleichen groesse ist, ansonsten
         // ein neues Spielfeld erstellen
         if (this.dasBrett != null && this.dasBrett.getAnzahlFelder() == spielfeldGroesse) {
@@ -386,7 +415,7 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
                     STANDARD_SPIELFELD_HOEHE,
                     STANDARD_SPIELFELD_XPOS,
                     STANDARD_SPIELFELD_YPOS,
-                    spielfeldGroesse );
+                    spielfeldGroesse);
             this.dasBrett.updateSpielFeld(spielfeld);
             this.dasBrett.setMarkierterStein(markierterStein);
             this.Pause.setEnabled(true);
@@ -398,25 +427,25 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
     }
 
     public void setAnzeigePeriodenZeitWeiss(long periodenZeitInMS) {
-        if(this.spielerUhrWeiss != null ){
+        if (this.spielerUhrWeiss != null) {
             this.spielerUhrWeiss.restzeitInMS(periodenZeitInMS);
         }
     }
 
     public void setAnzeigePeriodenZeitSchwarz(long periodenZeitInMS) {
-        if(this.spielerUhrSchwarz != null ){
+        if (this.spielerUhrSchwarz != null) {
             this.spielerUhrSchwarz.restzeitInMS(periodenZeitInMS);
         }
     }
 
     public void setAnzeigeSpielerZeitWeiss(long spielerZeitInMS) {
-        if(this.spielerUhrWeiss != null ){
+        if (this.spielerUhrWeiss != null) {
             this.spielerUhrWeiss.restzeitInMS(spielerZeitInMS);
         }
     }
 
     public void setAnzeigeSpielerZeitSchwarz(long spielerZeitInMS) {
-        if(this.spielerUhrSchwarz != null ){
+        if (this.spielerUhrSchwarz != null) {
             this.spielerUhrSchwarz.restzeitInMS(spielerZeitInMS);
         }
     }
@@ -446,7 +475,7 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
     public void setRedoErlaubt(boolean redoMoeglich) {
         this.Redo.setEnabled(redoMoeglich);
     }
-    
+
     public void gibFehlermeldungAus(String fehlertext) {
         System.out.println(fehlertext);
         JOptionPane.showMessageDialog(this, fehlertext);
@@ -491,7 +520,7 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
             this.buttonSpielLadenGedrueckt();
         } else if (e.getSource() == SpielSpeichern) {
             this.buttonSpielSpeichernGedrueckt();
-        } else if( e.getSource() == SpielBeenden ){
+        } else if (e.getSource() == SpielBeenden) {
             this.buttonSpielBeendenGedrueckt();
         } else if (e.getSource() == Undo) {
             this.buttonUndoGedrueckt();
@@ -513,16 +542,19 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
         this.spielOberflaechePausiert = true;
         this.Pause.setEnabled(false);
         this.Fortsetzen.setEnabled(true);
+        this.spielOberflaechePausiert = true;
 
         // Hier dann die Glass-Pane zeichnen / aktivieren
     }
 
     private void buttonSpielFortsetzenGedrueckt() {
         LoGoApp.meineSteuerung.buttonSpielForsetzen();
-        
+
         this.spielOberflaechePausiert = false;
         this.Pause.setEnabled(true);
         this.Fortsetzen.setEnabled(false);
+        this.spielOberflaechePausiert = false;
+
 
         // Hier dann die Glass-Pane wegnehmen / deaktivieren
     }
@@ -541,7 +573,7 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
     private void buttonSpielLadenGedrueckt() {
     }
 
-    private void buttonSpielBeendenGedrueckt(){
+    private void buttonSpielBeendenGedrueckt() {
         LoGoApp.meineSteuerung.buttonSpielBeenden();
     }
 
@@ -552,11 +584,12 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
     }
 
     private void buttonUndoGedrueckt() {
-        LoGoApp.meineSteuerung.buttonUndo();;
+        LoGoApp.meineSteuerung.buttonUndo();
+        ;
     }
 
     private void buttonRedoGedrueckt() {
-        LoGoApp.meineSteuerung.buttonRedo();;
+        LoGoApp.meineSteuerung.buttonRedo();
+        ;
     }
-
 }
