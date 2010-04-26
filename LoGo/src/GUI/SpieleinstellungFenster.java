@@ -5,8 +5,10 @@
 
 package GUI;
 
+import Klassen.Konstante;
 import Klassen.Spieler;
 import Klassen.Spielfeld;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -79,7 +81,11 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
     private String errorString;
     private boolean fehlerBeiEingabe;
     private Spielfeld dasSpielfeld;
-    private Spielbrett dasSpielfeldGUI;
+    private SpielbrettNA dasSpielfeldGUI;
+    private int brettbreite;
+    private int brettXOffset;
+    private int brettYOffset;
+    private int bretthoehe;
 
 
     public SpieleinstellungFenster(){
@@ -99,6 +105,7 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
     }
 
     private void init(){
+        this.addMouseListener(this);
         this.startwerteSetzen();
         this.radioButtonsInGroup();
         this.comboBoxenInit();
@@ -162,6 +169,13 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         this.labelKomi = new JLabel("Komi:",JLabel.LEFT);
         this.labelGroessenWahl = new JLabel("Brettgröße",JLabel.LEFT);
         this.labelVorgabe = new JLabel("Vorgabe",JLabel.LEFT);
+
+        /* Zum Spielbrett */
+        this.brettbreite = 300;
+        this.bretthoehe = 315;
+        this.brettXOffset = 10;
+        this.brettYOffset = 320;
+        this.dasSpielfeldGUI = new SpielbrettNA(this.brettbreite, this.bretthoehe, this.brettXOffset, this.brettYOffset, 13);
     }
 
     /**
@@ -193,7 +207,6 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         this.getContentPane().add(this.hilfeButton);
         this.getContentPane().add(this.spielVorgabeSteine);
         this.getContentPane().add(this.spielBrettHinweise);
-       // this.getContentPane().add(this.dasSpielfeld); // muss noch kommen <-----------
         this.getContentPane().add(labelSpielmodus);
         this.getContentPane().add(labelPeriodenzeit);
         this.getContentPane().add(labelMinutenP);
@@ -210,6 +223,7 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         this.getContentPane().add(labelGroessenWahl);
         this.getContentPane().add(labelVorgabe);
         this.getContentPane().add(new JLabel("")); // dirty, aber so klappts
+        this.getContentPane().add(this.dasSpielfeldGUI); // muss noch kommen <-----------
     }
 
     /** 
@@ -363,8 +377,8 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
                                     75,
                                     buttonH);
 
-        this.labelVorgabe.setBounds(300,
-                                    this.neunzehnXneunzehn.getY() + this.neunzehnXneunzehn.getWidth() + verAbs,
+        this.labelVorgabe.setBounds(350,
+                                    this.hilfeButton.getY() + this.hilfeButton.getHeight() + verAbs,
                                     100,
                                     labH);
         this.spielVorgabeSteine.setBounds(this.labelVorgabe.getX(),
@@ -426,6 +440,25 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
     }
 
     public void mouseClicked(MouseEvent e) {
+        if(e.getX()>=this.brettXOffset && e.getX()<=this.brettXOffset+this.brettbreite &&
+           e.getY()>=this.brettYOffset && e.getY()<=this.brettYOffset+this.bretthoehe){
+            int farbe = 0;
+            if(e.getButton()==MouseEvent.BUTTON1){
+                farbe = Konstante.SCHNITTPUNKT_SCHWARZ;
+            }
+            else{
+                farbe = Konstante.SCHNITTPUNKT_WEISS;
+            }
+            int xKoord=1;
+            int yKoord=1;
+            xKoord = (e.getX()-this.brettXOffset) / (this.brettbreite / this.getSelectedFeldgroesse()) + 1;
+            yKoord = (this.bretthoehe - (e.getY()-this.brettYOffset)) / (this.bretthoehe / this.getSelectedFeldgroesse()) + 1;
+            System.out.println(xKoord + " " + yKoord);
+            this.dasSpielfeld.legeSteinAufInitBrett(xKoord, yKoord, farbe );
+            this.dasSpielfeldGUI.updateSpielFeld(this.dasSpielfeld.getSpielfeldZumZeitpunkt(0));
+            this.validate();
+            repaint();
+        }
     }
 
     public void mousePressed(MouseEvent e) {

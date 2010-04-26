@@ -253,7 +253,7 @@ public class Spielfeld {
         /* Wenn der Zeitpunkt dem des Caches entspricht, wird einfach der aktuelle
          * Feld zurueckgegeben.
          */
-        if (zeitpunkt == this.spielfeldCacheMitZugnummerStand) {
+        if (zeitpunkt == this.spielfeldCacheMitZugnummerStand && zeitpunkt!=0) {
             for(int i=0; i<this.getSpielfeldGroesse(); i++){
                 for(int j=0; j<this.getSpielfeldGroesse(); j++){
                     spielfeld[i][j]=this.aktuellesSpielfeldCache[i][j];
