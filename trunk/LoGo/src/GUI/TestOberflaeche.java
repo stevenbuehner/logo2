@@ -60,16 +60,16 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
     private Spielbrett dasBrett;
     private SpielerUhren spielerUhrSchwarz;
     private SpielerUhren spielerUhrWeiss;
-    protected JMenuBar dieMenueBar;
-    protected JMenuItem Einstellungen;
-    protected JMenuItem UeberLoGo;
-    protected JMenuItem SpielLaden;
-    protected JMenuItem SpielSpeichern;
-    protected JMenuItem SpielBeenden;
-    protected JMenuItem Undo;
-    protected JMenuItem Redo;
-    protected JMenuItem Pause;
-    protected JMenuItem Fortsetzen;
+    protected MenuBar dieMenueBar;
+    protected MenuItem Einstellungen;
+    protected MenuItem UeberLoGo;
+    protected MenuItem SpielLaden;
+    protected MenuItem SpielSpeichern;
+    protected MenuItem SpielBeenden;
+    protected MenuItem Undo;
+    protected MenuItem Redo;
+    protected MenuItem Pause;
+    protected MenuItem Fortsetzen;
 
     protected BackgroundImagePanel backgroundPanel;
 
@@ -171,58 +171,84 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
 
     public void createMenue(Frame f) {
 
-       MenuBar mb = new MenuBar();
-		Menu men;
-		MenuItem mi;
+        dieMenueBar = new MenuBar();
 
-		// Biblionaer
-		men = new Menu( "Biblionaer" );
+        // ------ LoGo-Menue -------
+        Menu dasLoGoMenue = new Menu("LoGo");
 
-		// Neues Standard-Spiel
-		mi = new MenuItem( "Neues Standard-Spiel" );
-		mi.addActionListener( this );
-		mi.setShortcut( new MenuShortcut( KeyEvent.VK_S ) );
-		men.add( mi );
+        // Einstellungen
+        Einstellungen = new MenuItem("Einstellungen");
+        Einstellungen.addActionListener(this);
+        Einstellungen.setShortcut( new MenuShortcut( KeyEvent.VK_COMMA ) );
+        dasLoGoMenue.add(Einstellungen);
 
-		// Neues Spiel aus dem Internet
-		mi = new MenuItem( "Neues Spiel aus dem Internet" );
-		mi.addActionListener( this );
-		mi.setShortcut( new MenuShortcut( KeyEvent.VK_N ) );
-		men.add( mi );
+        // Ueber
+        UeberLoGo = new MenuItem("Über LoGo");
+        UeberLoGo.addActionListener(this);
+        UeberLoGo.setShortcut( new MenuShortcut( KeyEvent.VK_A ) );
+        dasLoGoMenue.add(UeberLoGo);
 
-		// Neues Spiel von Datei
-		mi = new MenuItem( "Neues Spiel von Datei" );
-		mi.addActionListener( this );
-		mi.setShortcut( new MenuShortcut( KeyEvent.VK_L ) );
-		men.add( mi );
+        // ------ Spiel-Menue -------
+        Menu dasSpielMenue = new Menu("Spiel");
 
-		// Trennstrich
-		men.addSeparator();
+        // Spiel Laden
+        SpielLaden = new MenuItem("Spiel laden");
+        SpielLaden.addActionListener(this);
+        SpielLaden.setShortcut( new MenuShortcut( KeyEvent.VK_L ) );
+        dasSpielMenue.add(SpielLaden);
 
-		// Einstellungen
-		mi = new MenuItem( "Einstellungen" );
-		mi.addActionListener( this );
-		mi.setShortcut( new MenuShortcut( KeyEvent.VK_COMMA ) );
-		men.add( mi );
+        // Spiel Speichern
+        SpielSpeichern = new MenuItem("Spiel speichern");
+        SpielSpeichern.addActionListener(this);
+        SpielSpeichern.setShortcut( new MenuShortcut( KeyEvent.VK_S ) );
+        dasSpielMenue.add(SpielSpeichern);
 
-		mb.add( men );
+        // Spiel Speichern
+        SpielBeenden = new MenuItem("Spiel beenden");
+        SpielBeenden.addActionListener(this);
+        SpielBeenden.setShortcut( new MenuShortcut( KeyEvent.VK_Q ) );
+        dasSpielMenue.add(SpielBeenden);
 
-		// Admin-Tests
-		men = new Menu( "Admin-Tests " );
+        // Trenner
+        dasSpielMenue.addSeparator();
 
-		// URLtest
-		mi = new MenuItem( "URLtest" );
-		mi.addActionListener( this );
-		men.add( mi );
+        // Spielzug Undo
+        Undo = new MenuItem("Spielzug rückgängig");
+        Undo.addActionListener(this);
+        Undo.setEnabled(false);
+        Undo.setShortcut( new MenuShortcut( KeyEvent.VK_LEFT ) );
+        dasSpielMenue.add(Undo);
 
-		// Spiel nach ID laden
-		mi = new MenuItem( "Lade Frage mit der ID" );
-		mi.addActionListener( this );
-		men.add( mi );
+        // Spielzug Redo
+        Redo = new MenuItem("Spielzug wieder herstellen");
+        Redo.addActionListener(this);
+        Redo.setEnabled(false);
+        Redo.setShortcut( new MenuShortcut( KeyEvent.VK_RIGHT ) );
+        dasSpielMenue.add(Redo);
 
-		mb.add( men );
+        // Trenner
+        dasSpielMenue.addSeparator();
 
-		this.setMenuBar(mb);
+        // Spielzug Undo
+        Pause = new MenuItem("Spiel pausieren");
+        Pause.addActionListener(this);
+        Pause.setShortcut( new MenuShortcut( KeyEvent.VK_P ) );
+        Pause.setEnabled(false);
+        dasSpielMenue.add(Pause);
+
+        // Spielzug Redo
+        Fortsetzen = new MenuItem("Spiel fortsetzen");
+        Fortsetzen.addActionListener(this);
+        Fortsetzen.setShortcut( new MenuShortcut( KeyEvent.VK_P ) );
+        Fortsetzen.setEnabled(false);
+        dasSpielMenue.add(Fortsetzen);
+
+
+
+        dieMenueBar.add(dasLoGoMenue);
+        dieMenueBar.add(dasSpielMenue);
+        this.setMenuBar(dieMenueBar);
+        
     }
 
     protected void setMenuAccelerator(JMenuItem pMenuItem, char pMnemonic) {
@@ -251,29 +277,29 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
     private void draw(){
         checkBackbuffer(); // Pr¸f-Methode f¸r VolatileImage
 
-		Graphics g = backbuffer.getGraphics(); // GraphicsObject vom
-		// VolatileImage holen
-		g.clearRect( 0, 0, getWidth(), getHeight() );
-		render( g ); // alle Zeichenoperationen: Map, Player, etc.
-		g.dispose(); // Graphics-Objekt verwerfen
+	Graphics g = backbuffer.getGraphics(); // GraphicsObject vom
+	// VolatileImage holen
+	g.clearRect( 0, 0, getWidth(), getHeight() );
+	this.render( g ); // alle Zeichenoperationen: Map, Player, etc.
+	g.dispose(); // Graphics-Objekt verwerfen
 
-		Graphics g2 = strategy.getDrawGraphics(); // Zeichenobjekt der
-		// BufferStrategy holen
-		g2.drawImage( backbuffer, 0, 0, this ); // VolatileImage in den Buffer
-		// zeichnen
-		g2.dispose(); // GraphicsObject verwerfen
+	Graphics g2 = strategy.getDrawGraphics(); // Zeichenobjekt der
+	// BufferStrategy holen
+	g2.drawImage( backbuffer, 0, 0, this ); // VolatileImage in den Buffer
+	// zeichnen
+	g2.dispose(); // GraphicsObject verwerfen
 
-		strategy.show(); // Bufferanzeigen.
+	strategy.show(); // Bufferanzeigen.
     }
 
 
     public void render(Graphics g) {
 
-		g.drawImage( backgroundImage, 0, 0, this );
+        g.drawImage( backgroundImage, 0, 0, this );
 
-      if(this.dasBrett != null){
-          dasBrett.paintComponents(g);
-      }
+        if(this.dasBrett != null){
+            dasBrett.paintComponents(g);
+        }
 
     }
 
@@ -352,15 +378,12 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
         if (this.dasBrett != null && this.dasBrett.getAnzahlFelder() == spielfeldGroesse) {
             this.dasBrett.updateSpielFeld(spielfeld);
         } else {
-            this.remove(dasBrett);
             this.dasBrett = null;
             this.dasBrett = new Spielbrett(STANDARD_SPIELFELD_BREITE,
                     STANDARD_SPIELFELD_HOEHE,
                     STANDARD_SPIELFELD_XPOS,
                     STANDARD_SPIELFELD_YPOS,
                     spielfeldGroesse );
-            this.add(dasBrett);
-            this.validate();
             this.dasBrett.updateSpielFeld(spielfeld);
             this.dasBrett.setMarkierterStein(markierterStein);
             this.Pause.setEnabled(true);
@@ -502,7 +525,6 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
     }
 
     private void buttonNeuesSpielGedrueckt() {
-        this.remove(dasBrett);
         this.dasBrett = null;
         this.Pause.setEnabled(false);
         this.Fortsetzen.setEnabled(false);
