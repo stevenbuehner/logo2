@@ -31,6 +31,15 @@ public class Spielfeld {
      */
     private int spielfeldGroesse;
     private List<Spielzug> spielZugCollection;
+
+    /**
+     * Rueckgabe der Liste von Spielzuegen fuer die Klasse Speichern
+     */
+    public List<Spielzug> getspielZugCollection(){
+
+        return this.spielZugCollection;
+    }
+
     private int xPosVerboten;
     private int yPosVerboten;
     private boolean ignoreTime;
