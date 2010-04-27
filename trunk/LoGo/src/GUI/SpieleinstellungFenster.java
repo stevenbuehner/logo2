@@ -8,6 +8,7 @@ package GUI;
 import Klassen.Konstante;
 import Klassen.Spieler;
 import Klassen.Spielfeld;
+import Timer.PanelCountdown;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -96,6 +97,7 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
     /* Zum zeichnen des Feldes */
     private int frameMinhoehe = 340;
     private int frameMaxhoehe = 700;
+    private PanelCountdown pc;
 
 
     public SpieleinstellungFenster(){
@@ -943,12 +945,13 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
 
     private void animiereFrameStart() {
         System.out.println("Start");
-        this.setSize(this.getWidth(), this.frameMinhoehe);
+        this.pc = new PanelCountdown(true, 1, this.frameMinhoehe,20, PanelCountdown.VERKLEINERN);
+       
     }
 
     private void animiereFrameEnde() {
         System.out.println("Ende");
-        this.setSize(this.getWidth(), this.frameMaxhoehe);
+        this.pc = new PanelCountdown(true, 1, this.frameMaxhoehe, 20 , PanelCountdown.VERGROESSERN);
     }
 
     private void updateBrettVorgabe() {
@@ -957,5 +960,20 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
             this.dasSpielfeld.initialisiereFeldMitVorgabenFuerSchwarz(this.getVorgabeWert());
             this.dasSpielfeldGUI.updateSpielFeld(this.dasSpielfeld.getSpielfeldZumZeitpunkt(0));
         }
+    }
+
+    public void setFensterHoehe(int hoehe){
+        this.setSize(this.getWidth(), hoehe);
+        System.out.println("Neue Hoehe: "+ hoehe);
+        this.validate();
+        this.paint(this.getGraphics());
+    }
+
+    public int getFensterHoehe(){
+        return this.getHeight();
+    }
+
+    public void entferneTimer() {
+
     }
 }
