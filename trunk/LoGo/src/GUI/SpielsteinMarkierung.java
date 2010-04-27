@@ -36,11 +36,18 @@ public class SpielsteinMarkierung extends SpielStein {
     @Override
     public synchronized void starteAnimationSchwarzEntfernen() {}
 
-    @Override
-    public synchronized void starteAnimationVerbotenerZug() { }
 
     @Override
-    public synchronized void starteAnimationVerbotenerZugAufheben() { }
+    public synchronized void starteAnimationVerbotenerZugWeiss() {}
+
+    @Override
+    public synchronized void starteAnimationVerbotenerZugSchwarz() {}
+
+    @Override
+    public synchronized void starteAnimationVerbotenerZugAufheben() {}
+
+    @Override
+    public synchronized void setVerbotenerZug() {}
     
 
 }

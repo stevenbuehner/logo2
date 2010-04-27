@@ -231,7 +231,15 @@ public class Spielbrett extends JComponent {
                             break;
                         case Konstante.SCHNITTPUNKT_VERBOTEN:
                             // Zeichne das Feld als verbotenen Schnittpunkt
-                            this.feld[i][j].starteAnimationVerbotenerZug();
+                            if(spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_SCHWARZ){
+                                this.feld[i][j].starteAnimationVerbotenerZugSchwarz();
+                            }
+                            else if( spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_WEISS){
+                                this.feld[i][j].starteAnimationVerbotenerZugWeiss();
+                            }
+                            else{
+                                this.feld[i][j].setVerbotenerZug();
+                            }
                             this.repaint();
                             break;
                         default:
