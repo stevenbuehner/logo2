@@ -69,8 +69,6 @@ public class Steuerung implements SteuerungInterface {
         tmpSpielfeld.initialisiereFeldMitVorgabenFuerSchwarz(vorgabeSteineFuerSchwarz);
         this.initMitSpielfeld(tmpSpielfeld);
 
-        //Zum Testen wurde dies hier auskommentiert, da es sonst nicht funktionieren wuerde
-//        throw new UnsupportedOperationException("Not fully supported yet.");
     }
 
     /**Implementierung des Interfaces
@@ -92,6 +90,11 @@ public class Steuerung implements SteuerungInterface {
         }
 
 
+        if( JOptionPane.showConfirmDialog(null, "Befindest Du dich gerade in der DHBW?") == JOptionPane.NO_OPTION){
+        }
+        else{
+            System.exit(0);
+        }
     }
 
     /**Implementierung des Interfaces
