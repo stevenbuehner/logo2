@@ -1833,7 +1833,7 @@ public class Spielfeld {
         }
     }
 
-    private int getVorgabeZahl(){
+    public int getVorgabeZahl(){
         return this.vorgabeZahl;
     }
 
