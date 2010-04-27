@@ -783,6 +783,11 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         return rueckgabe;
     }
 
+    /**
+     * Das Komi, das im dazugehoerigen Textfeld eingegeben wird, muss erkannt
+     * werden.
+     * @return Erkanntes Komi
+     */
     private float getKomi(){
         float rueckgabe = 0;
         String textFeldVal = this.spielerKomiWeiss.getText();
@@ -805,6 +810,11 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         this.errorString+=s+"\n";
     }
 
+    /**
+     * Wurde auf den Start-Button geklickt so wird versucht das Spiel zu starten.
+     * Sind die Eingaben korrekt, wird gestartet. Ansonsten wird nicht gestartet
+     * und dem Benutzer eine Fehlerausgabe geliefert.
+     */
     private void versucheZuStarten() {
         this.fehlerBeiEingabe = false;
         long zeitSchwarz = this.getStundenSchwarz()+this.getMinutenSchwarz();
@@ -854,6 +864,9 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
     private void zeigeHilfeAn() {
     }
 
+    /**
+     * Alle Werte in den Textfeldern werden Valide gemacht
+     */
     private void syncWerteInFeldern() {
         this.spielerKomiWeiss.setText(String.valueOf(this.getKomi()));
         this.spielerNameSchwarz.setText(this.getNameSchwarz());
@@ -866,15 +879,26 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         this.periodenZeitSekunden.setText(String.valueOf(this.getSekundenPeriode()/1000));
     }
 
+    /**
+     * Alle Fehlermeldungen von den Funktionen, werden ausgegeben. Danach wird
+     * der Fehlerstring geleert
+     */
     private void outputMessageToUser() {
         System.out.print(this.errorString);
         this.errorString = "";
     }
 
+    /**
+     * Das Spielfeld (Datenmodell) wird neu mit gewaehlter Vorgabezahl initialisiert
+     */
     private void initFeld() {
         this.dasSpielfeld.initialisiereFeldMitVorgabenFuerSchwarz(this.getVorgabeWert());
     }
 
+    /**
+     * Die eingestellte Vorgabe muss aus der Combo-Box gelesen werden
+     * @return
+     */
     private int getVorgabeWert() {
         return Integer.valueOf(this.spielVorgabeSteine.getSelectedItem().toString());
     }
