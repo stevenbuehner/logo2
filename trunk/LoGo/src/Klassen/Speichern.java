@@ -13,6 +13,7 @@ import java.io.PrintWriter;
 /**
  *
  * @author beccy
+ * @version 0.2
  */
 public class Speichern{
 
@@ -25,11 +26,21 @@ public class Speichern{
     private float komipunkte;
     private int vorgabesteine;
 
-    public void SpeicherSpiel(){
 
+    /**
+     * Die Klasse bekommt mit dem Konstruktor das @param zuSpeicherndesSpielfeld
+     * übergeben. ACHTUNG! Es sollten hierbei keine Änderungen an dem Objekt
+     * Spielfeld vorgenommen werden, da diese sich auch direkt auf das laufende Spiel
+     * übertragen würden.
+     */
+    Speichern(Spielfeld zuSpeicherndesSpielfeld  ){
+        this.spielfeld = zuSpeicherndesSpielfeld;
+    }
+
+    public void SpeicherSpiel( ){
             spieler_schwarz = spielfeld.getSpielerSchwarz();
             spieler_weiss = spielfeld.getSpielerWeiss();
-            spielfeldgroesse = spielfeld.getAktuelesSpielFeld();
+            spielfeldgroesse = spielfeld.getAktuellesSpielFeld();
             komipunkte = spieler_weiss.getKomiPunkte();
             vorgabesteine = spielfeld.getVorgabeZahl();
 

@@ -216,7 +216,7 @@ public class Spielfeld {
      *
      * @return Gibt das aktuelle Spielfeld als Array zurück
      */
-    public int[][] getAktuelesSpielFeld() {
+    public int[][] getAktuellesSpielFeld() {
 
         int spielfeld[][] = new int[this.getSpielfeldGroesse()][this.getSpielfeldGroesse()];
 
