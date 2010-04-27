@@ -43,6 +43,9 @@ public class Spielfeld {
     */
     private long    periodenZeit;
 
+    // Vorgabezahl
+    private int vorgabeZahl;
+
     // Zustand des Spiels
     private int     spielZustand;
     
@@ -64,6 +67,7 @@ public class Spielfeld {
     }
 
     public Spielfeld(int spielfeldGroesse) {
+        this.vorgabeZahl = 0;
         this.spielfeldGroesse = spielfeldGroesse;
         this.letzteZugnummer = 0;
         this.spielZugCollection = new ArrayList<Spielzug>();
@@ -1223,6 +1227,9 @@ public class Spielfeld {
            return false;
        }
 
+       /* Vorgabezahl speichern  */
+       this.vorgabeZahl = vorgabenZahl;
+
        /* In Abhaengigkeit der Feldgroesse werden nun die Vorgabesteine fuer
         * Schwarz gesetzt. Dabei wird kein komplexer Algorithmus verwendet,
         * sondern es werden einfach und stur die Steine gesetzt.
@@ -1824,6 +1831,10 @@ public class Spielfeld {
                 }
                 break;
         }
+    }
+
+    private int getVorgabeZahl(){
+        return this.vorgabeZahl;
     }
 
 }
