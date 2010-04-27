@@ -30,7 +30,7 @@ import logo.LoGoApp;
  * @author tommy
  * @version 0.1
  */
-public class SpieleinstellungFenster extends JFrame implements MouseListener, ActionListener{
+public class FensterEinstellung extends JFrame implements MouseListener, ActionListener{
 
     /* Felder auf der GUI
      * Zur darstellung der Daten
@@ -85,7 +85,7 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
     private String errorString;
     private boolean fehlerBeiEingabe;
     private Spielfeld dasSpielfeld;
-    private SpielbrettNA dasSpielfeldGUI;
+    private EinstellungSpielbrett dasSpielfeldGUI;
     private int brettbreite;
     private int brettXOffset;
     private int brettYOffset;
@@ -99,11 +99,11 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
     private int frameMaxhoehe = 700;
 
 
-    public SpieleinstellungFenster(){
+    public FensterEinstellung(){
         this( "Einstellungsfenster");
     }
 
-    public SpieleinstellungFenster(String fenstername) {
+    public FensterEinstellung(String fenstername) {
         super(fenstername);
         this.init();
         pack();
@@ -113,14 +113,7 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         this.setVisible(true);
 
         // Programm bei klick auf den roten Knopf nicht beenden sondern Event weiter verarbeiten
-        this.addWindowListener(new WindowAdapter() {
-
-            @Override
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-                LoGoApp.meineSteuerung.buttonSpielBeenden();
-            }
-        });
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     }
 
     /**
@@ -201,7 +194,7 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         this.bretthoehe = 315;
         this.brettXOffset = 10;
         this.brettYOffset = 320;
-        this.dasSpielfeldGUI = new SpielbrettNA(this.brettbreite, this.bretthoehe, this.brettXOffset, this.brettYOffset, 13);
+        this.dasSpielfeldGUI = new EinstellungSpielbrett(this.brettbreite, this.bretthoehe, this.brettXOffset, this.brettYOffset, 13);
     }
 
     /**
@@ -602,7 +595,7 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         /* Es muss noch eine neue Oberflaeche angelegt werden */
 
         this.getContentPane().remove(this.dasSpielfeldGUI);
-        this.dasSpielfeldGUI = new SpielbrettNA(this.brettbreite,
+        this.dasSpielfeldGUI = new EinstellungSpielbrett(this.brettbreite,
                 this.bretthoehe,
                 this.brettXOffset,
                 this.brettYOffset,

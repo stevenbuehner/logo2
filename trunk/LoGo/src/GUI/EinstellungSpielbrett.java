@@ -11,8 +11,8 @@ import Klassen.Konstante;
  *
  * @author tommy
  */
-public class SpielbrettNA extends Spielbrett{
-    public SpielbrettNA(int breite, int hoehe, int xOffset, int yOffset, int anzahlFelder){
+public class EinstellungSpielbrett extends Spielbrett{
+    public EinstellungSpielbrett(int breite, int hoehe, int xOffset, int yOffset, int anzahlFelder){
         super(breite, hoehe, xOffset, yOffset, anzahlFelder);
     }
     
