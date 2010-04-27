@@ -102,32 +102,6 @@ public class Steuerung implements SteuerungInterface {
     /**Implementierung des Interfaces
      * @see SteuerungInterface
      */
-    public void initMitEinstellungenFuerStartformation(
-            String spielerNameSchwarz,
-            String spielerNameWeiss,
-            long spielZeitSchwarz,
-            long spielZeitWeiss,
-            long periodenZeit,
-            float komiFuerWeiss,
-            int spielfeldGroesse) {
-
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void initMitEinstellungenFuerStartformation(
-            String spielerNameSchwarz,
-            String spielerNameWeiss,
-            long spielZeitSchwarz,
-            long spielZeitWeiss,
-            long periodenZeit,
-            int spielfeldGroesse) {
-
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**Implementierung des Interfaces
-     * @see SteuerungInterface
-     */
     public void initMitDatenModell(
             Spielfeld feld,
             String spielerNameSchwarz,
@@ -190,7 +164,7 @@ public class Steuerung implements SteuerungInterface {
                         // Rueckgabe erfolgreich! Spielerwechsel
                         this.setAktuelleAngeigteZugnummer(this.dasSpielfeld.getLetzteZugnummer());
                         LoGoApp.meineOberflaeche.setBrettOberflaeche(
-                                this.dasSpielfeld.getAktuelesSpielFeld(),
+                                this.dasSpielfeld.getAktuellesSpielFeld(),
                                 this.dasSpielfeld.getSpielfeldGroesse(),
                                 this.dasSpielfeld.getMarkiertenSteinZumZeitpunkt(aktuellAngezeigteZugnummer));
                                 this.updateUndoUndRedo();
@@ -447,7 +421,7 @@ public class Steuerung implements SteuerungInterface {
              * das brett zur verfuegung gestellt, das die Gebiete darstellt
              * */
             this.dieSpielfeldAuswertung = new SpielAuswertung(this.dasSpielfeld.getSpielfeldGroesse(), this.dasSpielfeld.getSpielerWeiss().getKomiPunkte());
-            this.dieSpielfeldAuswertung.auswertungInitialisieren(this.dasSpielfeld.getAktuelesSpielFeld());
+            this.dieSpielfeldAuswertung.auswertungInitialisieren(this.dasSpielfeld.getAktuellesSpielFeld());
             LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dieSpielfeldAuswertung.getAusgewertetesFeld(), this.dasSpielfeld.getSpielfeldGroesse(), null);
         }
     }
@@ -526,9 +500,13 @@ public class Steuerung implements SteuerungInterface {
      */
     public void buttonSpielSpeichern() {
         if( dasSpielfeld != null && dasSpielfeld.getSpielZustand() == Konstante.SPIEL_LAUEFT){
-
-            throw new UnsupportedOperationException("Not supported yet.");
+            Speichern sp = new Speichern( this.dasSpielfeld);
+            sp.SpeicherSpiel();
         }
+        else{
+            JOptionPane.showMessageDialog(null, "Speichern nicht möglich weil ...");
+        }
+
     }
 
     /**Implementierung des Interfaces
