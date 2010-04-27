@@ -11,7 +11,7 @@ public class SpielsteinMarkierung extends SpielStein {
     SpielsteinMarkierung(BufferedImage[] image, double x, double y){
         super(image, x, y);
 
-        this.addScene(this.storedImages[33], 0);
+        this.addScene(this.storedImages[37], 0);
         this.loop = false;
 
     }
@@ -19,7 +19,7 @@ public class SpielsteinMarkierung extends SpielStein {
     public SpielsteinMarkierung (BufferedImage image, double x, double y) {
         super(image, x, y);
 
-        this.addScene(this.storedImages[33], 0);
+        this.addScene(this.storedImages[37], 0);
         this.loop = false;
     }
 

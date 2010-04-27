@@ -171,6 +171,9 @@ public class Spielbrett extends JComponent {
                 feld[i][j].drawObjects(g);
             }
         }
+
+        // Den letzten Zug mit einer Markierung belegen
+        this.markierterStein.drawObjects(g);
     }
 
     /**
@@ -260,8 +263,8 @@ public class Spielbrett extends JComponent {
             int feldHoehe = brettHoehe / anzahlFelder;
             int feldBreite = brettBreite / anzahlFelder;
 
-            this.markierterStein.setX(xOffset + feldBreite * steinPos.x + feldBreite / 2);
-            this.markierterStein.setY(yOffset + this.brettHoehe - feldHoehe * (steinPos.y + 0.5));
+            this.markierterStein.setX(xOffset + feldBreite * (steinPos.x-1) + feldBreite / 2);
+            this.markierterStein.setY(yOffset + this.brettHoehe - feldHoehe * (steinPos.y - 0.5) );
             this.markierterStein.setVisible(true);
         }
 

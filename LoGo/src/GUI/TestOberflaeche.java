@@ -406,6 +406,7 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
         // ein neues Spielfeld erstellen
         if (this.dasBrett != null && this.dasBrett.getAnzahlFelder() == spielfeldGroesse) {
             this.dasBrett.updateSpielFeld(spielfeld);
+            this.dasBrett.setMarkierterStein(markierterStein);
         } else {
             this.dasBrett = null;
             this.dasBrett = new Spielbrett(STANDARD_SPIELFELD_BREITE,
