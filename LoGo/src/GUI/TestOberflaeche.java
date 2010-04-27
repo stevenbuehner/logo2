@@ -127,7 +127,6 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
         setLocationRelativeTo(null); // Fenster zentrieren
         //this.setResizable(false);
         this.setVisible(true);
-        this.setBackground(Color.ORANGE);
         this.createBufferStrategy(2);
 
         threadLaeuf = true;
