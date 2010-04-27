@@ -12,6 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -19,7 +21,6 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import logo.LoGoApp;
 
@@ -110,6 +111,16 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         this.setResizable(false);
         this.setLocationRelativeTo(null);       // Fenster zentrieren
         this.setVisible(true);
+
+        // Programm bei klick auf den roten Knopf nicht beenden sondern Event weiter verarbeiten
+        this.addWindowListener(new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+                LoGoApp.meineSteuerung.buttonSpielBeenden();
+            }
+        });
     }
 
     /**
@@ -925,7 +936,7 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
             this.dasSpielfeld.initialisiereFeldMitVorgabenFuerSchwarz(this.getVorgabeWert());
             this.dasSpielfeldGUI.updateSpielFeld(this.dasSpielfeld.getSpielfeldZumZeitpunkt(0));
             this.spielVorgabeSteine.setEnabled(true);
-            this.spielBrettHinweise.setText("<HTML><BODY>Mit Vorgabe<BR>spielen...</BODY></HTML>");
+            this.spielBrettHinweise.setText("<HTML><BODY>Mit Vorgabe spielen...</BODY></HTML>");
             this.repaint();
             this.animiereFrameEnde();
 
@@ -933,7 +944,7 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         else if(modus.equals("Startfeld")){
             this.spielVorgabeSteine.setEnabled(false);
             this.spielBrettHinweise.setName("Mit eigenem Feld spielen");
-            this.spielBrettHinweise.setText("<HTML><BODY>Linksklick für Schwarz<br>Rechtsklick für Weiß<br>Gleiche Farben <br>heben sich auf</BODY></HTML>");
+            this.spielBrettHinweise.setText("<HTML><BODY>Linksklick für Schwarz Rechtsklick für Weiß Gleiche Farben heben sich auf</BODY></HTML>");
             this.animiereFrameEnde();
             this.spielVorgabeSteine.setSelectedItem(0);
             this.dasSpielfeldGUI.updateSpielFeld(this.dasSpielfeld.getSpielfeldZumZeitpunkt(0));
@@ -959,5 +970,9 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
             this.dasSpielfeld.initialisiereFeldMitVorgabenFuerSchwarz(this.getVorgabeWert());
             this.dasSpielfeldGUI.updateSpielFeld(this.dasSpielfeld.getSpielfeldZumZeitpunkt(0));
         }
+    }
+
+    public void macheFensterSichtbar(){
+        this.setVisible(true);
     }
 }

@@ -19,6 +19,7 @@ public class Steuerung implements SteuerungInterface {
     // Die Datenklasse
     private Spielfeld dasSpielfeld;
     private int aktuellAngezeigteZugnummer;
+    private SpielAuswertung dieSpielfeldAuswertung;
     // Timer fuer Spieler und PeriodenZeiten.
     Countdown periodenZeitSchwarz;
     Countdown periodenZeitWeiss;
@@ -80,6 +81,7 @@ public class Steuerung implements SteuerungInterface {
          * Diese muessen noch programmiert werden ...
          */
         this.dasSpielfeld = bereitsInitialisiertesSpielfeld;
+        this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_UNVOLLSTAENDIG);
 
         // Timer initialisieren
         // Vorraussetzung zum Initialisieren ist ein Objekt vom Typ Spieler in this.dasSpielfeld
@@ -164,107 +166,116 @@ public class Steuerung implements SteuerungInterface {
         int klickenderSpieler = brett.getSpielerFarbeAnDerReihe();
         long periodenZeit = brett.getPeriodenZeit();
 
-        if (brett.getSpielZustand() != Konstante.SPIEL_LAUEFT) {
-            return;
-        }
-
-
-        // Timer während der Berechnung stoppen und die Zeiten zum Spieler zurückspeichern
-        if (brett.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ) {
-            this.spielerZeitSchwarz.stoppeCountdown();
-            this.periodenZeitSchwarz.stoppeCountdown();
-            brett.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(this.spielerZeitSchwarz.getRemainingTime());
-        } else {
-            this.spielerZeitWeiss.stoppeCountdown();
-            this.periodenZeitWeiss.stoppeCountdown();
-            brett.getSpielerWeiss().setVerbleibendeSpielzeitInMS(this.spielerZeitWeiss.getRemainingTime());
-        }
-
-        // Versuche den Stein zu setzen und speichere das Resulatat in returnWert
-        returnWert = this.dasSpielfeld.macheZug(xPos, yPos);
-
-        switch (returnWert) {
-            case 1:
-                // Rueckgabe erfolgreich! Spielerwechsel
-                this.setAktuelleAngeigteZugnummer(this.dasSpielfeld.getLetzteZugnummer());
-                LoGoApp.meineOberflaeche.setBrettOberflaeche(
-                        this.dasSpielfeld.getAktuelesSpielFeld(),
-                        this.dasSpielfeld.getSpielfeldGroesse(),
-                        this.dasSpielfeld.getMarkiertenSteinZumZeitpunkt(aktuellAngezeigteZugnummer));
-                        this.updateUndoUndRedo();
-                break;
-            case 0:
-                LoGoApp.meineOberflaeche.gibFehlermeldungAus("Verboten: Spielpunkt befindet sich nicht auf dem Brett");
-                break;
-            case -1:
-                LoGoApp.meineOberflaeche.gibFehlermeldungAus("Koregel: Verbotener Zug");
-                break;
-            case -2:
-                LoGoApp.meineOberflaeche.gibFehlermeldungAus("Dieser Schnittpunkt ist bereits belegt");
-                break;
-            case -3:
-                LoGoApp.meineOberflaeche.gibFehlermeldungAus("Selbstmord ist nicht erlaubt!");
-                break;
-            default:
-                // Das darf nicht vorkommen
-                throw new UnsupportedOperationException("Dieser Wert darf nie vorkommen");
-        }
-
-
-        // aktualisiere die GefangenenAnzahl
-        LoGoApp.meineOberflaeche.setGefangeneSteineSchwarz(brett.getSpielerSchwarz().getGefangenenAnzahl());
-        LoGoApp.meineOberflaeche.setGefangeneSteineWeiss(brett.getSpielerWeiss().getGefangenenAnzahl());
-
-
-        // Setze das Spiel wieder fort und starte die nötigen Timer
-        if (this.dasSpielfeld.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ) {
-            // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
-            if (brett.getSpielerSchwarz().getVerbleibendeSpielzeitInMS() > 0) {
-                this.spielerZeitSchwarz.setRemainingTime(brett.getSpielerSchwarz().getVerbleibendeSpielzeitInMS());
-                this.spielerZeitSchwarz.starteCountdown();
+        if (brett.getSpielZustand() == Konstante.SPIEL_LAUEFT) {
+       
+            // Timer während der Berechnung stoppen und die Zeiten zum Spieler zurückspeichern
+            if (brett.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ) {
+                this.spielerZeitSchwarz.stoppeCountdown();
+                this.periodenZeitSchwarz.stoppeCountdown();
+                brett.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(this.spielerZeitSchwarz.getRemainingTime());
             } else {
-                /* Wenn der Spieler einen ungültigen Zug geklickt hat,
-                 * spiele mit den vorherigen Periodenzeiten weiter
-                 * Bei Spielerwechsel, bekommt der Timer wieder die Periodenzeit
-                 * auf Maximal gesetzt und der andere Spieler wieder die volle
-                 * Zeit angezeigt.
-                 * Damit der Spieler mit der aktuell herunterzaehlenden Periodenzeit
-                 * auch die Sekunden angezeigt bekommt, bevor der Timer ausloest,
-                 * muss auch dieser hier vorher extra uebermittelt werden
-                 */
-                if (klickenderSpieler != brett.getSpielerFarbeAnDerReihe()) {
-                    this.periodenZeitSchwarz.setRemainingTime(periodenZeit);
-                    LoGoApp.meineOberflaeche.setAnzeigePeriodenZeitSchwarz(periodenZeit);
-                }
-
-                // Starte den Countdown, bzw. setze den Countdown fort
-                this.periodenZeitSchwarz.starteCountdown();
-                LoGoApp.meineOberflaeche.setSchwarzAmZug();
+                this.spielerZeitWeiss.stoppeCountdown();
+                this.periodenZeitWeiss.stoppeCountdown();
+                brett.getSpielerWeiss().setVerbleibendeSpielzeitInMS(this.spielerZeitWeiss.getRemainingTime());
             }
-        } else {
-            // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
-            if (brett.getSpielerWeiss().getVerbleibendeSpielzeitInMS() > 0) {
-                this.spielerZeitWeiss.setRemainingTime(brett.getSpielerWeiss().getVerbleibendeSpielzeitInMS());
-                this.spielerZeitWeiss.starteCountdown();
+
+            /* Man darf nur einen Stein versuchen zu setzen wenn es kein
+             * Passen ist*/
+            if(xPos!=-1 && yPos!=-1){
+                // Versuche den Stein zu setzen und speichere das Resulatat in returnWert
+                returnWert = this.dasSpielfeld.macheZug(xPos, yPos);
+
+                switch (returnWert) {
+                    case 1:
+                        // Rueckgabe erfolgreich! Spielerwechsel
+                        this.setAktuelleAngeigteZugnummer(this.dasSpielfeld.getLetzteZugnummer());
+                        LoGoApp.meineOberflaeche.setBrettOberflaeche(
+                                this.dasSpielfeld.getAktuelesSpielFeld(),
+                                this.dasSpielfeld.getSpielfeldGroesse(),
+                                this.dasSpielfeld.getMarkiertenSteinZumZeitpunkt(aktuellAngezeigteZugnummer));
+                                this.updateUndoUndRedo();
+                        break;
+                    case 0:
+                        LoGoApp.meineOberflaeche.gibFehlermeldungAus("Verboten: Spielpunkt befindet sich nicht auf dem Brett");
+                        break;
+                    case -1:
+                        LoGoApp.meineOberflaeche.gibFehlermeldungAus("Koregel: Verbotener Zug");
+                        break;
+                    case -2:
+                        LoGoApp.meineOberflaeche.gibFehlermeldungAus("Dieser Schnittpunkt ist bereits belegt");
+                        break;
+                    case -3:
+                        LoGoApp.meineOberflaeche.gibFehlermeldungAus("Selbstmord ist nicht erlaubt!");
+                        break;
+                    default:
+                        // Das darf nicht vorkommen
+                        throw new UnsupportedOperationException("Dieser Wert darf nie vorkommen");
+                }
+            }
+            else{
+                this.dasSpielfeld.zugPassen();
+            }
+
+            // aktualisiere die GefangenenAnzahl
+            LoGoApp.meineOberflaeche.setGefangeneSteineSchwarz(brett.getSpielerSchwarz().getGefangenenAnzahl());
+            LoGoApp.meineOberflaeche.setGefangeneSteineWeiss(brett.getSpielerWeiss().getGefangenenAnzahl());
+
+
+            // Setze das Spiel wieder fort und starte die nötigen Timer
+            if (this.dasSpielfeld.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ) {
+                // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
+                if (brett.getSpielerSchwarz().getVerbleibendeSpielzeitInMS() > 0) {
+                    this.spielerZeitSchwarz.setRemainingTime(brett.getSpielerSchwarz().getVerbleibendeSpielzeitInMS());
+                    this.spielerZeitSchwarz.starteCountdown();
+                } else {
+                    /* Wenn der Spieler einen ungültigen Zug geklickt hat,
+                     * spiele mit den vorherigen Periodenzeiten weiter
+                     * Bei Spielerwechsel, bekommt der Timer wieder die Periodenzeit
+                     * auf Maximal gesetzt und der andere Spieler wieder die volle
+                     * Zeit angezeigt.
+                     * Damit der Spieler mit der aktuell herunterzaehlenden Periodenzeit
+                     * auch die Sekunden angezeigt bekommt, bevor der Timer ausloest,
+                     * muss auch dieser hier vorher extra uebermittelt werden
+                     */
+                    if (klickenderSpieler != brett.getSpielerFarbeAnDerReihe()) {
+                        this.periodenZeitSchwarz.setRemainingTime(periodenZeit);
+                        LoGoApp.meineOberflaeche.setAnzeigePeriodenZeitSchwarz(periodenZeit);
+                    }
+
+                    // Starte den Countdown, bzw. setze den Countdown fort
+                    this.periodenZeitSchwarz.starteCountdown();
+                    LoGoApp.meineOberflaeche.setSchwarzAmZug();
+                }
             } else {
-                /* Wenn der Spieler einen ungültigen Zug geklickt hat,
-                 * spiele mit den vorherigen Periodenzeiten weiter
-                 * Bei Spielerwechsel, bekommt der Timer wieder die Periodenzeit
-                 * auf Maximal gesetzt und der andere Spieler wieder die volle
-                 * Zeit angezeigt.
-                 * Damit der Spieler mit der aktuell herunterzaehlenden Periodenzeit
-                 * auch die Sekunden angezeigt bekommt, bevor der Timer ausloest,
-                 * muss auch dieser hier vorher extra uebermittelt werden
-                 */
-                if (klickenderSpieler != brett.getSpielerFarbeAnDerReihe()) {
-                    this.periodenZeitWeiss.setRemainingTime(brett.getPeriodenZeit());
-                    LoGoApp.meineOberflaeche.setAnzeigePeriodenZeitWeiss(periodenZeit);
-                }
+                // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
+                if (brett.getSpielerWeiss().getVerbleibendeSpielzeitInMS() > 0) {
+                    this.spielerZeitWeiss.setRemainingTime(brett.getSpielerWeiss().getVerbleibendeSpielzeitInMS());
+                    this.spielerZeitWeiss.starteCountdown();
+                } else {
+                    /* Wenn der Spieler einen ungültigen Zug geklickt hat,
+                     * spiele mit den vorherigen Periodenzeiten weiter
+                     * Bei Spielerwechsel, bekommt der Timer wieder die Periodenzeit
+                     * auf Maximal gesetzt und der andere Spieler wieder die volle
+                     * Zeit angezeigt.
+                     * Damit der Spieler mit der aktuell herunterzaehlenden Periodenzeit
+                     * auch die Sekunden angezeigt bekommt, bevor der Timer ausloest,
+                     * muss auch dieser hier vorher extra uebermittelt werden
+                     */
+                    if (klickenderSpieler != brett.getSpielerFarbeAnDerReihe()) {
+                        this.periodenZeitWeiss.setRemainingTime(brett.getPeriodenZeit());
+                        LoGoApp.meineOberflaeche.setAnzeigePeriodenZeitWeiss(periodenZeit);
+                    }
 
-                // Starte den Countdown, bzw. setze den Countdown fort
-                this.periodenZeitWeiss.starteCountdown();
-                LoGoApp.meineOberflaeche.setWeissAmZug();
+                    // Starte den Countdown, bzw. setze den Countdown fort
+                    this.periodenZeitWeiss.starteCountdown();
+                    LoGoApp.meineOberflaeche.setWeissAmZug();
+                }
             }
+        }
+
+        else if(this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_GEBIETSAUSWERTUNG){
+            this.dieSpielfeldAuswertung.markiereStein(xPos, yPos);
+            LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dieSpielfeldAuswertung.getAusgewertetesFeld(), this.dasSpielfeld.getSpielfeldGroesse(), null);
         }
     }
 
@@ -278,12 +289,9 @@ public class Steuerung implements SteuerungInterface {
             if(this.dasSpielfeld.spielfeldValidiert() == false){
                 throw new UnsupportedOperationException("Spielfeld nicht valide! Spiel kann nicht gestartet werden");
             }
-            else{
-                this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_VALIDIERT);
-            }
 
-            // Wenn das Spiel validiert ist, starte ein neues Spiel
-            if (this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_VALIDIERT) {
+
+            else {
                 this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_LAUEFT);
 
 
@@ -406,6 +414,42 @@ public class Steuerung implements SteuerungInterface {
          * wieder welcher Spieler am Zug ist.
          *
          */
+
+        /* Wenn die letzten beiden Zuege passen waren, so befindet sich das
+         * Spiel in der Gebietsauswertungs-phase */
+        if(this.dasSpielfeld.getAnzahlLetzterPassZuege()>=2){
+            /* Da die letzten beiden Zuege passen waren, wird das spiel nun
+             * ausgezaehlt*/
+            this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_GEBIETSAUSWERTUNG);
+
+            /* Die Timer muessen dazu angehaltent werden */
+            int aktuelerSpieler = this.dasSpielfeld.getSpielerFarbeAnDerReihe();
+
+            if (Konstante.SCHNITTPUNKT_SCHWARZ == aktuelerSpieler) {
+                // Schwarzer Spieler spielt gerade
+
+                // Stoppe Timer von Schwarz
+                this.spielerZeitSchwarz.stoppeCountdown();
+                this.periodenZeitSchwarz.stoppeCountdown();
+                this.dasSpielfeld.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(
+                        this.spielerZeitSchwarz.getRemainingTime());
+            } else {
+                // Weisser Spieler spielt gerade
+
+                // Stoppe Timer von Weiss
+                this.spielerZeitWeiss.stoppeCountdown();
+                this.periodenZeitWeiss.stoppeCountdown();
+                this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(
+                        this.spielerZeitWeiss.getRemainingTime());
+            }
+
+            /* Nachdem die Timer nun angehalten sind, wird der oberflaeche
+             * das brett zur verfuegung gestellt, das die Gebiete darstellt
+             * */
+            this.dieSpielfeldAuswertung = new SpielAuswertung(this.dasSpielfeld.getSpielfeldGroesse(), this.dasSpielfeld.getSpielerWeiss().getKomiPunkte());
+            this.dieSpielfeldAuswertung.auswertungInitialisieren(this.dasSpielfeld.getAktuelesSpielFeld());
+            LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dieSpielfeldAuswertung.getAusgewertetesFeld(), this.dasSpielfeld.getSpielfeldGroesse(), null);
+        }
     }
 
     /**Implementierung des Interfaces

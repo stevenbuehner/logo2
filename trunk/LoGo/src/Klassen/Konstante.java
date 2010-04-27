@@ -30,8 +30,8 @@ public class Konstante {
     public final static int SCHNITTPUNKT_WEISS_GEFANGEN = 11;
 
     // Konstanten fuer den Zustand des Spielfeldes
-    public final static int SPIEL_UNVOLLSTAENDIG        = 100;
-    public final static int SPIEL_VALIDIERT             = 101;
+    public final static int SPIEL_UNVOLLSTAENDIG        = 100; // Unvollstaendig heisst, man ist im undo, oder Redo nicht an der letzten stelle
+    public final static int SPIEL_GEBIETSAUSWERTUNG     = 101;
     public final static int SPIEL_LAUEFT                = 102;
     public final static int SPIEL_PAUSIERT              = 103;
     public final static int SPIEL_AUFGEGEBEN            = 104;
