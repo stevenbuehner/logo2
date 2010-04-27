@@ -34,7 +34,7 @@ import logo.LoGoApp;
  * @author steven
  * @version 0.2
  */
-public class TestOberflaeche extends Frame implements Runnable, KeyListener, OberflaecheInterface, MouseListener, ActionListener {
+public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListener, OberflaecheInterface, MouseListener, ActionListener {
 
     // Wenn nicht anders angegeben, verwende diese Masse zum zeichnen des Spielbretts
     private final static int STANDARD_SPIELFELD_HOEHE = 496;
@@ -75,7 +75,7 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
     /* Double Buffering */
     String mess = "";
 
-    public TestOberflaeche(String pFenstername) {
+    public FensterSpieloberflaeche(String pFenstername) {
         super(pFenstername);
 
         ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -574,6 +574,7 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
     }
 
     private void buttonSpielLadenGedrueckt() {
+        LoGoApp.meineSteuerung.buttonSpielLaden();
     }
 
     private void buttonSpielBeendenGedrueckt() {

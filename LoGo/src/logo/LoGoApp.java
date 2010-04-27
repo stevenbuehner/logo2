@@ -4,11 +4,11 @@
 package logo;
 
 import GUI.GrafikLib;
-import GUI.SpieleinstellungFenster;
+import GUI.FensterEinstellung;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
-import GUI.TestOberflaeche;
+import GUI.FensterSpieloberflaeche;
 import Klassen.Steuerung;
 import interfaces.OberflaecheInterface;
 import interfaces.SteuerungInterface;
@@ -20,7 +20,7 @@ import javax.swing.UIManager;
 public class LoGoApp extends SingleFrameApplication {
 
     public static OberflaecheInterface meineOberflaeche;
-    public static SpieleinstellungFenster meinEinstellungsfenster;
+    public static FensterEinstellung meinEinstellungsfenster;
     public static GrafikLib meineGrafikLib = GrafikLib.getInstance();
     public static SteuerungInterface meineSteuerung;
 
@@ -94,8 +94,8 @@ public class LoGoApp extends SingleFrameApplication {
         */
 
         meineSteuerung = new Steuerung();
-        meinEinstellungsfenster = new SpieleinstellungFenster( "Einstellungen");
-        meineOberflaeche = new TestOberflaeche("LoGo, by Steven Buehner, Alex Jesche, Rebecca King and Tommy Schladitz");
+        meinEinstellungsfenster = new FensterEinstellung( "Einstellungen");
+        meineOberflaeche = new FensterSpieloberflaeche("LoGo, by Steven Buehner, Alex Jesche, Rebecca King and Tommy Schladitz");
 
 
         //launch(LoGoApp.class, args);

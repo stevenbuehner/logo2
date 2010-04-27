@@ -506,8 +506,19 @@ public class Steuerung implements SteuerungInterface {
         else{
             JOptionPane.showMessageDialog(null, "Speichern nicht möglich weil ...");
         }
-
     }
+
+        /**Implementierung des Interfaces
+     * @see SteuerungInterface
+     */
+    public void buttonSpielLaden() {
+        if( true ){
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Speichern nicht möglich weil ...");
+        }
+    }
+
 
     /**Implementierung des Interfaces
      * @see SteuerungInterface

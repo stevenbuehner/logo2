@@ -102,6 +102,11 @@ public interface SteuerungInterface {
     public void buttonSpielSpeichern();
 
     /**
+     * Spieler klickt auf "Spiel Laden". Spiel kann nun als sgf-File geladen werden.
+     */
+    public void buttonSpielLaden();
+
+    /**
      * Diese Methode wird ausgeloesst, wenn der User das beendigen des
      * Spieles in der GUI signalisiert. Die Steuerung muss ueberpruefen,
      * ob ein Spiel gerade laueft, etwas gespeichert werden muss oder vorher
