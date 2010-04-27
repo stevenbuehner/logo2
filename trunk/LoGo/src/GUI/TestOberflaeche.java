@@ -71,7 +71,6 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
     protected MenuItem Redo;
     protected MenuItem Pause;
     protected MenuItem Fortsetzen;
-    protected BackgroundImagePanel backgroundPanel;
 
     /* Double Buffering */
     String mess = "";
@@ -96,6 +95,8 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
 
     public void init() {
 
+        GrafikLib lib = GrafikLib.getInstance();
+
         // Menue-Bar erstellen
         createMenue(this);
 
@@ -103,10 +104,7 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
         // von delta nicht!!!
         berechneDelta(); // delta wird unten bei den Images benötigt
 
-
-        backgroundPanel = new BackgroundImagePanel(
-                GrafikLib.getInstance().getSprite("GUI/resources/SpielTisch2.jpg"));
-
+        pauseImage = lib.getSprite("GUI/resources/PauseScreen.jpg");
 
         // Schwere und leichte Komponenten
         //  JPopupMenu.setDefaultLightWeightPopupEnabled(false);
@@ -117,7 +115,7 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
         //this.setUndecorated(true);
         this.setSize(1024, 768);
         // this.backgroundImage = GrafikLib.getInstance().getSprite("GUI/resources/SpielTisch.jpg");
-        this.backgroundImage = GrafikLib.getInstance().getSprite("GUI/resources/SpielTisch2.jpg");
+        this.backgroundImage = lib.getSprite("GUI/resources/SpielTisch2.jpg");
 
 
         this.spielerUhrSchwarz = new SpielerUhr(316, 215, 0, 4.5);
