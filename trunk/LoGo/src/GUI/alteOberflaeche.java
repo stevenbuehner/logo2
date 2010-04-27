@@ -343,4 +343,8 @@ public class alteOberflaeche extends Canvas implements OberflaecheInterface, Mou
     public void setRedoErlaubt(boolean redoMoeglich) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    public void setPauseScreen(boolean setPause) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

@@ -256,9 +256,107 @@ public class Steuerung implements SteuerungInterface {
     /**Implementierung des Interfaces
      * @see SteuerungInterface
      */
+    public void buttonNeuesSpiel(){
+        if(this.dasSpielfeld != null){
+            int aktStat = this.dasSpielfeld.getSpielZustand();
+            int userResponse = JOptionPane.CANCEL_OPTION;
+
+            switch(aktStat){
+                case Konstante.SPIEL_LAUEFT:
+                    int aktuelerSpieler = this.dasSpielfeld.getSpielerFarbeAnDerReihe();
+
+                    if (Konstante.SCHNITTPUNKT_SCHWARZ == aktuelerSpieler) {
+                        // Schwarzer Spieler spielt gerade
+
+                        // Stoppe Timer von Schwarz
+                        this.spielerZeitSchwarz.stoppeCountdown();
+                        this.periodenZeitSchwarz.stoppeCountdown();
+                        this.dasSpielfeld.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(
+                        this.spielerZeitSchwarz.getRemainingTime());
+                    } else {
+                        // Weisser Spieler spielt gerade
+
+                        // Stoppe Timer von Weiss
+                        this.spielerZeitWeiss.stoppeCountdown();
+                        this.periodenZeitWeiss.stoppeCountdown();
+                        this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(
+                        this.spielerZeitWeiss.getRemainingTime());
+                    }
+
+                    // Spielstatus auf pausiert setzen.
+                    this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_PAUSIERT);
+                    this.updateUndoUndRedo();
+                    LoGoApp.meineOberflaeche.setPauseScreen(true);
+
+                    userResponse = JOptionPane.showConfirmDialog(null, "Das aktuelle Spiel ist noch am Laufen. \nWenn Sie ein neues Spiel starten, wird das alte beendet. Wollen Sie das wirklich?");;
+
+                    Spielfeld brett = this.dasSpielfeld;
+
+                    // Setze das Spiel wieder fort und starte die nötigen Timer
+                    if (this.dasSpielfeld.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ) {
+                        // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
+                        if (brett.getSpielerSchwarz().getVerbleibendeSpielzeitInMS() > 0) {
+                            this.spielerZeitSchwarz.starteCountdown();
+                        } else {
+                            // Setze den Countdown fort
+                            this.periodenZeitSchwarz.starteCountdown();
+                        }
+                        LoGoApp.meineOberflaeche.setSchwarzAmZug();
+                    } else {
+                        // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
+                        if (brett.getSpielerWeiss().getVerbleibendeSpielzeitInMS() > 0) {
+                            this.spielerZeitWeiss.starteCountdown();
+                        } else {
+                            // Starte den Countdown, bzw. setze den Countdown fort
+                            this.periodenZeitWeiss.starteCountdown();
+                        }
+                        LoGoApp.meineOberflaeche.setWeissAmZug();
+                    }
+
+                    // Spielstatus nach dem Aufnehmen des Spieles wieder auf "Spiel läuft" setzen
+                    this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_LAUEFT);
+                    LoGoApp.meineOberflaeche.setPauseScreen(false);
+                    this.updateUndoUndRedo();
+                    break;
+                case Konstante.SPIEL_BEENDET_DURCH_APP:
+                    userResponse = JOptionPane.OK_OPTION;
+                    break;
+                case Konstante.SPIEL_PAUSIERT:
+                    userResponse = JOptionPane.showConfirmDialog(null, "Das aktuelle Spiel pausiert nur. Wollen Sie wirklich das alte Spiel beenden und ein neues starten?");
+                    break;
+                case Konstante.SPIEL_UNVOLLSTAENDIG:
+                    // Sollte nicht vorkommen ... nur der vollständigkeitshalber
+                    userResponse = JOptionPane.OK_OPTION;
+                    break;
+                case Konstante.SPIEL_GEBIETSAUSWERTUNG:
+                    // Sollte nicht vorkommen ... nur der vollständigkeitshalber
+                    userResponse = JOptionPane.OK_OPTION;
+                    break;
+                case Konstante.SPIEL_AUFGEGEBEN:
+                    userResponse = JOptionPane.OK_OPTION;
+                    break;
+                default:
+                    break;               
+            }
+            if(userResponse == JOptionPane.OK_OPTION){
+                this.dasSpielfeld = null;
+                this.periodenZeitSchwarz.stoppeCountdown();
+                this.periodenZeitWeiss.stoppeCountdown();
+                this.spielerZeitWeiss.stoppeCountdown();
+                this.spielerZeitSchwarz.stoppeCountdown();
+                LoGoApp.meineOberflaeche.setVisible(false);
+                LoGoApp.meinEinstellungsfenster.setVisible(true);
+            }
+        }
+    }
+
+    /**Implementierung des Interfaces
+     * @see SteuerungInterface
+     */
     public void buttonSpielStarten() {
         // Überprüfe ob die Initialisierung korrekt war
-
+        LoGoApp.meineOberflaeche.setVisible(true);
+        
         if (this.dasSpielfeld != null) {
             if(this.dasSpielfeld.spielfeldValidiert() == false){
                 throw new UnsupportedOperationException("Spielfeld nicht valide! Spiel kann nicht gestartet werden");
@@ -440,7 +538,7 @@ public class Steuerung implements SteuerungInterface {
                 this.spielerZeitSchwarz.stoppeCountdown();
                 this.periodenZeitSchwarz.stoppeCountdown();
                 this.dasSpielfeld.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(
-                        this.spielerZeitSchwarz.getRemainingTime());
+                this.spielerZeitSchwarz.getRemainingTime());
             } else {
                 // Weisser Spieler spielt gerade
 
@@ -448,12 +546,13 @@ public class Steuerung implements SteuerungInterface {
                 this.spielerZeitWeiss.stoppeCountdown();
                 this.periodenZeitWeiss.stoppeCountdown();
                 this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(
-                        this.spielerZeitWeiss.getRemainingTime());
+                this.spielerZeitWeiss.getRemainingTime());
             }
 
             // Spielstatus auf pausiert setzen.
             this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_PAUSIERT);
             this.updateUndoUndRedo();
+            LoGoApp.meineOberflaeche.setPauseScreen(true);
         }else{
             System.out.println("Spiel Pausieren in Steuerung aktiviert, aber das ist nicht erlaubt");
         }
@@ -489,6 +588,7 @@ public class Steuerung implements SteuerungInterface {
 
             // Spielstatus nach dem Aufnehmen des Spieles wieder auf "Spiel läuft" setzen
             this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_LAUEFT);
+            LoGoApp.meineOberflaeche.setPauseScreen(false);
             this.updateUndoUndRedo();
         }else{
             System.out.println("Spiel Fortsetzen in Steuerung aktiviert, aber das ist nicht erlaubt");

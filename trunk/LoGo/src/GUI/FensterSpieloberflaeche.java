@@ -48,6 +48,7 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
 
     private BufferedImage backgroundImage;
     private BufferedImage pauseImage;
+    private BufferedImage startImage;
     private boolean spielOberflaechePausiert = false;
 
     private boolean threadLaeuf;
@@ -104,26 +105,18 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         // von delta nicht!!!
         berechneDelta(); // delta wird unten bei den Images benötigt
 
-        pauseImage = lib.getSprite("GUI/resources/PauseScreen.jpg");
-
-        // Schwere und leichte Komponenten
-        //  JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-        // ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
-
-        /* Buffern */
-        //  this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //this.setUndecorated(true);
-        this.setSize(1024, 768);
-        // this.backgroundImage = GrafikLib.getInstance().getSprite("GUI/resources/SpielTisch.jpg");
+        // später benötigte Bilder in den Cache laden
+        this.pauseImage = lib.getSprite("GUI/resources/PauseScreen.jpg");
+        this.startImage = lib.getSprite("GUI/resources/StartScreen.jpg");
         this.backgroundImage = lib.getSprite("GUI/resources/SpielTisch2.jpg");
-
 
         this.spielerUhrSchwarz = new SpielerUhr(316, 215, 0, 4.5);
         this.spielerUhrWeiss = new SpielerUhr(112, 144, 0, 1);
         this.spielOberflaechePausiert = false;
 
-        setLocationRelativeTo(null); // Fenster zentrieren
         //this.setResizable(false);
+        this.setSize(1024, 768);
+        setLocationRelativeTo(null); // Fenster zentrieren
         this.setVisible(true);
         this.createBufferStrategy(2);
 
@@ -312,6 +305,14 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
 
         if (this.dasBrett != null) {
             dasBrett.paintComponents(g);
+        }else if ( !this.spielOberflaechePausiert ){
+            // Startscreen zeichnen, wenn nicht gerade Pause ansteht :-)
+            g.setColor(Color.BLACK);
+            g.fillRect(0, 0, this.getWidth(), this.getHeight());
+            if(this.startImage != null){
+                g.drawImage(startImage, (this.getWidth()-startImage.getWidth())/2,
+                        (this.getHeight()-startImage.getHeight())/2, this);
+            }
         }
 
         if (spielerUhrSchwarz != null) {
@@ -370,9 +371,8 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
                 break;
             case KeyEvent.VK_N:
                 // neues Spiel. Momentanes wird pausiert um ein neues zu laden
-                LoGoApp.meineSteuerung.buttonPause();
-                LoGoApp.meinEinstellungsfenster.macheFensterSichtbar();
-                mess = "Steuerung => Spiel starten";
+                this.buttonNeuesSpiel();
+                mess = "Steuerung => neues Spiel";
                 break;
             case KeyEvent.VK_A: // A wie Aussetzen, sollte noch geaendert werden <----------------------
                 LoGoApp.meineSteuerung.buttonPassen();
@@ -396,7 +396,7 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
                 break;
             default:
                 mess = "Pressed: " + KeyEvent.getKeyText(keyCode);
-                e.consume(); // Kombinierte Tasten sollen nicht behandlet werden.
+               // e.consume(); // Kombinierte Tasten sollen nicht behandlet werden.
         }
     }
 
@@ -409,10 +409,11 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
     public void setBrettOberflaeche(int[][] spielfeld, int spielfeldGroesse, Point markierterStein) {
         // Spielfeld updaten wenn es von der gleichen groesse ist, ansonsten
         // ein neues Spielfeld erstellen
-        if (this.dasBrett != null && this.dasBrett.getAnzahlFelder() == spielfeldGroesse) {
+        if (this.dasBrett != null && this.dasBrett.getAnzahlFelder() == spielfeldGroesse && spielfeld != null) {
             this.dasBrett.updateSpielFeld(spielfeld);
             this.dasBrett.setMarkierterStein(markierterStein);
-        } else {
+        } 
+        else{
             this.dasBrett = null;
             this.dasBrett = new Spielbrett(STANDARD_SPIELFELD_BREITE,
                     STANDARD_SPIELFELD_HOEHE,
@@ -534,8 +535,12 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         } else if (e.getSource() == Fortsetzen) {
             this.buttonSpielFortsetzenGedrueckt();
         }
+    }
 
 
+    private void buttonNeuesSpiel(){
+        // Die Entscheidung was geschieht obliegt der Steuerung
+        LoGoApp.meineSteuerung.buttonNeuesSpiel();
     }
 
     private void buttonSpielPausierenGedrueckt() {
@@ -589,11 +594,19 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
 
     private void buttonUndoGedrueckt() {
         LoGoApp.meineSteuerung.buttonUndo();
-        ;
     }
 
     private void buttonRedoGedrueckt() {
         LoGoApp.meineSteuerung.buttonRedo();
-        ;
     }
+
+    @Override
+    public void setVisible (boolean visible){
+        super.setVisible(visible);
+    }
+
+    public void setPauseScreen(boolean setPause) {
+        this.spielOberflaechePausiert = setPause;
+    }
+
 }

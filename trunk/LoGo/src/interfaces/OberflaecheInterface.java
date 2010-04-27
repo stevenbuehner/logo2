@@ -103,4 +103,17 @@ public interface OberflaecheInterface {
      * @param fehlertext Auszugebender Fehlertext
      */
     public void gibFehlermeldungAus(String fehlertext);
+
+    /**
+     * Mit dem Parameter @param visible kann die Oberflaeche ein- oder
+     * ausgeblendet werden. Achtung! Countdowns etc. können gegebenenfalls
+     * trotzdem noch laufen!
+     */
+    public void setVisible (boolean visible);
+
+    /**
+     * Der Oberflaeche kann über @param setPause ein Tipp gegeben werden, ob
+     * sie eine Art Pause- oder Blackscreen anzeigen möchte/sollte.
+     */
+    public void setPauseScreen(boolean setPause);
 }
