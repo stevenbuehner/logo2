@@ -369,9 +369,14 @@ public class TestOberflaeche extends Frame implements Runnable, KeyListener, Obe
                 }
                 break;
             case KeyEvent.VK_N:
-                // neues Spiel
-                LoGoApp.meineSteuerung.buttonSpielStarten();
+                // neues Spiel. Momentanes wird pausiert um ein neues zu laden
+                LoGoApp.meineSteuerung.buttonPause();
+                LoGoApp.meinEinstellungsfenster.macheFensterSichtbar();
                 mess = "Steuerung => Spiel starten";
+                break;
+            case KeyEvent.VK_A: // A wie Aussetzen, sollte noch geaendert werden <----------------------
+                LoGoApp.meineSteuerung.buttonPassen();
+                mess = "Gepasst";
                 break;
             case KeyEvent.VK_LEFT:
                 LoGoApp.meineSteuerung.buttonUndo();

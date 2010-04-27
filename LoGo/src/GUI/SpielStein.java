@@ -324,6 +324,30 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
         this.setLoop(false);
     }
 
+    public synchronized void starteAnimationGefangenenSteinSchwarz(){
+        this.clearScenes();
+        this.addScene(storedImages[17], 100);
+        this.setLoop(false);
+    }
+
+    public synchronized void starteAnimationGefangenenSteinWeiss(){
+        this.clearScenes();
+        this.addScene(storedImages[23], 100);
+        this.setLoop(false);
+    }
+
+    public synchronized void starteAnimationGebietspunktSchwarz(){
+        this.clearScenes();
+        this.addScene(storedImages[37], 100);
+        this.setLoop(false);
+    }
+
+    public synchronized void starteAnimationGebietspunktWeiss(){
+        this.clearScenes();
+        this.addScene(storedImages[35], 100);
+        this.setLoop(false);
+    }
+
     public synchronized void setSchwarzerStein(){
         this.clearScenes();
         this.addScene(storedImages[9], 100);

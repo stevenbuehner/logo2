@@ -245,6 +245,18 @@ public class Spielbrett extends JComponent {
                             }
                             this.repaint();
                             break;
+                        case Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ:
+                            this.feld[i][j].starteAnimationGebietspunktSchwarz();
+                            break;
+                        case Konstante.SCHNITTPUNKT_GEBIET_WEISS:
+                            this.feld[i][j].starteAnimationGebietspunktWeiss();
+                            break;
+                        case Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN:
+                            this.feld[i][j].starteAnimationGefangenenSteinSchwarz();
+                            break;
+                        case Konstante.SCHNITTPUNKT_WEISS_GEFANGEN:
+                            this.feld[i][j].starteAnimationGefangenenSteinWeiss();
+                            break;
                         default:
                         // ungueltiger Wert
                     }

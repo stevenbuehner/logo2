@@ -13,7 +13,7 @@ import java.util.List;
  * @author tommy
  */
 public class SpielAuswertung {
-    private int komiFuerWeiss;
+    private float komiFuerWeiss;
     private int gefangeneVonSchwarz;
     private int gefangeneVonWeiss;
     private AnalyseSchnittpunkt auswertungBrett[][];
@@ -26,7 +26,7 @@ public class SpielAuswertung {
      * @param brettGroesse Bettgroesse
      * @param komiFuerWeiss Komi: Punkte werden Weiss gutgeschrieben.
      */
-    public SpielAuswertung(int brettGroesse, int komiFuerWeiss){
+    public SpielAuswertung(int brettGroesse, float komiFuerWeiss){
         this.brettGroesse = brettGroesse;
         this.komiFuerWeiss = komiFuerWeiss;
         this.setGefangeneVonSchwarz(0);
@@ -171,7 +171,7 @@ public class SpielAuswertung {
             return -1;
         }
         this.findeGebiete();
-        this.suchePseudoPunkte();
+      //  this.suchePseudoPunkte();
         return rueckgabe;
     }
 
@@ -264,7 +264,7 @@ public class SpielAuswertung {
                                                        this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getYPos());
                 }
                 else {
-                    throw new UnsupportedOperationException("Farbe des Steins falsch definiert");
+                  //  throw new UnsupportedOperationException("Farbe des Steins falsch definiert");
                 }
 
             }
@@ -297,7 +297,7 @@ public class SpielAuswertung {
                                                        this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getYPos());
                 }
                 else {
-                    throw new UnsupportedOperationException("Farbe des Steins falsch definiert");
+                   // throw new UnsupportedOperationException("Farbe des Steins falsch definiert");
                 }
 
             }
@@ -331,7 +331,7 @@ public class SpielAuswertung {
                                                        this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getYPos());
                 }
                 else {
-                    throw new UnsupportedOperationException("Farbe des Steins falsch definiert");
+                   // throw new UnsupportedOperationException("Farbe des Steins falsch definiert");
                 }
 
             }
@@ -364,12 +364,12 @@ public class SpielAuswertung {
                                                        this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getYPos());
                 }
                 else {
-                    throw new UnsupportedOperationException("Farbe des Steins falsch definiert");
+                  //  throw new UnsupportedOperationException("Farbe des Steins falsch definiert");
                 }
 
             }
             momElement++;
-            this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()].setAnalysiert(true);
+           // this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()].setAnalysiert(true);
         }while(momElement<listeSteine.size());
         /* Jetzt sind nur Leere Steine, oder steine der Angeklickten farbe in
          * der Liste. Diese werden jetzt ummarkiert.
@@ -866,7 +866,7 @@ public class SpielAuswertung {
                        }
 
                        /* 4. Obere Seite */
-                       if(listeSteine.get(momElement).getYPos()!=0){
+                       if(listeSteine.get(momElement).getYPos()!=this.getFeldGroesse()-1){
                            if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
                                    == Konstante.SCHNITTPUNKT_LEER &&
                               this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getMarkiert()
@@ -1169,7 +1169,7 @@ public class SpielAuswertung {
             }
 
             /* 4. Obere Seite */
-            if(listeSteine.get(momElement).getXPos()!=0){
+            if(listeSteine.get(momElement).getYPos()!=this.getFeldGroesse()-1){
                 if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
                         == Konstante.SCHNITTPUNKT_LEER &&
                    this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getMarkiert()

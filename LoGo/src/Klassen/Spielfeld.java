@@ -174,7 +174,7 @@ public class Spielfeld {
             case Konstante.SPIEL_UNVOLLSTAENDIG:
                 this.spielZustand = neuerSpielZustand;
                 break;
-            case Konstante.SPIEL_VALIDIERT:
+            case Konstante.SPIEL_GEBIETSAUSWERTUNG:
                 this.spielZustand = neuerSpielZustand;
                 break;
             case Konstante.SPIEL_LAUEFT:
@@ -1045,7 +1045,6 @@ public class Spielfeld {
         /* Gibt es noch keine Zuege, ist das Feld valide */
         if(this.letzteZugnummer == 0){
             this.setSpielfeldZumZeitpunkt(0);
-            this.setSpielZustand(Konstante.SPIEL_VALIDIERT);
             return validiert;
         }
 
@@ -1140,7 +1139,6 @@ public class Spielfeld {
           * der Spieler, das Passen und die Zuege beachtet. Alles war korrekt
           */
         if(validiert && this.getSpielZustand() == Konstante.SPIEL_UNVOLLSTAENDIG){
-            this.setSpielZustand(Konstante.SPIEL_VALIDIERT);
         }
         return validiert;
     }
