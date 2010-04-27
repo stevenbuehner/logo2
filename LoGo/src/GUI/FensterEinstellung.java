@@ -965,7 +965,4 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
         }
     }
 
-    public void macheFensterSichtbar(){
-        this.setVisible(true);
-    }
 }

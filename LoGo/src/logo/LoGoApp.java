@@ -94,8 +94,8 @@ public class LoGoApp extends SingleFrameApplication {
         */
 
         meineSteuerung = new Steuerung();
-        meinEinstellungsfenster = new FensterEinstellung( "Einstellungen");
         meineOberflaeche = new FensterSpieloberflaeche("LoGo, by Steven Buehner, Alex Jesche, Rebecca King and Tommy Schladitz");
+        meinEinstellungsfenster = new FensterEinstellung( "Einstellungen");
 
 
         //launch(LoGoApp.class, args);
