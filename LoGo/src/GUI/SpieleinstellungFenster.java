@@ -8,11 +8,8 @@ package GUI;
 import Klassen.Konstante;
 import Klassen.Spieler;
 import Klassen.Spielfeld;
-import java.awt.ItemSelectable;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.ButtonGroup;
@@ -24,7 +21,6 @@ import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import logo.LoGoAboutBox;
 import logo.LoGoApp;
 
 
@@ -35,7 +31,9 @@ import logo.LoGoApp;
  */
 public class SpieleinstellungFenster extends JFrame implements MouseListener, ActionListener{
 
-    // Felder auf der GUI
+    /* Felder auf der GUI
+     * Zur darstellung der Daten
+     */
     private JTextField spielerNameWeiss;
     private JTextField spielerZeitStundenWeiss;
     private JTextField spielerZeitMinutenWeiss;
@@ -60,7 +58,7 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
     private JRadioButton neunzehnXneunzehn;
 
     private JComboBox spielVorgabeSteine;
-    private JTextArea spielBrettHinweise;
+    private JLabel spielBrettHinweise;
 
     private JButton spielStarten;
     private JButton hilfeButton;
@@ -82,7 +80,7 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
     private JLabel labelVorgabe;
 
 
-    // Datenhaltung
+    /* Die Benutzereingaben muessen verwaltet werden */
     private String errorString;
     private boolean fehlerBeiEingabe;
     private Spielfeld dasSpielfeld;
@@ -106,16 +104,18 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
 
     public SpieleinstellungFenster(String fenstername) {
         super(fenstername);
-
         this.init();
         pack();
-        this.setSize(500, this.frameMaxhoehe);
+        this.setSize(500, this.frameMinhoehe);
         this.setResizable(false);
         this.setLocationRelativeTo(null);       // Fenster zentrieren
         this.setVisible(true);
-
     }
 
+    /**
+     * Initialisieren der Werte. Hier werden die Initialfunktionen in der richtigen
+     * Reihenfolge aufgerufen, bevor der Benutzer agieren kann.
+     */
     private void init(){
         this.addMouseListener(this);
         this.startwerteSetzen();
@@ -127,7 +127,8 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         this.komponentenAufContentPane();
     }
 
-    /** Hier werden die Label, Buttons und Textfelder initialisiert. 
+    /**
+     * Hier werden die Label, Buttons und Textfelder initialisiert.
      * Beschriftungen und andere textuelle Dinge
      */
     private void startwerteSetzen(){
@@ -135,6 +136,8 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         this.momSpielModus = "Schnellstart";
         this.fehlerBeiEingabe = false;
         this.dasSpielfeld = new Spielfeld(13);
+
+        /* Initialisieren der Oberflaeche */
         this.spielerNameWeiss          = new JTextField("Weiss");
         this.spielerZeitMinutenWeiss   = new JTextField("30");
         this.spielerZeitStundenWeiss   = new JTextField("0");
@@ -161,7 +164,7 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         this.neunzehnXneunzehn         = new JRadioButton("19 x 19");
 
         this.spielVorgabeSteine        = new JComboBox();
-        this.spielBrettHinweise        = new JTextArea("", 15, 5);
+        this.spielBrettHinweise        = new JLabel("Schnellstart");
         this.spielStarten              = new JButton("Start");
         this.hilfeButton               = new JButton("Hilfe");
 
@@ -419,6 +422,11 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
 
     }
 
+    /**
+     * Die beiden Combo-Boxes fuer Spielmodus und Vorgabeauswahl werden initialisiert
+     * Wird hier ein Wert geaendert, muss er auch im restlichen Programm
+     * veraendert werden
+     */
     private void comboBoxenInit(){
 
         this.spielermodus.addItem("Schnellstart");
@@ -435,8 +443,10 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         this.spielVorgabeSteine.addItem("8");
         this.spielVorgabeSteine.addItem("9");
     }
+
     /**
-     * Alle Textfelder und Buttons muessen zum ActionListener geaddet werden
+     * Alle Textfelder und Buttons muessen zum ActionListener hinzugefuegt
+     * werden.
      */
     private void zumActionListenerAdden(){
         this.spielermodus.addActionListener(this);
@@ -453,6 +463,11 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         this.hilfeButton.addActionListener(this);
     }
 
+    /**
+     * Das klicken mit der Maus ist als event nur wichtig, wenn man ein
+     * benutzerdefiniertes Feld erstellen wollen
+     * @param e Event von der Maus (mit Koordinaten)
+     */
     public void mouseClicked(MouseEvent e) {
         if(this.momSpielModus.equals("Startfeld") &&
            e.getX()-this.seitenoffset>=this.brettXOffset && e.getX()-this.seitenoffset<=this.brettXOffset+this.brettbreite &&
@@ -493,9 +508,13 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
     public void mouseExited(MouseEvent e) {
     }
 
+    /**
+     * Bei einem Aktion event, muss je nach gewaehlter Komponente das Feld
+     * veraendert, oder andere Werte angepasst werden
+     * @param e Action-Event
+     */
     public void actionPerformed(ActionEvent e) {
 
-        //System.out.println(e.getSource());
         if(e.getSource() == this.spielMitZeitSpielen){
             this.toggleSpielMitZeitSpielen();
         }
@@ -552,6 +571,11 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         }
     }
 
+    /**
+     * Wenn ein neues Feld angelegt wird, benoetigt man eine neue Datenstruktur
+     * und eine neue Oberflaeche. Dafuer muss die alte Oberflaeche entfernt werden
+     * und neue danach eingebunden werden
+     */
     private void neuesSpielfeld() {
         /* parameter herausfinden */
         int feldgroesse = this.getSelectedFeldgroesse();
@@ -561,9 +585,9 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         }
 
         this.dasSpielfeld = new Spielfeld(feldgroesse);
-        if(this.momSpielModus.equals("Vorgabe")){
+     /*   if(this.momSpielModus.equals("Vorgabe")){*/
             this.dasSpielfeld.initialisiereFeldMitVorgabenFuerSchwarz(this.getVorgabeWert());
-        }
+     //   }
         /* Es muss noch eine neue Oberflaeche angelegt werden */
 
         this.getContentPane().remove(this.dasSpielfeldGUI);
@@ -575,7 +599,6 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         this.dasSpielfeldGUI.updateSpielFeld(this.dasSpielfeld.getSpielfeldZumZeitpunkt(0));
         this.getContentPane().add(this.dasSpielfeldGUI);
         this.validate();
-        this.getContentPane().add(new JLabel());
         this.repaint();
     }
 
@@ -603,12 +626,9 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
     private String getNameWeiss(){
         String rueckgabe = "";
         String textFeldString = this.spielerNameWeiss.getText();
-        if(textFeldString.matches(".*\\[.*") ||
-           textFeldString.matches(".*\\;.*") ||
-           textFeldString.matches(".*\\,.*") ||
-           textFeldString.matches(".*\\].*")){
+        if(!textFeldString.matches("[A-Za-z0-9]*")){
             rueckgabe = "Weiss";
-            sendMessageToUser("Weißer Name falsch. Enthält eines der Zeichen: \'[\' \']\' \';\' \',\'");
+            sendMessageToUser("Weißer Name falsch. Darf nur aus Buchstaben und Zahlen bestehen.");
         }
         else if(textFeldString.length() == 0){
             rueckgabe = "Weiss";
@@ -628,12 +648,9 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
     private String getNameSchwarz(){
         String rueckgabe = "";
         String textFeldString = this.spielerNameSchwarz.getText();
-        if(textFeldString.matches(".*\\[.*") ||
-           textFeldString.matches(".*\\;.*") ||
-           textFeldString.matches(".*\\,.*") ||
-           textFeldString.matches(".*\\].*")){
+        if(!textFeldString.matches("[A-Za-z0-9]*")){
             rueckgabe = "Schwarz";
-            sendMessageToUser("Schwarzer Name falsch. Enthält eines der Zeichen: \'[\' \']\' \';\' \',\'");
+            sendMessageToUser("Schwarzer Name falsch. Darf nur aus Buchstaben und Zahlen bestehen.");
         }
         else if(textFeldString.length() == 0){
             rueckgabe = "Schwarz";
@@ -884,13 +901,7 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
             this.dasSpielfeld.initialisiereFeldMitVorgabenFuerSchwarz(this.getVorgabeWert());
             this.dasSpielfeldGUI.updateSpielFeld(this.dasSpielfeld.getSpielfeldZumZeitpunkt(0));
             this.spielVorgabeSteine.setEnabled(true);
-            /*this.getContentPane().remove(this.spielBrettHinweise);
-            this.spielBrettHinweise  = new JTextArea("Mit Vorgabe", 15, 5);
-            this.spielBrettHinweise.setBounds(this.spielVorgabeSteine.getX(),
-                                    this.spielVorgabeSteine.getY() + this.spielVorgabeSteine.getHeight() + 10,
-                                    this.spielVorgabeSteine.getWidth(),
-                                    100);
-            this.getContentPane().add(this.spielBrettHinweise);*/
+            this.spielBrettHinweise.setText("<HTML><BODY>Mit Vorgabe<BR>spielen...</BODY></HTML>");
             this.repaint();
             this.animiereFrameEnde();
 
@@ -898,28 +909,22 @@ public class SpieleinstellungFenster extends JFrame implements MouseListener, Ac
         else if(modus.equals("Startfeld")){
             this.spielVorgabeSteine.setEnabled(false);
             this.spielBrettHinweise.setName("Mit eigenem Feld spielen");
-            /*this.getContentPane().remove(this.spielBrettHinweise);
-            this.spielBrettHinweise  = new JTextArea("Mit Startfeld", 15, 5);
-            this.spielBrettHinweise.setBounds(this.spielVorgabeSteine.getX(),
-                                    this.spielVorgabeSteine.getY() + this.spielVorgabeSteine.getHeight() + 10,
-                                    this.spielVorgabeSteine.getWidth(),
-                                    100);*/
+            this.spielBrettHinweise.setText("<HTML><BODY>Linksklick für Schwarz<br>Rechtsklick für Weiß<br>Gleiche Farben <br>heben sich auf</BODY></HTML>");
             this.animiereFrameEnde();
             this.spielVorgabeSteine.setSelectedItem(0);
             this.dasSpielfeldGUI.updateSpielFeld(this.dasSpielfeld.getSpielfeldZumZeitpunkt(0));
-            //this.getContentPane().add(this.spielBrettHinweise);
             this.repaint();
         }
     }
 
     private void animiereFrameStart() {
         System.out.println("Start");
-       // this.setSize(this.getWidth(), this.frameMinhoehe);
+        this.setSize(this.getWidth(), this.frameMinhoehe);
     }
 
     private void animiereFrameEnde() {
         System.out.println("Ende");
-        //this.setSize(this.getWidth(), this.frameMaxhoehe);
+        this.setSize(this.getWidth(), this.frameMaxhoehe);
     }
 
     private void updateBrettVorgabe() {
