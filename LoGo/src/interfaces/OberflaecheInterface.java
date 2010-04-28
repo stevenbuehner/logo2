@@ -116,4 +116,6 @@ public interface OberflaecheInterface {
      * sie eine Art Pause- oder Blackscreen anzeigen möchte/sollte.
      */
     public void setPauseScreen(boolean setPause);
+
+    public void setAuswertungsButtonsVisible (boolean visible );
 }
