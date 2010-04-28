@@ -392,6 +392,9 @@ public class Steuerung implements SteuerungInterface {
                 // Schaltflaeche Undo und Redo einstellen
                 this.updateUndoUndRedo();
 
+                // Schaltflaeche fuer Aufgeben und Passen einstellen
+                LoGoApp.meineOberflaeche.passenUndAufgebenVisible(true);
+
                 // Zeiten auf der Oberfläche anzeigen
                 LoGoApp.meineOberflaeche.setAnzeigePeriodenZeitSchwarz(
                         this.dasSpielfeld.getPeriodenZeit());
@@ -461,6 +464,17 @@ public class Steuerung implements SteuerungInterface {
         // Spielstatus auf "Spiel aufgegeben" setzen
         this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_BEENDET);
         this.updateUndoUndRedo();
+
+        // Das Ergebnis sichtbar machen
+        int gewinner;
+        if(this.dasSpielfeld.getSpielerFarbeAnDerReihe()==Konstante.SCHNITTPUNKT_SCHWARZ){
+            gewinner = Konstante.SCHNITTPUNKT_WEISS;
+        }
+        else {
+            gewinner = Konstante.SCHNITTPUNKT_SCHWARZ;
+        }
+        LoGoApp.meineOberflaeche.ergebnisAufgebenZeigen(this.dasSpielfeld.getSpielerSchwarz().getSpielerName(),
+                                                        this.dasSpielfeld.getSpielerWeiss().getSpielerName(), gewinner);
     }
 
     /**Implementierung des Interfaces
@@ -514,6 +528,11 @@ public class Steuerung implements SteuerungInterface {
             this.dieSpielfeldAuswertung = new SpielAuswertung(this.dasSpielfeld.getSpielfeldGroesse(), this.dasSpielfeld.getSpielerWeiss().getKomiPunkte());
             this.dieSpielfeldAuswertung.auswertungInitialisieren(this.dasSpielfeld.getAktuellesSpielFeld());
             LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dieSpielfeldAuswertung.getAusgewertetesFeld(), this.dasSpielfeld.getSpielfeldGroesse(), null);
+
+            /* Noch die Schaltflaechen setzen fuer Passen und aufgeben */
+            LoGoApp.meineOberflaeche.passenUndAufgebenVisible(false);
+            this.updateUndoUndRedo();
+            LoGoApp.meineOberflaeche.auswertungBeendenVisible(true);
         }
     }
 
@@ -721,7 +740,9 @@ public class Steuerung implements SteuerungInterface {
      */
     public void zeitAbgelaufenSchwarzPeriodenzeit() {
         this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_BEENDET);
-        LoGoApp.meineOberflaeche.gibFehlermeldungAus("Zeit abgelaufen! Spiel wurde beendet!");
+        LoGoApp.meineOberflaeche.ergebnisAufZeitVerlorenZeigen(this.dasSpielfeld.getSpielerSchwarz().getSpielerName(),
+                                                               this.dasSpielfeld.getSpielerWeiss().getSpielerName(),
+                                                               Konstante.SCHNITTPUNKT_WEISS);
     }
 
     /**Implementierung des Interfaces
@@ -738,7 +759,9 @@ public class Steuerung implements SteuerungInterface {
      */
     public void zeitAbgelaufenWeissPeriodenzeit() {
         this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_BEENDET);
-        LoGoApp.meineOberflaeche.gibFehlermeldungAus("Zeit abgelaufen! Spiel wurde beendet!");
+        LoGoApp.meineOberflaeche.ergebnisAufZeitVerlorenZeigen(this.dasSpielfeld.getSpielerSchwarz().getSpielerName(),
+                                                               this.dasSpielfeld.getSpielerWeiss().getSpielerName(),
+                                                               Konstante.SCHNITTPUNKT_SCHWARZ);
     }
 
     /**
@@ -775,7 +798,16 @@ public class Steuerung implements SteuerungInterface {
     }
 
     public void buttonAuswertungBeendet() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_BEENDET);
+        LoGoApp.meineOberflaeche.ergebnisAuszaehlenZeigen(this.dasSpielfeld.getSpielerSchwarz().getSpielerName(),
+                this.dasSpielfeld.getSpielerWeiss().getSpielerName(),
+                this.dasSpielfeld.getSpielerWeiss().getKomiPunkte(),
+                this.dieSpielfeldAuswertung.getGebietsPunkteSchwarz(),
+                this.dieSpielfeldAuswertung.getGebietsPunkteWeiss(),
+                this.dasSpielfeld.getSpielerWeiss().getGefangenenAnzahl() /* Die von weiss gefangenen Steine sind die gefangenen Schwarzen */,
+                this.dasSpielfeld.getSpielerSchwarz().getGefangenenAnzahl() /* Die von schwarz gefangenen Steine sind die gefangenen Weissen */,
+                this.dieSpielfeldAuswertung.getSchwarzeGefangeneAufBrett(),
+                this.dieSpielfeldAuswertung.getWeisseGefangeneAufBrett());
     }
     
 }
