@@ -720,11 +720,48 @@ public class Steuerung implements SteuerungInterface {
      * @see SteuerungInterface
      */
     public void buttonRedo() {
-        /* In dieser Funktion muss noch der Timer einbebunden werden und */
-
         if(this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_LAUEFT){
             if (this.getAktuellAngezeigteZugnummer() < this.dasSpielfeld.getLetzteZugnummer()) {
                 this.setAktuelleAngeigteZugnummer(this.getAktuellAngezeigteZugnummer() + 1);
+                /* Da man wirklich Redo macht, wird die Uhr umgeschaltet
+                 * Als erstes wird die Zeit, des Spielers der nicht dran ist
+                 * angehalten, dann die Zeit des anderen gestartet .
+                 * Zu bemerken ist, das der Zug noch nicht rueckgaengig gemacht wurde
+                 * spielerAnDerReihe() ist also der spieler der gepasst hat
+                 */
+                 if (this.dasSpielfeld.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ) {
+                    this.spielerZeitSchwarz.stoppeCountdown();
+                    this.periodenZeitSchwarz.stoppeCountdown();
+                    this.dasSpielfeld.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(this.spielerZeitSchwarz.getRemainingTime());
+                } else {
+                    this.spielerZeitWeiss.stoppeCountdown();
+                    this.periodenZeitWeiss.stoppeCountdown();
+                    this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(this.spielerZeitWeiss.getRemainingTime());
+                }
+                /* Nun die Zeit des Spielers, der an der Reihe ist fortsetzen */
+                // Setze das Spiel wieder fort und starte die nötigen Timer
+                /* Da der aktuelle spieler noch nicht getauscht hat, muss vom
+                 * spieler, der noch nicht an der Reihe ist fortgesetzt werden
+                 */
+                if (this.dasSpielfeld.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_WEISS) {
+                    // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
+                    if (this.dasSpielfeld.getSpielerSchwarz().getVerbleibendeSpielzeitInMS() > 0) {
+                        this.spielerZeitSchwarz.starteCountdown();
+                    } else {
+                        // Setze den Countdown fort
+                        this.periodenZeitSchwarz.starteCountdown();
+                    }
+                    LoGoApp.meineOberflaeche.setSchwarzAmZug();
+                } else {
+                    // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
+                    if (this.dasSpielfeld.getSpielerWeiss().getVerbleibendeSpielzeitInMS() > 0) {
+                        this.spielerZeitWeiss.starteCountdown();
+                    } else {
+                        // Starte den Countdown, bzw. setze den Countdown fort
+                        this.periodenZeitWeiss.starteCountdown();
+                    }
+                    LoGoApp.meineOberflaeche.setWeissAmZug();
+                }
             } else {
                 this.setAktuelleAngeigteZugnummer(this.dasSpielfeld.getLetzteZugnummer());
             }
