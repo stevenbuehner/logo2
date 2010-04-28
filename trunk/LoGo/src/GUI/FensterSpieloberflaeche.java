@@ -70,6 +70,9 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
     protected MenuItem SpielBeenden;
     protected MenuItem Undo;
     protected MenuItem Redo;
+    protected MenuItem Passen;
+    protected MenuItem Aufgeben;
+    protected MenuItem AuswertungBeenden;
     protected MenuItem Pause;
     protected MenuItem Fortsetzen;
 
@@ -222,6 +225,27 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         Redo.setEnabled(false);
         Redo.setShortcut(new MenuShortcut(KeyEvent.VK_RIGHT));
         dasSpielMenue.add(Redo);
+
+        // Trenner
+        dasSpielMenue.addSeparator();
+
+        // Spielzug Passen
+        Passen = new MenuItem("Passen");
+        Passen.addActionListener(this);
+        Passen.setEnabled(false);
+        dasSpielMenue.add(Passen);
+
+        // Spiel aufgeben
+        Aufgeben = new MenuItem("Aufgeben");
+        Aufgeben.addActionListener(this);
+        Aufgeben.setEnabled(false);
+        dasSpielMenue.add(Aufgeben);
+
+         // Spiel AuswertungBeenden
+        AuswertungBeenden = new MenuItem("Auswertung beenden");
+        AuswertungBeenden.addActionListener(this);
+        AuswertungBeenden.setEnabled(false);
+        dasSpielMenue.add(AuswertungBeenden);
 
         // Trenner
         dasSpielMenue.addSeparator();
@@ -526,6 +550,12 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
             this.buttonSpielSpeichernGedrueckt();
         } else if (e.getSource() == SpielBeenden) {
             this.buttonSpielBeendenGedrueckt();
+        }else if (e.getSource() == Passen) {
+            this.buttonPassen();
+        } else if (e.getSource() == Aufgeben) {
+            this.buttonAufgeben();
+        } else if (e.getSource() == AuswertungBeenden) {
+            this.buttonAuswertungBeendet();
         } else if (e.getSource() == Undo) {
             this.buttonUndoGedrueckt();
         } else if (e.getSource() == Redo) {
@@ -608,5 +638,22 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
     public void setPauseScreen(boolean setPause) {
         this.spielOberflaechePausiert = setPause;
     }
+
+    private void buttonPassen() {
+        LoGoApp.meineSteuerung.buttonPassen();
+    }
+
+    private void buttonAufgeben() {
+        LoGoApp.meineSteuerung.buttonAufgeben();
+    }
+
+    private void buttonAuswertungBeendet() {
+        LoGoApp.meineSteuerung.buttonAuswertungBeendet();
+    }
+
+    public void setAuswertungsButtonsVisible(boolean visible) {
+        this.AuswertungBeenden.setEnabled(visible);
+    }
+
 
 }

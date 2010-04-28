@@ -81,7 +81,6 @@ public class Steuerung implements SteuerungInterface {
          * Diese muessen noch programmiert werden ...
          */
         this.dasSpielfeld = bereitsInitialisiertesSpielfeld;
-        this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_UNVOLLSTAENDIG);
 
         // Timer initialisieren
         // Vorraussetzung zum Initialisieren ist ein Objekt vom Typ Spieler in this.dasSpielfeld
@@ -318,21 +317,14 @@ public class Steuerung implements SteuerungInterface {
                     LoGoApp.meineOberflaeche.setPauseScreen(false);
                     this.updateUndoUndRedo();
                     break;
-                case Konstante.SPIEL_BEENDET_DURCH_APP:
-                    userResponse = JOptionPane.OK_OPTION;
-                    break;
                 case Konstante.SPIEL_PAUSIERT:
                     userResponse = JOptionPane.showConfirmDialog(null, "Das aktuelle Spiel pausiert nur. Wollen Sie wirklich das alte Spiel beenden und ein neues starten?");
-                    break;
-                case Konstante.SPIEL_UNVOLLSTAENDIG:
-                    // Sollte nicht vorkommen ... nur der vollständigkeitshalber
-                    userResponse = JOptionPane.OK_OPTION;
                     break;
                 case Konstante.SPIEL_GEBIETSAUSWERTUNG:
                     // Sollte nicht vorkommen ... nur der vollständigkeitshalber
                     userResponse = JOptionPane.OK_OPTION;
                     break;
-                case Konstante.SPIEL_AUFGEGEBEN:
+                case Konstante.SPIEL_BEENDET:
                     userResponse = JOptionPane.OK_OPTION;
                     break;
                 default:
@@ -466,7 +458,7 @@ public class Steuerung implements SteuerungInterface {
         }
 
         // Spielstatus auf "Spiel aufgegeben" setzen
-        this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_AUFGEGEBEN);
+        this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_BEENDET);
         this.updateUndoUndRedo();
     }
 
@@ -727,7 +719,7 @@ public class Steuerung implements SteuerungInterface {
      * @see SteuerungInterface
      */
     public void zeitAbgelaufenSchwarzPeriodenzeit() {
-        this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_BEENDET_DURCH_APP);
+        this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_BEENDET);
         LoGoApp.meineOberflaeche.gibFehlermeldungAus("Zeit abgelaufen! Spiel wurde beendet!");
     }
 
@@ -744,7 +736,7 @@ public class Steuerung implements SteuerungInterface {
      * @see SteuerungInterface
      */
     public void zeitAbgelaufenWeissPeriodenzeit() {
-        this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_BEENDET_DURCH_APP);
+        this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_BEENDET);
         LoGoApp.meineOberflaeche.gibFehlermeldungAus("Zeit abgelaufen! Spiel wurde beendet!");
     }
 
@@ -779,6 +771,10 @@ public class Steuerung implements SteuerungInterface {
             LoGoApp.meineOberflaeche.setUndoErlaubt(false);
             LoGoApp.meineOberflaeche.setRedoErlaubt(false);
         }
+    }
+
+    public void buttonAuswertungBeendet() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }

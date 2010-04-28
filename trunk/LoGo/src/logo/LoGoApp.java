@@ -31,7 +31,7 @@ public class LoGoApp extends SingleFrameApplication {
      */
     @Override
     protected void startup() {
-        show(new LoGoView(this));
+        //show(new LoGoView(this));
     }
 
     /**

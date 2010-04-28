@@ -162,4 +162,9 @@ public interface SteuerungInterface {
      * Spiel beendet.
      */
     public void zeitAbgelaufenWeissPeriodenzeit();
+
+    /**
+     * Auswertung beenden.
+     */
+    public void buttonAuswertungBeendet();
 }

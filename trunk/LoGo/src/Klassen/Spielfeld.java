@@ -83,7 +83,6 @@ public class Spielfeld {
         /* Noch kein Feld verboten */
         this.setXPosVerboten(-1);
         this.setYPosVerboten(-1);
-        this.setSpielZustand(Konstante.SPIEL_UNVOLLSTAENDIG);
 
         // Chache Funktionen setzen
         this.aktuellesSpielfeldCache = new int[this.getSpielfeldGroesse()][this.getSpielfeldGroesse()];
@@ -171,9 +170,6 @@ public class Spielfeld {
 
         // Überprüfen ob der Zustand erlaubt ist
         switch( neuerSpielZustand){
-            case Konstante.SPIEL_UNVOLLSTAENDIG:
-                this.spielZustand = neuerSpielZustand;
-                break;
             case Konstante.SPIEL_GEBIETSAUSWERTUNG:
                 this.spielZustand = neuerSpielZustand;
                 break;
@@ -183,10 +179,7 @@ public class Spielfeld {
             case Konstante.SPIEL_PAUSIERT:
                 this.spielZustand = neuerSpielZustand;
                 break;
-            case Konstante.SPIEL_AUFGEGEBEN:
-                this.spielZustand = neuerSpielZustand;
-                break;
-            case Konstante.SPIEL_BEENDET_DURCH_APP:
+            case Konstante.SPIEL_BEENDET:
                 this.spielZustand = neuerSpielZustand;
                 break;
             default:
@@ -1138,8 +1131,6 @@ public class Spielfeld {
          /* Wenn man bis hier kommt, ist das Spiel valide. Es wurde die Reihenfolge
           * der Spieler, das Passen und die Zuege beachtet. Alles war korrekt
           */
-        if(validiert && this.getSpielZustand() == Konstante.SPIEL_UNVOLLSTAENDIG){
-        }
         return validiert;
     }
 
