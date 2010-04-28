@@ -1027,7 +1027,7 @@ public class Spielfeld {
         }
         for(int i=0; i<this.getSpielfeldGroesse(); i++){
             for(int j=0; j<this.getSpielfeldGroesse(); j++){
-                if(this.versucheSteinZuNehmen(i,j,feld) == 1){
+                if(this.versucheSteinZuNehmen(i,j,feld,false) == 1){
                     validiert = false;
                     System.out.println("Anfangsspielstellung nicht valide. Stelle "+ i + ","+j+". Gruppe hat keine Freiheiten");
                     return validiert;
