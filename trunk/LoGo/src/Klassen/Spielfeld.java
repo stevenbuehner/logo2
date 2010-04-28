@@ -844,10 +844,9 @@ public class Spielfeld {
         if(fangbar==false){
             /* Steine als lebendig markieren 
              * da momElement gerade auf leeres Feld zeigt! dekrementieren */
-            if(nehmen==true){
-                for(int i = momElement - 1; i>=0; --i) {
-                    feld[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setSteinStatus(Konstante.STEIN_LEBENDIG);
-                }
+            for(int i = momElement - 1; i>=0; --i) {
+                 feld[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setSteinStatus(Konstante.STEIN_LEBENDIG);
+                
             }
         return 0; // wurde ja kein Stein gefangen
         }
@@ -863,6 +862,11 @@ public class Spielfeld {
             return momElement; // momElement ist gerade die Gefangenenzahl ;)
             }
             else {
+                /* Wenn Steine genehmen werden koennen, muessen sie als Tot 
+                 * markiert werden */
+                for(int i = momElement -1; i>=0; --i){
+                    feld[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setSteinStatus(Konstante.STEIN_GEFANGEN);
+                }
                 return 1;
             }
         }
@@ -1027,9 +1031,9 @@ public class Spielfeld {
         }
         for(int i=0; i<this.getSpielfeldGroesse(); i++){
             for(int j=0; j<this.getSpielfeldGroesse(); j++){
-                if(this.versucheSteinZuNehmen(i,j,feld,false) == 1){
+                if(this.versucheSteinZuNehmen(i,j,feld,false) >= 1){
                     validiert = false;
-                    System.out.println("Anfangsspielstellung nicht valide. Stelle "+ i + ","+j+". Gruppe hat keine Freiheiten");
+                    System.out.println("Anfangsspielstellung nicht valide. Stelle "+ (i+1) + ","+(j+1)+". Gruppe hat keine Freiheiten");
                     return validiert;
                 }
             }
