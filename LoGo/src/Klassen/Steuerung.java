@@ -248,7 +248,8 @@ public class Steuerung implements SteuerungInterface {
 
         else if(this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_GEBIETSAUSWERTUNG){
             this.dieSpielfeldAuswertung.markiereStein(xPos, yPos);
-            LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dieSpielfeldAuswertung.getAusgewertetesFeld(), this.dasSpielfeld.getSpielfeldGroesse(), null);
+            int feld[][] = this.dieSpielfeldAuswertung.getAusgewertetesFeld();
+            LoGoApp.meineOberflaeche.setBrettOberflaeche(feld, this.dasSpielfeld.getSpielfeldGroesse(), null);
         }
     }
 

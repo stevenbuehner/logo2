@@ -230,6 +230,10 @@ public class Spielbrett extends JComponent {
                                 this.repaint();
                             } else if (this.spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_VERBOTEN) {
                                 this.feld[i][j].starteAnimationVerbotenerZugAufheben();
+                            } else if (this.spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ){
+                                this.feld[i][j].starteAnimationGebietSchwarzZuLeer();
+                            } else if (this.spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_GEBIET_WEISS){
+                                this.feld[i][j].starteAnimantionGebietWeissZuLeer();
                             }
                             break;
                         case Konstante.SCHNITTPUNKT_VERBOTEN:

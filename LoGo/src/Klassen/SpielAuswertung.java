@@ -659,11 +659,12 @@ public class SpielAuswertung {
         for(int i=0; i<this.getFeldGroesse(); i++){
             for(int j=0; j<this.getFeldGroesse(); j++){
                 /* Vorraussetzung, fuer die Analyse ist, das der Schnittpunkt
-                 * noch nicht analysiert wurd. Ist der Schnittpunkt Leer, beginnt
-                 * eine normale suche. Eine suche darf nur bei einem Leeren Feld
-                 * beginnen.
+                 * noch nicht analysiert wurd. Eine suche beginnt bei einem
+                 * nicht belegten Schnittpunkt, also Leer oder Gebiet
                  */
-                if(this.auswertungBrett[i][j].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER  &&
+                if((this.auswertungBrett[i][j].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER ||
+                    this.auswertungBrett[i][j].getBelegungswert() == Konstante.SCHNITTPUNKT_GEBIET_WEISS ||
+                    this.auswertungBrett[i][j].getBelegungswert() == Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ) &&
                    this.auswertungBrett[i][j].getAnalysiert() == false){
                    /* Nun beginnt die suche bei diesem Schnittpunkt */
                    farbe = -1;            // Farbe am anfang unbekannt
@@ -691,8 +692,12 @@ public class SpielAuswertung {
 
                        /* 1. Linke Seite */
                        if(listeSteine.get(momElement).getXPos()!=0){
-                           if(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                                   == Konstante.SCHNITTPUNKT_LEER &&
+                           if((this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_LEER ||
+                               this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ ||
+                               this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_GEBIET_WEISS) &&
                               this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getMarkiert()
                                    == false){
                                /* Stein aufnehmen */
@@ -747,18 +752,19 @@ public class SpielAuswertung {
                            }
 
                            /* Komische Werte abfangen */
-                           else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                                            == Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ ||
-                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                                            == Konstante.SCHNITTPUNKT_GEBIET_WEISS){
-                               gebietMarkieren = false;
+                           else {
+                               /* nichts passiert */
                            }
                        }
 
                        /* 2. Rechte Seite */
                        if(listeSteine.get(momElement).getXPos()!=this.getFeldGroesse()-1){
-                           if(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                                   == Konstante.SCHNITTPUNKT_LEER &&
+                           if((this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_LEER ||
+                              this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ ||
+                              this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_GEBIET_WEISS) &&
                               this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getMarkiert()
                                    == false){
                                /* Stein aufnehmen */
@@ -812,22 +818,21 @@ public class SpielAuswertung {
                                            throw new UnsupportedOperationException("Fehler in switch case, eigentlich muesste hier SCHNITTPUNKT_SCHWARZ oder SCHNITTPUNKT_WEISS stehen");
                                    }
                            }
-
                            /* Komische Werte abfangen */
-                           else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                                            == Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ ||
-                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                                            == Konstante.SCHNITTPUNKT_GEBIET_WEISS){
-                               gebietMarkieren = false;
+                           else{
+                               /* nichts passiert */
                            }
-
                            
                        }
 
                        /* 3. Untere Seite */
                        if(listeSteine.get(momElement).getYPos()!=0){
-                           if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
-                                   == Konstante.SCHNITTPUNKT_LEER &&
+                           if((this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_LEER ||
+                              this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ ||
+                              this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_GEBIET_WEISS)&&
                               this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getMarkiert()
                                    == false){
                                /* Stein aufnehmen */
@@ -881,20 +886,20 @@ public class SpielAuswertung {
                                            throw new UnsupportedOperationException("Fehler in switch case, eigentlich muesste hier SCHNITTPUNKT_SCHWARZ oder SCHNITTPUNKT_WEISS stehen");
                                    }
                            }
-
                            /* Komische Werte abfangen */
-                           else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
-                                            == Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ ||
-                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
-                                            == Konstante.SCHNITTPUNKT_GEBIET_WEISS){
-                               gebietMarkieren = false;
+                           else{
+                               /* nichts passiert */
                            }
                        }
 
                        /* 4. Obere Seite */
                        if(listeSteine.get(momElement).getYPos()!=this.getFeldGroesse()-1){
-                           if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
-                                   == Konstante.SCHNITTPUNKT_LEER &&
+                           if((this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_LEER ||
+                              this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ ||
+                              this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                                   == Konstante.SCHNITTPUNKT_GEBIET_WEISS)&&
                               this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getMarkiert()
                                    == false){
                                /* Stein aufnehmen */
@@ -950,11 +955,8 @@ public class SpielAuswertung {
                            }
 
                            /* Komische Werte abfangen */
-                           else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
-                                            == Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ ||
-                                   this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
-                                            == Konstante.SCHNITTPUNKT_GEBIET_WEISS){
-                               gebietMarkieren = false;
+                           else{
+                               /* nichts passiert */
                            }
                        }
                        /* Alle Seiten untersucht. Nun zum naechsten Stein */
