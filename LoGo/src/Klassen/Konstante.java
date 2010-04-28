@@ -35,4 +35,9 @@ public class Konstante {
     public final static int SPIEL_PAUSIERT              = 103;
     public final static int SPIEL_BEENDET               = 104;  // Das Spiel wurde beendet (aufgegeben, zeitaus, ...)
 
+    // Konstanten um zu Unterscheiden, wie das spiel beendet wurde
+    public final static int BEENDET_DURCH_ZEIT          = 201;
+    public final static int BEENDET_DURCH_AUSZAEHLEN    = 202;
+    public final static int BEENDET_DURCH_AUFGEBEN      = 203;
+
 }

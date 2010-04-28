@@ -171,7 +171,7 @@ public class SpielAuswertung {
             return -1;
         }
         this.findeGebiete();
-      //  this.suchePseudoPunkte();
+        this.suchePseudoPunkte();
         return rueckgabe;
     }
 
@@ -1092,7 +1092,13 @@ public class SpielAuswertung {
         this.auswertungBrett[xPos][yPos].setMarkiert(true);
 
         do{
-            /* Man nimmt nur Steine auf, die noch nicht markiert sind. */
+            /* Da man nur lebende Steine als Analysiert kennzeichnet, besitzen
+             * diese, wenn sie als analysiert gekennzeichnet sind mindestens 2
+             * Freiheiten. Es ist daher klar, das die Gruppe keine Pseudofreiheiten
+             * hat. freiheiten kann daher auf 2 gesetzt werden.
+             * 
+             *
+             * */
 
             /* 1. Linke Seite */
             if(listeSteine.get(momElement).getXPos()!=0){
@@ -1122,6 +1128,23 @@ public class SpielAuswertung {
                     freiheiten++;
                     xPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getXPos();
                     yPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getYPos();
+                }
+                else if (this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == farbe &&
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getAnalysiert()
+                        == true){
+                        /* Wenn man auf einen schon Analysierten Stein trifft,
+                         * so muss dieser demarkiert werden, damit falls man
+                         * erneut sucht der Stein betrachtet wird.
+                         */
+                    this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].setAnalysiert(false);
+                    this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].setMarkiert(false);
+                    for(int l=listeSteine.size()-1; l>=0; l--){
+                        this.auswertungBrett[listeSteine.get(l).getXPos()][listeSteine.get(l).getYPos()].setAnalysiert(false);
+                        this.auswertungBrett[listeSteine.get(l).getXPos()][listeSteine.get(l).getYPos()].setMarkiert(false);
+                        listeSteine.remove(l);
+                    }
+                    return true;
                 }
                 else {
                     /* nichts */
@@ -1157,6 +1180,23 @@ public class SpielAuswertung {
                     xPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getXPos();
                     yPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getYPos();
                 }
+                else if (this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == farbe &&
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getAnalysiert()
+                        == true){
+                        /* Wenn man auf einen schon Analysierten Stein trifft,
+                         * so muss dieser demarkiert werden, damit falls man
+                         * erneut sucht der Stein betrachtet wird.
+                         */
+                    this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].setAnalysiert(false);
+                    this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].setMarkiert(false);
+                    for(int l=listeSteine.size()-1; l>=0; l--){
+                        this.auswertungBrett[listeSteine.get(l).getXPos()][listeSteine.get(l).getYPos()].setAnalysiert(false);
+                        this.auswertungBrett[listeSteine.get(l).getXPos()][listeSteine.get(l).getYPos()].setMarkiert(false);
+                        listeSteine.remove(l);
+                    }
+                    return true;
+                }
                 else {
                     /* nichts */
                 }
@@ -1190,6 +1230,23 @@ public class SpielAuswertung {
                     freiheiten++;
                     xPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getXPos();
                     yPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getYPos();
+                }
+                else if (this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                        == farbe &&
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getAnalysiert()
+                        == true){
+                        /* Wenn man auf einen schon Analysierten Stein trifft,
+                         * so muss dieser demarkiert werden, damit falls man
+                         * erneut sucht der Stein betrachtet wird.
+                         */
+                    this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].setAnalysiert(false);
+                    this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].setMarkiert(false);
+                    for(int l=listeSteine.size()-1; l>=0; l--){
+                        this.auswertungBrett[listeSteine.get(l).getXPos()][listeSteine.get(l).getYPos()].setAnalysiert(false);
+                        this.auswertungBrett[listeSteine.get(l).getXPos()][listeSteine.get(l).getYPos()].setMarkiert(false);
+                        listeSteine.remove(l);
+                    }
+                    return true;
                 }
                 else {
                     /* nichts */
@@ -1225,6 +1282,23 @@ public class SpielAuswertung {
                     xPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getXPos();
                     yPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getYPos();
                 }
+                else if (this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                        == farbe &&
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getAnalysiert()
+                        == true){
+                        /* Wenn man auf einen schon Analysierten Stein trifft,
+                         * so muss dieser demarkiert werden, damit falls man
+                         * erneut sucht der Stein betrachtet wird.
+                         */
+                    this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].setAnalysiert(false);
+                    this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].setMarkiert(false);
+                    for(int l=listeSteine.size()-1; l>=0; l--){
+                        this.auswertungBrett[listeSteine.get(l).getXPos()][listeSteine.get(l).getYPos()].setAnalysiert(false);
+                        this.auswertungBrett[listeSteine.get(l).getXPos()][listeSteine.get(l).getYPos()].setMarkiert(false);
+                        listeSteine.remove(l);
+                    }
+                    return true;
+                }
                 else {
                     /* nichts */
                 }
@@ -1258,4 +1332,76 @@ public class SpielAuswertung {
         }
         return false;
     }
+
+    /** 
+     * Gibt zurueck wieviele schwarze Steine auf dem Brett als gefangen markiert
+     * sind
+     * @return Anzahl der Gefangenen
+     */
+    public int getSchwarzeGefangeneAufBrett(){
+        int rueckgabe = 0;
+
+        for (int i=0; i<this.getFeldGroesse(); i++){
+            for(int j=0; j<this.getFeldGroesse(); j++){
+                if(this.auswertungBrett[i][j].getBelegungswert() == Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN){
+                    rueckgabe++;
+                }
+            }
+        }
+        return rueckgabe;
+    }
+
+    /**
+     * Gibt zurueck wieviele weisse Steine auf dem Brett als gefangen markiert
+     * sind
+     * @return Anzahl der Gefangenen
+     */
+    public int getWeisseGefangeneAufBrett(){
+        int rueckgabe = 0;
+
+        for (int i=0; i<this.getFeldGroesse(); i++){
+            for(int j=0; j<this.getFeldGroesse(); j++){
+                if(this.auswertungBrett[i][j].getBelegungswert() == Konstante.SCHNITTPUNKT_WEISS_GEFANGEN){
+                    rueckgabe++;
+                }
+            }
+        }
+        return rueckgabe;
+    }
+
+    public int getGebietsPunkteSchwarz(){
+        int rueckgabe = 0;
+
+        for (int i=0; i<this.getFeldGroesse(); i++){
+            for(int j=0; j<this.getFeldGroesse(); j++){
+                if(this.auswertungBrett[i][j].getBelegungswert() == Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ){
+                    rueckgabe++;
+                }
+                if(this.auswertungBrett[i][j].getBelegungswert() == Konstante.SCHNITTPUNKT_WEISS_GEFANGEN){
+                    rueckgabe++;
+                }
+
+            }
+        }
+        return rueckgabe;
+    }
+
+    public int getGebietsPunkteWeiss(){
+        int rueckgabe = 0;
+
+        for (int i=0; i<this.getFeldGroesse(); i++){
+            for(int j=0; j<this.getFeldGroesse(); j++){
+                if(this.auswertungBrett[i][j].getBelegungswert() == Konstante.SCHNITTPUNKT_GEBIET_WEISS){
+                    rueckgabe++;
+                }
+                if(this.auswertungBrett[i][j].getBelegungswert() == Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN){
+                    rueckgabe++;
+                }
+            }
+        }
+        return rueckgabe;
+    }
+
+
+
 }

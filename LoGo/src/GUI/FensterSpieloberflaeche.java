@@ -1,5 +1,6 @@
 package GUI;
 
+import Klassen.Konstante;
 import interfaces.OberflaecheInterface;
 import interfaces.SpielerUhren;
 import java.awt.Color;
@@ -250,14 +251,14 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         // Trenner
         dasSpielMenue.addSeparator();
 
-        // Spielzug Undo
+        // Spielzug Pause
         Pause = new MenuItem("Spiel pausieren");
         Pause.addActionListener(this);
         Pause.setShortcut(new MenuShortcut(KeyEvent.VK_P));
         Pause.setEnabled(false);
         dasSpielMenue.add(Pause);
 
-        // Spielzug Redo
+        // Spielzug Fortsetzen
         Fortsetzen = new MenuItem("Spiel fortsetzen");
         Fortsetzen.addActionListener(this);
         Fortsetzen.setShortcut(new MenuShortcut(KeyEvent.VK_P));
@@ -655,5 +656,53 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         this.AuswertungBeenden.setEnabled(visible);
     }
 
+    public void ergebnisAuszaehlenZeigen(String nameSchwarz, String nameWeiss, float komiFuerWeiss, int gebietsPunktSchwarz, int gebietsPunkteWeiss,
+            int schwarzeGefangenImSpiel, int weisseGefangenImSpiel, int schwarzeSteineTotAufBrett,  int weisseSteineTotAufBrett) {
+        System.out.println("Name Schwarz: "+ nameSchwarz);
+        System.out.println("Name Weiss: "+ nameWeiss);
+        System.out.println("Gebietspunkte Schwarz: "+ gebietsPunktSchwarz);
+        System.out.println("Gebietspunkte Weiss: "+ gebietsPunkteWeiss);
+        System.out.println("Gefangene Schwarze im Spiel: "+ schwarzeGefangenImSpiel);
+        System.out.println("Gefangene Weisse im Spiel: "+ weisseGefangenImSpiel);
+        System.out.println("Tote Schwarze auf Brett: "+ schwarzeSteineTotAufBrett);
+        System.out.println("Tote Weisse auf Brett: "+ weisseSteineTotAufBrett);
+        System.out.println("Komi fuer Weiss: "+ komiFuerWeiss);
+    }
 
+    public void ergebnisAufgebenZeigen(String nameSchwarz, String nameWeiss, int konstanteFuerGewinner) {
+        /* Erstmal zum Debugen */
+        System.out.println("Name Schwarz: "+ nameSchwarz);
+        System.out.println("Name Weiss: "+ nameWeiss);
+        String gewinner;
+        if(konstanteFuerGewinner == Konstante.SCHNITTPUNKT_SCHWARZ){
+            gewinner = "Schwarz";
+        }
+        else{
+            gewinner = "Weiss";
+        }
+        System.out.println(gewinner + " gewinnt durch Aufgabe");
+    }
+
+    public void ergebnisAufZeitVerlorenZeigen(String nameSchwarz, String nameWeiss, int konstanteFuerGewinner) {
+        /* Erstmal zum Debugen */
+        System.out.println("Name Schwarz: "+ nameSchwarz);
+        System.out.println("Name Weiss: "+ nameWeiss);
+        String gewinner;
+        if(konstanteFuerGewinner == Konstante.SCHNITTPUNKT_SCHWARZ){
+            gewinner = "Schwarz";
+        }
+        else{
+            gewinner = "Weiss";
+        }
+        System.out.println(gewinner + " gewinnt durch Zeit");
+    }
+
+    public void passenUndAufgebenVisible(boolean visible){
+        this.Passen.setEnabled(visible);
+        this.Aufgeben.setEnabled(visible);
+    }
+
+    public void auswertungBeendenVisible(boolean visible){
+        this.AuswertungBeenden.setEnabled(visible);
+    }
 }
