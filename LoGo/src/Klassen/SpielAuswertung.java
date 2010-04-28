@@ -250,6 +250,10 @@ public class SpielAuswertung {
                     listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()]);
                     this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
                 }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getMarkiert()
+                        == true){
+                    /* Dann wurde der Stein schon aufgenommen -- nichts passiert */
+                }
                 else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
                         == gegenfarbe){
                     /* nichts */
@@ -264,7 +268,7 @@ public class SpielAuswertung {
                                                        this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getYPos());
                 }
                 else {
-                  //  throw new UnsupportedOperationException("Farbe des Steins falsch definiert");
+                    throw new UnsupportedOperationException("Farbe des Steins falsch definiert");
                 }
 
             }
@@ -279,9 +283,14 @@ public class SpielAuswertung {
                         == farbe ||
                     this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
                         == Konstante.SCHNITTPUNKT_GEBIET_WEISS) &&
-                    this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getMarkiert() == false){
+                    this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getMarkiert()
+                        == false){
                     listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()]);
                     this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getMarkiert()
+                        == true){
+                    /* Dann wurde der Stein schon aufgenommen -- nichts passiert */
                 }
                 else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
                         == gegenfarbe){
@@ -297,7 +306,7 @@ public class SpielAuswertung {
                                                        this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getYPos());
                 }
                 else {
-                   // throw new UnsupportedOperationException("Farbe des Steins falsch definiert");
+                    throw new UnsupportedOperationException("Farbe des Steins falsch definiert");
                 }
 
             }
@@ -317,6 +326,10 @@ public class SpielAuswertung {
                     listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1]);
                     this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].setMarkiert(true);
                 }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getMarkiert()
+                        == true){
+                    /* Dann wurde der Stein schon aufgenommen -- nichts passiert */
+                }
                 else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
                         == gegenfarbe){
                     /* nichts */
@@ -331,12 +344,12 @@ public class SpielAuswertung {
                                                        this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getYPos());
                 }
                 else {
-                   // throw new UnsupportedOperationException("Farbe des Steins falsch definiert");
+                    throw new UnsupportedOperationException("Farbe des Steins falsch definiert");
                 }
 
             }
 
-            /* 4. Obere Seite */
+            /* 4. Untere Seite */
             if( listeSteine.get(momElement).getYPos() != this.getFeldGroesse()-1){
                 if((this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
                         == Konstante.SCHNITTPUNKT_LEER ||
@@ -346,9 +359,14 @@ public class SpielAuswertung {
                         == farbe ||
                     this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
                         == Konstante.SCHNITTPUNKT_GEBIET_WEISS) &&
-                    this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getMarkiert() == false){
+                    this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getMarkiert()
+                        == false){
                     listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1]);
                     this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].setMarkiert(true);
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getMarkiert()
+                        == true){
+                    /* Dann wurde der Stein schon aufgenommen -- nichts passiert */
                 }
                 else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
                         == gegenfarbe){
@@ -364,12 +382,13 @@ public class SpielAuswertung {
                                                        this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getYPos());
                 }
                 else {
-                  //  throw new UnsupportedOperationException("Farbe des Steins falsch definiert");
+                    throw new UnsupportedOperationException("Farbe des Steins falsch definiert");
                 }
 
             }
+
+
             momElement++;
-           // this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()].setAnalysiert(true);
         }while(momElement<listeSteine.size());
         /* Jetzt sind nur Leere Steine, oder steine der Angeklickten farbe in
          * der Liste. Diese werden jetzt ummarkiert.
@@ -456,7 +475,9 @@ public class SpielAuswertung {
                         this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
                         == gegenfarbe ||
                         this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                        == gegenfarbeGefangen){
+                        == gegenfarbeGefangen ||
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getMarkiert()
+                        == true){
                     /* nichts */
                 }
             }
@@ -481,7 +502,9 @@ public class SpielAuswertung {
                         this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
                         == gegenfarbe ||
                         this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                        == gegenfarbeGefangen){
+                        == gegenfarbeGefangen||
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getMarkiert()
+                        == true){
                     /* nichts */
                 }
             }
@@ -506,7 +529,9 @@ public class SpielAuswertung {
                         this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
                         == gegenfarbe ||
                         this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
-                        == gegenfarbeGefangen){
+                        == gegenfarbeGefangen||
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getMarkiert()
+                        == true){
                     /* nichts */
                 }
             }
@@ -531,11 +556,12 @@ public class SpielAuswertung {
                         this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
                         == gegenfarbe ||
                         this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
-                        == gegenfarbeGefangen){
+                        == gegenfarbeGefangen ||
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getMarkiert()
+                        == true){
                     /* nichts */
                 }
             }
-            this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()].setAnalysiert(true);
             momElement++;
         }while(momElement<listeSteine.size());
         /* Alle Felder sind durchsucht. In der Liste sind nun Tote Steine der
