@@ -655,60 +655,58 @@ public class Steuerung implements SteuerungInterface {
     public void buttonUndo() {
 
 
-        if(this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_LAUEFT ||
-           this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_GEBIETSAUSWERTUNG){
-            if (this.getAktuellAngezeigteZugnummer() > 0) {
-                this.setAktuelleAngeigteZugnummer(this.getAktuellAngezeigteZugnummer() - 1);
-                /* Da man wirklich Undo macht, wird die Uhr umgeschaltet 
-                 * Als erstes wird die Zeit, des Spielers der nicht dran ist 
-                 * angehalten, dann die Zeit des anderen gestartet .
-                 * Zu bemerken ist, das der Zug noch nicht rueckgaengig gemacht wurde
-                 * spielerAnDerReihe() ist also der spieler der gepasst hat
-                 */
-                 if (this.dasSpielfeld.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ) {
-                    this.spielerZeitSchwarz.stoppeCountdown();
-                    this.periodenZeitSchwarz.stoppeCountdown();
-                    this.dasSpielfeld.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(this.spielerZeitSchwarz.getRemainingTime());
-                } else {
-                    this.spielerZeitWeiss.stoppeCountdown();
-                    this.periodenZeitWeiss.stoppeCountdown();
-                    this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(this.spielerZeitWeiss.getRemainingTime());
-                }
-                /* Nun die Zeit des Spielers, der an der Reihe ist fortsetzen */
-                // Setze das Spiel wieder fort und starte die nötigen Timer
-                /* Da der aktuelle spieler noch nicht getauscht hat, muss vom
-                 * spieler, der noch nicht an der Reihe ist fortgesetzt werden
-                 */
-                if (this.dasSpielfeld.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_WEISS) {
-                    // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
-                    if (this.dasSpielfeld.getSpielerSchwarz().getVerbleibendeSpielzeitInMS() > 0) {
-                        this.spielerZeitSchwarz.starteCountdown();
-                    } else {
-                        // Setze den Countdown fort
-                        this.periodenZeitSchwarz.starteCountdown();
-                    }
-                    LoGoApp.meineOberflaeche.setSchwarzAmZug();
-                } else {
-                    // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
-                    if (this.dasSpielfeld.getSpielerWeiss().getVerbleibendeSpielzeitInMS() > 0) {
-                        this.spielerZeitWeiss.starteCountdown();
-                    } else {
-                        // Starte den Countdown, bzw. setze den Countdown fort
-                        this.periodenZeitWeiss.starteCountdown();
-                    }
-                    LoGoApp.meineOberflaeche.setWeissAmZug();
-                }
+        if((this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_LAUEFT ||
+           this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_GEBIETSAUSWERTUNG) &&
+           this.getAktuellAngezeigteZugnummer() > 0) {
+            this.setAktuelleAngeigteZugnummer(this.getAktuellAngezeigteZugnummer() - 1);
+            /* Da man wirklich Undo macht, wird die Uhr umgeschaltet 
+             * Als erstes wird die Zeit, des Spielers der nicht dran ist 
+             * angehalten, dann die Zeit des anderen gestartet .
+             * Zu bemerken ist, das der Zug noch nicht rueckgaengig gemacht wurde
+             * spielerAnDerReihe() ist also der spieler der gepasst hat
+             */
+             if (this.dasSpielfeld.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ) {
+                this.spielerZeitSchwarz.stoppeCountdown();
+                this.periodenZeitSchwarz.stoppeCountdown();
+                this.dasSpielfeld.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(this.spielerZeitSchwarz.getRemainingTime());
             } else {
-                this.setAktuelleAngeigteZugnummer(0);
+                this.spielerZeitWeiss.stoppeCountdown();
+                this.periodenZeitWeiss.stoppeCountdown();
+                this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(this.spielerZeitWeiss.getRemainingTime());
             }
+           
+            
+        
             LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellAngezeigteZugnummer()),
                     this.dasSpielfeld.getSpielfeldGroesse(),
                     this.dasSpielfeld.getMarkiertenSteinZumZeitpunkt(this.getAktuellAngezeigteZugnummer()));
-
             // Undo und Redo legen
             if( getAktuellAngezeigteZugnummer() != this.dasSpielfeld.getLetzteZugnummer() ){
                 LoGoApp.meineOberflaeche.setRedoErlaubt(true);
             }
+
+            /* Nun die Zeit des Spielers, der an der Reihe ist fortsetzen */
+            // Setze das Spiel wieder fort und starte die nötigen Timer
+            if (this.dasSpielfeld.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ) {
+                // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
+                if (this.dasSpielfeld.getSpielerSchwarz().getVerbleibendeSpielzeitInMS() > 0) {
+                    this.spielerZeitSchwarz.starteCountdown();
+                } else {
+                    // Setze den Countdown fort
+                    this.periodenZeitSchwarz.starteCountdown();
+                }
+                LoGoApp.meineOberflaeche.setSchwarzAmZug();
+            } else {
+                // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
+                if (this.dasSpielfeld.getSpielerWeiss().getVerbleibendeSpielzeitInMS() > 0) {
+                    this.spielerZeitWeiss.starteCountdown();
+                } else {
+                   // Starte den Countdown, bzw. setze den Countdown fort
+                    this.periodenZeitWeiss.starteCountdown();
+                }
+                 LoGoApp.meineOberflaeche.setWeissAmZug();
+            }
+
             // Ist man nicht am Anfang, so ist Undo nicht erlaubt.
             if (getAktuellAngezeigteZugnummer() == 0){
                 LoGoApp.meineOberflaeche.setUndoErlaubt(false);
@@ -720,54 +718,50 @@ public class Steuerung implements SteuerungInterface {
      * @see SteuerungInterface
      */
     public void buttonRedo() {
-        if(this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_LAUEFT){
-            if (this.getAktuellAngezeigteZugnummer() < this.dasSpielfeld.getLetzteZugnummer()) {
-                this.setAktuelleAngeigteZugnummer(this.getAktuellAngezeigteZugnummer() + 1);
-                /* Da man wirklich Redo macht, wird die Uhr umgeschaltet
-                 * Als erstes wird die Zeit, des Spielers der nicht dran ist
-                 * angehalten, dann die Zeit des anderen gestartet .
-                 * Zu bemerken ist, das der Zug noch nicht rueckgaengig gemacht wurde
-                 * spielerAnDerReihe() ist also der spieler der gepasst hat
-                 */
-                 if (this.dasSpielfeld.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ) {
-                    this.spielerZeitSchwarz.stoppeCountdown();
-                    this.periodenZeitSchwarz.stoppeCountdown();
-                    this.dasSpielfeld.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(this.spielerZeitSchwarz.getRemainingTime());
-                } else {
-                    this.spielerZeitWeiss.stoppeCountdown();
-                    this.periodenZeitWeiss.stoppeCountdown();
-                    this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(this.spielerZeitWeiss.getRemainingTime());
-                }
-                /* Nun die Zeit des Spielers, der an der Reihe ist fortsetzen */
-                // Setze das Spiel wieder fort und starte die nötigen Timer
-                /* Da der aktuelle spieler noch nicht getauscht hat, muss vom
-                 * spieler, der noch nicht an der Reihe ist fortgesetzt werden
-                 */
-                if (this.dasSpielfeld.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_WEISS) {
-                    // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
-                    if (this.dasSpielfeld.getSpielerSchwarz().getVerbleibendeSpielzeitInMS() > 0) {
-                        this.spielerZeitSchwarz.starteCountdown();
-                    } else {
-                        // Setze den Countdown fort
-                        this.periodenZeitSchwarz.starteCountdown();
-                    }
-                    LoGoApp.meineOberflaeche.setSchwarzAmZug();
-                } else {
-                    // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
-                    if (this.dasSpielfeld.getSpielerWeiss().getVerbleibendeSpielzeitInMS() > 0) {
-                        this.spielerZeitWeiss.starteCountdown();
-                    } else {
-                        // Starte den Countdown, bzw. setze den Countdown fort
-                        this.periodenZeitWeiss.starteCountdown();
-                    }
-                    LoGoApp.meineOberflaeche.setWeissAmZug();
-                }
+        if(this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_LAUEFT &&
+           this.getAktuellAngezeigteZugnummer() < this.dasSpielfeld.getLetzteZugnummer()) {
+            this.setAktuelleAngeigteZugnummer(this.getAktuellAngezeigteZugnummer() + 1);
+            /* Da man wirklich Redo macht, wird die Uhr umgeschaltet
+             * Als erstes wird die Zeit, des Spielers der nicht dran ist
+             * angehalten, dann die Zeit des anderen gestartet .
+             * Zu bemerken ist, das der Zug noch nicht rueckgaengig gemacht wurde
+             * spielerAnDerReihe() ist also der spieler der gepasst hat
+             */
+             if (this.dasSpielfeld.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ) {
+                this.spielerZeitSchwarz.stoppeCountdown();
+                this.periodenZeitSchwarz.stoppeCountdown();
+                this.dasSpielfeld.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(this.spielerZeitSchwarz.getRemainingTime());
             } else {
-                this.setAktuelleAngeigteZugnummer(this.dasSpielfeld.getLetzteZugnummer());
+                this.spielerZeitWeiss.stoppeCountdown();
+                this.periodenZeitWeiss.stoppeCountdown();
+                this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(this.spielerZeitWeiss.getRemainingTime());
             }
+            
             LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellAngezeigteZugnummer()),
                     this.dasSpielfeld.getSpielfeldGroesse(),
                     this.dasSpielfeld.getMarkiertenSteinZumZeitpunkt(aktuellAngezeigteZugnummer));
+
+            /* Nun die Zeit des Spielers, der an der Reihe ist fortsetzen */
+            // Setze das Spiel wieder fort und starte die nötigen Timer
+            if (this.dasSpielfeld.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ) {
+                // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
+                if (this.dasSpielfeld.getSpielerSchwarz().getVerbleibendeSpielzeitInMS() > 0) {
+                    this.spielerZeitSchwarz.starteCountdown();
+                } else {
+                    // Setze den Countdown fort
+                    this.periodenZeitSchwarz.starteCountdown();
+                }
+                LoGoApp.meineOberflaeche.setSchwarzAmZug();
+            } else {
+                // Wenn der Spieler keine verbleibende Spielzeit mehr hat, verwende den Periodentimer
+                if (this.dasSpielfeld.getSpielerWeiss().getVerbleibendeSpielzeitInMS() > 0) {
+                    this.spielerZeitWeiss.starteCountdown();
+                } else {
+                    // Starte den Countdown, bzw. setze den Countdown fort
+                    this.periodenZeitWeiss.starteCountdown();
+                }
+                LoGoApp.meineOberflaeche.setWeissAmZug();
+            }
 
             // Undo und Redo legen
             this.updateUndoUndRedo();
