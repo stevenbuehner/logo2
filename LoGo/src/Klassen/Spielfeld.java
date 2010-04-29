@@ -1015,8 +1015,22 @@ public class Spielfeld {
     public boolean spielfeldValidiert(){
 
         boolean validiert = true;
-        this.spielerSchwarz.setGefangenenAnzahl(0);
-        this.spielerWeiss.setGefangenenAnzahl(0);
+
+        // Spieler validieren
+        if (this.spielerSchwarz == null || this.spielerWeiss == null){
+            return false;
+        }
+        // Warum die Gefangenenanzahl auf 0 setzen?? ... was bei einem geladenen Spiel?
+        // this.spielerSchwarz.setGefangenenAnzahl(0);
+        // this.spielerWeiss.setGefangenenAnzahl(0);
+        if (this.spielerSchwarz.getSpielerName() == null || this.spielerSchwarz.getSpielerName().length() <= 1){
+            this.spielerSchwarz.setSpielerName("Schwarz");
+        }
+        if (this.spielerWeiss.getSpielerName() == null || this.spielerWeiss.getSpielerName().length() <= 1){
+            this.spielerWeiss.setSpielerName("Weiss");
+        }
+
+
         /* Als erstes wird getestet, ob alle Steine des Anfangsbrettes mindestens
          * eine Freiheit haben */
         this.aktuellesSpielfeldCache = this.getSpielfeldZumZeitpunkt(0);

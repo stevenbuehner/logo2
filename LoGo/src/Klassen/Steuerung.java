@@ -76,25 +76,24 @@ public class Steuerung implements SteuerungInterface {
      * @see SteuerungInterface
      */
     public void initMitSpielfeld(Spielfeld bereitsInitialisiertesSpielfeld) {
-        /*
-         * Ueberpruefroutinen fuer das Spielfeld
-         * Diese muessen noch programmiert werden ...
-         */
-        this.dasSpielfeld = bereitsInitialisiertesSpielfeld;
 
-        // Timer initialisieren
-        // Vorraussetzung zum Initialisieren ist ein Objekt vom Typ Spieler in this.dasSpielfeld
-        if (this.dasSpielfeld.getSpielerSchwarz() != null ||
-                this.dasSpielfeld.getSpielerWeiss() != null) {
-        } else {
-            throw new UnsupportedOperationException("Timer können nicht initialisiert werden: Fehlendes Spieler-Objekt in Spielfeld");
-        }
+        if (bereitsInitialisiertesSpielfeld != null){
+            if(bereitsInitialisiertesSpielfeld.spielfeldValidiert() == true ){
+                this.dasSpielfeld = bereitsInitialisiertesSpielfeld;
+
+                // Timer initialisieren
+                
 
 
-        if( JOptionPane.showConfirmDialog(null, "Befindest Du dich gerade in der DHBW?") == JOptionPane.NO_OPTION){
-        }
-        else{
-            System.exit(0);
+                 if( JOptionPane.showConfirmDialog(null, "Befindest Du dich gerade in der DHBW?") == JOptionPane.NO_OPTION){
+                 }
+                 else{
+                     System.exit(0);
+                 }
+            }else{
+                throw new UnsupportedOperationException("Es wurde ein leeres Spiel an die Steuerung übergeben! Das geht nicht.");
+                // JOptionPane.showConfirmDialog(null, "Das erstelle Spielfeld ist ungültig. Bitte versuchen Sie es erneut.");
+            }
         }
     }
 
@@ -132,6 +131,11 @@ public class Steuerung implements SteuerungInterface {
 
         // Zum Debuggen
         System.out.println("Klick auf Punkt (" + xPos + "|" + yPos + ")");
+
+        if( this.dasSpielfeld == null){
+            System.out.println( "Es existiert noch kein Spielfeld in klickeAufFeld() in Steuerung");
+            return;
+        }
 
         // Variablendeklaration
         Spielfeld brett = this.dasSpielfeld;
@@ -245,7 +249,6 @@ public class Steuerung implements SteuerungInterface {
                 }
             }
         }
-
         else if(this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_GEBIETSAUSWERTUNG){
             this.dieSpielfeldAuswertung.markiereStein(xPos, yPos);
             int feld[][] = this.dieSpielfeldAuswertung.getAusgewertetesFeld();
