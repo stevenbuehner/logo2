@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
+import logo.LoGoApp;
 
 /**
  *
@@ -38,7 +39,7 @@ public class FensterAuswertung extends JFrame implements MouseListener{
         this.backgroundImage = lib.getSprite("GUI/resources/Auswertungsanzeige.jpg");
         this.contentPanel = new BackgroundImagePanel(backgroundImage);
         this.dasSpielfeld = null;
-       // this.LogoIcon = lib.getIcon(null)
+        //this.LogoIcon = lib.getIcon("GUI/resources/logo.icns");
 
         this.addMouseListener(this);
 
@@ -47,21 +48,28 @@ public class FensterAuswertung extends JFrame implements MouseListener{
         this.setContentPane(contentPanel);
         this.setSize(1024,768);
         this.setLocationRelativeTo(null);
-        //this.setVisible(true);
+        // this.setVisible(true);
     }
 
     public void setAnzeige( Spielfeld dasFeld ){
         this.dasSpielfeld = dasFeld;
+        this.berechneInformationen();
     }
 
+    public void setAnzeige( Spielfeld dasFeld, boolean fensterSichtbar ){
+        this.dasSpielfeld = dasFeld;
+        this.setVisible(fensterSichtbar);
+        this.berechneInformationen();
+    }
 
     @Override
     public void paint(Graphics g){
-        super.paint(g);
-        g.drawImage(backgroundImage, 0, 0, null);
+        if (this.isVisible()){
+            super.paint(g);
+            g.drawImage(backgroundImage, 0, 0, null);
 
-        this.render(g);
-    
+            this.render(g);
+        }
     }
 
     public void mouseClicked(MouseEvent e) {
@@ -77,6 +85,24 @@ public class FensterAuswertung extends JFrame implements MouseListener{
                 null, 
                 options, 
                 options[0]);
+
+        switch (antwort){
+            case JOptionPane.YES_OPTION:
+                // Abbrechen gedrückt
+                // mache nichts
+                break;
+            case JOptionPane.NO_OPTION:
+                // Neues Spiel starten angeklickt
+                LoGoApp.meineSteuerung.buttonNeuesSpiel();
+                break;
+            case JOptionPane.CANCEL_OPTION:
+                // Spiel beenden angeklickt
+                LoGoApp.meineSteuerung.buttonSpielBeenden();
+                break;
+            default:
+                // not used
+                break;
+            }
     }
 
     public void mousePressed(MouseEvent e) {
@@ -91,13 +117,31 @@ public class FensterAuswertung extends JFrame implements MouseListener{
     public void mouseExited(MouseEvent e) {
     }
 
+    /**
+     * Die ausgewerteten Informationen auf das Fenster @param g schreiben
+     */
     private void render(Graphics g) {
-        if(this.dasSpielfeld != null){
-            // Zeichne die Informationen aus dem Spielfeld auf die Oberflaeche
-
-
-            //ImageIcon icon = new ImageIcon<
+        if(this.dasSpielfeld == null
+                || this.dasSpielfeld.getSpielerSchwarz() == null
+                || this.dasSpielfeld.getSpielerWeiss() == null)
+        {
+            // Es muss mindestens das Feld und die Spieler existieren,
+            // sonst wird gar nicht erst etwas gerendert! :-)
+            return;
         }
+
+        // Zeichne die Informationen aus dem Spielfeld auf die Oberflaeche
+    }
+
+
+    /**
+     * Beim übergeben eines neuen Spielfeldes wird diese Methode intern aufgerufen
+     * sie macht alle nötigen Berechnungen die sich nicht direkt aus dem übergebenen
+     * Spielfeld herauslesen lassen. Damit wird die performance erhöht und die Werte
+     * müssen nicht bei jedem Aufruf von render bzw. paint neu berechnet werden.
+     */
+    private void berechneInformationen(){
+
     }
 
 
