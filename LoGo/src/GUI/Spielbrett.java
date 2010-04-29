@@ -61,45 +61,53 @@ public class Spielbrett extends JComponent {
         // BufferedImage[] bi = lib.getSprite("GUI/resources/Spielsteine_6x5.png", 6, 5);
         this.setBackground(null);
 
-        int minimaleAusdehnung;
         String spielSteinImageName;
-        if (feldHoehe < feldBreite) {
-            minimaleAusdehnung = feldHoehe;
-        } else {
-            minimaleAusdehnung = feldBreite;
+        String markierterSteinImage = "";
+        switch(anzahlFelder){
+            case 7:
+                spielSteinImageName = "GUI/resources/Kugel_7x7.png";
+                markierterSteinImage = "GUI/resources/MarkierterStein_7x7.png";
+                break;
+            case 9:
+                spielSteinImageName = "GUI/resources/Kugel_9x9.png";
+                markierterSteinImage = "GUI/resources/MarkierterStein_9x9.png";
+                break;
+            case 11:
+                spielSteinImageName = "GUI/resources/Kugel_11x11.png";
+                markierterSteinImage = "GUI/resources/MarkierterStein_11x11.png";
+                break;
+            case 13:
+                spielSteinImageName = "GUI/resources/Kugel_13x13.png";
+                markierterSteinImage = "GUI/resources/MarkierterStein_13x13.png";
+                break;
+            case 15:
+                spielSteinImageName = "GUI/resources/Kugel_15x15.png";
+                markierterSteinImage = "GUI/resources/MarkierterStein_15x15.png";
+                break;
+            case 17:
+                spielSteinImageName = "GUI/resources/Kugel_17x17.png";
+                markierterSteinImage = "GUI/resources/MarkierterStein_17x17.png";
+                break;
+            case 19:
+                spielSteinImageName = "GUI/resources/Kugel_19x19.png";
+                markierterSteinImage = "GUI/resources/MarkierterStein_19x19.png";
+                break;
+            default:
+                throw new UnsupportedOperationException("Diese Spiellfeldgroesse wird nicht unterstuetzt.");
         }
 
-        // Umrechnung: spielSteinGroesse = bildgroese/4200*108*14
-        if (minimaleAusdehnung < 5) {
-            throw new UnsupportedOperationException("Diese Spiellfeldgroesse wird nicht unterstuetzt.");
-        } else if (minimaleAusdehnung < 10) {
-            spielSteinImageName = "GUI/resources/Kugel_bgOrange_23px.png"; // Kugel hat ca. 8 pixel
-        } else if (minimaleAusdehnung < 18) {
-            spielSteinImageName = "GUI/resources/Kugel_bgOrange45px.png"; // Kugel hat ca. 17 Pixel
-        } else if (minimaleAusdehnung < 28) {
-            spielSteinImageName = "GUI/resources/Kugel_bgOrange_61_25px.png"; // Kugel hat ca. 25 Pixel
-        } else if (minimaleAusdehnung < 40) {
-            spielSteinImageName = "GUI/resources/Kugel_bgOrange_94px_34.png"; // Kugel hat ca. 34 Pixel
-        } else if (minimaleAusdehnung < 50) {
-            spielSteinImageName = "GUI/resources/Kugel_bgOrange_125px_45.png"; // Kugel hat ca. 45 Pixel
-        } else if (minimaleAusdehnung < 60) {
-            spielSteinImageName = "GUI/resources/Kugel_bgOrange_153px_55.png"; // Kugel hat ca. 55 Pixel
-        } else {
-            throw new UnsupportedOperationException("Diese Spiellfeldgroesse wird nicht unterstuetzt.");
-        }
-
-
-        BufferedImage[] bi = lib.getSprite(spielSteinImageName, 14, 3);
+        BufferedImage[] kugeln = lib.getSprite(spielSteinImageName, 14, 3);
+        BufferedImage[] markStein = lib.getSprite(markierterSteinImage, 12, 1);
 
         // Initialisierern des Spezial-Objektes zum markieren der Spielsteine
-        this.markierterStein = new SpielsteinMarkierung(bi, 0, 0);
+        this.markierterStein = new SpielsteinMarkierung(markStein, 0, 0);
         this.markierterStein.setVisible(true);
 
         for (int m = 0; m < this.anzahlFelder; m++) {
             for (int n = 0; n < this.anzahlFelder; n++) {
                 // Ausgangspunkt für das feld[0][0] ist die linke untere Ecke
                 // Ein Spielstein bekommt jeweils die Koordinaten der Mitte, auf der er liegt.
-                feld[m][n] = new SpielStein(bi, xOffset + feldBreite * m + feldBreite / 2, yOffset + this.brettHoehe - feldHoehe * (n + 0.5));
+                feld[m][n] = new SpielStein(kugeln, xOffset + feldBreite * m + feldBreite / 2, yOffset + this.brettHoehe - feldHoehe * (n + 0.5));
             }
         }
 
