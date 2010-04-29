@@ -22,7 +22,7 @@ public class Speichern{
     private int spielfeldArray[][];
     private Spieler spieler_weiss;
     private Spieler spieler_schwarz;
-    private int spielfeldgroesse[][];
+    private int spielfeldgroesse;
     private float komipunkte;
     private int vorgabesteine;
 
@@ -40,7 +40,7 @@ public class Speichern{
     public void SpeicherSpiel( ){
             spieler_schwarz = spielfeld.getSpielerSchwarz();
             spieler_weiss = spielfeld.getSpielerWeiss();
-            spielfeldgroesse = spielfeld.getAktuellesSpielFeld();
+            spielfeldgroesse = spielfeld.getSpielfeldGroesse();
             komipunkte = spieler_weiss.getKomiPunkte();
             vorgabesteine = spielfeld.getVorgabeZahl();
 
