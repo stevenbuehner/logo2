@@ -588,6 +588,15 @@ public class Steuerung implements SteuerungInterface {
         }
 
         if(this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_LAUEFT) {
+            if(this.dasSpielfeld.getAnzahlLetzterPassZuege()>=2){
+                this.stoppeTimerVonSpieler(this.dasSpielfeld.getSpielerFarbeAnDerReihe());
+                this.dieSpielfeldAuswertung = new SpielAuswertung(this.dasSpielfeld.getSpielfeldGroesse(), this.dasSpielfeld.getSpielerWeiss().getKomiPunkte());
+                this.dieSpielfeldAuswertung.auswertungInitialisieren(this.dasSpielfeld.getSpielfeldZumZeitpunkt(aktuellAngezeigteZugnummer));
+                LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dieSpielfeldAuswertung.getAusgewertetesFeld(), this.dasSpielfeld.getSpielfeldGroesse(), null);
+
+                /* Spielstatus anpassen */
+                this.wechsleInStatus(Konstante.SPIEL_GEBIETSAUSWERTUNG);
+            }
             this.klickAufFeld(-1, -1);
 
             /*
