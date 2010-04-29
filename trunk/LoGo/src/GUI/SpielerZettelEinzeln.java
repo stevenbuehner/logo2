@@ -23,9 +23,6 @@ public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {
     private int yPos;
     private double OwinkelInRad;
 
-    /* Variable für den Inhalt*/
-    private String anzeigeInhalt;
-
     /* weitere Variablen*/
     private String anzeigeText;
 
@@ -33,7 +30,6 @@ public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {
     private String spielername;
     private int Anzahl;
     private String fehlermeldung;
-    private String startText;
 
 
 
@@ -41,14 +37,13 @@ public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {
         this.xPos = xPos;
         this.yPos = yPos;
         this.OwinkelInRad = Math.toRadians(offsetWinkel);
-        this.startText = startText;
+        this.anzeigeText = startText;
     }
 
     public void StringBau(String spielername, int Anzahl, String fehlermeldung) {
         this.spielername = spielername;
         this.Anzahl = Anzahl;
         this.fehlermeldung = fehlermeldung;
-        anzeigeText = startText;
         anzeigeText += "Spieler:  " + spielername + "\n";
         anzeigeText += "Anzahl Gefangene:  " + Anzahl + "\n";
         anzeigeText += fehlermeldung;
@@ -80,9 +75,12 @@ public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {
         Graphics2D g2 = (Graphics2D) g;
 
         AffineTransform at = AffineTransform.getRotateInstance(
-                -Math.toRadians(OwinkelInRad));
+                this.OwinkelInRad, xPos, yPos);
        g2.setTransform(at);
-       g2.drawString(anzeigeText, xPos, yPos);
+       if(this.anzeigeText == null){
+           this.anzeigeText="";
+       }
+       g2.drawString(this.anzeigeText, xPos, yPos);
 
        at = AffineTransform.getRotateInstance(
                 0,
