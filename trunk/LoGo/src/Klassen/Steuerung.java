@@ -151,15 +151,7 @@ public class Steuerung implements SteuerungInterface {
         if (brett.getSpielZustand() == Konstante.SPIEL_LAUEFT) {
        
             // Timer während der Berechnung stoppen und die Zeiten zum Spieler zurückspeichern
-            if (brett.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ) {
-                this.spielerZeitSchwarz.stoppeCountdown();
-                this.periodenZeitSchwarz.stoppeCountdown();
-                brett.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(this.spielerZeitSchwarz.getRemainingTime());
-            } else {
-                this.spielerZeitWeiss.stoppeCountdown();
-                this.periodenZeitWeiss.stoppeCountdown();
-                brett.getSpielerWeiss().setVerbleibendeSpielzeitInMS(this.spielerZeitWeiss.getRemainingTime());
-            }
+            this.stoppeTimerVonSpieler(brett.getSpielerFarbeAnDerReihe());
 
             /* Es muss abgefangen werden, ob man gerade im Undo-Modus ist. */
             if(this.getAktuellAngezeigteZugnummer()<this.dasSpielfeld.getLetzteZugnummer()){
@@ -263,6 +255,7 @@ public class Steuerung implements SteuerungInterface {
             }
             else{
                 this.dasSpielfeld.zugPassen();
+                this.setAktuelleAngeigteZugnummer(this.getAktuellAngezeigteZugnummer()+1);
             }
 
             // aktualisiere die GefangenenAnzahl
@@ -441,7 +434,6 @@ public class Steuerung implements SteuerungInterface {
             throw new UnsupportedOperationException("Spielfeld nicht valide! Spiel kann nicht gestartet werden");
         }
         else {
-            this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_LAUEFT);
             // Timer initialisieren
             // Vorraussetzung zum Initialisieren ist ein Objekt vom Typ Spieler in this.dasSpielfeld
             if (this.dasSpielfeld.getSpielerSchwarz() != null ||
@@ -470,10 +462,6 @@ public class Steuerung implements SteuerungInterface {
                     this.dasSpielfeld.getSpielerSchwarz().getSpielerName());
             LoGoApp.meineOberflaeche.setSpielernameWeiss(
                     this.dasSpielfeld.getSpielerWeiss().getSpielerName());
-            // Schaltflaeche Undo und Redo einstellen
-            this.updateUndoUndRedo();
-            // Schaltflaeche fuer Aufgeben und Passen einstellen
-            LoGoApp.meineOberflaeche.passenUndAufgebenVisible(true);
 
             // Zeiten auf der Oberfläche anzeigen
             LoGoApp.meineOberflaeche.setAnzeigePeriodenZeitSchwarz(
@@ -505,6 +493,7 @@ public class Steuerung implements SteuerungInterface {
                 this.spielerZeitWeiss.starteCountdown();
                 LoGoApp.meineOberflaeche.setWeissAmZug();
             }
+            this.wechsleInStatus(Konstante.SPIEL_LAUEFT);
         }
     }
 
@@ -575,8 +564,7 @@ public class Steuerung implements SteuerungInterface {
                 }
 
             // Spielstatus auf "Spiel aufgegeben" setzen
-            this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_BEENDET);
-            this.updateUndoUndRedo();
+            this.wechsleInStatus(Konstante.SPIEL_BEENDET);
 
             // Das Ergebnis sichtbar machen
             int gewinner;
@@ -619,25 +607,7 @@ public class Steuerung implements SteuerungInterface {
                  * ausgezaehlt*/
 
                 /* Die Timer muessen dazu angehaltent werden */
-                int aktuelerSpieler = this.dasSpielfeld.getSpielerFarbeAnDerReihe();
-
-                if (Konstante.SCHNITTPUNKT_SCHWARZ == aktuelerSpieler) {
-                    // Schwarzer Spieler spielt gerade
-
-                    // Stoppe Timer von Schwarz
-                    this.spielerZeitSchwarz.stoppeCountdown();
-                    this.periodenZeitSchwarz.stoppeCountdown();
-                    this.dasSpielfeld.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(
-                                this.spielerZeitSchwarz.getRemainingTime());
-                } else {
-                    // Weisser Spieler spielt gerade
-
-                    // Stoppe Timer von Weiss
-                    this.spielerZeitWeiss.stoppeCountdown();
-                    this.periodenZeitWeiss.stoppeCountdown();
-                    this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(
-                            this.spielerZeitWeiss.getRemainingTime());
-                }
+                this.stoppeTimerVonSpieler(this.dasSpielfeld.getSpielerFarbeAnDerReihe());
 
                 /* Nachdem die Timer nun angehalten sind, wird der oberflaeche
                  * das brett zur verfuegung gestellt, das die Gebiete darstellt
@@ -646,14 +616,8 @@ public class Steuerung implements SteuerungInterface {
                 this.dieSpielfeldAuswertung.auswertungInitialisieren(this.dasSpielfeld.getAktuellesSpielFeld());
                 LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dieSpielfeldAuswertung.getAusgewertetesFeld(), this.dasSpielfeld.getSpielfeldGroesse(), null);
 
-                /* Noch die Schaltflaechen setzen fuer Passen und aufgeben */
-                LoGoApp.meineOberflaeche.passenUndAufgebenVisible(false);
-                LoGoApp.meineOberflaeche.auswertungBeendenVisible(true);
-                this.updateUndoUndRedo();
-                LoGoApp.meinAuswertungsfenster.setVisible(false);
-
                 /* Spielstatus anpassen */
-                this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_GEBIETSAUSWERTUNG);
+                this.wechsleInStatus(Konstante.SPIEL_GEBIETSAUSWERTUNG);
             }
         }
     }
@@ -666,30 +630,10 @@ public class Steuerung implements SteuerungInterface {
             return;
         }
         if(this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_LAUEFT){
-            int aktuelerSpieler = this.dasSpielfeld.getSpielerFarbeAnDerReihe();
-
-            if (Konstante.SCHNITTPUNKT_SCHWARZ == aktuelerSpieler) {
-                // Schwarzer Spieler spielt gerade
-
-                // Stoppe Timer von Schwarz
-                this.spielerZeitSchwarz.stoppeCountdown();
-                this.periodenZeitSchwarz.stoppeCountdown();
-                this.dasSpielfeld.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(
-                this.spielerZeitSchwarz.getRemainingTime());
-            } else {
-                // Weisser Spieler spielt gerade
-
-                // Stoppe Timer von Weiss
-                this.spielerZeitWeiss.stoppeCountdown();
-                this.periodenZeitWeiss.stoppeCountdown();
-                this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(
-                this.spielerZeitWeiss.getRemainingTime());
-            }
+            this.stoppeTimerVonSpieler(this.dasSpielfeld.getSpielerFarbeAnDerReihe());
 
             // Spielstatus auf pausiert setzen.
-            this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_PAUSIERT);
-            this.updateUndoUndRedo();
-            LoGoApp.meineOberflaeche.setPauseScreen(true);
+            this.wechsleInStatus(Konstante.SPIEL_PAUSIERT);
         }else{
             System.out.println("Spiel Pausieren in Steuerung aktiviert, aber das ist nicht erlaubt");
         }
@@ -815,23 +759,8 @@ public class Steuerung implements SteuerungInterface {
            this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_GEBIETSAUSWERTUNG) &&
            this.getAktuellAngezeigteZugnummer() > 0) {
             this.setAktuelleAngeigteZugnummer(this.getAktuellAngezeigteZugnummer() - 1);
-            /* Da man wirklich Undo macht, wird die Uhr umgeschaltet 
-             * Als erstes wird die Zeit, des Spielers der nicht dran ist 
-             * angehalten, dann die Zeit des anderen gestartet .
-             * Zu bemerken ist, das der Zug noch nicht rueckgaengig gemacht wurde
-             * spielerAnDerReihe() ist also der spieler der gepasst hat
-             */
-             if (this.dasSpielfeld.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ) {
-                this.spielerZeitSchwarz.stoppeCountdown();
-                this.periodenZeitSchwarz.stoppeCountdown();
-                this.dasSpielfeld.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(this.spielerZeitSchwarz.getRemainingTime());
-            } else {
-                this.spielerZeitWeiss.stoppeCountdown();
-                this.periodenZeitWeiss.stoppeCountdown();
-                this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(this.spielerZeitWeiss.getRemainingTime());
-            }
-           
-            
+            // Timer Stoppen
+            this.stoppeTimerVonSpieler(this.dasSpielfeld.getSpielerFarbeAnDerReihe());
         
             LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellAngezeigteZugnummer()),
                     this.dasSpielfeld.getSpielfeldGroesse(),
@@ -867,6 +796,7 @@ public class Steuerung implements SteuerungInterface {
             if (getAktuellAngezeigteZugnummer() == 0){
                 LoGoApp.meineOberflaeche.setUndoErlaubt(false);
             }
+            this.wechsleInStatus(Konstante.SPIEL_LAUEFT);
         }
     }
 
@@ -881,22 +811,9 @@ public class Steuerung implements SteuerungInterface {
         if(this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_LAUEFT &&
            this.getAktuellAngezeigteZugnummer() < this.dasSpielfeld.getLetzteZugnummer()) {
             this.setAktuelleAngeigteZugnummer(this.getAktuellAngezeigteZugnummer() + 1);
-            /* Da man wirklich Redo macht, wird die Uhr umgeschaltet
-             * Als erstes wird die Zeit, des Spielers der nicht dran ist
-             * angehalten, dann die Zeit des anderen gestartet .
-             * Zu bemerken ist, das der Zug noch nicht rueckgaengig gemacht wurde
-             * spielerAnDerReihe() ist also der spieler der gepasst hat
-             */
-             if (this.dasSpielfeld.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ) {
-                this.spielerZeitSchwarz.stoppeCountdown();
-                this.periodenZeitSchwarz.stoppeCountdown();
-                this.dasSpielfeld.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(this.spielerZeitSchwarz.getRemainingTime());
-            } else {
-                this.spielerZeitWeiss.stoppeCountdown();
-                this.periodenZeitWeiss.stoppeCountdown();
-                this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(this.spielerZeitWeiss.getRemainingTime());
-            }
-            
+            // Stoppe Timer
+            this.stoppeTimerVonSpieler(this.dasSpielfeld.getSpielerFarbeAnDerReihe());
+
             LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellAngezeigteZugnummer()),
                     this.dasSpielfeld.getSpielfeldGroesse(),
                     this.dasSpielfeld.getMarkiertenSteinZumZeitpunkt(aktuellAngezeigteZugnummer));
@@ -971,7 +888,7 @@ public class Steuerung implements SteuerungInterface {
      * @see SteuerungInterface
      */
     public void zeitAbgelaufenSchwarzPeriodenzeit() {
-        this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_BEENDET);
+        this.wechsleInStatus(Konstante.SPIEL_BEENDET);
         LoGoApp.meineOberflaeche.ergebnisAufZeitVerlorenZeigen(this.dasSpielfeld.getSpielerSchwarz().getSpielerName(),
                                                                this.dasSpielfeld.getSpielerWeiss().getSpielerName(),
                                                                Konstante.SCHNITTPUNKT_WEISS);
@@ -990,7 +907,7 @@ public class Steuerung implements SteuerungInterface {
      * @see SteuerungInterface
      */
     public void zeitAbgelaufenWeissPeriodenzeit() {
-        this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_BEENDET);
+        this.wechsleInStatus(Konstante.SPIEL_BEENDET);
         LoGoApp.meineOberflaeche.ergebnisAufZeitVerlorenZeigen(this.dasSpielfeld.getSpielerSchwarz().getSpielerName(),
                                                                this.dasSpielfeld.getSpielerWeiss().getSpielerName(),
                                                                Konstante.SCHNITTPUNKT_SCHWARZ);
@@ -1023,7 +940,10 @@ public class Steuerung implements SteuerungInterface {
             }else{
                 LoGoApp.meineOberflaeche.setUndoErlaubt(false);
             }
-        }else{
+        } else if(this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_GEBIETSAUSWERTUNG){
+            LoGoApp.meineOberflaeche.setUndoErlaubt(true);
+            LoGoApp.meineOberflaeche.setRedoErlaubt(false);
+        } else {
             LoGoApp.meineOberflaeche.setUndoErlaubt(false);
             LoGoApp.meineOberflaeche.setRedoErlaubt(false);
         }
@@ -1046,5 +966,92 @@ public class Steuerung implements SteuerungInterface {
                     this.dieSpielfeldAuswertung.getWeisseGefangeneAufBrett());
         }
     }
-    
+
+    private void wechsleInStatus(int status){
+        if(this.dasSpielfeld == null){
+            return;
+        }
+        switch(status){
+            case Konstante.SPIEL_LAUEFT:
+                /* Es ist zu unterscheiden, ob man gerade im Undo ist */
+                if(this.getAktuellAngezeigteZugnummer() == this.dasSpielfeld.getLetzteZugnummer()){
+                    this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_LAUEFT);
+                LoGoApp.meineOberflaeche.setPauseScreen(false);
+                    LoGoApp.meineOberflaeche.visibleAuswertungBeenden(false);
+                    LoGoApp.meineOberflaeche.visiblePassen(true);
+                    LoGoApp.meineOberflaeche.visibleAufgeben(true);
+                    LoGoApp.meineOberflaeche.visibleFortsetzen(false);
+                    LoGoApp.meineOberflaeche.visibleNeuesSpiel(true);
+                    LoGoApp.meineOberflaeche.visiblePause(true);
+                    LoGoApp.meineOberflaeche.visibleSpielLaden(true);
+                    LoGoApp.meineOberflaeche.visibleSpielSpeichern(true);
+                    this.updateUndoUndRedo();
+                }
+                else{
+                    this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_LAUEFT);
+                LoGoApp.meineOberflaeche.setPauseScreen(false);
+                    LoGoApp.meineOberflaeche.visibleAuswertungBeenden(false);
+                    LoGoApp.meineOberflaeche.visiblePassen(true);
+                    LoGoApp.meineOberflaeche.visibleAufgeben(true);
+                    LoGoApp.meineOberflaeche.visibleFortsetzen(false);
+                    LoGoApp.meineOberflaeche.visibleNeuesSpiel(true);
+                    LoGoApp.meineOberflaeche.visiblePause(true);
+                    LoGoApp.meineOberflaeche.visibleSpielLaden(true);
+                    LoGoApp.meineOberflaeche.visibleSpielSpeichern(true);
+                    this.updateUndoUndRedo();
+                }
+                break;
+            case Konstante.SPIEL_GEBIETSAUSWERTUNG:
+                this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_GEBIETSAUSWERTUNG);
+                LoGoApp.meineOberflaeche.setPauseScreen(false);
+                LoGoApp.meineOberflaeche.visibleAuswertungBeenden(true);
+                LoGoApp.meineOberflaeche.visiblePassen(false);
+                LoGoApp.meineOberflaeche.visibleAufgeben(true);
+                LoGoApp.meineOberflaeche.visibleFortsetzen(false);
+                LoGoApp.meineOberflaeche.visibleNeuesSpiel(true);
+                LoGoApp.meineOberflaeche.visiblePause(false);
+                LoGoApp.meineOberflaeche.visibleSpielLaden(true);
+                LoGoApp.meineOberflaeche.visibleSpielSpeichern(true);
+                this.updateUndoUndRedo();
+                break;
+            case Konstante.SPIEL_PAUSIERT:
+                this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_PAUSIERT);
+                LoGoApp.meineOberflaeche.setPauseScreen(true);
+                LoGoApp.meineOberflaeche.visibleAuswertungBeenden(false);
+                LoGoApp.meineOberflaeche.visiblePassen(false);
+                LoGoApp.meineOberflaeche.visibleAufgeben(false);
+                LoGoApp.meineOberflaeche.visibleFortsetzen(true);
+                LoGoApp.meineOberflaeche.visibleNeuesSpiel(false);
+                LoGoApp.meineOberflaeche.visiblePause(false);
+                LoGoApp.meineOberflaeche.visibleSpielLaden(false);
+                LoGoApp.meineOberflaeche.visibleSpielSpeichern(false);
+                this.updateUndoUndRedo();
+                break;
+            case Konstante.SPIEL_BEENDET:
+                this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_BEENDET);
+                LoGoApp.meineOberflaeche.setPauseScreen(false);
+                LoGoApp.meineOberflaeche.visibleAuswertungBeenden(false);
+                LoGoApp.meineOberflaeche.visiblePassen(false);
+                LoGoApp.meineOberflaeche.visibleAufgeben(false);
+                LoGoApp.meineOberflaeche.visibleFortsetzen(false);
+                LoGoApp.meineOberflaeche.visibleNeuesSpiel(true);
+                LoGoApp.meineOberflaeche.visiblePause(false);
+                LoGoApp.meineOberflaeche.visibleSpielLaden(true);
+                LoGoApp.meineOberflaeche.visibleSpielSpeichern(true);
+                this.updateUndoUndRedo();
+                break;
+        }
+    }
+
+    private void stoppeTimerVonSpieler(int spieler){
+        if (spieler == Konstante.SCHNITTPUNKT_SCHWARZ) {
+            this.spielerZeitSchwarz.stoppeCountdown();
+            this.periodenZeitSchwarz.stoppeCountdown();
+            this.dasSpielfeld.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(this.spielerZeitSchwarz.getRemainingTime());
+        } else {
+            this.spielerZeitWeiss.stoppeCountdown();
+            this.periodenZeitWeiss.stoppeCountdown();
+            this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(this.spielerZeitWeiss.getRemainingTime());
+        }
+    }
 }

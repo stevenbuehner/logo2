@@ -25,10 +25,7 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.swing.LookAndFeel;
-import javax.swing.UIManager;
 import logo.LoGoApp;
 
 /**
@@ -669,10 +666,6 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         LoGoApp.meineSteuerung.buttonAuswertungBeendet();
     }
 
-    public void setAuswertungsButtonsVisible(boolean visible) {
-        this.AuswertungBeenden.setEnabled(visible);
-    }
-
     public void ergebnisAuszaehlenZeigen(String nameSchwarz, String nameWeiss, float komiFuerWeiss, int gebietsPunktSchwarz, int gebietsPunkteWeiss,
             int schwarzeGefangenImSpiel, int weisseGefangenImSpiel, int schwarzeSteineTotAufBrett,  int weisseSteineTotAufBrett) {
         System.out.println("Name Schwarz: "+ nameSchwarz);
@@ -714,12 +707,36 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         System.out.println(gewinner + " gewinnt durch Zeit");
     }
 
-    public void passenUndAufgebenVisible(boolean visible){
+    public void visibleNeuesSpiel(boolean visible){
+        this.AuswertungBeenden.setEnabled(visible);
+    }
+
+    public void visibleSpielLaden(boolean visible){
+        this.SpielLaden.setEnabled(visible);
+    }
+
+    public void visibleSpielSpeichern(boolean visible){
+        this.SpielSpeichern.setEnabled(visible);
+    }
+
+    public void visiblePause(boolean visible){
+        this.Pause.setEnabled(visible);
+    }
+
+    public void visibleFortsetzen(boolean visible){
+        this.Fortsetzen.setEnabled(visible);
+    }
+
+    public void visiblePassen(boolean visible) {
         this.Passen.setEnabled(visible);
+    }
+
+    public void visibleAufgeben(boolean visible) {
         this.Aufgeben.setEnabled(visible);
     }
 
-    public void auswertungBeendenVisible(boolean visible){
+    public void visibleAuswertungBeenden(boolean visible) {
         this.AuswertungBeenden.setEnabled(visible);
     }
+
 }
