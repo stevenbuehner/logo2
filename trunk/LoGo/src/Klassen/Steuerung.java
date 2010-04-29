@@ -6,11 +6,10 @@ import Timer.CountdownPeriodenZeitWeiss;
 import Timer.CountdownSpielerZeitSchwarz;
 import Timer.CountdownSpielerZeitWeiss;
 import interfaces.SteuerungInterface;
-import java.awt.Component;
-import java.awt.Frame;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import logo.LoGoApp;
 
@@ -84,17 +83,30 @@ public class Steuerung implements SteuerungInterface {
 
         if (bereitsInitialisiertesSpielfeld != null){
             if(bereitsInitialisiertesSpielfeld.spielfeldValidiert() == true ){
-                this.dasSpielfeld = bereitsInitialisiertesSpielfeld;
 
+                this.dasSpielfeld = bereitsInitialisiertesSpielfeld;
                 // Timer initialisieren
+                String ipAddr = null;
+
+                try {
+
+                    InetAddress addr = InetAddress.getLocalHost();
+                    ipAddr = addr.getHostAddress();
+                    System.out.println("IP-Adresse: " + ipAddr );
+
+                } catch (UnknownHostException ex) {
+                    Logger.getLogger(Steuerung.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                if(ipAddr == null || ipAddr.indexOf("10.") == 0){
+                    if (JOptionPane.showConfirmDialog(null, "Befindest Du dich gerade in der DHBW?") == JOptionPane.NO_OPTION) {
+                    } else {
+                        System.exit(0);
+                    }
+                }
                 
 
 
-                 if( JOptionPane.showConfirmDialog(null, "Befindest Du dich gerade in der DHBW?") == JOptionPane.NO_OPTION){
-                 }
-                 else{
-                     System.exit(0);
-                 }
             }else{
                 throw new UnsupportedOperationException("Es wurde ein leeres Spiel an die Steuerung übergeben! Das geht nicht.");
                 // JOptionPane.showConfirmDialog(null, "Das erstelle Spielfeld ist ungültig. Bitte versuchen Sie es erneut.");
