@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -119,6 +120,12 @@ public class GrafikLib {
 		return pics;
 
 	}
+
+        public ImageIcon getIcon( String path ){
+            return new ImageIcon(path);
+        }
+
+
 
 	public URL getURLfromRessource(String path) {
 		return getClass().getClassLoader().getResource( path );
