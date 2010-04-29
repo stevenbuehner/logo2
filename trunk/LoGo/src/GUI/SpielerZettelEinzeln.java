@@ -19,8 +19,8 @@ public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {
 
     /* Wichtige Variablen zum Zeichnen. Geben an, um welchen
      * Punkt der Zettel gedreht wird und wo die Zettel liegen*/
-    private int xMittelPos;
-    private int yMittelPos;
+    private int xPos;
+    private int yPos;
     private double OwinkelInRad;
 
     /* Variable für den Inhalt*/
@@ -38,8 +38,8 @@ public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {
 
 
     public SpielerZettelEinzeln(int xPos, int yPos, double offsetWinkel, String startText) {
-        this.xMittelPos = xPos;
-        this.yMittelPos = yPos;
+        this.xPos = xPos;
+        this.yPos = yPos;
         this.OwinkelInRad = Math.toRadians(offsetWinkel);
         this.startText = startText;
     }
@@ -82,8 +82,14 @@ public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {
         AffineTransform at = AffineTransform.getRotateInstance(
                 -Math.toRadians(OwinkelInRad));
        g2.setTransform(at);
- //      g2.drawString(String anzeigeText, int xPos, int yPos);
-        
+       g2.drawString(anzeigeText, xPos, yPos);
+
+       at = AffineTransform.getRotateInstance(
+                0,
+                0,
+                0);
+       g2.setTransform(at);
+       g = (Graphics) g2;
     }
 
 }
