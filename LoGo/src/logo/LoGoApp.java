@@ -13,6 +13,9 @@ import GUI.FensterSpieloberflaeche;
 import Klassen.Steuerung;
 import interfaces.OberflaecheInterface;
 import interfaces.SteuerungInterface;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 
 /**
@@ -57,6 +60,11 @@ public class LoGoApp extends SingleFrameApplication {
      * Main method launching the application.
      */
     public static void main(String[] args) {
+        UIManager.put("OptionPane.cancelButtonText", "Abbrechen");
+        UIManager.put("OptionPane.noButtonText", "Nein");
+        UIManager.put("OptionPane.okButtonText", "Einverstanden");
+        UIManager.put("OptionPane.yesButtonText", "Ja");
+
          try {
 	    // Set System L&F
         UIManager.setLookAndFeel(
@@ -99,7 +107,6 @@ public class LoGoApp extends SingleFrameApplication {
         meineOberflaeche = new FensterSpieloberflaeche("LoGo, by Steven Buehner, Alex Jesche, Rebecca King and Tommy Schladitz");
         meinEinstellungsfenster = new FensterEinstellung( "Einstellungen");
         meinAuswertungsfenster = new FensterAuswertung();
-
 
         //launch(LoGoApp.class, args);
     }
