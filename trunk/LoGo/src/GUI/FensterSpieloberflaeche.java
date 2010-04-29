@@ -615,12 +615,12 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         // Hier dann die Glass-Pane wegnehmen / deaktivieren
     }
 
-    private void buttonNeuesSpielGedrueckt() {
+  /*  private void buttonNeuesSpielGedrueckt() {
         this.dasBrett = null;
         this.Pause.setEnabled(false);
         this.Fortsetzen.setEnabled(false);
         LoGoApp.meineSteuerung.buttonSpielStarten();
-    }
+    }*/
 
     private void buttonSpielSpeichernGedrueckt() {
         LoGoApp.meineSteuerung.buttonSpielSpeichern();
