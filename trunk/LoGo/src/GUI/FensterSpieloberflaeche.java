@@ -3,6 +3,7 @@ package GUI;
 import Klassen.Konstante;
 import interfaces.OberflaecheInterface;
 import interfaces.SpielerUhren;
+import interfaces.SpielerZettel;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -13,7 +14,6 @@ import java.awt.MenuBar;
 import java.awt.MenuItem;
 import java.awt.MenuShortcut;
 import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -25,9 +25,7 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.KeyStroke;
 import logo.LoGoApp;
 
 /**
@@ -63,9 +61,12 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
     private Spielbrett dasBrett;
     private SpielerUhren spielerUhrSchwarz;
     private SpielerUhren spielerUhrWeiss;
+    private SpielerZettel spielerZettelSchwarz;
+    private SpielerZettel spielerZettelWeiss;
     protected MenuBar dieMenueBar;
     protected MenuItem Einstellungen;
     protected MenuItem UeberLoGo;
+    protected MenuItem NeuesSpiel;
     protected MenuItem SpielLaden;
     protected MenuItem SpielSpeichern;
     protected MenuItem SpielBeenden;
@@ -116,6 +117,9 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
 
         this.spielerUhrSchwarz = new SpielerUhr(316, 215, 0, 4.5);
         this.spielerUhrWeiss = new SpielerUhr(112, 144, 0, 1);
+        this.spielerZettelWeiss = new SpielerZettelEinzeln(5, 560, -22.0, "WEISS:");
+        this.spielerZettelSchwarz = new SpielerZettelEinzeln(238, 424, 3.7, "SCHWARZ");
+
         this.spielOberflaechePausiert = false;
 
         //this.setResizable(false);
@@ -192,6 +196,12 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         // ------ Spiel-Menue -------
         Menu dasSpielMenue = new Menu("Spiel");
 
+        // Neues Spiel 
+        NeuesSpiel = new MenuItem("Neues Spiel");
+        NeuesSpiel.addActionListener(this);
+        NeuesSpiel.setShortcut(new MenuShortcut(KeyEvent.VK_N));
+        dasSpielMenue.add(NeuesSpiel);
+
         // Spiel Laden
         SpielLaden = new MenuItem("Spiel laden");
         SpielLaden.addActionListener(this);
@@ -204,7 +214,7 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         SpielSpeichern.setShortcut(new MenuShortcut(KeyEvent.VK_S));
         dasSpielMenue.add(SpielSpeichern);
 
-        // Spiel Speichern
+        // Spiel Beenden
         SpielBeenden = new MenuItem("Spiel beenden");
         SpielBeenden.addActionListener(this);
         SpielBeenden.setShortcut(new MenuShortcut(KeyEvent.VK_Q));
@@ -273,12 +283,6 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
 
     }
 
-    protected void setMenuAccelerator(JMenuItem pMenuItem, char pMnemonic) {
-        // Bei Windows und Linux mit STR, bei Apple mit Apfel
-        KeyStroke ks = KeyStroke.getKeyStroke(pMnemonic, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
-        pMenuItem.setAccelerator(ks);
-    }
-
     protected void berechneDelta() {
 
         delta = System.nanoTime() - last;
@@ -328,6 +332,22 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
 
         g.drawImage(backgroundImage, 0, 0, this);
 
+        if (spielerUhrSchwarz != null) {
+            this.spielerUhrSchwarz.zeichneZeiger(g);
+        }
+
+        if (this.spielerUhrWeiss != null) {
+            this.spielerUhrWeiss.zeichneZeiger(g);
+        }
+
+        if (this.spielerZettelSchwarz != null){
+            this.spielerZettelSchwarz.zeichneDich(g);
+        }
+
+        if (this.spielerZettelWeiss != null ){
+            this.spielerZettelWeiss.zeichneDich(g);
+        }        
+
         if (this.dasBrett != null) {
             dasBrett.paintComponents(g);
         }else if ( !this.spielOberflaechePausiert ){
@@ -340,14 +360,6 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
             }
         }
 
-        if (spielerUhrSchwarz != null) {
-            this.spielerUhrSchwarz.zeichneZeiger(g);
-        }
-
-        if (this.spielerUhrWeiss != null) {
-            this.spielerUhrWeiss.zeichneZeiger(g);
-        }
-
         if(this.spielOberflaechePausiert){
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, this.getWidth(), this.getHeight());
@@ -356,7 +368,6 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
                         (this.getHeight()-pauseImage.getHeight())/2, this);
             }
         }
-
     }
 
     public void start() {
@@ -423,6 +434,7 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
                 mess = "Pressed: " + KeyEvent.getKeyText(keyCode);
                // e.consume(); // Kombinierte Tasten sollen nicht behandlet werden.
         }
+        e.consume(); // Kombinierte Tasten sollen nicht behandlet werden.
     }
 
     public void keyReleased(KeyEvent e) {
@@ -545,6 +557,8 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
             this.buttonUeberLogoGedrueckt();
         } else if (e.getSource() == Einstellungen) {
             this.buttonEinstellungenGedrueckt();
+        } else if (e.getSource() == NeuesSpiel) {
+            this.buttonNeuesSpiel();
         } else if (e.getSource() == SpielLaden) {
             this.buttonSpielLadenGedrueckt();
         } else if (e.getSource() == SpielSpeichern) {
