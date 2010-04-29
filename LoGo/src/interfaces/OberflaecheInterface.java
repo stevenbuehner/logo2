@@ -117,7 +117,7 @@ public interface OberflaecheInterface {
      */
     public void setPauseScreen(boolean setPause);
 
-    public void setAuswertungsButtonsVisible (boolean visible );
+   // public void setAuswertungsButtonsVisible (boolean visible );
 
     /**
      * Ist das Spiel beendet, so wird das Ergebnis angezeigt. Das bedeutet, das
@@ -138,12 +138,24 @@ public interface OberflaecheInterface {
      * je nach Spielstatus freigegeben
      * @param b Wird Passen und Aufgeben freigeschaltet?
      */
-    public void passenUndAufgebenVisible(boolean b);
+    public void visiblePassen(boolean b);
+
+    public void visibleAufgeben(boolean b);
 
     /**
      * Wenn man in der Auswertung des Spieles ist, muss die Schaltflaeche um
      * die Auswertung zu beenden freigegeben sein. Sonst nicht!
      * @param b Wird auswertungBeenden freigeschaltet?
      */
-    public void auswertungBeendenVisible(boolean b);
+    public void visibleAuswertungBeenden(boolean b);
+
+    public void visibleNeuesSpiel(boolean visible);
+
+    public void visibleSpielLaden(boolean visible);
+
+    public void visibleSpielSpeichern(boolean visible);
+
+    public void visiblePause(boolean visible);
+
+    public void visibleFortsetzen(boolean visible);
 }
