@@ -88,8 +88,8 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
     private int brettXOffset;
     private int brettYOffset;
     private int bretthoehe;
-    private int paneloffset = 30;
-    private int seitenoffset = 5;
+    private int paneloffset;
+    private int seitenoffset;
     private String momSpielModus;
 
     /* Zum zeichnen des Feldes */
@@ -191,7 +191,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
         this.brettbreite = 496;
         this.bretthoehe = 496;
         this.brettXOffset = 5;
-        this.brettYOffset = 255;
+        this.brettYOffset = 240;
         this.dasSpielfeldGUI = new EinstellungSpielbrett(this.brettbreite, this.bretthoehe, this.brettXOffset, this.brettYOffset, 13);
     }
 
@@ -248,7 +248,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      */
     private void fensterRendern(){
         int horAbs = 20; // horizontaler Abstand
-        int verAbs = 10; // vertikaler Abstand
+        int verAbs = 5; // vertikaler Abstand
         int textFH = 20; // Textfeldhoehe
         int labH   = 30; // Labelhoehe
         int cBoxH  = 30; // Checkboxhoehe
@@ -471,10 +471,14 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      * @param e Event von der Maus (mit Koordinaten)
      */
     public void mouseClicked(MouseEvent e) {
+        System.out.println("Klicked "+ e.getX() + " " + e.getY()+ " : ");
+        this.paneloffset = 13;
+        this.seitenoffset = 15;
         if(this.momSpielModus.equals("Startfeld") &&
            e.getX()-this.seitenoffset>=this.brettXOffset && e.getX()-this.seitenoffset<=this.brettXOffset+this.brettbreite &&
-           e.getY()>=this.brettYOffset+this.paneloffset && e.getY()<=this.brettYOffset+this.bretthoehe+this.paneloffset){
+           e.getY()-this.paneloffset>=this.brettYOffset && e.getY()-this.paneloffset<=this.brettYOffset+this.bretthoehe){
             System.out.print("Klicked "+ e.getX() + " " + e.getY()+ " : ");
+
             int farbe = 0;
             if(e.getButton()==MouseEvent.BUTTON1){
                 farbe = Konstante.SCHNITTPUNKT_SCHWARZ;
@@ -484,8 +488,8 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
             }
             int xKoord=1;
             int yKoord=1;
-            xKoord = (int) ((((double)e.getX()-this.seitenoffset-(double)this.brettXOffset)/(double)this.brettbreite)*(double)this.getSelectedFeldgroesse())+1;
-            yKoord = this.getSelectedFeldgroesse()- (int) ((((double)e.getY()-(double)this.brettYOffset)/(double)this.bretthoehe)*(double)this.getSelectedFeldgroesse())+1;
+            xKoord = (int) ((((double)e.getX()-this.seitenoffset+(double)this.brettXOffset)/(double)this.brettbreite)*(double)this.getSelectedFeldgroesse())+1;
+            yKoord = this.getSelectedFeldgroesse()- (int) ((((double)e.getY()+this.paneloffset-(double)this.brettYOffset)/(double)this.bretthoehe)*(double)this.getSelectedFeldgroesse())+1;
             if(xKoord<1){xKoord=1;}
             if(xKoord>this.getSelectedFeldgroesse()){xKoord=this.getSelectedFeldgroesse();}
             if(yKoord<1){yKoord=1;}
