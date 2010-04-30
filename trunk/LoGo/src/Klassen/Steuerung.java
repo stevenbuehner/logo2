@@ -8,7 +8,6 @@ import Timer.CountdownSpielerZeitWeiss;
 import Interfaces.SteuerungInterface;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -87,6 +86,7 @@ public class Steuerung implements SteuerungInterface {
             if (bereitsInitialisiertesSpielfeld.spielfeldValidiert() == true) {
 
                 this.dasSpielfeld = bereitsInitialisiertesSpielfeld;
+                this.dieSpielfeldAuswertung = null;
                 // Timer initialisieren
                 String ipAddr = null;
 
@@ -419,6 +419,7 @@ public class Steuerung implements SteuerungInterface {
             }
             if (userResponse == JOptionPane.OK_OPTION) {
                 this.dasSpielfeld = null;
+                this.dieSpielfeldAuswertung = null;
                 this.periodenZeitSchwarz.stoppeCountdown();
                 this.periodenZeitWeiss.stoppeCountdown();
                 this.spielerZeitWeiss.stoppeCountdown();
@@ -461,7 +462,6 @@ public class Steuerung implements SteuerungInterface {
                         false,
                         this.dasSpielfeld.getSpielerWeiss().getVerbleibendeSpielzeitInMS());
             }
-
 
             // Oberfläche füllen
             LoGoApp.meineOberflaeche.setGefangeneSteineSchwarz(
@@ -697,7 +697,9 @@ public class Steuerung implements SteuerungInterface {
      * @see SteuerungInterface
      */
     public void buttonSpielSpeichern() {
+        
         // zum Testen
+        if(this.dieSpielfeldAuswertung != null && this.dasSpielfeld != null ){
             float pSchw = this.dasSpielfeld.getSpielerWeiss().getKomiPunkte() +
                     this.dieSpielfeldAuswertung.getGebietsPunkteSchwarz() +
                     this.dasSpielfeld.getSpielerSchwarz().getGefangenenAnzahl() +
@@ -706,11 +708,14 @@ public class Steuerung implements SteuerungInterface {
                     this.dasSpielfeld.getSpielerWeiss().getGefangenenAnzahl() +
                     this.dieSpielfeldAuswertung.getWeisseGefangeneAufBrett();
 
-
             boolean returnWert = this.historyVersenden(this.dasSpielfeld.getSpielerSchwarz().getSpielerName(),
                     this.dasSpielfeld.getSpielerWeiss().getSpielerName(),
                     pSchw, pWeiss );
-            System.out.println( "History in DB geladen: " + returnWert);
+            System.out.println( "Spielstand zur DB gesendet: " + returnWert);
+            }
+        else{
+            System.out.println( "Das Senden zur DB geht erst NACH der Spielauswertung!");
+        }
 
 
         if (this.dasSpielfeld == null) {
