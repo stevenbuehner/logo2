@@ -29,6 +29,7 @@ public class Spielbrett extends JComponent {
     // Grafiken
     protected SpielStein[][] feld;
     protected SpielsteinMarkierung markierterStein;
+    protected Point letztePositionMarkierterStein;
 
     // Array-Inhalte alle auf 0 setzen
     public Spielbrett(int breite, int hoehe, int xOffset, int yOffset, int anzahlFelder) {
@@ -41,6 +42,7 @@ public class Spielbrett extends JComponent {
         this.xOffset = xOffset + unpassend / 2;
         this.yOffset = yOffset + unpassend / 2;
         this.anzahlFelder = anzahlFelder;
+        this.letztePositionMarkierterStein = null;
         this.setSize(30, 30);
 
         // initialisiere das Spielfeld mit leeren Feldern
@@ -70,7 +72,7 @@ public class Spielbrett extends JComponent {
                 break;
             case 9:
                 spielSteinImageName = "GUI/resources/Kugel_9x9.png";
-                markierterSteinImage = "GUI/resources/MarkierterStein_9x9.png";
+                markierterSteinImage = "GUI/resources/MarkierterStein3_9x9.png";
                 break;
             case 11:
                 spielSteinImageName = "GUI/resources/Kugel_11x11.png";
@@ -101,7 +103,7 @@ public class Spielbrett extends JComponent {
 
         // Initialisierern des Spezial-Objektes zum markieren der Spielsteine
         this.markierterStein = new SpielsteinMarkierung(markStein, 0, 0);
-        this.markierterStein.setVisible(true);
+        this.markierterStein.setVisible(false);
 
         for (int m = 0; m < this.anzahlFelder; m++) {
             for (int n = 0; n < this.anzahlFelder; n++) {
@@ -280,10 +282,18 @@ public class Spielbrett extends JComponent {
 
     public void setMarkierterStein(Point steinPos){
         
-        if(steinPos == null){
+            if(steinPos == null){
             this.markierterStein.visible = false;
         }
         else{
+            if(this.letztePositionMarkierterStein == null
+                    || this.letztePositionMarkierterStein.x != steinPos.x
+                    || this.letztePositionMarkierterStein.y != steinPos.y){
+                // Wenn die Markierung auf einen neuen Stein gelegt wird,
+                // dann soll das Erscheinen der Markierung erneut animiert werden
+                this.markierterStein.restartAnimation();
+            }
+
             int feldHoehe = brettHoehe / anzahlFelder;
             int feldBreite = brettBreite / anzahlFelder;
 
@@ -291,7 +301,6 @@ public class Spielbrett extends JComponent {
             this.markierterStein.setY(yOffset + this.brettHoehe - feldHoehe * (steinPos.y - 0.5) );
             this.markierterStein.setVisible(true);
         }
-
     }
 
     /**

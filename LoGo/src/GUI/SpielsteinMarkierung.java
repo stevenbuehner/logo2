@@ -19,7 +19,11 @@ public class SpielsteinMarkierung extends SpielStein {
         this.addScene(this.storedImages[5], 0);
         this.addScene(this.storedImages[6], 0);
         this.addScene(this.storedImages[7], 0);
-
+        this.addScene(this.storedImages[8], 0);
+        this.addScene(this.storedImages[9], 0);
+        this.addScene(this.storedImages[10], 0);
+        // this.addScene(this.storedImages[11], 0); // wieder das Selbe
+        
         this.loop = true;
 
     }
@@ -34,11 +38,11 @@ public class SpielsteinMarkierung extends SpielStein {
     @Override
     protected void computeAnimation() {
 
-        if (this.currentSceneIndex < 7){
+        if (this.currentSceneIndex < 10){
             this.currentSceneIndex++;
         }
-        else if (this.currentSceneIndex == 7 && this.loop){
-            currentSceneIndex--;
+        else if (this.currentSceneIndex == 10 && this.loop){
+            currentSceneIndex = 5;
         }
         else{
             // this.currentSceneIndex = this.currentSceneIndex;
