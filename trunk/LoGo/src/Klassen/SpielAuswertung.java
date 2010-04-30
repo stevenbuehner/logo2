@@ -1048,189 +1048,191 @@ public class SpielAuswertung {
              * 
              *
              * */
+            if(listeSteine.get(momElement).getBelegungswert() != farbeGebiet){
 
-            /* 1. Linke Seite */
-            if (listeSteine.get(momElement).getXPos() != 0) {
-                if (this.auswertungBrett[listeSteine.get(momElement).getXPos() - 1][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                        == Konstante.SCHNITTPUNKT_LEER
-                        && this.auswertungBrett[listeSteine.get(momElement).getXPos() - 1][listeSteine.get(momElement).getYPos()].getMarkiert()
-                        == false) {
-                    /* Nur aufnehmen, wenn der Ausgangsstein nicht Leer ist! */
-                    if (this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                            != Konstante.SCHNITTPUNKT_LEER) {
-                        listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos() - 1][listeSteine.get(momElement).getYPos()]);
-                        this.auswertungBrett[listeSteine.get(momElement).getXPos() - 1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
+            if(listeSteine.get(momElement).getXPos() != 0){
+                if(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == Konstante.SCHNITTPUNKT_LEER){
+                    if(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getMarkiert()
+                            == false){
+                        if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()].getBelegungswert() != Konstante.SCHNITTPUNKT_LEER){
+                           listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()]);
+                         this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
+                        }
                     }
-                } else if (this.auswertungBrett[listeSteine.get(momElement).getXPos() - 1][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                        == farbe
-                        && this.auswertungBrett[listeSteine.get(momElement).getXPos() - 1][listeSteine.get(momElement).getYPos()].getMarkiert()
-                        == false) {
-                    listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos() - 1][listeSteine.get(momElement).getYPos()]);
-                    this.auswertungBrett[listeSteine.get(momElement).getXPos() - 1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
-                } /* Freiheit finden */ else if (this.auswertungBrett[listeSteine.get(momElement).getXPos() - 1][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                        == farbeGebiet
-                        || this.auswertungBrett[listeSteine.get(momElement).getXPos() - 1][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                        == gegenfarbeGefangen) {
-                    freiheiten++;
-                    xPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos() - 1][listeSteine.get(momElement).getYPos()].getXPos();
-                    yPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos() - 1][listeSteine.get(momElement).getYPos()].getYPos();
-                } else if (this.auswertungBrett[listeSteine.get(momElement).getXPos() - 1][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                        == farbe
-                        && this.auswertungBrett[listeSteine.get(momElement).getXPos() - 1][listeSteine.get(momElement).getYPos()].getAnalysiert()
-                        == true) {
-                    /* Wenn man auf einen schon Analysierten Stein trifft,
-                     * so muss dieser demarkiert werden, damit falls man
-                     * erneut sucht der Stein betrachtet wird.
-                     */
-                    this.auswertungBrett[listeSteine.get(momElement).getXPos() - 1][listeSteine.get(momElement).getYPos()].setAnalysiert(false);
-                    this.auswertungBrett[listeSteine.get(momElement).getXPos() - 1][listeSteine.get(momElement).getYPos()].setMarkiert(false);
-                    for (int l = listeSteine.size() - 1; l >= 0; l--) {
-                        this.auswertungBrett[listeSteine.get(l).getXPos()][listeSteine.get(l).getYPos()].setAnalysiert(false);
-                        this.auswertungBrett[listeSteine.get(l).getXPos()][listeSteine.get(l).getYPos()].setMarkiert(false);
-                        listeSteine.remove(l);
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == farbe){
+                    if(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getAnalysiert()
+                            == true ||
+                       this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getMarkiert()
+                            == false){
+                         listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()]);
+                         this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
+                         this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].setAnalysiert(false);
                     }
-                    return true;
-                } else {
-                    /* nichts */
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == gegenfarbe){
+                    /* nichts , das ist ein Stopper */
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == gegenfarbeGefangen){
+                    /* Dann werden keine Pseudofreiheiten markiert, da dies zu kompliziert ist */
+                    freiheiten = 2;
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == farbeGebiet){
+                    if(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getMarkiert() == false){
+                        freiheiten++;
+                        xPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getXPos();
+                        yPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getYPos();
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
+                        listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()]);
+                    }
+                }
+                else {
+                    /* nichts machen */
                 }
             }
 
-            /* 2. Rechte Seite */
-            if (listeSteine.get(momElement).getXPos() != this.getFeldGroesse() - 1) {
-                if (this.auswertungBrett[listeSteine.get(momElement).getXPos() + 1][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                        == Konstante.SCHNITTPUNKT_LEER
-                        && this.auswertungBrett[listeSteine.get(momElement).getXPos() + 1][listeSteine.get(momElement).getYPos()].getMarkiert()
-                        == false) {
-                    /* Nur aufnehmen, wenn der Ausgangsstein nicht Leer ist! */
-                    if (this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                            != Konstante.SCHNITTPUNKT_LEER) {
-                        listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos() + 1][listeSteine.get(momElement).getYPos()]);
-                        this.auswertungBrett[listeSteine.get(momElement).getXPos() + 1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
+            if(listeSteine.get(momElement).getXPos() != this.getFeldGroesse()-1){
+                if(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == Konstante.SCHNITTPUNKT_LEER){
+                    if(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getMarkiert()
+                            == false){
+                        if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()].getBelegungswert() != Konstante.SCHNITTPUNKT_LEER){
+                           listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()]);
+                         this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
+                        }
                     }
-                } else if (this.auswertungBrett[listeSteine.get(momElement).getXPos() + 1][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                        == farbe
-                        && this.auswertungBrett[listeSteine.get(momElement).getXPos() + 1][listeSteine.get(momElement).getYPos()].getMarkiert()
-                        == false) {
-                    listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos() + 1][listeSteine.get(momElement).getYPos()]);
-                    this.auswertungBrett[listeSteine.get(momElement).getXPos() + 1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
-                } /* Freiheit finden */ else if (this.auswertungBrett[listeSteine.get(momElement).getXPos() + 1][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                        == farbeGebiet
-                        || this.auswertungBrett[listeSteine.get(momElement).getXPos() + 1][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                        == gegenfarbeGefangen) {
-                    freiheiten++;
-                    xPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos() + 1][listeSteine.get(momElement).getYPos()].getXPos();
-                    yPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos() + 1][listeSteine.get(momElement).getYPos()].getYPos();
-                } else if (this.auswertungBrett[listeSteine.get(momElement).getXPos() + 1][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                        == farbe
-                        && this.auswertungBrett[listeSteine.get(momElement).getXPos() + 1][listeSteine.get(momElement).getYPos()].getAnalysiert()
-                        == true) {
-                    /* Wenn man auf einen schon Analysierten Stein trifft,
-                     * so muss dieser demarkiert werden, damit falls man
-                     * erneut sucht der Stein betrachtet wird.
-                     */
-                    this.auswertungBrett[listeSteine.get(momElement).getXPos() + 1][listeSteine.get(momElement).getYPos()].setAnalysiert(false);
-                    this.auswertungBrett[listeSteine.get(momElement).getXPos() + 1][listeSteine.get(momElement).getYPos()].setMarkiert(false);
-                    for (int l = listeSteine.size() - 1; l >= 0; l--) {
-                        this.auswertungBrett[listeSteine.get(l).getXPos()][listeSteine.get(l).getYPos()].setAnalysiert(false);
-                        this.auswertungBrett[listeSteine.get(l).getXPos()][listeSteine.get(l).getYPos()].setMarkiert(false);
-                        listeSteine.remove(l);
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == farbe){
+                    if(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getAnalysiert()
+                            == true ||
+                       this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getMarkiert()
+                            == false){
+                         listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()]);
+                         this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
+                         this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].setAnalysiert(false);
                     }
-                    return true;
-                } else {
-                    /* nichts */
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == gegenfarbe){
+                    /* nichts , das ist ein Stopper */
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == gegenfarbeGefangen){
+                    /* Dann werden keine Pseudofreiheiten markiert, da dies zu kompliziert ist */
+                    freiheiten = 2;
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert()
+                        == farbeGebiet){
+                    if(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getMarkiert() == false){
+                        freiheiten++;
+                        xPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getXPos();
+                        yPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getYPos();
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
+                        listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()]);
+                    }
+                }
+                else {
+                    /* nichts machen */
                 }
             }
 
-            /* 3. Untere Seite */
-            if (listeSteine.get(momElement).getYPos() != 0) {
-                if (this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() - 1].getBelegungswert()
-                        == Konstante.SCHNITTPUNKT_LEER
-                        && this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() - 1].getMarkiert()
-                        == false) {
-                    /* Nur aufnehmen, wenn der Ausgangsstein nicht Leer ist! */
-                    if (this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                            != Konstante.SCHNITTPUNKT_LEER) {
-                        listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() - 1]);
-                        this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() - 1].setMarkiert(true);
+            if(listeSteine.get(momElement).getYPos() != 0){
+                if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                        == Konstante.SCHNITTPUNKT_LEER){
+                    if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getMarkiert()
+                            == false){
+                        if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()].getBelegungswert() != Konstante.SCHNITTPUNKT_LEER){
+                           listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1]);
+                         this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].setMarkiert(true);
+                        }
                     }
-                } else if (this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() - 1].getBelegungswert()
-                        == farbe
-                        && this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() - 1].getMarkiert()
-                        == false) {
-                    listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() - 1]);
-                    this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() - 1].setMarkiert(true);
-                } /* Freiheit finden */ else if (this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() - 1].getBelegungswert()
-                        == farbeGebiet
-                        || this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() - 1].getBelegungswert()
-                        == gegenfarbeGefangen) {
-                    freiheiten++;
-                    xPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() - 1].getXPos();
-                    yPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() - 1].getYPos();
-                } else if (this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() - 1].getBelegungswert()
-                        == farbe
-                        && this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() - 1].getAnalysiert()
-                        == true) {
-                    /* Wenn man auf einen schon Analysierten Stein trifft,
-                     * so muss dieser demarkiert werden, damit falls man
-                     * erneut sucht der Stein betrachtet wird.
-                     */
-                    this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() - 1].setAnalysiert(false);
-                    this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() - 1].setMarkiert(false);
-                    for (int l = listeSteine.size() - 1; l >= 0; l--) {
-                        this.auswertungBrett[listeSteine.get(l).getXPos()][listeSteine.get(l).getYPos()].setAnalysiert(false);
-                        this.auswertungBrett[listeSteine.get(l).getXPos()][listeSteine.get(l).getYPos()].setMarkiert(false);
-                        listeSteine.remove(l);
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                        == farbe){
+                    if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getAnalysiert()
+                            == true ||
+                       this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getMarkiert()
+                            == false){
+                         listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1]);
+                         this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].setMarkiert(true);
+                         this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].setAnalysiert(false);
                     }
-                    return true;
-                } else {
-                    /* nichts */
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                        == gegenfarbe){
+                    /* nichts , das ist ein Stopper */
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                        == gegenfarbeGefangen){
+                    /* Dann werden keine Pseudofreiheiten markiert, da dies zu kompliziert ist */
+                    freiheiten = 2;
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert()
+                        == farbeGebiet){
+                    if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getMarkiert() == false){
+                        freiheiten++;
+                        xPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getXPos();
+                        yPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getYPos();
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].setMarkiert(true);
+                        listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1]);
+                    }
+                }
+                else {
+                    /* nichts machen */
                 }
             }
 
-            /* 4. Obere Seite */
-            if (listeSteine.get(momElement).getYPos() != this.getFeldGroesse() - 1) {
-                if (this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() + 1].getBelegungswert()
-                        == Konstante.SCHNITTPUNKT_LEER
-                        && this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() + 1].getMarkiert()
-                        == false) {
-                    /* Nur aufnehmen, wenn der Ausgangsstein nicht Leer ist! */
-                    if (this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()].getBelegungswert()
-                            != Konstante.SCHNITTPUNKT_LEER) {
-                        listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() + 1]);
-                        this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() + 1].setMarkiert(true);
+            if(listeSteine.get(momElement).getYPos() != this.getFeldGroesse()-1){
+                if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                        == Konstante.SCHNITTPUNKT_LEER){
+                    if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getMarkiert()
+                            == false){
+                        if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()].getBelegungswert() != Konstante.SCHNITTPUNKT_LEER){
+                           listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1]);
+                         this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].setMarkiert(true);
+                        }
                     }
-                } else if (this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() + 1].getBelegungswert()
-                        == farbe
-                        && this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() + 1].getMarkiert()
-                        == false) {
-                    listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() + 1]);
-                    this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() + 1].setMarkiert(true);
-                } /* Freiheit finden */ else if (this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() + 1].getBelegungswert()
-                        == farbeGebiet
-                        || this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() + 1].getBelegungswert()
-                        == gegenfarbeGefangen) {
-                    freiheiten++;
-                    xPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() + 1].getXPos();
-                    yPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() + 1].getYPos();
-                } else if (this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() + 1].getBelegungswert()
-                        == farbe
-                        && this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() + 1].getAnalysiert()
-                        == true) {
-                    /* Wenn man auf einen schon Analysierten Stein trifft,
-                     * so muss dieser demarkiert werden, damit falls man
-                     * erneut sucht der Stein betrachtet wird.
-                     */
-                    this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() + 1].setAnalysiert(false);
-                    this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() + 1].setMarkiert(false);
-                    for (int l = listeSteine.size() - 1; l >= 0; l--) {
-                        this.auswertungBrett[listeSteine.get(l).getXPos()][listeSteine.get(l).getYPos()].setAnalysiert(false);
-                        this.auswertungBrett[listeSteine.get(l).getXPos()][listeSteine.get(l).getYPos()].setMarkiert(false);
-                        listeSteine.remove(l);
-                    }
-                    return true;
-                } else {
-                    /* nichts */
                 }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                        == farbe){
+                    if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getAnalysiert()
+                            == true ||
+                       this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getMarkiert()
+                            == false){
+                         listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1]);
+                         this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].setMarkiert(true);
+                         this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].setAnalysiert(false);
+                    }
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                        == gegenfarbe){
+                    /* nichts , das ist ein Stopper */
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                        == gegenfarbeGefangen){
+                    /* Dann werden keine Pseudofreiheiten markiert, da dies zu kompliziert ist */
+                    freiheiten = 2;
+                }
+                else if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert()
+                        == farbeGebiet){
+                    if(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getMarkiert() == false){
+                        freiheiten++;
+                        xPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getXPos();
+                        yPosFreiheit = this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getYPos();
+                        this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].setMarkiert(true);
+                        listeSteine.add(this.auswertungBrett[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1]);
+                    }
+                }
+                else {
+                    /* nichts machen */
+                }
+            }
             }
             momElement++;
         } while (momElement < listeSteine.size());
@@ -1248,15 +1250,43 @@ public class SpielAuswertung {
                 /* Dann markiere die Pseudofreiheit */
                 this.auswertungBrett[xPosFreiheit][yPosFreiheit].setBelegungswert(Konstante.SCHNITTPUNKT_LEER);
                 for (int i = listeSteine.size() - 1; i >= 0; i--) {
-                    this.auswertungBrett[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setMarkiert(false);
+                    if(this.auswertungBrett[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].getBelegungswert() == farbe){
+                        this.auswertungBrett[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setMarkiert(false);
+                        this.auswertungBrett[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setAnalysiert(false);
+                    }
+                    else if(this.auswertungBrett[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER){
+                        this.auswertungBrett[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setMarkiert(false);
+                        this.auswertungBrett[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setAnalysiert(false);
+                    }
+                    else if(this.auswertungBrett[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].getBelegungswert() == farbeGebiet){
+                        this.auswertungBrett[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setMarkiert(false);
+                        this.auswertungBrett[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setAnalysiert(false);
+
+                    }
                     listeSteine.remove(i);
                 }
                 return true;
             }
+            else {
+               throw new UnsupportedOperationException("Punkt als Gebiet erkannt, aber dann war Belegungswert ploetzlich falsch");
+            }
         }
 
         for (int i = listeSteine.size() - 1; i >= 0; i--) {
-            this.auswertungBrett[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setAnalysiert(true);
+            if(this.auswertungBrett[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].getBelegungswert() == farbe){
+                        this.auswertungBrett[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setMarkiert(true);
+                        this.auswertungBrett[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setAnalysiert(true);
+            }
+            else if(this.auswertungBrett[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER){
+                        this.auswertungBrett[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setMarkiert(false);
+                        this.auswertungBrett[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setAnalysiert(false);
+            }
+            else if(this.auswertungBrett[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].getBelegungswert() == farbeGebiet){
+                        this.auswertungBrett[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setMarkiert(false);
+                        this.auswertungBrett[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setAnalysiert(false);
+
+            }
+
             listeSteine.remove(i);
         }
         return false;
