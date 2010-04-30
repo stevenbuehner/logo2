@@ -1,7 +1,7 @@
-/*
+/**
  * LoGoApp.java
  */
-package Logo;
+package logo;
 
 import GUI.FensterAuswertung;
 import GUI.GrafikLib;

@@ -5,7 +5,7 @@
 package Timer;
 
 import Interfaces.OberflaecheInterface;
-import Logo.LoGoApp;
+import logo.LoGoApp;
 
 /**
  *

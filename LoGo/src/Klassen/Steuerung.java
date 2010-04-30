@@ -11,7 +11,7 @@ import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import Logo.LoGoApp;
+import logo.LoGoApp;
 
 /**
  * Die Klasse dient zur Steuerung des Spielflusses
