@@ -18,6 +18,14 @@ public class HistoryEintrag {
     private float punkteSpielerWeiss;
     private Date zeitpunkt;
 
+    public HistoryEintrag(){
+        this.nameSpielerSchwarz = "";
+        this.nameSpielerWeiss = "";
+        this.punkteSpielerSchwarz = 0;
+        this.punkteSpielerWeiss = 0;
+        this.zeitpunkt = null;
+    }
+
     /**
      * Getter für den Namen von Spieler Schwarz
      * @return

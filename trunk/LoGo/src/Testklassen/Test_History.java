@@ -20,11 +20,13 @@ public class Test_History {
 
     public static void main(String[] args) throws SQLException {
         HistoryConnector hc = new HistoryConnector();
+        HistoryEintrag eintraege[] = null;
+
         try {
             hc.open();
-            HistoryEintrag he = hc.holeErstenHistoryEintrag();
+            eintraege = hc.holeDieBestenHistoryEintraege(3);
 
-            hc.sendeNeuenHistoryEintrag(he);
+            //hc.sendeNeuenHistoryEintrag(he);
             
         } catch (SQLException ex) {
             Logger.getLogger(Test_History.class.getName()).log(Level.SEVERE, null, ex);
@@ -33,6 +35,16 @@ public class Test_History {
             Logger.getLogger(Test_History.class.getName()).log(Level.SEVERE, null, ex);
         }
         finally{
+
+            for( int i = 0; i < eintraege.length; i++){
+                System.out.println(eintraege[i].getNameSpielerSchwarz() + ", " +
+                        eintraege[i].getNameSpielerSchwarz() + ", " +
+                        eintraege[i].getNameSpielerWeiss() + ", " +
+                        eintraege[i].getPunkteSpielerSchwarz() + ", " +
+                        eintraege[i].getPunkteSpielerWeiss() + ", " +
+                        eintraege[i].getDatum() );
+            }
+
             hc.close();
         }
       }
