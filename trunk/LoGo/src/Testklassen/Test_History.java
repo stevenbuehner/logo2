@@ -38,7 +38,6 @@ public class Test_History {
 
             for( int i = 0; i < eintraege.length; i++){
                 System.out.println(eintraege[i].getNameSpielerSchwarz() + ", " +
-                        eintraege[i].getNameSpielerSchwarz() + ", " +
                         eintraege[i].getNameSpielerWeiss() + ", " +
                         eintraege[i].getPunkteSpielerSchwarz() + ", " +
                         eintraege[i].getPunkteSpielerWeiss() + ", " +

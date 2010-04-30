@@ -4,10 +4,13 @@
  */
 package Klassen;
 
+import GUI.FensterSpieloberflaeche;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.swing.JFileChooser;
+import logo.LoGoApp;
 
 /**
  *
@@ -83,9 +86,20 @@ public class Speichern {
             }
         }
 
+
+        /*
+         * Hi Beccy, bin da grad druebergestolpert und dachte das war doch so etwas,
+         * wie Du gesucht hast ... ?!? ... Wenn nicht einfach wieder loeschen ...
+         * LG, Steven
+         */
+        JFileChooser chooser = new JFileChooser();
+        chooser.showSaveDialog( (FensterSpieloberflaeche)LoGoApp.meineOberflaeche);
+        String selFile = chooser.getSelectedFile().getName() + ".cfg";
+
+
         PrintWriter pw = null;
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter("C:/Go-Spiel.txt"));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(selFile));
             pw = new PrintWriter(bw);
 
             pw.println(spielzuege);

@@ -8,6 +8,8 @@ import Timer.CountdownSpielerZeitWeiss;
 import Interfaces.SteuerungInterface;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.sql.Date;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -695,6 +697,22 @@ public class Steuerung implements SteuerungInterface {
      * @see SteuerungInterface
      */
     public void buttonSpielSpeichern() {
+        // zum Testen
+            float pSchw = this.dasSpielfeld.getSpielerWeiss().getKomiPunkte() +
+                    this.dieSpielfeldAuswertung.getGebietsPunkteSchwarz() +
+                    this.dasSpielfeld.getSpielerSchwarz().getGefangenenAnzahl() +
+                    this.dieSpielfeldAuswertung.getSchwarzeGefangeneAufBrett();
+            float pWeiss = this.dieSpielfeldAuswertung.getGebietsPunkteWeiss() +
+                    this.dasSpielfeld.getSpielerWeiss().getGefangenenAnzahl() +
+                    this.dieSpielfeldAuswertung.getWeisseGefangeneAufBrett();
+
+
+            boolean returnWert = this.historyVersenden(this.dasSpielfeld.getSpielerSchwarz().getSpielerName(),
+                    this.dasSpielfeld.getSpielerWeiss().getSpielerName(),
+                    pSchw, pWeiss );
+            System.out.println( "History in DB geladen: " + returnWert);
+
+
         if (this.dasSpielfeld == null) {
             return;
         }
@@ -727,6 +745,7 @@ public class Steuerung implements SteuerungInterface {
      */
     public void buttonSpielLaden() {
         if (true) {
+
         } else {
             JOptionPane.showMessageDialog(null, "Laden nicht möglich weil ...");
         }
@@ -1057,6 +1076,35 @@ public class Steuerung implements SteuerungInterface {
             this.spielerZeitWeiss.stoppeCountdown();
             this.periodenZeitWeiss.stoppeCountdown();
             this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(this.spielerZeitWeiss.getRemainingTime());
+        }
+    }
+
+
+    private boolean historyVersenden( String nameSchwarz, String nameWeiss, float punkteSchwarz, float punkteWeiss ) {
+
+        HistoryConnector hc = new HistoryConnector();
+        HistoryEintrag histEintr = new HistoryEintrag();
+        histEintr.setNameSpielerSchwarz(nameSchwarz);
+        histEintr.setNameSpielerWeiss(nameWeiss);
+        histEintr.setPunkteSpielerSchwarz(punkteSchwarz);
+        histEintr.setPunkteSpielerWeiss(punkteWeiss);
+        histEintr.setDatum(new java.sql.Date( System.currentTimeMillis() ));
+        System.out.println(histEintr.getDatum());
+
+        try {
+            hc.open();
+            hc.sendeNeuenHistoryEintrag(histEintr);
+            hc.close();
+
+        } catch (SQLException ex) {
+            System.out.println("Datenbankübertragungsfehler: " + ex.getCause() );
+            return false;
+        }
+        catch (Exception ex) {
+            System.out.println("Datenbankübertragungsfehler: " + ex.getCause() );
+            return false;
+        }finally{
+            return true;
         }
     }
 }
