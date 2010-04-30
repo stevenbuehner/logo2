@@ -5,10 +5,11 @@ import java.awt.image.BufferedImage;
 /**
  *
  * @author steven
+ * @version 0.2
  */
 public class SpielsteinMarkierung extends SpielStein {
 
-    SpielsteinMarkierung(BufferedImage[] image, double x, double y){
+    SpielsteinMarkierung(BufferedImage[] image, double x, double y) {
         super(image, x, y);
 
         this.addScene(this.storedImages[0], 0);
@@ -23,12 +24,11 @@ public class SpielsteinMarkierung extends SpielStein {
         this.addScene(this.storedImages[9], 0);
         this.addScene(this.storedImages[10], 0);
         // this.addScene(this.storedImages[11], 0); // wieder das Selbe
-        
-        this.loop = true;
 
+        this.loop = true;
     }
 
-    public SpielsteinMarkierung (BufferedImage image, double x, double y) {
+    public SpielsteinMarkierung(BufferedImage image, double x, double y) {
         super(image, x, y);
 
         this.addScene(this.storedImages[0], 0);
@@ -38,41 +38,44 @@ public class SpielsteinMarkierung extends SpielStein {
     @Override
     protected void computeAnimation() {
 
-        if (this.currentSceneIndex < 10){
+        if (this.currentSceneIndex < 10) {
             this.currentSceneIndex++;
-        }
-        else if (this.currentSceneIndex == 10 && this.loop){
+        } else if (this.currentSceneIndex == 10 && this.loop) {
             currentSceneIndex = 5;
-        }
-        else{
+        } else {
             // this.currentSceneIndex = this.currentSceneIndex;
         }
     }
 
     @Override
-    public synchronized void starteAnimationWeissSetzen() { }
+    public synchronized void starteAnimationWeissSetzen() {
+    }
 
     @Override
-    public synchronized void starteAnimationSchwarzSetzen() {    }
+    public synchronized void starteAnimationSchwarzSetzen() {
+    }
 
     @Override
-    public synchronized void starteAnimationWeissEntfernen() { }
+    public synchronized void starteAnimationWeissEntfernen() {
+    }
 
     @Override
-    public synchronized void starteAnimationSchwarzEntfernen() {}
-
-
-    @Override
-    public synchronized void starteAnimationVerbotenerZugWeiss() {}
+    public synchronized void starteAnimationSchwarzEntfernen() {
+    }
 
     @Override
-    public synchronized void starteAnimationVerbotenerZugSchwarz() {}
+    public synchronized void starteAnimationVerbotenerZugWeiss() {
+    }
 
     @Override
-    public synchronized void starteAnimationVerbotenerZugAufheben() {}
+    public synchronized void starteAnimationVerbotenerZugSchwarz() {
+    }
 
     @Override
-    public synchronized void setVerbotenerZug() {}
-    
+    public synchronized void starteAnimationVerbotenerZugAufheben() {
+    }
 
+    @Override
+    public synchronized void setVerbotenerZug() {
+    }
 }

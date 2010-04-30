@@ -65,7 +65,7 @@ public class Spielbrett extends JComponent {
 
         String spielSteinImageName;
         String markierterSteinImage = "";
-        switch(anzahlFelder){
+        switch (anzahlFelder) {
             case 7:
                 spielSteinImageName = "GUI/resources/Kugel_7x7.png";
                 markierterSteinImage = "GUI/resources/MarkierterStein_7x7.png";
@@ -125,28 +125,27 @@ public class Spielbrett extends JComponent {
      */
     /* private void zeichneBenoetigteFelderNeu(Graphics g, int neuesFeld[][]) {
 
-        // ACHTUNG! FUNKTION NOCH NICHT IM EINSATZ!
+    // ACHTUNG! FUNKTION NOCH NICHT IM EINSATZ!
 
-        //Checke ob sich was veraendert hat wen ja, kopiere gleich
-        for (int i = 0; i < this.anzahlFelder; i++) {
-            for (int j = 0; j < this.anzahlFelder; j++) {
-                if (this.spielFeldArray[i][j] != neuesFeld[i][j]) {
-                }
-            }
-        }
+    //Checke ob sich was veraendert hat wen ja, kopiere gleich
+    for (int i = 0; i < this.anzahlFelder; i++) {
+    for (int j = 0; j < this.anzahlFelder; j++) {
+    if (this.spielFeldArray[i][j] != neuesFeld[i][j]) {
     }
-     
-     */
+    }
+    }
+    }
 
+     */
     @Override
-    public void paint(Graphics g){
+    public void paint(Graphics g) {
         this.paintComponents(g);
     }
 
     @Override
-    public void paintComponents(Graphics g){
-        
-        g = (Graphics2D)g;
+    public void paintComponents(Graphics g) {
+
+        g = (Graphics2D) g;
 
         //Berechnung fuer das Feld
         int feldHoehe = brettHoehe / anzahlFelder;
@@ -156,11 +155,11 @@ public class Spielbrett extends JComponent {
         int linienBreite = this.brettBreite - feldBreite;     // eine Feldbreite kuerzer
         int linienHoehe = this.brettHoehe - feldHoehe;
 
-        if(LoGoApp.debug){
+        if (LoGoApp.debug) {
             g.setColor(Color.gray);
             g.fillRect(xOffset, yOffset, brettBreite, brettHoehe);
             g.setColor(Color.red);
-            g.fillOval(874-5, 271-5, 10, 10);
+            g.fillOval(874 - 5, 271 - 5, 10, 10);
         }
 
         g.setColor(Color.BLACK);
@@ -240,21 +239,19 @@ public class Spielbrett extends JComponent {
                                 this.repaint();
                             } else if (this.spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_VERBOTEN) {
                                 this.feld[i][j].starteAnimationVerbotenerZugAufheben();
-                            } else if (this.spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ){
+                            } else if (this.spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_GEBIET_SCHWARZ) {
                                 this.feld[i][j].starteAnimationGebietSchwarzZuLeer();
-                            } else if (this.spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_GEBIET_WEISS){
+                            } else if (this.spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_GEBIET_WEISS) {
                                 this.feld[i][j].starteAnimantionGebietWeissZuLeer();
                             }
                             break;
                         case Konstante.SCHNITTPUNKT_VERBOTEN:
                             // Zeichne das Feld als verbotenen Schnittpunkt
-                            if(spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_SCHWARZ){
+                            if (spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_SCHWARZ) {
                                 this.feld[i][j].starteAnimationVerbotenerZugSchwarz();
-                            }
-                            else if( spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_WEISS){
+                            } else if (spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_WEISS) {
                                 this.feld[i][j].starteAnimationVerbotenerZugWeiss();
-                            }
-                            else{
+                            } else {
                                 this.feld[i][j].setVerbotenerZug();
                             }
                             this.repaint();
@@ -280,15 +277,14 @@ public class Spielbrett extends JComponent {
         }
     }
 
-    public void setMarkierterStein(Point steinPos){
-        
-            if(steinPos == null){
+    public void setMarkierterStein(Point steinPos) {
+
+        if (steinPos == null) {
             this.markierterStein.visible = false;
-        }
-        else{
-            if(this.letztePositionMarkierterStein == null
+        } else {
+            if (this.letztePositionMarkierterStein == null
                     || this.letztePositionMarkierterStein.x != steinPos.x
-                    || this.letztePositionMarkierterStein.y != steinPos.y){
+                    || this.letztePositionMarkierterStein.y != steinPos.y) {
                 // Wenn die Markierung auf einen neuen Stein gelegt wird,
                 // dann soll das Erscheinen der Markierung erneut animiert werden
                 this.markierterStein.restartAnimation();
@@ -297,8 +293,8 @@ public class Spielbrett extends JComponent {
             int feldHoehe = brettHoehe / anzahlFelder;
             int feldBreite = brettBreite / anzahlFelder;
 
-            this.markierterStein.setX(xOffset + feldBreite * (steinPos.x-1) + feldBreite / 2);
-            this.markierterStein.setY(yOffset + this.brettHoehe - feldHoehe * (steinPos.y - 0.5) );
+            this.markierterStein.setX(xOffset + feldBreite * (steinPos.x - 1) + feldBreite / 2);
+            this.markierterStein.setY(yOffset + this.brettHoehe - feldHoehe * (steinPos.y - 0.5));
             this.markierterStein.setVisible(true);
         }
     }
@@ -332,27 +328,27 @@ public class Spielbrett extends JComponent {
         }
     }
 
-    public int getAnzahlFelder(){
+    public int getAnzahlFelder() {
         return this.anzahlFelder;
     }
 
     /*
     public void setX( int x){
-        this.xOffset = x;
+    this.xOffset = x;
     }
 
     @Override
     public int getX (){
-        return this.xOffset;
+    return this.xOffset;
     }
 
     public void setY( int y){
-        this.yOffset = y;
+    this.yOffset = y;
     }
 
     @Override
     public int getY ( ){
-        return this.yOffset;
+    return this.yOffset;
     }
-    */
+     */
 }

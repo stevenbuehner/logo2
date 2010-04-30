@@ -65,7 +65,7 @@ public interface SteuerungInterface {
      * Der spieler wünscht ein neues Spiel
      */
     public void buttonNeuesSpiel();
-    
+
     /**
      * Spieler klickt auf "Spiel Starten" damit wird dann die Validierung
      * des Spielfelds vorgenommen und bei Erfolg das Spiel gestartet.

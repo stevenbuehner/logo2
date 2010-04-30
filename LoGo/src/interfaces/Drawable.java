@@ -15,5 +15,4 @@ public interface Drawable {
      * @param g
      */
     public void drawObjects(Graphics g);
-
 }

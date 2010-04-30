@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package GUI;
 
 import java.awt.Color;
@@ -12,7 +11,6 @@ import java.awt.Graphics2D;
 import java.awt.Window;
 import javax.swing.JFrame;
 
-
 /**
  *
  * @author steven
@@ -20,7 +18,6 @@ import javax.swing.JFrame;
 public abstract class CoreFullscreen {
 
     private JFrame test;
-
     private static DisplayMode modes[] = {
         new DisplayMode(800, 600, 32, 0),
         new DisplayMode(800, 600, 24, 0),
@@ -29,65 +26,61 @@ public abstract class CoreFullscreen {
         new DisplayMode(640, 480, 24, 0),
         new DisplayMode(640, 480, 16, 0)
     };
-
     private boolean running;
     protected ScreenManager s;
 
+    public void stop() {
+        running = false;
+    }
 
+    public void run() {
+        try {
+            init();
+            gameLoop();
+        } finally {
+            s.restoreScreen();
+        }
+    }
 
-  public void stop(){
-      running = false;
-  }
+    /**
+     * CoreFullscreen initialisieren
+     */
+    protected void init() {
+        this.s = new ScreenManager();
+        DisplayMode dm = s.findFirstCompatibleMode(modes);
+        s.setFullScreen(dm);
 
-  public void run(){
-      try{
-          init();
-          gameLoop();
-      }finally{
-          s.restoreScreen();
-      }
-  }
+        Window w = s.getFullScreenWindow();
+        w.setFont(new Font("Arial", Font.PLAIN, 20));
+        w.setBackground(Color.GREEN);
+        w.setForeground(Color.WHITE);
+        running = true;
+    }
 
-  /**
-   * CoreFullscreen initialisieren
-   */
-  protected void init(){
-      this.s = new ScreenManager();
-      DisplayMode dm = s.findFirstCompatibleMode(modes);
-      s.setFullScreen(dm);
+    public void gameLoop() {
+        long startTime = System.currentTimeMillis();
+        long cumTime = startTime;
 
-      Window w = s.getFullScreenWindow();
-      w.setFont(new Font( "Arial", Font.PLAIN, 20));
-      w.setBackground(Color.GREEN);
-      w.setForeground(Color.WHITE);
-      running = true;
-  }
+        while (running) {
+            long timePassed = System.currentTimeMillis() - cumTime;
+            cumTime += timePassed;
 
-  public void gameLoop(){
-      long startTime = System.currentTimeMillis();
-      long cumTime = startTime;
+            update(timePassed);
 
-      while(running){
-          long timePassed = System.currentTimeMillis() - cumTime;
-          cumTime += timePassed;
+            Graphics2D g = s.getGraphics();
+            draw(g);
+            g.dispose();
+            s.update();
 
-          update(timePassed);
+            try {
+                Thread.sleep(20);
+            } catch (Exception ex) {
+            }
+        }
+    }
 
-          Graphics2D g = s.getGraphics();
-          draw(g);
-          g.dispose();
-          s.update();
+    public void update(long timePased) {
+    }
 
-          try{
-              Thread.sleep(20);
-          }catch(Exception ex){}
-      }
-  }
-
-  public void update (long timePased){
-
-  }
-  
-  public abstract void draw(Graphics2D g);
-
+    public abstract void draw(Graphics2D g);
 }

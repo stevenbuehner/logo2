@@ -13,9 +13,6 @@ import GUI.FensterSpieloberflaeche;
 import Klassen.Steuerung;
 import interfaces.OberflaecheInterface;
 import interfaces.SteuerungInterface;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 
 /**
@@ -28,7 +25,6 @@ public class LoGoApp extends SingleFrameApplication {
     public static GrafikLib meineGrafikLib = GrafikLib.getInstance();
     public static SteuerungInterface meineSteuerung;
     public static FensterAuswertung meinAuswertungsfenster;
-
     public static boolean debug = false;
 
     /**
@@ -65,47 +61,43 @@ public class LoGoApp extends SingleFrameApplication {
         UIManager.put("OptionPane.okButtonText", "Einverstanden");
         UIManager.put("OptionPane.yesButtonText", "Ja");
 
-         try {
-	    // Set System L&F
+        try {
+            // Set System L&F
+            UIManager.setLookAndFeel(
+                    UIManager.getSystemLookAndFeelClassName());
+        } catch (UnsupportedLookAndFeelException e) {
+            // handle exception
+        } catch (ClassNotFoundException e) {
+            // handle exception
+        } catch (InstantiationException e) {
+            // handle exception
+        } catch (IllegalAccessException e) {
+            // handle exception
+        }
+        /*
+        try {
+        // Set cross-platform Java L&F (also called "Metal")
         UIManager.setLookAndFeel(
-            UIManager.getSystemLookAndFeelClassName());
-            }
-            catch (UnsupportedLookAndFeelException e) {
-               // handle exception
-            }
-            catch (ClassNotFoundException e) {
-               // handle exception
-            }
-            catch (InstantiationException e) {
-               // handle exception
-            }
-            catch (IllegalAccessException e) {
-               // handle exception
-            }
-            /*
-       try {
-	    // Set cross-platform Java L&F (also called "Metal")
-           UIManager.setLookAndFeel(
-                UIManager.getCrossPlatformLookAndFeelClassName());
+        UIManager.getCrossPlatformLookAndFeelClassName());
         }
         catch (UnsupportedLookAndFeelException e) {
-           // handle exception
+        // handle exception
         }
         catch (ClassNotFoundException e) {
-           // handle exception
+        // handle exception
         }
         catch (InstantiationException e) {
-           // handle exception
+        // handle exception
         }
         catch (IllegalAccessException e) {
-           // handle exception
+        // handle exception
         }
         
-        */
+         */
 
         meineSteuerung = new Steuerung();
         meineOberflaeche = new FensterSpieloberflaeche("LoGo, by Steven Buehner, Alex Jesche, Rebecca King and Tommy Schladitz");
-        meinEinstellungsfenster = new FensterEinstellung( "Einstellungen");
+        meinEinstellungsfenster = new FensterEinstellung("Einstellungen");
         meinAuswertungsfenster = new FensterAuswertung();
 
         //launch(LoGoApp.class, args);

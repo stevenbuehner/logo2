@@ -25,7 +25,7 @@ public class OneScene {
      *
      * @return Gibt das Image dieser Szene zurueck
      */
-    public BufferedImage getPic(){
+    public BufferedImage getPic() {
         return this.pic;
     }
 
@@ -33,7 +33,7 @@ public class OneScene {
      *
      * @return Gibt die anzuzeigende Zeit fuer diese Szene zurueck
      */
-    public long getSceneDuration(){
+    public long getSceneDuration() {
         return this.sceneDuration;
     }
 }

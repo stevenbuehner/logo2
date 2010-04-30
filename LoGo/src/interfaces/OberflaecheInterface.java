@@ -109,7 +109,7 @@ public interface OberflaecheInterface {
      * ausgeblendet werden. Achtung! Countdowns etc. können gegebenenfalls
      * trotzdem noch laufen!
      */
-    public void setVisible (boolean visible);
+    public void setVisible(boolean visible);
 
     /**
      * Der Oberflaeche kann über @param setPause ein Tipp gegeben werden, ob
@@ -117,8 +117,7 @@ public interface OberflaecheInterface {
      */
     public void setPauseScreen(boolean setPause);
 
-   // public void setAuswertungsButtonsVisible (boolean visible );
-
+    // public void setAuswertungsButtonsVisible (boolean visible );
     /**
      * Ist das Spiel beendet, so wird das Ergebnis angezeigt. Das bedeutet, das
      * Feld darf nicht mehr gezeichnet werden und stattdessen wird das Ergebnis
