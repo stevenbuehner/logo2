@@ -1,6 +1,6 @@
 package GUI;
 
-import interfaces.Drawable;
+import Interfaces.Drawable;
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
