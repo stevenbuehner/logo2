@@ -13,6 +13,10 @@ import java.sql.SQLException;
  */
 public class HistoryConnector {
 
+    final private String host = "141.31.8.27";
+    final private String user = "logo";
+    final private String pass = "checker08";
+    final private String dbName = "logo";
     protected Connection con;
     protected java.sql.Statement stmt;
 
@@ -26,7 +30,8 @@ public class HistoryConnector {
 
             // Treiber laden und Connection erzeugen
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://127.0.0.1/logo", "root", "");
+            con = DriverManager.getConnection("jdbc:mysql://" + host + "/" + dbName, user, pass);
+//            con = DriverManager.getConnection("jdbc:mysql://127.0.0.1/logo", "root", "");
 
             // Statementobjekte erzeugen
             stmt = con.createStatement();
@@ -81,6 +86,37 @@ public class HistoryConnector {
             return letzteNachricht;
 
         } while (rs.next());
+    }
+
+    public HistoryEintrag[] holeDieBestenHistoryEintraege(int anzahl) throws SQLException {
+
+        if (anzahl < 0) {
+            anzahl = anzahl * (-1);
+        }
+        HistoryEintrag[] rueckgabeHistoryEintraege = new HistoryEintrag[anzahl];
+        int zaehler = 0;
+
+        ResultSet rs = stmt.executeQuery("Select nameSchwarz, nameWeiss, punkteSchwarz, punkteWeiss, datum, ABS(punkteSchwarz-punkteWeiss) AS punkteDifferenz "
+                + " FROM history "
+                + " ORDER BY ABS(punkteSchwarz-punkteWeiss) "
+                + " LIMIT 0, " + String.valueOf(anzahl) + ";");
+
+
+        if (!rs.next()) {
+            throw new SQLException("SELECT *: no result");
+        }
+        do {
+            rueckgabeHistoryEintraege[zaehler] = new HistoryEintrag();
+            rueckgabeHistoryEintraege[zaehler].setNameSpielerSchwarz(rs.getString("nameSchwarz"));
+            rueckgabeHistoryEintraege[zaehler].setNameSpielerWeiss(rs.getString("nameWeiss"));
+            rueckgabeHistoryEintraege[zaehler].setPunkteSpielerSchwarz(rs.getFloat("punkteSchwarz"));
+            rueckgabeHistoryEintraege[zaehler].setPunkteSpielerWeiss(rs.getFloat("punkteWeiss"));
+            rueckgabeHistoryEintraege[zaehler].setDatum(rs.getDate("datum"));
+            zaehler++;
+
+        } while (rs.next() && zaehler < anzahl);
+
+        return rueckgabeHistoryEintraege;
     }
 
     public HistoryEintrag getMessage(int pIdMessage) throws SQLException {
