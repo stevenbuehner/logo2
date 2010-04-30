@@ -95,8 +95,8 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
     private String momSpielModus;
 
     /* Zum zeichnen des Feldes */
-    private int frameMinhoehe = 340;
-    private int frameMaxhoehe = 700;
+    private int frameMinhoehe = 300;
+    private int frameMaxhoehe = 768;
 
 
     public FensterEinstellung(){
@@ -107,7 +107,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
         super(fenstername);
         this.init();
         pack();
-        this.setSize(500, this.frameMinhoehe);
+        this.setSize(700, this.frameMinhoehe);
         this.setResizable(false);
         this.setLocationRelativeTo(null);       // Fenster zentrieren
         this.setVisible(true);
@@ -190,10 +190,10 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
         this.labelVorgabe = new JLabel("Vorgabe",JLabel.LEFT);
 
         /* Zum Spielbrett */
-        this.brettbreite = 300;
-        this.bretthoehe = 315;
-        this.brettXOffset = 10;
-        this.brettYOffset = 320;
+        this.brettbreite = 496;
+        this.bretthoehe = 496;
+        this.brettXOffset = 5;
+        this.brettYOffset = 255;
         this.dasSpielfeldGUI = new EinstellungSpielbrett(this.brettbreite, this.bretthoehe, this.brettXOffset, this.brettYOffset, 13);
     }
 
@@ -387,17 +387,17 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
                                     radBuH);
 
         int buttonH = 30; // hoehe eines Buttons
-        this.spielStarten.setBounds(this.siebenXsieben.getX(),
-                                    this.siebenXsieben.getY() + this.siebenXsieben.getHeight() + verAbs,
+        this.spielStarten.setBounds(this.labelMinutenS.getX() + this.labelMinutenS.getWidth() + horAbs,
+                                    this.labelMinutenS.getY(),
                                     75,
                                     buttonH);
-        this.hilfeButton.setBounds( this.spielStarten.getX() + this.spielStarten.getWidth() + 50,
-                                    this.siebenXsieben.getY() + this.siebenXsieben.getHeight() + verAbs,
+        this.hilfeButton.setBounds( this.spielStarten.getX(),
+                                    this.spielStarten.getY() + this.spielStarten.getHeight() + verAbs,
                                     75,
                                     buttonH);
 
-        this.labelVorgabe.setBounds(350,
-                                    this.hilfeButton.getY() + this.hilfeButton.getHeight() + verAbs,
+        this.labelVorgabe.setBounds(this.brettXOffset + this.brettbreite + horAbs,
+                                    this.brettYOffset + verAbs,
                                     100,
                                     labH);
         this.spielVorgabeSteine.setBounds(this.labelVorgabe.getX(),
