@@ -23,7 +23,7 @@ public class LoGoApp {
     public static GrafikLib meineGrafikLib = GrafikLib.getInstance();
     public static SteuerungInterface meineSteuerung;
     public static FensterAuswertung meinAuswertungsfenster;
-    public static boolean debug = true;
+    public static boolean debug = false;
 
 
     /**
