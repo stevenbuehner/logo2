@@ -30,13 +30,7 @@ public class Spielfeld {
     private int spielfeldGroesse;
     private List<Spielzug> spielZugCollection;
 
-    /**
-     * Rueckgabe der Liste von Spielzuegen fuer die Klasse Speichern
-     */
-    public List<Spielzug> getspielZugCollection() {
 
-        return this.spielZugCollection;
-    }
     private int xPosVerboten;
     private int yPosVerboten;
     private boolean ignoreTime;
@@ -1132,6 +1126,9 @@ public class Spielfeld {
     public int getAnzahlLetzterPassZuege() {
         int anzahlDerZuege;
         int anzahlLetzterPassZuege = 0;
+        if(this.spielZugCollection.isEmpty()){
+            return 0;
+        }
         anzahlDerZuege = this.spielZugCollection.size();
         int i = 1;
         while (this.spielZugCollection.get(anzahlDerZuege - i).getXPosition() == -1
@@ -1139,6 +1136,9 @@ public class Spielfeld {
                 && anzahlDerZuege - i >= 0) {
             anzahlLetzterPassZuege++;
             i++;
+            if(i>anzahlDerZuege){
+                break;
+            }
         }
         return anzahlLetzterPassZuege;
     }
@@ -1832,4 +1832,13 @@ public class Spielfeld {
     public int getVorgabeZahl() {
         return this.vorgabeZahl;
     }
+
+    /**
+     * Rueckgabe der Liste von Spielzuegen fuer die Klasse Speichern
+     */
+    public List<Spielzug> getspielZugCollection() {
+
+        return this.spielZugCollection;
+    }
+
 }
