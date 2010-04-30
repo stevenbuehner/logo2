@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Klassen;
 
 /**
@@ -12,6 +11,7 @@ package Klassen;
  * beispielsweise schon in ein Liste aufgenommen hat.
  */
 public class AnalyseSchnittpunkt {
+
     private int xPos;
     private int yPos;
     private int belegungswert;
@@ -19,7 +19,7 @@ public class AnalyseSchnittpunkt {
     private boolean markiert;
     private boolean analysiert;
 
-    public AnalyseSchnittpunkt(){
+    public AnalyseSchnittpunkt() {
         this.setXPos(-1);
         this.setYPos(-1);
         this.setSteinStatus(Konstante.STEIN_UNGEWISS);
@@ -28,7 +28,7 @@ public class AnalyseSchnittpunkt {
         this.setBelegungswert(Konstante.SCHNITTPUNKT_LEER);
     }
 
-    public AnalyseSchnittpunkt(int xPos, int yPos){
+    public AnalyseSchnittpunkt(int xPos, int yPos) {
         this.setXPos(xPos);
         this.setYPos(yPos);
         this.setBelegungswert(Konstante.SCHNITTPUNKT_LEER);
@@ -37,7 +37,7 @@ public class AnalyseSchnittpunkt {
         this.setAnalysiert(false);
     }
 
-    public AnalyseSchnittpunkt(int xPos, int yPos, int belegungswert){
+    public AnalyseSchnittpunkt(int xPos, int yPos, int belegungswert) {
         this.setXPos(xPos);
         this.setYPos(yPos);
         this.setBelegungswert(belegungswert);
@@ -50,7 +50,7 @@ public class AnalyseSchnittpunkt {
      * @param belegungswert Setzt den aktuellen Belegungswert. Dabei ist ein Wert
      * der Klasse Konstante zu waehlen.
      */
-    public void setBelegungswert(int belegungswert){
+    public void setBelegungswert(int belegungswert) {
         this.belegungswert = belegungswert;
     }
 
@@ -58,21 +58,21 @@ public class AnalyseSchnittpunkt {
      * @return Gibt den aktuellen Belegungswert zurueck. Das sind Werte (int) die
      * man mit der Klasse Konstante vergleichen kann.
      */
-    public int getBelegungswert(){
+    public int getBelegungswert() {
         return this.belegungswert;
     }
 
     /**
      * @param markiert Setzt den markiert (boolean) wert. Dient also als Flag.
      */
-    public void setMarkiert(boolean markiert){
+    public void setMarkiert(boolean markiert) {
         this.markiert = markiert;
     }
 
     /**
      * @return Gibt den Status zurueck, ob der Schnittpunkt markiert wurde.
      */
-    public boolean getMarkiert(){
+    public boolean getMarkiert() {
         return this.markiert;
     }
 
@@ -81,14 +81,14 @@ public class AnalyseSchnittpunkt {
      * als Flag bei Suchalgorithmen
      * @param analysiert Wurde der Schnittpunkt schon analysiert?
      */
-    public void setAnalysiert(boolean analysiert){
+    public void setAnalysiert(boolean analysiert) {
         this.analysiert = analysiert;
     }
 
     /**
      * @return Status, ob Schnittpunkt schon analysiert wurde.
      */
-    public boolean getAnalysiert(){
+    public boolean getAnalysiert() {
         return this.analysiert;
     }
 
@@ -97,42 +97,42 @@ public class AnalyseSchnittpunkt {
      * Wurde der Stein gefangen ist es SteinGefangen, ist er lebendig dann SteinLebendig
      * und ist es ungewiss dann SteinUngewiss.
      */
-    public void setSteinStatus(int steinStatus){
+    public void setSteinStatus(int steinStatus) {
         this.steinStatus = steinStatus;
     }
 
     /**
      * @return getSteinStatus gibt den Gefangenenstatus des Schittpunktes wieder.
      */
-    public int getSteinStatus(){
+    public int getSteinStatus() {
         return this.steinStatus;
     }
 
     /**
      * @param xPos Setzt die X-Koordinate des Schnittpunkts
      */
-    public void setXPos(int xPos){
+    public void setXPos(int xPos) {
         this.xPos = xPos;
     }
 
     /**
      * @return Gibt die X-Koordinate des Schnittpunkts wieder.
      */
-    public int getXPos(){
+    public int getXPos() {
         return this.xPos;
     }
 
     /**
      * @param yPos Setzt die Y-Koordinate des Schnittpunkts
      */
-    public void setYPos(int yPos){
+    public void setYPos(int yPos) {
         this.yPos = yPos;
     }
 
     /**
      * @return Gibt die Y-Koordinate des Schnittpunkts wieder.
      */
-    public int getYPos(){
+    public int getYPos() {
         return this.yPos;
     }
 }

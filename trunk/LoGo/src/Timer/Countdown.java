@@ -76,7 +76,7 @@ public abstract class Countdown {
 
             // 1 Sekunde davon abziehen
             remainingTime -= 1000;
-            
+
             if (remainingTime > 0) {
                 doEverySecondTimerRuns();
 

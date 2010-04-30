@@ -79,8 +79,8 @@ public class Spielzug {
      * automatisch der Wert Konstante.SCHNITTPUNKT_LEER gesetzt.
      */
     public void setFarbe(int farbe) {
-        if (farbe == Konstante.SCHNITTPUNKT_SCHWARZ ||
-                farbe == Konstante.SCHNITTPUNKT_WEISS) {
+        if (farbe == Konstante.SCHNITTPUNKT_SCHWARZ
+                || farbe == Konstante.SCHNITTPUNKT_WEISS) {
             this.farbe = farbe;
         } else {
             this.farbe = Konstante.SCHNITTPUNKT_LEER;

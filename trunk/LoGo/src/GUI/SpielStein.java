@@ -14,12 +14,10 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
     protected long thisScenePlayedTime;         // Zeit die die aktuelle Scene schon "verbraten" hat
     protected boolean loop;
     private ArrayList<OneScene> szenen;
-
     // Die Grafiken die anzuzeigen sind
     protected BufferedImage[] storedImages;
     // Objekt wird demnaechst geloescht
     protected boolean steinWirdGeloescht;
-
     protected int offsetLeft;
     protected int offsetTop;
 
@@ -42,8 +40,8 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
         this.x = x;
         this.y = y;
 
-        this.offsetLeft = storedImages[0].getWidth()/2;
-        this.offsetTop = storedImages[0].getHeight()/2;
+        this.offsetLeft = storedImages[0].getWidth() / 2;
+        this.offsetTop = storedImages[0].getHeight() / 2;
 
         // Standardwerte setzen
         this.width = storedImages[0].getWidth();
@@ -77,8 +75,8 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
         this.x = x;
         this.y = y;
 
-        this.offsetLeft = storedImages[0].getWidth()/2;
-        this.offsetTop = storedImages[0].getHeight()/2;
+        this.offsetLeft = storedImages[0].getWidth() / 2;
+        this.offsetTop = storedImages[0].getHeight() / 2;
 
         // Standardwerte setzen
         this.width = storedImages[0].getWidth();
@@ -100,11 +98,11 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
      */
     public synchronized void doLogic(long timePassed) {
 
-        if(this.szenen.size() > 1){
+        if (this.szenen.size() > 1) {
             // Nur wenn auch mehr als eine Szene besteht muss das Bild geaendert werden
 
             this.thisScenePlayedTime += timePassed;
-            if(this.thisScenePlayedTime > szenen.get(this.currentSceneIndex).getSceneDuration()){
+            if (this.thisScenePlayedTime > szenen.get(this.currentSceneIndex).getSceneDuration()) {
 
                 /*
                  * Wenn die Zeit fuer die aktuelle Scene schon verbraucht ist,
@@ -112,7 +110,7 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
                  * "geklaut" hat. Ob der darauffolgenden Szene auch schon die Zeit
                  * "gekaut" wurde wird hier bewusst nicht mit abgefragt.
                  */
-                this.thisScenePlayedTime = this.thisScenePlayedTime-szenen.get(this.currentSceneIndex).getSceneDuration();
+                this.thisScenePlayedTime = this.thisScenePlayedTime - szenen.get(this.currentSceneIndex).getSceneDuration();
                 this.computeAnimation();
             }
         }
@@ -124,8 +122,8 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
         }
 
         g.drawImage(getImage(),
-                (int) x-this.offsetLeft,
-                (int) y-this.offsetTop, null);
+                (int) x - this.offsetLeft,
+                (int) y - this.offsetTop, null);
     }
 
     /**
@@ -135,18 +133,17 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
     protected void computeAnimation() {
 
         // Schon bei der letzten Szene der Animation angekommen??
-        if(this.szenen.size() == (this.currentSceneIndex + 1) ){
-            if (!this.loop){
+        if (this.szenen.size() == (this.currentSceneIndex + 1)) {
+            if (!this.loop) {
                 // Wenn die Animation nicht wiederholt werden soll, bleib auf
                 // diesem Index stehen
                 return;
-            }else{
+            } else {
                 // Wiederhole
                 this.currentSceneIndex = 0;
                 this.thisScenePlayedTime = 0;
             }
-        }
-        else{
+        } else {
             // Animationzaehler um eins erhoehen
             this.currentSceneIndex++;
         }
@@ -155,7 +152,7 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
     /**
      * Legt fest, ob die Animation sich wiederholen soll
      */
-    public void setLoop( boolean loopAktiviert ) {
+    public void setLoop(boolean loopAktiviert) {
         this.loop = loopAktiviert;
     }
 
@@ -175,7 +172,7 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
         y = i;
     }
 
-    protected synchronized void addScene(BufferedImage image, long sceneDuration){
+    protected synchronized void addScene(BufferedImage image, long sceneDuration) {
         this.szenen.add(new OneScene(image, sceneDuration));
     }
 
@@ -183,10 +180,10 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
      *
      * @return Das aktuelle Image der Animation
      */
-    protected synchronized BufferedImage getImage(){
-        if(szenen.size()==0){
+    protected synchronized BufferedImage getImage() {
+        if (szenen.size() == 0) {
             return null;
-        }else{
+        } else {
             return getScene(this.currentSceneIndex).getPic();
         }
     }
@@ -203,14 +200,14 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
     /**
      * Animationseinstellungen auf die erste Szene setzen (init)
      */
-    public synchronized void restartAnimation(){
+    public synchronized void restartAnimation() {
         this.currentSceneIndex = 0;
         this.thisScenePlayedTime = 0;
     }
 
-    protected synchronized void clearScenes(){
+    protected synchronized void clearScenes() {
         this.restartAnimation();
-        if(this.szenen.size() > 0){
+        if (this.szenen.size() > 0) {
             this.szenen.clear();
         }
     }
@@ -230,9 +227,9 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
     public synchronized void starteAnimationSchwarzSetzen() {
         this.clearScenes();
         // this.addScene(storedImages[0], 100);
-       // this.addScene(storedImages[1], 100);
+        // this.addScene(storedImages[1], 100);
         // this.addScene(storedImages[2], 100);
-       // this.addScene(storedImages[3], 100);
+        // this.addScene(storedImages[3], 100);
         // this.addScene(storedImages[4], 100);
         this.addScene(storedImages[5], 100);
         //this.addScene(storedImages[6], 100);
@@ -324,55 +321,55 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
         this.setLoop(false);
     }
 
-    public synchronized void starteAnimationGefangenenSteinSchwarz(){
+    public synchronized void starteAnimationGefangenenSteinSchwarz() {
         this.clearScenes();
         this.addScene(storedImages[17], 100);
         this.setLoop(false);
     }
 
-    public synchronized void starteAnimationGefangenenSteinWeiss(){
+    public synchronized void starteAnimationGefangenenSteinWeiss() {
         this.clearScenes();
         this.addScene(storedImages[23], 100);
         this.setLoop(false);
     }
 
-    public synchronized void starteAnimationGebietspunktSchwarz(){
+    public synchronized void starteAnimationGebietspunktSchwarz() {
         this.clearScenes();
         this.addScene(storedImages[37], 100);
         this.setLoop(false);
     }
 
-    public synchronized void starteAnimationGebietspunktWeiss(){
+    public synchronized void starteAnimationGebietspunktWeiss() {
         this.clearScenes();
         this.addScene(storedImages[35], 100);
         this.setLoop(false);
     }
 
-    public synchronized void starteAnimationGebietSchwarzZuLeer(){
+    public synchronized void starteAnimationGebietSchwarzZuLeer() {
         this.clearScenes();
         this.addScene(storedImages[21], 100);
         this.setLoop(false);
     }
 
-    public synchronized void starteAnimantionGebietWeissZuLeer(){
+    public synchronized void starteAnimantionGebietWeissZuLeer() {
         this.clearScenes();
         this.addScene(storedImages[21], 100);
         this.setLoop(false);
     }
 
-    public synchronized void setSchwarzerStein(){
+    public synchronized void setSchwarzerStein() {
         this.clearScenes();
         this.addScene(storedImages[9], 100);
         this.setLoop(false);
     }
 
-    public synchronized void setWeisserStein(){
+    public synchronized void setWeisserStein() {
         this.clearScenes();
         this.addScene(storedImages[30], 100);
         this.setLoop(false);
     }
 
-    public synchronized void setLeeresFeld(){
+    public synchronized void setLeeresFeld() {
         this.clearScenes();
         this.addScene(storedImages[21], 100);
         this.setLoop(false);

@@ -13,12 +13,11 @@ import java.awt.Graphics;
  */
 public interface SpielerZettel {
 
-    public void setSpielername( String spielername );
+    public void setSpielername(String spielername);
 
-    public void setGefangenenAnzahl( int anzahl );
+    public void setGefangenenAnzahl(int anzahl);
 
-    public void setFehlermeldung( String fehlermeldung );
+    public void setFehlermeldung(String fehlermeldung);
 
     public void zeichneDich(Graphics g);
-
 }

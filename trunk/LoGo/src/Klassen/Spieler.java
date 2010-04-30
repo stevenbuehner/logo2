@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Klassen;
 
 /**
@@ -17,8 +16,7 @@ public class Spieler {
     private float komiPunkte;
     private int gefangenenAnzahl;
 
-
-    public Spieler( String spielerName, long spielzeitInMS, int gefangenenAnzahl, float komiPunkte  ){
+    public Spieler(String spielerName, long spielzeitInMS, int gefangenenAnzahl, float komiPunkte) {
         this.setSpielerName(spielerName);
         this.setVerbleibendeSpielzeitInMS(spielzeitInMS);
         this.setGefangenenAnzahl(gefangenenAnzahl);
@@ -29,7 +27,7 @@ public class Spieler {
      *
      * @return Den Namen des Spielers
      */
-    public String getSpielerName(){
+    public String getSpielerName() {
         return this.spielerName;
     }
 
@@ -37,7 +35,7 @@ public class Spieler {
      *
      * @param spielerName setzt den Namen des Spielers
      */
-    public void setSpielerName( String spielerName ){
+    public void setSpielerName(String spielerName) {
         this.spielerName = spielerName;
     }
 
@@ -47,7 +45,7 @@ public class Spieler {
      * Ist diese aufgebraucht, kann er nur noch die verbleibende Periodenzeit nutzen.
      *
      */
-    public long getVerbleibendeSpielzeitInMS(){
+    public long getVerbleibendeSpielzeitInMS() {
         return this.verbliebendeSpielzeitInMS;
     }
 
@@ -56,7 +54,7 @@ public class Spieler {
      * @param Verbleibende Spielerzeit des Spielers in Millesekunden.
      * Ist diese aufgebraucht, kann er nur noch die verbleibende Periodenzeit nutzen.
      */
-    public void setVerbleibendeSpielzeitInMS( long zeitInMS ){
+    public void setVerbleibendeSpielzeitInMS(long zeitInMS) {
         this.verbliebendeSpielzeitInMS = zeitInMS;
     }
 
@@ -68,8 +66,8 @@ public class Spieler {
      * ein gerundeter Wert.
      *
      */
-    public long getVerbleibendeSpielzeitInSek(){
-        return this.verbliebendeSpielzeitInMS/60;
+    public long getVerbleibendeSpielzeitInSek() {
+        return this.verbliebendeSpielzeitInMS / 60;
     }
 
     /**
@@ -80,8 +78,8 @@ public class Spieler {
      * ein gerundeter Wert. Diese Funktion sollte darum nur mit Bedacht verwendet
      * werden.
      */
-    public void setVerbleibendeSpielzeitInSek( long zeitInSek ){
-        this.verbliebendeSpielzeitInMS = zeitInSek*60;
+    public void setVerbleibendeSpielzeitInSek(long zeitInSek) {
+        this.verbliebendeSpielzeitInMS = zeitInSek * 60;
     }
 
     /**
@@ -89,7 +87,7 @@ public class Spieler {
      * @return Komi Punkte auf 0,5 gerundet (Die Runden Funktion ist aber noch
      * nicht implementiert!)
      */
-    public float getKomiPunkte(){
+    public float getKomiPunkte() {
 
         return this.komiPunkte;
     }
@@ -99,7 +97,7 @@ public class Spieler {
      * @param Zum Setzen der komiPunkte. Die Werte werden bei der Ausgabe dann
      * wieder auf 0,5 gerundet.
      */
-    public void setKomiPunkte( float komiPunkte ){
+    public void setKomiPunkte(float komiPunkte) {
         this.komiPunkte = komiPunkte;
     }
 
@@ -107,7 +105,7 @@ public class Spieler {
      *
      * @return Gibt die aktuelle Gefangenenanzahl des Spielers zurück
      */
-    public int getGefangenenAnzahl( ){
+    public int getGefangenenAnzahl() {
         return this.gefangenenAnzahl;
     }
 
@@ -115,7 +113,7 @@ public class Spieler {
      *
      * @param Überschreibt die aktuelle Gefangenenanzahl mit neueGefangenenAnzahl
      */
-    public void setGefangenenAnzahl( int neueGefangenenAnzahl ){
+    public void setGefangenenAnzahl(int neueGefangenenAnzahl) {
         this.gefangenenAnzahl = neueGefangenenAnzahl;
     }
 
@@ -123,9 +121,7 @@ public class Spieler {
      *
      * @param Fügt der GefangenenAnzahl des Spielers zusaetzlicheGefangene hinzu.
      */
-    public void addGefangenenAnzahl ( int zusaetzlicheGefangene ){
+    public void addGefangenenAnzahl(int zusaetzlicheGefangene) {
         this.gefangenenAnzahl += zusaetzlicheGefangene;
     }
-
-
 }

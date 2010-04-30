@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package GUI;
 
 import interfaces.SpielerZettel;
@@ -34,8 +29,6 @@ public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {
     private int Anzahl;
     private String fehlermeldung;
 
-
-
     public SpielerZettelEinzeln(int xPos, int yPos, double offsetWinkel, String startText) {
         this.xPos = xPos;
         this.yPos = yPos;
@@ -66,12 +59,12 @@ public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {
     }
 
     @Override
-    public void paint(Graphics g){
+    public void paint(Graphics g) {
         this.paintComponents(g);
     }
 
     @Override
-    public void paintComponents(Graphics g){
+    public void paintComponents(Graphics g) {
         this.zeichneDich(g);
     }
 
@@ -80,30 +73,29 @@ public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {
 
         AffineTransform at = AffineTransform.getRotateInstance(
                 this.OwinkelInRad, xPos, yPos);
-       g2.setTransform(at);
-       if(this.anzeigeText_spielername == null){
-           this.anzeigeText_spielername ="";
-       }
-       if(this.anzeigeText_gefangene == null){
-           this.anzeigeText_gefangene ="";
-       }
-       if(this.anzeigeText_fehlermeldung == null){
-           this.anzeigeText_fehlermeldung ="";
-       }
-       g2.drawString(this.anzeigeText_spielername, xPos, yPos);
-       xPos = xPos + ZeilenAbstand;
-       yPos = yPos + ZeilenAbstand;
-       g2.drawString(this.anzeigeText_gefangene, xPos, yPos);
-       xPos = xPos + ZeilenAbstand;
-       yPos = yPos + ZeilenAbstand;
-       g2.drawString(this.anzeigeText_fehlermeldung, xPos, yPos);
+        g2.setTransform(at);
+        if (this.anzeigeText_spielername == null) {
+            this.anzeigeText_spielername = "";
+        }
+        if (this.anzeigeText_gefangene == null) {
+            this.anzeigeText_gefangene = "";
+        }
+        if (this.anzeigeText_fehlermeldung == null) {
+            this.anzeigeText_fehlermeldung = "";
+        }
+        g2.drawString(this.anzeigeText_spielername, xPos, yPos);
+        xPos = xPos + ZeilenAbstand;
+        yPos = yPos + ZeilenAbstand;
+        g2.drawString(this.anzeigeText_gefangene, xPos, yPos);
+        xPos = xPos + ZeilenAbstand;
+        yPos = yPos + ZeilenAbstand;
+        g2.drawString(this.anzeigeText_fehlermeldung, xPos, yPos);
 
-       at = AffineTransform.getRotateInstance(
+        at = AffineTransform.getRotateInstance(
                 0,
                 0,
                 0);
-       g2.setTransform(at);
-       g = (Graphics) g2;
+        g2.setTransform(at);
+        g = (Graphics) g2;
     }
-
 }

@@ -44,12 +44,10 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
     private long delta = 0;
     private long last = 0;
     private long fps = 0;
-
     private BufferedImage backgroundImage;
     private BufferedImage pauseImage;
     private BufferedImage startImage;
     private boolean spielOberflaechePausiert = false;
-
     private boolean threadLaeuf;
     private static boolean once = false;
     // Backbuffer und Anpassungen an die Performance der Grafikkarte
@@ -252,7 +250,7 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         Aufgeben.setEnabled(false);
         dasSpielMenue.add(Aufgeben);
 
-         // Spiel AuswertungBeenden
+        // Spiel AuswertungBeenden
         AuswertungBeenden = new MenuItem("Auswertung beenden");
         AuswertungBeenden.addActionListener(this);
         AuswertungBeenden.setEnabled(false);
@@ -340,32 +338,32 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
             this.spielerUhrWeiss.zeichneZeiger(g);
         }
 
-        if (this.spielerZettelSchwarz != null){
+        if (this.spielerZettelSchwarz != null) {
             this.spielerZettelSchwarz.zeichneDich(g);
         }
 
-        if (this.spielerZettelWeiss != null ){
+        if (this.spielerZettelWeiss != null) {
             this.spielerZettelWeiss.zeichneDich(g);
-        }        
+        }
 
         if (this.dasBrett != null) {
             dasBrett.paintComponents(g);
-        }else if ( !this.spielOberflaechePausiert ){
+        } else if (!this.spielOberflaechePausiert) {
             // Startscreen zeichnen, wenn nicht gerade Pause ansteht :-)
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, this.getWidth(), this.getHeight());
-            if(this.startImage != null){
-                g.drawImage(startImage, (this.getWidth()-startImage.getWidth())/2,
-                        (this.getHeight()-startImage.getHeight())/2, this);
+            if (this.startImage != null) {
+                g.drawImage(startImage, (this.getWidth() - startImage.getWidth()) / 2,
+                        (this.getHeight() - startImage.getHeight()) / 2, this);
             }
         }
 
-        if(this.spielOberflaechePausiert){
+        if (this.spielOberflaechePausiert) {
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, this.getWidth(), this.getHeight());
-            if(this.pauseImage != null){
-                g.drawImage(pauseImage, (this.getWidth()-pauseImage.getWidth())/2,
-                        (this.getHeight()-pauseImage.getHeight())/2, this);
+            if (this.pauseImage != null) {
+                g.drawImage(pauseImage, (this.getWidth() - pauseImage.getWidth()) / 2,
+                        (this.getHeight() - pauseImage.getHeight()) / 2, this);
             }
         }
     }
@@ -432,7 +430,7 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
                 break;
             default:
                 mess = "Pressed: " + KeyEvent.getKeyText(keyCode);
-               // e.consume(); // Kombinierte Tasten sollen nicht behandlet werden.
+            // e.consume(); // Kombinierte Tasten sollen nicht behandlet werden.
         }
         e.consume(); // Kombinierte Tasten sollen nicht behandlet werden.
     }
@@ -449,8 +447,7 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         if (this.dasBrett != null && this.dasBrett.getAnzahlFelder() == spielfeldGroesse && spielfeld != null) {
             this.dasBrett.updateSpielFeld(spielfeld);
             this.dasBrett.setMarkierterStein(markierterStein);
-        } 
-        else{
+        } else {
             this.dasBrett = null;
             this.dasBrett = new Spielbrett(STANDARD_SPIELFELD_BREITE,
                     STANDARD_SPIELFELD_HOEHE,
@@ -565,7 +562,7 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
             this.buttonSpielSpeichernGedrueckt();
         } else if (e.getSource() == SpielBeenden) {
             this.buttonSpielBeendenGedrueckt();
-        }else if (e.getSource() == Passen) {
+        } else if (e.getSource() == Passen) {
             this.buttonPassen();
         } else if (e.getSource() == Aufgeben) {
             this.buttonAufgeben();
@@ -582,8 +579,7 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         }
     }
 
-
-    private void buttonNeuesSpiel(){
+    private void buttonNeuesSpiel() {
         // Die Entscheidung was geschieht obliegt der Steuerung
         LoGoApp.meineSteuerung.buttonNeuesSpiel();
     }
@@ -612,13 +608,12 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         // Hier dann die Glass-Pane wegnehmen / deaktivieren
     }
 
-  /*  private void buttonNeuesSpielGedrueckt() {
-        this.dasBrett = null;
-        this.Pause.setEnabled(false);
-        this.Fortsetzen.setEnabled(false);
-        LoGoApp.meineSteuerung.buttonSpielStarten();
+    /*  private void buttonNeuesSpielGedrueckt() {
+    this.dasBrett = null;
+    this.Pause.setEnabled(false);
+    this.Fortsetzen.setEnabled(false);
+    LoGoApp.meineSteuerung.buttonSpielStarten();
     }*/
-
     private void buttonSpielSpeichernGedrueckt() {
         LoGoApp.meineSteuerung.buttonSpielSpeichern();
     }
@@ -646,7 +641,7 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
     }
 
     @Override
-    public void setVisible (boolean visible){
+    public void setVisible(boolean visible) {
         super.setVisible(visible);
     }
 
@@ -667,27 +662,26 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
     }
 
     public void ergebnisAuszaehlenZeigen(String nameSchwarz, String nameWeiss, float komiFuerWeiss, int gebietsPunktSchwarz, int gebietsPunkteWeiss,
-            int schwarzeGefangenImSpiel, int weisseGefangenImSpiel, int schwarzeSteineTotAufBrett,  int weisseSteineTotAufBrett) {
-        System.out.println("Name Schwarz: "+ nameSchwarz);
-        System.out.println("Name Weiss: "+ nameWeiss);
-        System.out.println("Gebietspunkte Schwarz: "+ gebietsPunktSchwarz);
-        System.out.println("Gebietspunkte Weiss: "+ gebietsPunkteWeiss);
-        System.out.println("Gefangene Schwarze im Spiel: "+ schwarzeGefangenImSpiel);
-        System.out.println("Gefangene Weisse im Spiel: "+ weisseGefangenImSpiel);
-        System.out.println("Tote Schwarze auf Brett: "+ schwarzeSteineTotAufBrett);
-        System.out.println("Tote Weisse auf Brett: "+ weisseSteineTotAufBrett);
-        System.out.println("Komi fuer Weiss: "+ komiFuerWeiss);
+            int schwarzeGefangenImSpiel, int weisseGefangenImSpiel, int schwarzeSteineTotAufBrett, int weisseSteineTotAufBrett) {
+        System.out.println("Name Schwarz: " + nameSchwarz);
+        System.out.println("Name Weiss: " + nameWeiss);
+        System.out.println("Gebietspunkte Schwarz: " + gebietsPunktSchwarz);
+        System.out.println("Gebietspunkte Weiss: " + gebietsPunkteWeiss);
+        System.out.println("Gefangene Schwarze im Spiel: " + schwarzeGefangenImSpiel);
+        System.out.println("Gefangene Weisse im Spiel: " + weisseGefangenImSpiel);
+        System.out.println("Tote Schwarze auf Brett: " + schwarzeSteineTotAufBrett);
+        System.out.println("Tote Weisse auf Brett: " + weisseSteineTotAufBrett);
+        System.out.println("Komi fuer Weiss: " + komiFuerWeiss);
     }
 
     public void ergebnisAufgebenZeigen(String nameSchwarz, String nameWeiss, int konstanteFuerGewinner) {
         /* Erstmal zum Debugen */
-        System.out.println("Name Schwarz: "+ nameSchwarz);
-        System.out.println("Name Weiss: "+ nameWeiss);
+        System.out.println("Name Schwarz: " + nameSchwarz);
+        System.out.println("Name Weiss: " + nameWeiss);
         String gewinner;
-        if(konstanteFuerGewinner == Konstante.SCHNITTPUNKT_SCHWARZ){
+        if (konstanteFuerGewinner == Konstante.SCHNITTPUNKT_SCHWARZ) {
             gewinner = "Schwarz";
-        }
-        else{
+        } else {
             gewinner = "Weiss";
         }
         System.out.println(gewinner + " gewinnt durch Aufgabe");
@@ -695,35 +689,34 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
 
     public void ergebnisAufZeitVerlorenZeigen(String nameSchwarz, String nameWeiss, int konstanteFuerGewinner) {
         /* Erstmal zum Debugen */
-        System.out.println("Name Schwarz: "+ nameSchwarz);
-        System.out.println("Name Weiss: "+ nameWeiss);
+        System.out.println("Name Schwarz: " + nameSchwarz);
+        System.out.println("Name Weiss: " + nameWeiss);
         String gewinner;
-        if(konstanteFuerGewinner == Konstante.SCHNITTPUNKT_SCHWARZ){
+        if (konstanteFuerGewinner == Konstante.SCHNITTPUNKT_SCHWARZ) {
             gewinner = "Schwarz";
-        }
-        else{
+        } else {
             gewinner = "Weiss";
         }
         System.out.println(gewinner + " gewinnt durch Zeit");
     }
 
-    public void visibleNeuesSpiel(boolean visible){
+    public void visibleNeuesSpiel(boolean visible) {
         this.AuswertungBeenden.setEnabled(visible);
     }
 
-    public void visibleSpielLaden(boolean visible){
+    public void visibleSpielLaden(boolean visible) {
         this.SpielLaden.setEnabled(visible);
     }
 
-    public void visibleSpielSpeichern(boolean visible){
+    public void visibleSpielSpeichern(boolean visible) {
         this.SpielSpeichern.setEnabled(visible);
     }
 
-    public void visiblePause(boolean visible){
+    public void visiblePause(boolean visible) {
         this.Pause.setEnabled(visible);
     }
 
-    public void visibleFortsetzen(boolean visible){
+    public void visibleFortsetzen(boolean visible) {
         this.Fortsetzen.setEnabled(visible);
     }
 
@@ -738,5 +731,4 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
     public void visibleAuswertungBeenden(boolean visible) {
         this.AuswertungBeenden.setEnabled(visible);
     }
-
 }

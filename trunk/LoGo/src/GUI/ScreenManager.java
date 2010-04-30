@@ -34,7 +34,7 @@ public class ScreenManager {
      *
      * @return Alle kompatiblen DisplayModes
      */
-    public DisplayMode[] getCompatibleDisplayModes(){
+    public DisplayMode[] getCompatibleDisplayModes() {
         return vc.getDisplayModes();
     }
 
@@ -44,11 +44,11 @@ public class ScreenManager {
      * @return Gib den ersten kompatiblem DisplayModus zurueck,
      * bzw. null, wenn keiner gefunden wurde.
      */
-    public DisplayMode findFirstCompatibleMode(DisplayMode modes[]){
+    public DisplayMode findFirstCompatibleMode(DisplayMode modes[]) {
         DisplayMode goodModes[] = vc.getDisplayModes();
-        for(int x=0; x<modes.length;x++){
-            for(int y=0; y<goodModes.length;y++){
-                if(displayModesMatch( modes[x], goodModes[y])){
+        for (int x = 0; x < modes.length; x++) {
+            for (int y = 0; y < goodModes.length; y++) {
+                if (displayModesMatch(modes[x], goodModes[y])) {
                     return modes[x];
                 }
             }
@@ -60,7 +60,7 @@ public class ScreenManager {
      *
      * @return Gibt den DisplayMode zurueck, mit dem gerade gearbeitet wird
      */
-    public DisplayMode getCurrentDisplayMode(){
+    public DisplayMode getCurrentDisplayMode() {
         return vc.getDisplayMode();
     }
 
@@ -71,23 +71,23 @@ public class ScreenManager {
      * @return und gibt true zurueck, wenn alle vier Parameter von DisplayModes uebereinsteimmen
      * @see ScreenManager.displayModeMatch
      */
-    private boolean displayModesMatch( DisplayMode m1, DisplayMode m2 ){
+    private boolean displayModesMatch(DisplayMode m1, DisplayMode m2) {
         // Hoehe und Breite vergleichen des DisplayModes (Aufloesung)
-        if(m1.getWidth() != m2.getWidth() || m1.getHeight() != m2.getHeight()){
+        if (m1.getWidth() != m2.getWidth() || m1.getHeight() != m2.getHeight()) {
             return false;
         }
 
         // Bildtiefe vergleichen
-        if( m1.getBitDepth() != DisplayMode.BIT_DEPTH_MULTI
+        if (m1.getBitDepth() != DisplayMode.BIT_DEPTH_MULTI
                 && m2.getBitDepth() != DisplayMode.BIT_DEPTH_MULTI
-                && m1.getBitDepth() != m2.getBitDepth()){
+                && m1.getBitDepth() != m2.getBitDepth()) {
             return false;
         }
-        
+
         // Vergleiche die Bildwiedergaberate (Refreshrate)
-        if(m1.getRefreshRate() != DisplayMode.REFRESH_RATE_UNKNOWN
+        if (m1.getRefreshRate() != DisplayMode.REFRESH_RATE_UNKNOWN
                 && m2.getRefreshRate() != DisplayMode.REFRESH_RATE_UNKNOWN
-                && m1.getRefreshRate() != m2.getRefreshRate()){
+                && m1.getRefreshRate() != m2.getRefreshRate()) {
             return false;
         }
 
@@ -95,7 +95,7 @@ public class ScreenManager {
         return true;
     }
 
-    public void setFullScreen( DisplayMode dm ){
+    public void setFullScreen(DisplayMode dm) {
         JFrame window = new JFrame();
         this.setFullScreen(dm, window);
     }
@@ -120,17 +120,15 @@ public class ScreenManager {
         window.createBufferStrategy(2);
     }
 
-
-    public Graphics2D getGraphics(){
+    public Graphics2D getGraphics() {
         Window w = vc.getFullScreenWindow();
-        if( w != null){
+        if (w != null) {
             BufferStrategy s = w.getBufferStrategy();
-            return (Graphics2D)s.getDrawGraphics();
-        }else{
+            return (Graphics2D) s.getDrawGraphics();
+        } else {
             return null;
         }
     }
-
 
     /**
      *
@@ -141,11 +139,11 @@ public class ScreenManager {
         return vc.getFullScreenWindow();
     }
 
-    public void update(){
+    public void update() {
         Window w = vc.getFullScreenWindow();
-        if( w!= null){
+        if (w != null) {
             BufferStrategy s = w.getBufferStrategy();
-            if( !s.contentsLost() ){
+            if (!s.contentsLost()) {
                 // Wenn Content vorhanden ist
                 s.show();
             }
@@ -156,11 +154,11 @@ public class ScreenManager {
      *
      * @return Gibt die Breite des Fensters zurueck
      */
-    public int getWidth(){
+    public int getWidth() {
         Window w = vc.getFullScreenWindow();
-        if( w!= null){
+        if (w != null) {
             return w.getWidth();
-        }else{
+        } else {
             return 0;
         }
     }
@@ -169,11 +167,11 @@ public class ScreenManager {
      *
      * @return Gibt die Fensterhoehe zurueck
      */
-    public int getHeight(){
+    public int getHeight() {
         Window w = vc.getFullScreenWindow();
-        if( w!= null){
+        if (w != null) {
             return w.getHeight();
-        }else{
+        } else {
             return 0;
         }
     }
@@ -197,14 +195,13 @@ public class ScreenManager {
      * @return Gibt ein BufferedImage zurueck, das auf die Grafik-Konfiguration
      * des Anzeigegerätes abgestimmt ist mit
      */
-    public BufferedImage createCompatibleImage( int width, int height, int transparency){
+    public BufferedImage createCompatibleImage(int width, int height, int transparency) {
         Window win = vc.getFullScreenWindow();
-        if( win != null){
+        if (win != null) {
             // Grafik-Konfiguration des Windows
             GraphicsConfiguration gc = win.getGraphicsConfiguration();
             return gc.createCompatibleImage(width, height, transparency);
         }
         return null;
     }
-    
 }

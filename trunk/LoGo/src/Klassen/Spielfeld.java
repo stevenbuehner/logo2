@@ -16,7 +16,6 @@ import java.util.List;
 public class Spielfeld {
 
     // interne Speicherobjekte
-
     /**
      * Jeder Zug bekommt eine eindeutige fortlaufende Nummer. Das Attribut
      * letzteZugnummer zeigt immer auf die zuletzt verwendete Zugnummer. Diese
@@ -24,7 +23,6 @@ public class Spielfeld {
      * spielZugCollection) zum zugehoerigen Zug verwendet werden.
      */
     private int letzteZugnummer;
-
     /**
      * Groesse des Spielfeldes und damit auch Groesse der zweidimensionalen
      * Spielfeldarrays
@@ -35,29 +33,24 @@ public class Spielfeld {
     /**
      * Rueckgabe der Liste von Spielzuegen fuer die Klasse Speichern
      */
-    public List<Spielzug> getspielZugCollection(){
+    public List<Spielzug> getspielZugCollection() {
 
         return this.spielZugCollection;
     }
-
     private int xPosVerboten;
     private int yPosVerboten;
     private boolean ignoreTime;
-
     private Spieler spielerSchwarz;
     private Spieler spielerWeiss;
 
     /* Wenn die Spielerzeit aufgebraucht ist gibt es noch die Periodenzeit.
-    * Diese ist fuer alle Spieler gleich. In wirklich heisst dieser Wert Byo-yomi.
-    */
-    private long    periodenZeit;
-
+     * Diese ist fuer alle Spieler gleich. In wirklich heisst dieser Wert Byo-yomi.
+     */
+    private long periodenZeit;
     // Vorgabezahl
     private int vorgabeZahl;
-
     // Zustand des Spiels
-    private int     spielZustand;
-    
+    private int spielZustand;
     // Chache Funktionen zum schnelleren Spielen
     private int[][] aktuellesSpielfeldCache;
     private int spielfeldCacheMitZugnummerStand;
@@ -71,8 +64,8 @@ public class Spielfeld {
      */
     private int[][] initialfeld;
 
-    public Spielfeld(){
-        this( 9 );
+    public Spielfeld() {
+        this(9);
     }
 
     public Spielfeld(int spielfeldGroesse) {
@@ -88,17 +81,17 @@ public class Spielfeld {
         this.aktuellesSpielfeldCache = new int[this.getSpielfeldGroesse()][this.getSpielfeldGroesse()];
         this.spielfeldCacheMitZugnummerStand = this.letzteZugnummer;
         /* Feld muss als Leeres Feld initialisiert werden */
-        int i,j;
-        for(i=0; i<this.getSpielfeldGroesse(); i++){
-            for(j=0; j<this.getSpielfeldGroesse(); j++){
+        int i, j;
+        for (i = 0; i < this.getSpielfeldGroesse(); i++) {
+            for (j = 0; j < this.getSpielfeldGroesse(); j++) {
                 aktuellesSpielfeldCache[i][j] = Konstante.SCHNITTPUNKT_LEER;
             }
         }
 
         /* Zunaechst Leer machen */
         this.initialfeld = new int[this.getSpielfeldGroesse()][this.getSpielfeldGroesse()];
-        for(i=0; i<this.getSpielfeldGroesse(); i++){
-            for(j=0; j<this.getSpielfeldGroesse(); j++){
+        for (i = 0; i < this.getSpielfeldGroesse(); i++) {
+            for (j = 0; j < this.getSpielfeldGroesse(); j++) {
                 this.initialfeld[i][j] = Konstante.SCHNITTPUNKT_LEER;
             }
         }
@@ -109,21 +102,21 @@ public class Spielfeld {
      *
      * @return Den schwarzen Spieler mit dem Objekttyp Spieler
      */
-    public Spieler getSpielerSchwarz(){
+    public Spieler getSpielerSchwarz() {
         return this.spielerSchwarz;
     }
 
     /**
      * @param schwarzerSpieler Setzen des schwarzerSpieler
      */
-    public void setSpielerSchwarz( Spieler schwarzerSpieler ){
+    public void setSpielerSchwarz(Spieler schwarzerSpieler) {
         this.spielerSchwarz = schwarzerSpieler;
     }
 
     /**
      * @return Den Weissen Spieler mit dem Objekttyp Spieler
      */
-    public Spieler getSpielerWeiss(){
+    public Spieler getSpielerWeiss() {
         return this.spielerWeiss;
     }
 
@@ -131,7 +124,7 @@ public class Spielfeld {
      *
      * @param weisserSpieler Setzen des WeisserSpieler
      */
-    public void setSpielerWeiss( Spieler weisserSpieler ){
+    public void setSpielerWeiss(Spieler weisserSpieler) {
         this.spielerWeiss = weisserSpieler;
     }
 
@@ -141,14 +134,14 @@ public class Spielfeld {
      * Wenn die Spielerzeit aufgebraucht ist gibt es noch die Periodenzeit.
      * Diese ist fuer alle Spieler gleich. In wirklich heisst dieser Wert Byo-yomi.
      */
-    public long getPeriodenZeit(){
+    public long getPeriodenZeit() {
         return this.periodenZeit;
     }
 
     /**
      * @param periodenZeit Speichern der periodenZeit
      */
-    public void setPeriodenZeit( long periodenZeit ){
+    public void setPeriodenZeit(long periodenZeit) {
         this.periodenZeit = periodenZeit;
     }
 
@@ -156,20 +149,20 @@ public class Spielfeld {
      *
      * @return Gibt den aktuellen Spielzustand zurueck. Erlaubt sind nur die Konstanten:
      *     - SPIEL_UNVOLLSTAENDIG
-           - SPIEL_VALIDIERT
-           - SPIEL_LAUEFT
-           - SPIEL_PAUSIERT
-           - SPIEL_AUFGEGEBEN
-           - SPIEL_BEENDET_DURCH_APP
+    - SPIEL_VALIDIERT
+    - SPIEL_LAUEFT
+    - SPIEL_PAUSIERT
+    - SPIEL_AUFGEGEBEN
+    - SPIEL_BEENDET_DURCH_APP
      */
-    public int getSpielZustand(){
+    public int getSpielZustand() {
         return this.spielZustand;
     }
 
-    public void setSpielZustand ( int neuerSpielZustand ){
+    public void setSpielZustand(int neuerSpielZustand) {
 
         // Überprüfen ob der Zustand erlaubt ist
-        switch( neuerSpielZustand){
+        switch (neuerSpielZustand) {
             case Konstante.SPIEL_GEBIETSAUSWERTUNG:
                 this.spielZustand = neuerSpielZustand;
                 break;
@@ -223,7 +216,7 @@ public class Spielfeld {
                 }
             }
             /* Jetzt ist das Brett noch leer. Es muss also mit den richtigen
-               Werten gefuellt werden - Fehlt noch*/
+            Werten gefuellt werden - Fehlt noch*/
 
             this.aktuellesSpielfeldCache = spielfeld;
             this.spielfeldCacheMitZugnummerStand = this.letzteZugnummer;
@@ -235,8 +228,8 @@ public class Spielfeld {
              */
 
         } else {
-            for(int i=0; i<this.getSpielfeldGroesse(); i++){
-                for(int j=0; j<this.getSpielfeldGroesse(); j++){
+            for (int i = 0; i < this.getSpielfeldGroesse(); i++) {
+                for (int j = 0; j < this.getSpielfeldGroesse(); j++) {
                     spielfeld[i][j] = this.aktuellesSpielfeldCache[i][j];
                 }
             }
@@ -259,60 +252,60 @@ public class Spielfeld {
         /* Wenn der Zeitpunkt dem des Caches entspricht, wird einfach der aktuelle
          * Feld zurueckgegeben.
          */
-        if (zeitpunkt == this.spielfeldCacheMitZugnummerStand && zeitpunkt!=0) {
-            for(int i=0; i<this.getSpielfeldGroesse(); i++){
-                for(int j=0; j<this.getSpielfeldGroesse(); j++){
-                    spielfeld[i][j]=this.aktuellesSpielfeldCache[i][j];
+        if (zeitpunkt == this.spielfeldCacheMitZugnummerStand && zeitpunkt != 0) {
+            for (int i = 0; i < this.getSpielfeldGroesse(); i++) {
+                for (int j = 0; j < this.getSpielfeldGroesse(); j++) {
+                    spielfeld[i][j] = this.aktuellesSpielfeldCache[i][j];
                 }
             }
             return spielfeld;
-        } 
+        }
 
         /* Ist der Zeitpunkt kleiner als 0 ist dies Verboten! */
-        if (zeitpunkt < 0){
+        if (zeitpunkt < 0) {
             throw new UnsupportedOperationException("Zeitpunkt ist Nicht moeglich, da kleiner 0 !");
         }
-        
+
         /* Wenn der zeitpunkt vor dem Stand im Cache liegt, muss das Feld komplett
          * neu geladen werden. Ansonsten reicht es, vom momentanen Cache auszugehen.
          * Wenn neu geladen wird, muss vom Initialfeld aus gegonnen werden.
          */
-        if (zeitpunkt < this.spielfeldCacheMitZugnummerStand){
+        if (zeitpunkt < this.spielfeldCacheMitZugnummerStand) {
             this.spielfeldCacheMitZugnummerStand = 0;
             this.loescheVerbotenenPunkt();
-            for(int i=0; i<this.getSpielfeldGroesse(); i++){
-                for(int j=0; j<this.getSpielfeldGroesse(); j++){
+            for (int i = 0; i < this.getSpielfeldGroesse(); i++) {
+                for (int j = 0; j < this.getSpielfeldGroesse(); j++) {
                     this.aktuellesSpielfeldCache[i][j] = this.initialfeld[i][j];
                 }
             }
         }
-        
+
         /* Wenn der Zeitpunkt gleich 0 ist, so muss das Initialfeld zurueck
          * gegeben werden. */
-        if( zeitpunkt == 0){
-            for(int i=0; i<this.getSpielfeldGroesse(); i++){
-                for(int j=0; j<this.getSpielfeldGroesse(); j++){
-                    spielfeld[i][j]=this.initialfeld[i][j];
+        if (zeitpunkt == 0) {
+            for (int i = 0; i < this.getSpielfeldGroesse(); i++) {
+                for (int j = 0; j < this.getSpielfeldGroesse(); j++) {
+                    spielfeld[i][j] = this.initialfeld[i][j];
                 }
             }
             return spielfeld;
         }
-        
-        while(zeitpunkt > this.spielfeldCacheMitZugnummerStand){
+
+        while (zeitpunkt > this.spielfeldCacheMitZugnummerStand) {
             /* Auf Passen abpruefen */
-            if(this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getXPosition() == -1 &&
-               this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getYPosition() == -1){
-               this.loescheVerbotenenPunkt();
-               this.spielfeldCacheMitZugnummerStand++;
-            }
-            else {this.setStein(this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getXPosition(),
-                                this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getYPosition(),
-                                this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getFarbe());
+            if (this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getXPosition() == -1
+                    && this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getYPosition() == -1) {
+                this.loescheVerbotenenPunkt();
+                this.spielfeldCacheMitZugnummerStand++;
+            } else {
+                this.setStein(this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getXPosition(),
+                        this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getYPosition(),
+                        this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand).getFarbe());
             }
         }
-        for(int i=0; i<this.getSpielfeldGroesse(); i++){
-            for(int j=0; j<this.getSpielfeldGroesse(); j++){
-                spielfeld[i][j]=this.aktuellesSpielfeldCache[i][j];
+        for (int i = 0; i < this.getSpielfeldGroesse(); i++) {
+            for (int j = 0; j < this.getSpielfeldGroesse(); j++) {
+                spielfeld[i][j] = this.aktuellesSpielfeldCache[i][j];
             }
         }
         return spielfeld;
@@ -328,15 +321,15 @@ public class Spielfeld {
      * @return True, wenn die Funktion erfolgreich ausgeführt wurde, sonst false
      */
     public boolean setSpielfeldZumZeitpunkt(int zeitpunkt) {
-        if(zeitpunkt > this.spielZugCollection.size() || zeitpunkt < 0){
+        if (zeitpunkt > this.spielZugCollection.size() || zeitpunkt < 0) {
             return false;
         }
-        for(int i=this.spielZugCollection.size()-1; i>=zeitpunkt; i--){
+        for (int i = this.spielZugCollection.size() - 1; i >= zeitpunkt; i--) {
             this.spielZugCollection.remove(i);
         }
         this.letzteZugnummer = zeitpunkt;
         return true;
-    }  
+    }
 
     /**
      * Die Funktion setzt im Cache einen Stein, wenn dies auch moeglich ist.
@@ -378,16 +371,16 @@ public class Spielfeld {
          */
 
         /* 1. Testen ob Zug auf dem Spielfeld ist, sonst Fehler */
-        if(xKoord < 0 || yKoord < 0 || xKoord >= this.getSpielfeldGroesse() || yKoord >= this.getSpielfeldGroesse()){
+        if (xKoord < 0 || yKoord < 0 || xKoord >= this.getSpielfeldGroesse() || yKoord >= this.getSpielfeldGroesse()) {
             return 0;
         }
         /* 2. Testen auf Ko (Also verbotener Zug)*/
-        if(this.aktuellesSpielfeldCache[xKoord][yKoord] == Konstante.SCHNITTPUNKT_VERBOTEN) {
+        if (this.aktuellesSpielfeldCache[xKoord][yKoord] == Konstante.SCHNITTPUNKT_VERBOTEN) {
             return -1;
         }
         /* 3. Testen ob schon Stein da steht */
-        if(this.aktuellesSpielfeldCache[xKoord][yKoord] == Konstante.SCHNITTPUNKT_SCHWARZ ||
-           this.aktuellesSpielfeldCache[xKoord][yKoord] == Konstante.SCHNITTPUNKT_WEISS){
+        if (this.aktuellesSpielfeldCache[xKoord][yKoord] == Konstante.SCHNITTPUNKT_SCHWARZ
+                || this.aktuellesSpielfeldCache[xKoord][yKoord] == Konstante.SCHNITTPUNKT_WEISS) {
             return -2;
         }
 
@@ -398,15 +391,15 @@ public class Spielfeld {
          * Damit hat man die moeglichkeit durch die Eigenschaften der Klasse
          * AnalyseSchnittpunkt eine Breitensuche durchzufuehren.
          */
-         
+
         AnalyseSchnittpunkt anaFeld[][];
         anaFeld = new AnalyseSchnittpunkt[this.getSpielfeldGroesse()][this.getSpielfeldGroesse()];
 
         /* Nun das Feld initialisieren. Dabei wird eine Kopie des aktuellen
          * Feldes erstellt. */
-        for(int i=0; i<this.getSpielfeldGroesse(); i++){
-            for(int j=0; j<this.getSpielfeldGroesse(); j++){
-                anaFeld[i][j] = new AnalyseSchnittpunkt(i,j,this.aktuellesSpielfeldCache[i][j]);
+        for (int i = 0; i < this.getSpielfeldGroesse(); i++) {
+            for (int j = 0; j < this.getSpielfeldGroesse(); j++) {
+                anaFeld[i][j] = new AnalyseSchnittpunkt(i, j, this.aktuellesSpielfeldCache[i][j]);
             }
         }
 
@@ -426,8 +419,8 @@ public class Spielfeld {
          * Wird waerend des Auswertens festgestellt, das ein Nachbarstein die
          * gleiche Farbe hat, wird dieser Wert auf False gesetzt.
          */
-        int gefangeneSteine     = 0;
-        int momGefSteine        = 0;
+        int gefangeneSteine = 0;
+        int momGefSteine = 0;
         boolean steinIstEinzeln = true;
 
         /* Jetzt werden die Nachbarsteine betrachtet. Wenn der Stein allerdings
@@ -446,70 +439,64 @@ public class Spielfeld {
          * eine Freiheit haben muss. Daher ist der Zug gueltig. */
 
         /* 1. Linke Seite */
-        if(xKoord!=0){
-            if(anaFeld[xKoord-1][yKoord].getBelegungswert()!=spielerfarbe){
-                momGefSteine = versucheSteinZuNehmen(xKoord-1, yKoord, anaFeld);
-                if(momGefSteine > 0) {
-                    gefangeneSteine+=momGefSteine;
+        if (xKoord != 0) {
+            if (anaFeld[xKoord - 1][yKoord].getBelegungswert() != spielerfarbe) {
+                momGefSteine = versucheSteinZuNehmen(xKoord - 1, yKoord, anaFeld);
+                if (momGefSteine > 0) {
+                    gefangeneSteine += momGefSteine;
+                    zugOK = true;
+                } else if (momGefSteine == 0) {/* nichts */ } else if (momGefSteine == -1) {
                     zugOK = true;
                 }
-                else if(momGefSteine == 0){/* nichts */ }
-                else if(momGefSteine == -1){
-                    zugOK = true;
-                }
-            }
-            else {
+            } else {
                 steinIstEinzeln = false;
             }
         }
         /* 2. Rechte Seite */
-        if(xKoord!=this.getSpielfeldGroesse()-1){
-            if(anaFeld[xKoord+1][yKoord].getBelegungswert()!=spielerfarbe){
-                momGefSteine = versucheSteinZuNehmen(xKoord+1, yKoord, anaFeld);
-                if(momGefSteine > 0) {
-                    gefangeneSteine+=momGefSteine;
+        if (xKoord != this.getSpielfeldGroesse() - 1) {
+            if (anaFeld[xKoord + 1][yKoord].getBelegungswert() != spielerfarbe) {
+                momGefSteine = versucheSteinZuNehmen(xKoord + 1, yKoord, anaFeld);
+                if (momGefSteine > 0) {
+                    gefangeneSteine += momGefSteine;
+                    zugOK = true;
+                } else if (momGefSteine == 0) {/* nichts */
+
+                } else if (momGefSteine == -1) {
                     zugOK = true;
                 }
-                else if(momGefSteine == 0){/* nichts */}
-                else if(momGefSteine == -1){
-                    zugOK = true;
-                }
-            }
-            else {
+            } else {
                 steinIstEinzeln = false;
             }
         }
         /* 3. Untere Seite */
-        if(yKoord!=0){
-            if(anaFeld[xKoord][yKoord-1].getBelegungswert()!=spielerfarbe){
-                momGefSteine = versucheSteinZuNehmen(xKoord, yKoord-1, anaFeld);
-                if(momGefSteine > 0) {
-                    gefangeneSteine+=momGefSteine;
+        if (yKoord != 0) {
+            if (anaFeld[xKoord][yKoord - 1].getBelegungswert() != spielerfarbe) {
+                momGefSteine = versucheSteinZuNehmen(xKoord, yKoord - 1, anaFeld);
+                if (momGefSteine > 0) {
+                    gefangeneSteine += momGefSteine;
+                    zugOK = true;
+                } else if (momGefSteine == 0) {/* nichts */
+
+                } else if (momGefSteine == -1) {
                     zugOK = true;
                 }
-                else if(momGefSteine == 0){/* nichts */}
-                else if(momGefSteine == -1){
-                    zugOK = true;
-                }
-            }
-            else {
+            } else {
                 steinIstEinzeln = false;
             }
         }
         /* 4. Obere Seite */
-        if(yKoord!=this.getSpielfeldGroesse()-1){
-           if(anaFeld[xKoord][yKoord+1].getBelegungswert()!=spielerfarbe){
-                momGefSteine = versucheSteinZuNehmen(xKoord, yKoord+1, anaFeld);
-                if(momGefSteine > 0) {
-                    gefangeneSteine+=momGefSteine;
+        if (yKoord != this.getSpielfeldGroesse() - 1) {
+            if (anaFeld[xKoord][yKoord + 1].getBelegungswert() != spielerfarbe) {
+                momGefSteine = versucheSteinZuNehmen(xKoord, yKoord + 1, anaFeld);
+                if (momGefSteine > 0) {
+                    gefangeneSteine += momGefSteine;
+                    zugOK = true;
+                } else if (momGefSteine == 0) {/* nichts */
+
+                } else if (momGefSteine == -1) {
                     zugOK = true;
                 }
-                else if(momGefSteine == 0){/* nichts */}
-                else if(momGefSteine == -1){
-                    zugOK = true;
-                }
-            }
-            else {
+            } else {
                 steinIstEinzeln = false;
             }
         }
@@ -518,8 +505,8 @@ public class Spielfeld {
          * noch besitzt er selbst freiheiten. Daher muss betrachtet werden, ob
          * die Gruppe in der sich der Stein befindet eine Freiheit hat, wenn
          * dies nicht so ist, ist der Zug Selbstmord und somit ungueltig */
-        if(zugOK == false){
-            if(versucheSteinZuNehmen(xKoord, yKoord, anaFeld, false) == 0){
+        if (zugOK == false) {
+            if (versucheSteinZuNehmen(xKoord, yKoord, anaFeld, false) == 0) {
                 /* Dann hat der Zug zwar keine Steine gefangen und der Stein
                  * hat keine Freiheiten, aber die Gruppe hat welche. Deshalb
                  * kann der Stein gesetzt werden */
@@ -528,8 +515,7 @@ public class Spielfeld {
                 this.loescheVerbotenenPunkt();
                 this.erhoeheGefangenenZahl(spielerfarbe, gefangeneSteine);
                 return 1;
-            }
-            else {
+            } else {
                 /* Die Gruppe zu der der Stein gehoert hat keine Freiheiten.
                  * Es ist also Selbstmord! Es ist zu bemerken, dass dabei die
                  * Brettstellung nicht veraendert wird, da ja nichts gefangen
@@ -553,7 +539,7 @@ public class Spielfeld {
          * Wenn nichts gefangen wurde, ist es auch kein Ko.
          * Wenn der Stein nicht einzeln ist, ist es auch kein Ko.
          * Wenn mehr als ein Stein gefangen wurde ist es auch kein Ko.*/
-        if(gefangeneSteine == 0 || gefangeneSteine > 1 || steinIstEinzeln == false ){
+        if (gefangeneSteine == 0 || gefangeneSteine > 1 || steinIstEinzeln == false) {
             //this.steinEintragen(xPos, yPos, spielerfarbe);
             this.erhoeheGefangenenZahl(spielerfarbe, gefangeneSteine);
             return 1;
@@ -568,57 +554,57 @@ public class Spielfeld {
          * Besitzt der Stein nur eine Freiheit, wird sich in freiXPos und freiYPos
          * der Wert dieser Freiheit gemerkt.
          */
-         int freiheitDesSteins = 0;
-         int freiXPos = -1;
-         int freiYPos = -1;
+        int freiheitDesSteins = 0;
+        int freiXPos = -1;
+        int freiYPos = -1;
 
-         /* 1. Linke Seite (Wenn sie existiert)*/
-         if(xKoord!=0){
-             if(this.aktuellesSpielfeldCache[xKoord - 1][yKoord] == Konstante.SCHNITTPUNKT_LEER){
-                 freiheitDesSteins++;
-                 freiXPos = xKoord - 1;
-                 freiYPos = yKoord;
-             }
-         }
-         /* 2. Rechte Seite (Wenn sie existerit)*/
-         if(xKoord!=this.getSpielfeldGroesse()-1){
-             if(this.aktuellesSpielfeldCache[xKoord + 1][yKoord] == Konstante.SCHNITTPUNKT_LEER){
-                 freiheitDesSteins++;
-                 freiXPos = xKoord + 1;
-                 freiYPos = yKoord;
-             }
-         }
-         /* 3. Untere Seite (Wenn sie existiert)*/
-         if(yKoord!=0){
-             if(this.aktuellesSpielfeldCache[xKoord][yKoord - 1] == Konstante.SCHNITTPUNKT_LEER){
-                 freiheitDesSteins++;
-                 freiXPos = xKoord;
-                 freiYPos = yKoord - 1;
-             }
-         }
-         /* 4. Obere Seite (Wenn sie existiert)*/
-         if(yKoord!=this.getSpielfeldGroesse()-1){
-             if(this.aktuellesSpielfeldCache[xKoord][yKoord + 1] == Konstante.SCHNITTPUNKT_LEER){
-                 freiheitDesSteins++;
-                 freiXPos = xKoord;
-                 freiYPos = yKoord + 1;
-             }
-         }
+        /* 1. Linke Seite (Wenn sie existiert)*/
+        if (xKoord != 0) {
+            if (this.aktuellesSpielfeldCache[xKoord - 1][yKoord] == Konstante.SCHNITTPUNKT_LEER) {
+                freiheitDesSteins++;
+                freiXPos = xKoord - 1;
+                freiYPos = yKoord;
+            }
+        }
+        /* 2. Rechte Seite (Wenn sie existerit)*/
+        if (xKoord != this.getSpielfeldGroesse() - 1) {
+            if (this.aktuellesSpielfeldCache[xKoord + 1][yKoord] == Konstante.SCHNITTPUNKT_LEER) {
+                freiheitDesSteins++;
+                freiXPos = xKoord + 1;
+                freiYPos = yKoord;
+            }
+        }
+        /* 3. Untere Seite (Wenn sie existiert)*/
+        if (yKoord != 0) {
+            if (this.aktuellesSpielfeldCache[xKoord][yKoord - 1] == Konstante.SCHNITTPUNKT_LEER) {
+                freiheitDesSteins++;
+                freiXPos = xKoord;
+                freiYPos = yKoord - 1;
+            }
+        }
+        /* 4. Obere Seite (Wenn sie existiert)*/
+        if (yKoord != this.getSpielfeldGroesse() - 1) {
+            if (this.aktuellesSpielfeldCache[xKoord][yKoord + 1] == Konstante.SCHNITTPUNKT_LEER) {
+                freiheitDesSteins++;
+                freiXPos = xKoord;
+                freiYPos = yKoord + 1;
+            }
+        }
 
-         /* Wenn die Freiheiten nicht genau 1 sind, ist es kein Ko*/
-         if(freiheitDesSteins!=1){
-             //this.steinEintragen(xPos, yPos, spielerfarbe);
-             this.erhoeheGefangenenZahl(spielerfarbe, gefangeneSteine);
-             return 1;
-         }
+        /* Wenn die Freiheiten nicht genau 1 sind, ist es kein Ko*/
+        if (freiheitDesSteins != 1) {
+            //this.steinEintragen(xPos, yPos, spielerfarbe);
+            this.erhoeheGefangenenZahl(spielerfarbe, gefangeneSteine);
+            return 1;
+        }
 
-         /* Es ist also Ko. Das Muss markiert werden. Der Wert dafuer ist in
-          * freiXPos und freiYPos gespeichert. */
-         this.setzeVerbotenenPunkt(freiXPos, freiYPos);
-         this.aktuellesSpielfeldCache[freiXPos][freiYPos] = Konstante.SCHNITTPUNKT_VERBOTEN;
-         //this.steinEintragen(xPos, yPos, spielerfarbe);
-         this.erhoeheGefangenenZahl(spielerfarbe, gefangeneSteine);
-         return 1;
+        /* Es ist also Ko. Das Muss markiert werden. Der Wert dafuer ist in
+         * freiXPos und freiYPos gespeichert. */
+        this.setzeVerbotenenPunkt(freiXPos, freiYPos);
+        this.aktuellesSpielfeldCache[freiXPos][freiYPos] = Konstante.SCHNITTPUNKT_VERBOTEN;
+        //this.steinEintragen(xPos, yPos, spielerfarbe);
+        this.erhoeheGefangenenZahl(spielerfarbe, gefangeneSteine);
+        return 1;
     }
 
     /**
@@ -629,21 +615,19 @@ public class Spielfeld {
      * es sich um den ersten richtigen Zug handelt. Dann ist weiss dran
      * @return Gibt zurueck wer als naechstes dran ist.
      */
-    public int getSpielerFarbeAnDerReihe(){
+    public int getSpielerFarbeAnDerReihe() {
 
         int letzterSpieler = getSpielerFarbeVonLetztemZug();
-        
-        if (letzterSpieler == Konstante.SCHNITTPUNKT_SCHWARZ){
+
+        if (letzterSpieler == Konstante.SCHNITTPUNKT_SCHWARZ) {
             return Konstante.SCHNITTPUNKT_WEISS;
-        }
-        else if (letzterSpieler == Konstante.SCHNITTPUNKT_WEISS){
+        } else if (letzterSpieler == Konstante.SCHNITTPUNKT_WEISS) {
             return Konstante.SCHNITTPUNKT_SCHWARZ;
-        }
-        else{
+        } else {
             // FEHLER
             return Konstante.FEHLER;
         }
-        
+
 
     }
 
@@ -651,9 +635,9 @@ public class Spielfeld {
      * @return Gibt zurueck, welche Farbe der Spieler hat, der den letzten Zug
      * setzte.
      */
-    public int getSpielerFarbeVonLetztemZug(){
-        if(this.spielfeldCacheMitZugnummerStand == 0){
-        //if (this.spielZugCollection.size() == 0){
+    public int getSpielerFarbeVonLetztemZug() {
+        if (this.spielfeldCacheMitZugnummerStand == 0) {
+            //if (this.spielZugCollection.size() == 0){
             /* Wenn ohne Vorgabe gespielt wird, ist Schwarz zu beginn dran.
              * Daher war Weiss theoretisch vorher dran.
              * Wird mit Vorgabe, oder Startformation gespielt, ist Weiss
@@ -662,27 +646,25 @@ public class Spielfeld {
              * Ob mit Startformation gespielt wurde, erkennt man daran, dass
              * das initialfeld nicht leer ist*/
             boolean initFeldLeer = true;
-            for(int i=0; i<this.getSpielfeldGroesse(); i++){
-                for(int j=0; j<this.getSpielfeldGroesse(); j++){
-                    if(this.initialfeld[i][j] != Konstante.SCHNITTPUNKT_LEER){
+            for (int i = 0; i < this.getSpielfeldGroesse(); i++) {
+                for (int j = 0; j < this.getSpielfeldGroesse(); j++) {
+                    if (this.initialfeld[i][j] != Konstante.SCHNITTPUNKT_LEER) {
                         initFeldLeer = false;
                     }
                 }
             }
-            if(initFeldLeer == true){
+            if (initFeldLeer == true) {
                 return Konstante.SCHNITTPUNKT_WEISS; // da schwarz beginnt
-            }
-            else {
+            } else {
                 return Konstante.SCHNITTPUNKT_SCHWARZ; // da weiss beginnt
             }
-        }
-        else{
+        } else {
             /* return this.spielZugCollection.get(this.spielZugCollection.size()-1).getFarbe();
              * Man darf nicht einfach die Farbe des letzten Steins zurueckgeben,
              * da man im undo-modus sein koennt, aber nicht weiss ob er zug valide
              * ist. Man kann die liste der Stein also nicht veraendern. Daher
              * muss man die information aus dem Cache nehemen */
-            return this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand-1).getFarbe();
+            return this.spielZugCollection.get(this.spielfeldCacheMitZugnummerStand - 1).getFarbe();
         }
     }
 
@@ -690,16 +672,15 @@ public class Spielfeld {
      *
      * @return Gibt den Spieler zurueck der aktuell an der Reihe ist.
      */
-    public Spieler getSpielerAnDerReihe(){
+    public Spieler getSpielerAnDerReihe() {
         // Hole den Spieler der als letztes dran war, dann ist der andere Spiele
         // als nächstes an der Reihe
         int spNichtAnDerReihe = this.getSpielerFarbeVonLetztemZug();
 
-        if( spNichtAnDerReihe == Konstante.SCHNITTPUNKT_SCHWARZ ){
+        if (spNichtAnDerReihe == Konstante.SCHNITTPUNKT_SCHWARZ) {
             // Weisser Spieler ist gerade am Zug
             return this.getSpielerWeiss();
-        }
-        else{
+        } else {
             // Schwarzer Spieler ist gerade am Zug
             return this.getSpielerSchwarz();
         }
@@ -729,9 +710,9 @@ public class Spielfeld {
      * konnte nicht entfernt werden, weil an (xPos, yPos) gar kein Stein liegt
      * (Rueckgabewert -1)
      */
-    private int versucheSteinZuNehmen(int xPos, int yPos, AnalyseSchnittpunkt feld[][], boolean nehmen){
+    private int versucheSteinZuNehmen(int xPos, int yPos, AnalyseSchnittpunkt feld[][], boolean nehmen) {
         /* Zuerst testen ob an (x,y) ueberhaupt ein Stein ist */
-        if(feld[xPos][yPos].getBelegungswert()==Konstante.SCHNITTPUNKT_LEER || feld[xPos][yPos].getBelegungswert()==Konstante.SCHNITTPUNKT_VERBOTEN){
+        if (feld[xPos][yPos].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER || feld[xPos][yPos].getBelegungswert() == Konstante.SCHNITTPUNKT_VERBOTEN) {
             return -1;
         }
 
@@ -740,8 +721,8 @@ public class Spielfeld {
          * Steine schon betrachtet wurden. Ist dies der Fall wird abgebrochen und
          * gesagt, das keine Steine gefangen worden (Da diese wenn sie schon
          * markiert sind auch schon vom Brett genommen worden, oder nicht)*/
-        if(feld[xPos][yPos].getSteinStatus()==Konstante.STEIN_GEFANGEN ||
-           feld[xPos][yPos].getSteinStatus()==Konstante.STEIN_LEBENDIG){
+        if (feld[xPos][yPos].getSteinStatus() == Konstante.STEIN_GEFANGEN
+                || feld[xPos][yPos].getSteinStatus() == Konstante.STEIN_LEBENDIG) {
             return 0;
         }
 
@@ -768,7 +749,7 @@ public class Spielfeld {
         listeSteine.add(feld[xPos][yPos]);
         /* Jetzt solange nach Steinen suchen und diese in Liste aufnehmen,
          * bis keine Steine mehr da sind */
-        do{
+        do {
             /* Jetzt, wenn Nachbarsteine existieren und diese noch nicht
              * markiert sind, dann werden sie in die Liste aufgenommen.
              * Ist der Nachbar leer oder verboten, so steht dort kein Stein und
@@ -780,91 +761,85 @@ public class Spielfeld {
 
             /* Wenn Stein linken Nachbarn hat*/
 
-             if(listeSteine.get(momElement).getXPos()!=0){
-                 if(feld[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER ||
-                    feld[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert() == Konstante.SCHNITTPUNKT_VERBOTEN){
-                     fangbar=false; 
-                 }
-                 else if(feld[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getBelegungswert() == farbe){
-                     if(feld[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].getMarkiert() == false){
-                         feld[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
-                         listeSteine.add(feld[listeSteine.get(momElement).getXPos()-1][listeSteine.get(momElement).getYPos()]);
-                     }
-                 }
-             }
-             /* Wenn Stein rechten Nachbarn hat */
-             if(listeSteine.get(momElement).getXPos()!=this.getSpielfeldGroesse()-1){
-                 if(feld[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER ||
-                    feld[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert() == Konstante.SCHNITTPUNKT_VERBOTEN){
-                     fangbar=false; 
-                 }
-                 else if(feld[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getBelegungswert() == farbe){
-                     if(feld[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].getMarkiert() == false){
-                         feld[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
-                         listeSteine.add(feld[listeSteine.get(momElement).getXPos()+1][listeSteine.get(momElement).getYPos()]);
-                     }
-                 }
-             }
-             /* Wenn Stein oberen Nachbarn hat (Oben und unten werden vielleicht
-              * umdefiniert, ist aber egal fuer den Algorithmus!)*/
-             if(listeSteine.get(momElement).getYPos()!=this.getSpielfeldGroesse()-1){
-                 if(feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER ||
-                    feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert() == Konstante.SCHNITTPUNKT_VERBOTEN){
-                     fangbar=false; 
-                 }
-                 else if(feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getBelegungswert() == farbe){
-                     if(feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].getMarkiert() == false){
-                         feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1].setMarkiert(true);
-                         listeSteine.add(feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()+1]);
-                     }
-                 }
-             }
-             /* Wenn Stein unteren Nachbarn hat */
-             if(listeSteine.get(momElement).getYPos()!=0){
-                 if(feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER ||
-                    feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert() == Konstante.SCHNITTPUNKT_VERBOTEN){
-                     fangbar=false;
-                 }
-                 else if(feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getBelegungswert() == farbe){
-                     if(feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].getMarkiert() == false){
-                         feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1].setMarkiert(true);
-                         listeSteine.add(feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos()-1]);
-                     }
-                 }
-             }
+            if (listeSteine.get(momElement).getXPos() != 0) {
+                if (feld[listeSteine.get(momElement).getXPos() - 1][listeSteine.get(momElement).getYPos()].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER
+                        || feld[listeSteine.get(momElement).getXPos() - 1][listeSteine.get(momElement).getYPos()].getBelegungswert() == Konstante.SCHNITTPUNKT_VERBOTEN) {
+                    fangbar = false;
+                } else if (feld[listeSteine.get(momElement).getXPos() - 1][listeSteine.get(momElement).getYPos()].getBelegungswert() == farbe) {
+                    if (feld[listeSteine.get(momElement).getXPos() - 1][listeSteine.get(momElement).getYPos()].getMarkiert() == false) {
+                        feld[listeSteine.get(momElement).getXPos() - 1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
+                        listeSteine.add(feld[listeSteine.get(momElement).getXPos() - 1][listeSteine.get(momElement).getYPos()]);
+                    }
+                }
+            }
+            /* Wenn Stein rechten Nachbarn hat */
+            if (listeSteine.get(momElement).getXPos() != this.getSpielfeldGroesse() - 1) {
+                if (feld[listeSteine.get(momElement).getXPos() + 1][listeSteine.get(momElement).getYPos()].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER
+                        || feld[listeSteine.get(momElement).getXPos() + 1][listeSteine.get(momElement).getYPos()].getBelegungswert() == Konstante.SCHNITTPUNKT_VERBOTEN) {
+                    fangbar = false;
+                } else if (feld[listeSteine.get(momElement).getXPos() + 1][listeSteine.get(momElement).getYPos()].getBelegungswert() == farbe) {
+                    if (feld[listeSteine.get(momElement).getXPos() + 1][listeSteine.get(momElement).getYPos()].getMarkiert() == false) {
+                        feld[listeSteine.get(momElement).getXPos() + 1][listeSteine.get(momElement).getYPos()].setMarkiert(true);
+                        listeSteine.add(feld[listeSteine.get(momElement).getXPos() + 1][listeSteine.get(momElement).getYPos()]);
+                    }
+                }
+            }
+            /* Wenn Stein oberen Nachbarn hat (Oben und unten werden vielleicht
+             * umdefiniert, ist aber egal fuer den Algorithmus!)*/
+            if (listeSteine.get(momElement).getYPos() != this.getSpielfeldGroesse() - 1) {
+                if (feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() + 1].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER
+                        || feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() + 1].getBelegungswert() == Konstante.SCHNITTPUNKT_VERBOTEN) {
+                    fangbar = false;
+                } else if (feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() + 1].getBelegungswert() == farbe) {
+                    if (feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() + 1].getMarkiert() == false) {
+                        feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() + 1].setMarkiert(true);
+                        listeSteine.add(feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() + 1]);
+                    }
+                }
+            }
+            /* Wenn Stein unteren Nachbarn hat */
+            if (listeSteine.get(momElement).getYPos() != 0) {
+                if (feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() - 1].getBelegungswert() == Konstante.SCHNITTPUNKT_LEER
+                        || feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() - 1].getBelegungswert() == Konstante.SCHNITTPUNKT_VERBOTEN) {
+                    fangbar = false;
+                } else if (feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() - 1].getBelegungswert() == farbe) {
+                    if (feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() - 1].getMarkiert() == false) {
+                        feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() - 1].setMarkiert(true);
+                        listeSteine.add(feld[listeSteine.get(momElement).getXPos()][listeSteine.get(momElement).getYPos() - 1]);
+                    }
+                }
+            }
 
-             /* Jetzt wurden alle Nachbarn aufgenommen. Der naechste Stein wird
-              * also untersucht. Doch zuerst muss der jetzige sauber
-              * abgeschlossen werden */
-             ++momElement;
-        }while(momElement<=listeSteine.size()-1);
+            /* Jetzt wurden alle Nachbarn aufgenommen. Der naechste Stein wird
+             * also untersucht. Doch zuerst muss der jetzige sauber
+             * abgeschlossen werden */
+            ++momElement;
+        } while (momElement <= listeSteine.size() - 1);
 
         /* Alle Steine der Gruppe sind jetzt in der Liste. Jetzt wird weiter
          * gemacht, je nachdem die Steine gefangen werden konnten */
-        if(fangbar==false){
+        if (fangbar == false) {
             /* Steine als lebendig markieren 
              * da momElement gerade auf leeres Feld zeigt! dekrementieren */
-            for(int i = momElement - 1; i>=0; --i) {
-                 feld[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setSteinStatus(Konstante.STEIN_LEBENDIG);
-                
+            for (int i = momElement - 1; i >= 0; --i) {
+                feld[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setSteinStatus(Konstante.STEIN_LEBENDIG);
+
             }
-        return 0; // wurde ja kein Stein gefangen
-        }
-        else {
+            return 0; // wurde ja kein Stein gefangen
+        } else {
             /* Wenn Steine gefangen werder koennen, kommt es auf den
              * Aufrufparameter der Funktion an. Je nachdem, ob Steine vom
              * Richtigen brett genommen werden sollen. */
-            if(nehmen==true){
-                for(int i = momElement -1; i>=0; --i) {
+            if (nehmen == true) {
+                for (int i = momElement - 1; i >= 0; --i) {
                     feld[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setSteinStatus(Konstante.STEIN_GEFANGEN);
                     aktuellesSpielfeldCache[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()] = Konstante.SCHNITTPUNKT_LEER;
                 }
-            return momElement; // momElement ist gerade die Gefangenenzahl ;)
-            }
-            else {
+                return momElement; // momElement ist gerade die Gefangenenzahl ;)
+            } else {
                 /* Wenn Steine genehmen werden koennen, muessen sie als Tot 
                  * markiert werden */
-                for(int i = momElement -1; i>=0; --i){
+                for (int i = momElement - 1; i >= 0; --i) {
                     feld[listeSteine.get(i).getXPos()][listeSteine.get(i).getYPos()].setSteinStatus(Konstante.STEIN_GEFANGEN);
                 }
                 return 1;
@@ -881,7 +856,7 @@ public class Spielfeld {
      * @param feld Spielfeld
      * @return
      */
-    private int versucheSteinZuNehmen(int XPos, int YPos, AnalyseSchnittpunkt feld[][]){
+    private int versucheSteinZuNehmen(int XPos, int YPos, AnalyseSchnittpunkt feld[][]) {
         return versucheSteinZuNehmen(XPos, YPos, feld, true);
     }
 
@@ -891,7 +866,7 @@ public class Spielfeld {
      * gesetzt
      * @param xPosVerboten X-Koordinate (Von 0 bis Feldgroesse-1)
      */
-    private void setXPosVerboten(int xPosVerboten){
+    private void setXPosVerboten(int xPosVerboten) {
         this.xPosVerboten = xPosVerboten;
     }
 
@@ -901,21 +876,21 @@ public class Spielfeld {
      * gesetzt
      * @param yPosVerboten Y-Koordinate (Von 0 bis Feldgroesse-1)
      */
-    private void setYPosVerboten(int yPosVerboten){
+    private void setYPosVerboten(int yPosVerboten) {
         this.yPosVerboten = yPosVerboten;
     }
 
     /**
      * @return X-Koordinate des Verbotenen Zugs (Von 0 bis Spielfeldgroesse-1)
      */
-    private int getXPosVerboten(){
+    private int getXPosVerboten() {
         return this.xPosVerboten;
     }
 
     /**
      * @return Y-Koordinate des Verbotenen Zugs (Von 0 bis Spielfeldgroesse-1)
      */
-    private int getYPosVerboten(){
+    private int getYPosVerboten() {
         return this.yPosVerboten;
     }
 
@@ -926,9 +901,9 @@ public class Spielfeld {
      * Der verbotene Punkt wird natuerlich nur geloescht wenn er auch wirklich
      * existiert (x- und y-koordinaten sind groesser gleich 0)
      */
-    private void loescheVerbotenenPunkt(){
-        if(this.getXPosVerboten()>=0 && this.getYPosVerboten()>=0){
-            if(this.aktuellesSpielfeldCache[this.getXPosVerboten()][this.getYPosVerboten()] == Konstante.SCHNITTPUNKT_VERBOTEN){
+    private void loescheVerbotenenPunkt() {
+        if (this.getXPosVerboten() >= 0 && this.getYPosVerboten() >= 0) {
+            if (this.aktuellesSpielfeldCache[this.getXPosVerboten()][this.getYPosVerboten()] == Konstante.SCHNITTPUNKT_VERBOTEN) {
                 this.aktuellesSpielfeldCache[this.getXPosVerboten()][this.getYPosVerboten()] = Konstante.SCHNITTPUNKT_LEER;
                 this.setXPosVerboten(-1);
                 this.setYPosVerboten(-1);
@@ -942,7 +917,7 @@ public class Spielfeld {
      * @param xArray X-Koordinate (0 bis Feldgroesse-1)
      * @param yArray Y-Koordinate (0 bis Feldgroesse-1)
      */
-    private void setzeVerbotenenPunkt(int xArray, int yArray){
+    private void setzeVerbotenenPunkt(int xArray, int yArray) {
         this.setXPosVerboten(xArray);
         this.setYPosVerboten(yArray);
     }
@@ -955,7 +930,7 @@ public class Spielfeld {
      * @param yPos Y-Koordinate (1-Feldgroesse) (-1 Bei Passen)
      * @param farbe Farbe des Spielers, der Zug ausgefuehrt hat
      */
-    private void steinEintragen( int xPos, int yPos, int farbe ){
+    private void steinEintragen(int xPos, int yPos, int farbe) {
         this.spielZugCollection.add(new Spielzug(xPos, yPos, farbe));
         this.letzteZugnummer++;
     }
@@ -968,31 +943,31 @@ public class Spielfeld {
      * @param farbe Farbe der gefangenen Steine
      * @param zahl Anzahl der Steine die gefangen wurden
      */
-    private void erhoeheGefangenenZahl(int farbe, int zahl){
-        if(farbe == Konstante.SCHNITTPUNKT_SCHWARZ){
+    private void erhoeheGefangenenZahl(int farbe, int zahl) {
+        if (farbe == Konstante.SCHNITTPUNKT_SCHWARZ) {
             this.spielerSchwarz.addGefangenenAnzahl(zahl);
         }
-        if(farbe == Konstante.SCHNITTPUNKT_WEISS){
+        if (farbe == Konstante.SCHNITTPUNKT_WEISS) {
             this.spielerWeiss.addGefangenenAnzahl(zahl);
         }
     }
-    
+
     /**
      * Wird im Spiel gepasst, muss das in der Liste der Zuege eingetragen werden.
      */
-    public void zugPassen(){
-        this.zugPassen( this.getSpielerFarbeAnDerReihe() );
+    public void zugPassen() {
+        this.zugPassen(this.getSpielerFarbeAnDerReihe());
     }
 
     /**
      * Wird im Spiel gepasst, muss das in der Liste der Zuege eingetragen werden.
      * @param spielerFarbe Farbe des Spielers der gepasst hat
      */
-    public void zugPassen(int spielerFarbe){
+    public void zugPassen(int spielerFarbe) {
         /* Da gepasst wurde, muss der Verbotene Zug geloescht werden*/
         this.loescheVerbotenenPunkt();
         /* Der Counter des Caches muss erhoeht werden */
-        this.spielfeldCacheMitZugnummerStand = this.letzteZugnummer+1;
+        this.spielfeldCacheMitZugnummerStand = this.letzteZugnummer + 1;
         /* Nun wird der Stein eingetragen, mit Koordinate (-1,-1) fuer Passen */
         this.steinEintragen(-1, -1, spielerFarbe);
     }
@@ -1012,21 +987,21 @@ public class Spielfeld {
      *
      * Die Funktion muss erst noch implementiert werden
      */
-    public boolean spielfeldValidiert(){
+    public boolean spielfeldValidiert() {
 
         boolean validiert = true;
 
         // Spieler validieren
-        if (this.spielerSchwarz == null || this.spielerWeiss == null){
+        if (this.spielerSchwarz == null || this.spielerWeiss == null) {
             return false;
         }
         // Warum die Gefangenenanzahl auf 0 setzen?? ... was bei einem geladenen Spiel?
         // this.spielerSchwarz.setGefangenenAnzahl(0);
         // this.spielerWeiss.setGefangenenAnzahl(0);
-        if (this.spielerSchwarz.getSpielerName() == null || this.spielerSchwarz.getSpielerName().length() <= 1){
+        if (this.spielerSchwarz.getSpielerName() == null || this.spielerSchwarz.getSpielerName().length() <= 1) {
             this.spielerSchwarz.setSpielerName("Schwarz");
         }
-        if (this.spielerWeiss.getSpielerName() == null || this.spielerWeiss.getSpielerName().length() <= 1){
+        if (this.spielerWeiss.getSpielerName() == null || this.spielerWeiss.getSpielerName().length() <= 1) {
             this.spielerWeiss.setSpielerName("Weiss");
         }
 
@@ -1038,23 +1013,23 @@ public class Spielfeld {
         this.loescheVerbotenenPunkt();
         AnalyseSchnittpunkt feld[][] = new AnalyseSchnittpunkt[this.getSpielfeldGroesse()][this.getSpielfeldGroesse()];
         /* Kopie fuer Anfangstest erstellen */
-        for(int i=0; i<this.getSpielfeldGroesse(); i++){
-            for(int j=0; j<this.getSpielfeldGroesse(); j++){
-                feld[i][j] = new AnalyseSchnittpunkt(i,j,this.aktuellesSpielfeldCache[i][j]);
+        for (int i = 0; i < this.getSpielfeldGroesse(); i++) {
+            for (int j = 0; j < this.getSpielfeldGroesse(); j++) {
+                feld[i][j] = new AnalyseSchnittpunkt(i, j, this.aktuellesSpielfeldCache[i][j]);
             }
         }
-        for(int i=0; i<this.getSpielfeldGroesse(); i++){
-            for(int j=0; j<this.getSpielfeldGroesse(); j++){
-                if(this.versucheSteinZuNehmen(i,j,feld,false) == 1){
+        for (int i = 0; i < this.getSpielfeldGroesse(); i++) {
+            for (int j = 0; j < this.getSpielfeldGroesse(); j++) {
+                if (this.versucheSteinZuNehmen(i, j, feld, false) == 1) {
                     validiert = false;
-                    System.out.println("Anfangsspielstellung nicht valide. Stelle "+ (i+1) + ","+(j+1)+". Gruppe hat keine Freiheiten");
+                    System.out.println("Anfangsspielstellung nicht valide. Stelle " + (i + 1) + "," + (j + 1) + ". Gruppe hat keine Freiheiten");
                     return validiert;
                 }
             }
         }
 
         /* Gibt es noch keine Zuege, ist das Feld valide */
-        if(this.letzteZugnummer == 0){
+        if (this.letzteZugnummer == 0) {
             this.setSpielfeldZumZeitpunkt(0);
             return validiert;
         }
@@ -1063,92 +1038,86 @@ public class Spielfeld {
          * zuege gemacht werden. Dabei ist auf die Reihenfolge zu achten, und
          * ob die Zuege ausfuehrbar sind.
          */
-         int momSpieler = this.spielZugCollection.get(0).getFarbe();
-         boolean letzterZugGepasst = false;
-         boolean vorletzterZugGepasst = false;
+        int momSpieler = this.spielZugCollection.get(0).getFarbe();
+        boolean letzterZugGepasst = false;
+        boolean vorletzterZugGepasst = false;
 
-         for(int i=0; i<this.spielZugCollection.size(); i++){
-             /* Reihenfolge der Spieler beachten */
-             if(this.spielZugCollection.get(i).getFarbe() != momSpieler){
-                 validiert = false;
-                 return validiert;
-             }
+        for (int i = 0; i < this.spielZugCollection.size(); i++) {
+            /* Reihenfolge der Spieler beachten */
+            if (this.spielZugCollection.get(i).getFarbe() != momSpieler) {
+                validiert = false;
+                return validiert;
+            }
 
-             /* Es darf nur ein Zug gemacht werden, wenn die Letzten beiden Zuege
-              * nicht passen waren*/
-             if(letzterZugGepasst == true && vorletzterZugGepasst == true){
-                 validiert = false;
-                 return validiert;
-             }
+            /* Es darf nur ein Zug gemacht werden, wenn die Letzten beiden Zuege
+             * nicht passen waren*/
+            if (letzterZugGepasst == true && vorletzterZugGepasst == true) {
+                validiert = false;
+                return validiert;
+            }
 
-             /* Passen abfangen */
-             if(this.spielZugCollection.get(i).getXPosition() == -1 &&
-                this.spielZugCollection.get(i).getYPosition() == -1){
-                 if(letzterZugGepasst == true){
-                     vorletzterZugGepasst = true;
-                 }
-                 else{
-                     letzterZugGepasst = true;
-                 }
-                 /* Spieler wechseln */
-                 if(momSpieler == Konstante.SCHNITTPUNKT_SCHWARZ){
-                     momSpieler = Konstante.SCHNITTPUNKT_WEISS;
-                 }
-                 else{
-                     momSpieler = Konstante.SCHNITTPUNKT_SCHWARZ;
-                 }
-             }
-
-             /* Kein passen, also Zug*/
-             else{
-                 switch(this.setStein(this.spielZugCollection.get(i).getXPosition(),
+            /* Passen abfangen */
+            if (this.spielZugCollection.get(i).getXPosition() == -1
+                    && this.spielZugCollection.get(i).getYPosition() == -1) {
+                if (letzterZugGepasst == true) {
+                    vorletzterZugGepasst = true;
+                } else {
+                    letzterZugGepasst = true;
+                }
+                /* Spieler wechseln */
+                if (momSpieler == Konstante.SCHNITTPUNKT_SCHWARZ) {
+                    momSpieler = Konstante.SCHNITTPUNKT_WEISS;
+                } else {
+                    momSpieler = Konstante.SCHNITTPUNKT_SCHWARZ;
+                }
+            } /* Kein passen, also Zug*/ else {
+                switch (this.setStein(this.spielZugCollection.get(i).getXPosition(),
                         this.spielZugCollection.get(i).getYPosition(),
-                        momSpieler)){
-                     case 1: /* Zug erfolgreich */
-                         break;
-                     case 0: /* Liegt nicht auf Feld */
-                         System.out.println("Zug "+(i+1)+" liegt nicht auf dem Brett. Koordinaten "+this.spielZugCollection.get(i).getXPosition()+","+this.spielZugCollection.get(i).getYPosition());
-                         validiert = false;
-                         return validiert;
-                     case -1: /* War verboten (Ko) */
-                         System.out.println("Zug "+(i+1)+" ist verboten (Ko-Regel)");
-                         validiert = false;
-                         return validiert;
-                     case -2: /* Schon belegt gewesen */
-                         System.out.println("Zug "+(i+1)+" ist schon Belegt. Koordinaten "+this.spielZugCollection.get(i).getXPosition()+","+this.spielZugCollection.get(i).getYPosition());
-                         validiert = false;
-                         return validiert;
-                     case -3: /* Selbstmord */
-                         System.out.println("Zug "+(i+1)+" ist verboten (Selbstmord)");
-                         validiert = false;
-                         return validiert;
-                     default:
-                         throw new UnsupportedOperationException("Unbekannter return-Wert von setStein");
-                 }
-                 /* Bis hier wenn Zug erfolgreich. SetStei hat folgendes veraendert:
-                  * - aktuellesSpielfeldCache (Wenn Zug erfolgreich war)
-                  * - xPosVerboten
-                  * - yPosVerboten
-                  * - gefangenenAnzahl der Spieler
-                  * - spielfeldCacheMitZugnummerStand
-                  * Jetzt muss noch der Spieler veraendert werden und die
-                  * passen-Variablen angepasst werden */
-                 vorletzterZugGepasst = letzterZugGepasst;
-                 letzterZugGepasst = false;
+                        momSpieler)) {
+                    case 1: /* Zug erfolgreich */
+                        break;
+                    case 0: /* Liegt nicht auf Feld */
+                        System.out.println("Zug " + (i + 1) + " liegt nicht auf dem Brett. Koordinaten " + this.spielZugCollection.get(i).getXPosition() + "," + this.spielZugCollection.get(i).getYPosition());
+                        validiert = false;
+                        return validiert;
+                    case -1: /* War verboten (Ko) */
+                        System.out.println("Zug " + (i + 1) + " ist verboten (Ko-Regel)");
+                        validiert = false;
+                        return validiert;
+                    case -2: /* Schon belegt gewesen */
+                        System.out.println("Zug " + (i + 1) + " ist schon Belegt. Koordinaten " + this.spielZugCollection.get(i).getXPosition() + "," + this.spielZugCollection.get(i).getYPosition());
+                        validiert = false;
+                        return validiert;
+                    case -3: /* Selbstmord */
+                        System.out.println("Zug " + (i + 1) + " ist verboten (Selbstmord)");
+                        validiert = false;
+                        return validiert;
+                    default:
+                        throw new UnsupportedOperationException("Unbekannter return-Wert von setStein");
+                }
+                /* Bis hier wenn Zug erfolgreich. SetStei hat folgendes veraendert:
+                 * - aktuellesSpielfeldCache (Wenn Zug erfolgreich war)
+                 * - xPosVerboten
+                 * - yPosVerboten
+                 * - gefangenenAnzahl der Spieler
+                 * - spielfeldCacheMitZugnummerStand
+                 * Jetzt muss noch der Spieler veraendert werden und die
+                 * passen-Variablen angepasst werden */
+                vorletzterZugGepasst = letzterZugGepasst;
+                letzterZugGepasst = false;
 
-                 /* Spieler wechseln */
-                 if(momSpieler == Konstante.SCHNITTPUNKT_SCHWARZ){
-                     momSpieler = Konstante.SCHNITTPUNKT_WEISS;
-                 }
-                 else{
-                     momSpieler = Konstante.SCHNITTPUNKT_SCHWARZ;
-                 }
-             }
-         }
+                /* Spieler wechseln */
+                if (momSpieler == Konstante.SCHNITTPUNKT_SCHWARZ) {
+                    momSpieler = Konstante.SCHNITTPUNKT_WEISS;
+                } else {
+                    momSpieler = Konstante.SCHNITTPUNKT_SCHWARZ;
+                }
+            }
+        }
 
-         /* Wenn man bis hier kommt, ist das Spiel valide. Es wurde die Reihenfolge
-          * der Spieler, das Passen und die Zuege beachtet. Alles war korrekt
-          */
+        /* Wenn man bis hier kommt, ist das Spiel valide. Es wurde die Reihenfolge
+         * der Spieler, das Passen und die Zuege beachtet. Alles war korrekt
+         */
         return validiert;
     }
 
@@ -1160,14 +1129,14 @@ public class Spielfeld {
      * 
      * Die Funktion muss noch implementiert werden
      */
-    public int getAnzahlLetzterPassZuege(){
+    public int getAnzahlLetzterPassZuege() {
         int anzahlDerZuege;
         int anzahlLetzterPassZuege = 0;
         anzahlDerZuege = this.spielZugCollection.size();
-        int i=1;
-        while(this.spielZugCollection.get(anzahlDerZuege-i).getXPosition() == -1 &&
-              this.spielZugCollection.get(anzahlDerZuege-i).getYPosition() == -1 &&
-              anzahlDerZuege-i >= 0){
+        int i = 1;
+        while (this.spielZugCollection.get(anzahlDerZuege - i).getXPosition() == -1
+                && this.spielZugCollection.get(anzahlDerZuege - i).getYPosition() == -1
+                && anzahlDerZuege - i >= 0) {
             anzahlLetzterPassZuege++;
             i++;
         }
@@ -1191,13 +1160,13 @@ public class Spielfeld {
      * -2: Schnittpunkt schon belegt : (FEHLER)
      * -3: Selbstmord (verboten) : (FEHLER)
      */
-    public int macheZug(int xPos, int yPos, int spielerFarbe){
+    public int macheZug(int xPos, int yPos, int spielerFarbe) {
         int rueckgabe;
         rueckgabe = this.setStein(xPos, yPos, spielerFarbe);
         /* Wurde der Zug erfolgreich ausgefuehrt, muss das Spielfeld veraendert
          * werden */
-        if(rueckgabe == 1){
-            this.setSpielfeldZumZeitpunkt(this.spielfeldCacheMitZugnummerStand-1);
+        if (rueckgabe == 1) {
+            this.setSpielfeldZumZeitpunkt(this.spielfeldCacheMitZugnummerStand - 1);
             this.steinEintragen(xPos, yPos, spielerFarbe);
         }
         return rueckgabe;
@@ -1223,8 +1192,8 @@ public class Spielfeld {
          * Wenn also Spieler schwarz den letzten Zug gesetzt hat, wird der neue
          * Zug für Spieler weiss eingetragen.
          */
-         return   this.macheZug( xPos, yPos, this.getSpielerFarbeAnDerReihe() );
-         /* Weitere Aufgaben:
+        return this.macheZug(xPos, yPos, this.getSpielerFarbeAnDerReihe());
+        /* Weitere Aufgaben:
          *  - Prüfen des Zuges, ob er Möglich ist (Doppelzüge beachten)
          *      => Ueber die Funktion setSteinMoeglich( ... )
          *  - Prüfen wer am Zug ist
@@ -1234,547 +1203,554 @@ public class Spielfeld {
         //DUmmy
     }
 
-    public boolean initialisiereFeldMitVorgabenFuerSchwarz( int vorgabenZahl ){
-       /* Wenn die Zahl der Vorgaben groesser als 9 ist, so ist die
-        * Vorgabezahl Falsch -> Rueckgabewert False
-        * Die Zahl der Vorgabesteine darf natuerlich auch nicht negativ sein.
-        */
-       if(vorgabenZahl < 0 || vorgabenZahl > 9){
-           return false;
-       }
+    public boolean initialisiereFeldMitVorgabenFuerSchwarz(int vorgabenZahl) {
+        /* Wenn die Zahl der Vorgaben groesser als 9 ist, so ist die
+         * Vorgabezahl Falsch -> Rueckgabewert False
+         * Die Zahl der Vorgabesteine darf natuerlich auch nicht negativ sein.
+         */
+        if (vorgabenZahl < 0 || vorgabenZahl > 9) {
+            return false;
+        }
 
-       /* Vorgabezahl speichern  */
-       this.vorgabeZahl = vorgabenZahl;
+        /* Vorgabezahl speichern  */
+        this.vorgabeZahl = vorgabenZahl;
 
-       /* In Abhaengigkeit der Feldgroesse werden nun die Vorgabesteine fuer
-        * Schwarz gesetzt. Dabei wird kein komplexer Algorithmus verwendet,
-        * sondern es werden einfach und stur die Steine gesetzt.
-        * Daher wird die Funktion zwar entsprechend lang, wird aber keine Fehler
-        * verursachen (hoffe ich mal)
-        */
-       switch(this.getSpielfeldGroesse()){
-           case 7:
-               switch(vorgabenZahl){
-                   case 0: break; /* nichts machen */
-                   case 1:
-                       this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 2:
-                       this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[1][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 3:
-                       this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[1][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[5][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 4:
-                       this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[1][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[5][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[1][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 5:
-                       this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[1][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[5][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[1][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 6:
-                       this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[1][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[5][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[1][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[5][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[1][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 7:
-                       this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[1][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[5][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[1][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[5][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[1][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 8:
-                       this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[1][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[5][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[1][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[5][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[1][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 9:
-                       this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[1][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[5][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[1][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[5][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[1][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   default: /* Bis hierher ist es nicht moeglich zu kommen,
-                             * wenn doch -> Fehler */
-                       return false;
-               }
-               break;
-           case 9:
-               switch(vorgabenZahl){
-                   case 0: break; /* nichts machen */
-                   case 1:
-                       this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 2:
-                       this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 3:
-                       this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[6][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 4:
-                       this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[6][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 5:
-                       this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[6][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[4][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 6:
-                       this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[6][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[6][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 7:
-                       this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[6][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[6][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[4][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 8:
-                       this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[6][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[6][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[4][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[4][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 9:
-                       this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[6][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[6][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[4][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[4][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[4][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   default: /* Bis hierher ist es nicht moeglich zu kommen,
-                             * wenn doch -> Fehler */
-                       return false;
-               }
-               break;
-           case 11:
-               switch(vorgabenZahl){
-                   case 0: break; /* nichts machen */
-                   case 1:
-                       this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 2:
-                       this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 3:
-                       this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[8][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 4:
-                       this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[8][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 5:
-                       this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[8][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 6:
-                       this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[8][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[8][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 7:
-                       this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[8][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[8][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 8:
-                       this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[8][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[8][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[5][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[5][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 9:
-                       this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[8][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[8][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[2][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[5][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[5][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   default: /* Bis hierher ist es nicht moeglich zu kommen,
-                             * wenn doch -> Fehler */
-                       return false;
-               }
-               break;
-           case 13:
-               switch(vorgabenZahl){
-                   case 0: break; /* nichts machen */
-                   case 1:
-                       this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 2:
-                       this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 3:
-                       this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[9][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 4:
-                       this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[9][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 5:
-                       this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[9][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 6:
-                       this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[9][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[9][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 7:
-                       this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[9][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[9][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 8:
-                       this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[9][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[9][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[6][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[6][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 9:
-                       this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[9][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[9][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[6][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[6][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   default: /* Bis hierher ist es nicht moeglich zu kommen,
-                             * wenn doch -> Fehler */
-                       return false;
-               }
-               break;
-           case 15:
-               switch(vorgabenZahl){
-                   case 0: break; /* nichts machen */
-                   case 1:
-                       this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 2:
-                       this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 3:
-                       this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[11][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 4:
-                       this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[11][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][11]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 5:
-                       this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[11][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][11]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[7][7]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 6:
-                       this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[11][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][11]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[11][7]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][7]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 7:
-                       this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[11][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][11]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[11][7]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[7][7]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 8:
-                       this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[11][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][11]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[11][7]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][7]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[7][11]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[7][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 9:
-                       this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[11][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][11]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[11][7]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][7]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[7][11]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[7][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[7][7]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   default: /* Bis hierher ist es nicht moeglich zu kommen,
-                             * wenn doch -> Fehler */
-                       return false;
-               }
-               break;
-           case 17:
-               switch(vorgabenZahl){
-                   case 0: break; /* nichts machen */
-                   case 1:
-                       this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 2:
-                       this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 3:
-                       this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[13][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 4:
-                       this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[13][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][13]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 5:
-                       this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[13][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][13]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[8][8]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 6:
-                       this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[13][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][13]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[13][8]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][8]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 7:
-                       this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[13][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][13]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[13][8]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][8]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[8][8]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 8:
-                       this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[13][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][13]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[13][8]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][8]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[8][13]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[8][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 9:
-                       this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[13][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][13]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[13][8]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][8]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[8][13]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[8][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[8][8]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   default: /* Bis hierher ist es nicht moeglich zu kommen,
-                             * wenn doch -> Fehler */
-                       return false;
-               }
-               break;
+        /* In Abhaengigkeit der Feldgroesse werden nun die Vorgabesteine fuer
+         * Schwarz gesetzt. Dabei wird kein komplexer Algorithmus verwendet,
+         * sondern es werden einfach und stur die Steine gesetzt.
+         * Daher wird die Funktion zwar entsprechend lang, wird aber keine Fehler
+         * verursachen (hoffe ich mal)
+         */
+        switch (this.getSpielfeldGroesse()) {
+            case 7:
+                switch (vorgabenZahl) {
+                    case 0:
+                        break; /* nichts machen */
+                    case 1:
+                        this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 2:
+                        this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[1][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 3:
+                        this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[1][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[5][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 4:
+                        this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[1][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[5][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[1][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 5:
+                        this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[1][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[5][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[1][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 6:
+                        this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[1][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[5][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[1][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[5][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[1][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 7:
+                        this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[1][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[5][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[1][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[5][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[1][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 8:
+                        this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[1][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[5][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[1][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[5][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[1][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 9:
+                        this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[1][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[5][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[1][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[5][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[1][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][1] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    default: /* Bis hierher ist es nicht moeglich zu kommen,
+                         * wenn doch -> Fehler */
+                        return false;
+                }
+                break;
+            case 9:
+                switch (vorgabenZahl) {
+                    case 0:
+                        break; /* nichts machen */
+                    case 1:
+                        this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 2:
+                        this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 3:
+                        this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[6][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 4:
+                        this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[6][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 5:
+                        this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[6][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[4][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 6:
+                        this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[6][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[6][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 7:
+                        this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[6][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[6][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[4][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 8:
+                        this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[6][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[6][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[4][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[4][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 9:
+                        this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[6][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[6][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[4][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[4][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[4][4] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    default: /* Bis hierher ist es nicht moeglich zu kommen,
+                         * wenn doch -> Fehler */
+                        return false;
+                }
+                break;
+            case 11:
+                switch (vorgabenZahl) {
+                    case 0:
+                        break; /* nichts machen */
+                    case 1:
+                        this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 2:
+                        this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 3:
+                        this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[8][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 4:
+                        this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[8][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 5:
+                        this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[8][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 6:
+                        this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[8][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[8][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 7:
+                        this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[8][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[8][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 8:
+                        this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[8][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[8][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[5][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[5][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 9:
+                        this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[8][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[8][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[2][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[5][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[5][2] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[5][5] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    default: /* Bis hierher ist es nicht moeglich zu kommen,
+                         * wenn doch -> Fehler */
+                        return false;
+                }
+                break;
+            case 13:
+                switch (vorgabenZahl) {
+                    case 0:
+                        break; /* nichts machen */
+                    case 1:
+                        this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 2:
+                        this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 3:
+                        this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[9][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 4:
+                        this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[9][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 5:
+                        this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[9][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 6:
+                        this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[9][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[9][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 7:
+                        this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[9][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[9][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 8:
+                        this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[9][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[9][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[6][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[6][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 9:
+                        this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[9][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[9][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[6][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[6][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[6][6] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    default: /* Bis hierher ist es nicht moeglich zu kommen,
+                         * wenn doch -> Fehler */
+                        return false;
+                }
+                break;
+            case 15:
+                switch (vorgabenZahl) {
+                    case 0:
+                        break; /* nichts machen */
+                    case 1:
+                        this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 2:
+                        this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 3:
+                        this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[11][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 4:
+                        this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[11][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 5:
+                        this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[11][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[7][7] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 6:
+                        this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[11][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[11][7] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][7] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 7:
+                        this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[11][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[11][7] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[7][7] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 8:
+                        this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[11][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[11][7] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][7] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[7][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[7][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 9:
+                        this.initialfeld[11][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[11][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[11][7] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][7] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[7][11] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[7][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[7][7] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    default: /* Bis hierher ist es nicht moeglich zu kommen,
+                         * wenn doch -> Fehler */
+                        return false;
+                }
+                break;
+            case 17:
+                switch (vorgabenZahl) {
+                    case 0:
+                        break; /* nichts machen */
+                    case 1:
+                        this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 2:
+                        this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 3:
+                        this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[13][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 4:
+                        this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[13][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 5:
+                        this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[13][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 6:
+                        this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[13][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[13][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 7:
+                        this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[13][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[13][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 8:
+                        this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[13][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[13][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[8][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[8][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 9:
+                        this.initialfeld[13][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[13][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[13][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[8][13] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[8][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[8][8] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    default: /* Bis hierher ist es nicht moeglich zu kommen,
+                         * wenn doch -> Fehler */
+                        return false;
+                }
+                break;
 
-           case 19:
-               switch(vorgabenZahl){
-                   case 0: break; /* nichts machen */
-                   case 1:
-                       this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 2:
-                       this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 3:
-                       this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[15][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 4:
-                       this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[15][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][15]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 5:
-                       this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[15][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][15]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[9][9]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 6:
-                       this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[15][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][15]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[15][9]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][9]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 7:
-                       this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[15][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][15]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[15][9]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][9]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[9][9]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 8:
-                       this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[15][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][15]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[15][9]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][9]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[9][15]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[9][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   case 9:
-                       this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[15][3]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][15]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[15][9]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[3][9]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[9][15]  = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[9][3]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       this.initialfeld[9][9]   = Konstante.SCHNITTPUNKT_SCHWARZ;
-                       break;
-                   default: /* Bis hierher ist es nicht moeglich zu kommen,
-                             * wenn doch -> Fehler */
-                       return false;
-               }
-               break;
-           default: /* Die Spielfeldgroesse ist Falsch! Es koennen keine
-                     * Vorgabesteine gesetzt werden */
-               return false;
-       }
+            case 19:
+                switch (vorgabenZahl) {
+                    case 0:
+                        break; /* nichts machen */
+                    case 1:
+                        this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 2:
+                        this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 3:
+                        this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[15][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 4:
+                        this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[15][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 5:
+                        this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[15][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 6:
+                        this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[15][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[15][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 7:
+                        this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[15][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[15][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 8:
+                        this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[15][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[15][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[9][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[9][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    case 9:
+                        this.initialfeld[15][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[15][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[15][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[3][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[9][15] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[9][3] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        this.initialfeld[9][9] = Konstante.SCHNITTPUNKT_SCHWARZ;
+                        break;
+                    default: /* Bis hierher ist es nicht moeglich zu kommen,
+                         * wenn doch -> Fehler */
+                        return false;
+                }
+                break;
+            default: /* Die Spielfeldgroesse ist Falsch! Es koennen keine
+                 * Vorgabesteine gesetzt werden */
+                return false;
+        }
 
-       /* Jetzt muss noch das Feld mit den Vorgabesteinen gefuellt werden.*/
-       for(int i=0; i<this.getSpielfeldGroesse(); i++){
-           for(int j=0; j<this.getSpielfeldGroesse(); j++){
-               this.aktuellesSpielfeldCache[i][j] = this.initialfeld[i][j];
-           }
-       }
-       return true;
-   }
+        /* Jetzt muss noch das Feld mit den Vorgabesteinen gefuellt werden.*/
+        for (int i = 0; i < this.getSpielfeldGroesse(); i++) {
+            for (int j = 0; j < this.getSpielfeldGroesse(); j++) {
+                this.aktuellesSpielfeldCache[i][j] = this.initialfeld[i][j];
+            }
+        }
+        return true;
+    }
 
     /**
      * Aus dem Feld, das momentan auf dem Spielbrett liegt, soll eine Initialfeld
      * erstellt werden. Das Bedeutet, das das momentane Initialfeld umgeschrieben
      * werden muss und die Liste der Zuege geloescht wird.
      */
-    public void initialisiereFeldMitAktuellemFeld(){
+    public void initialisiereFeldMitAktuellemFeld() {
         /* Als erstes wird das aktuelle Feld (Cache) auf das Initialfeld
          * kopiert. */
-        for(int i=0; i<this.getSpielfeldGroesse(); i++){
-            for(int j=0; j<this.getSpielfeldGroesse(); j++){
-                this.initialfeld[i][j]=this.aktuellesSpielfeldCache[i][j];
+        for (int i = 0; i < this.getSpielfeldGroesse(); i++) {
+            for (int j = 0; j < this.getSpielfeldGroesse(); j++) {
+                this.initialfeld[i][j] = this.aktuellesSpielfeldCache[i][j];
             }
         }
 
@@ -1788,12 +1764,12 @@ public class Spielfeld {
 
     /* Damit ein Feld markiert werden kann, muss man wissen, zu welchem Zeitpunkt
      * welcher Zug gespielt wurde. Dazu kann man die Spielzuege auslesen */
-    public Point getMarkiertenSteinZumZeitpunkt(int zeitpunkt){
-        if(zeitpunkt<=0 || zeitpunkt > this.letzteZugnummer){
+    public Point getMarkiertenSteinZumZeitpunkt(int zeitpunkt) {
+        if (zeitpunkt <= 0 || zeitpunkt > this.letzteZugnummer) {
             return null;
         }
-        Point rueckgabe = new Point( this.spielZugCollection.get(zeitpunkt-1).getXPosition(),
-                                     this.spielZugCollection.get(zeitpunkt-1).getYPosition());
+        Point rueckgabe = new Point(this.spielZugCollection.get(zeitpunkt - 1).getXPosition(),
+                this.spielZugCollection.get(zeitpunkt - 1).getYPosition());
         return rueckgabe;
     }
 
@@ -1801,7 +1777,7 @@ public class Spielfeld {
         this.ignoreTime = ignore;
     }
 
-    public boolean getIgnoreTime(){
+    public boolean getIgnoreTime() {
         return this.ignoreTime;
     }
 
@@ -1813,23 +1789,23 @@ public class Spielfeld {
      * @param yPos von 1-Brettgroesse
      * @param farbe Schwarz oder Weiss
      */
-    public void legeSteinAufInitBrett(int xPos, int yPos, int farbe){
-        int xKoord = xPos-1;
-        int yKoord = yPos-1;
+    public void legeSteinAufInitBrett(int xPos, int yPos, int farbe) {
+        int xKoord = xPos - 1;
+        int yKoord = yPos - 1;
 
-        if(xKoord <0 || xKoord >=this.getSpielfeldGroesse() ||
-           yKoord <0 || yKoord >=this.getSpielfeldGroesse() ||
-           (farbe != Konstante.SCHNITTPUNKT_SCHWARZ &&
-            farbe != Konstante.SCHNITTPUNKT_WEISS)){
+        if (xKoord < 0 || xKoord >= this.getSpielfeldGroesse()
+                || yKoord < 0 || yKoord >= this.getSpielfeldGroesse()
+                || (farbe != Konstante.SCHNITTPUNKT_SCHWARZ
+                && farbe != Konstante.SCHNITTPUNKT_WEISS)) {
             return;
         }
 
-        switch(this.initialfeld[xKoord][yKoord]){
+        switch (this.initialfeld[xKoord][yKoord]) {
             case Konstante.SCHNITTPUNKT_LEER:
                 this.initialfeld[xKoord][yKoord] = farbe;
                 break;
             case Konstante.SCHNITTPUNKT_SCHWARZ:
-                switch(farbe){
+                switch (farbe) {
                     case Konstante.SCHNITTPUNKT_SCHWARZ:
                         this.initialfeld[xKoord][yKoord] = Konstante.SCHNITTPUNKT_LEER;
                         break;
@@ -1838,7 +1814,7 @@ public class Spielfeld {
                 }
                 break;
             case Konstante.SCHNITTPUNKT_WEISS:
-                switch(farbe){
+                switch (farbe) {
                     case Konstante.SCHNITTPUNKT_WEISS:
                         this.initialfeld[xKoord][yKoord] = Konstante.SCHNITTPUNKT_LEER;
                         break;
@@ -1849,8 +1825,7 @@ public class Spielfeld {
         }
     }
 
-    public int getVorgabeZahl(){
+    public int getVorgabeZahl() {
         return this.vorgabeZahl;
     }
-
 }

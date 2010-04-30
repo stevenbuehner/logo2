@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Klassen;
 
 import java.io.BufferedWriter;
@@ -15,7 +14,7 @@ import java.io.PrintWriter;
  * @author beccy
  * @version 0.2
  */
-public class Speichern{
+public class Speichern {
 
     private String spielzuege;
     private Spielfeld spielfeld;
@@ -26,83 +25,76 @@ public class Speichern{
     private float komipunkte;
     private int vorgabesteine;
 
-
     /**
      * Die Klasse bekommt mit dem Konstruktor das @param zuSpeicherndesSpielfeld
      * übergeben. ACHTUNG! Es sollten hierbei keine Änderungen an dem Objekt
      * Spielfeld vorgenommen werden, da diese sich auch direkt auf das laufende Spiel
      * übertragen würden.
      */
-    Speichern(Spielfeld zuSpeicherndesSpielfeld  ){
+    Speichern(Spielfeld zuSpeicherndesSpielfeld) {
         this.spielfeld = zuSpeicherndesSpielfeld;
     }
 
-    public void SpeicherSpiel( ){
-            spieler_schwarz = spielfeld.getSpielerSchwarz();
-            spieler_weiss = spielfeld.getSpielerWeiss();
-            spielfeldgroesse = spielfeld.getSpielfeldGroesse();
-            komipunkte = spieler_weiss.getKomiPunkte();
-            vorgabesteine = spielfeld.getVorgabeZahl();
+    public void SpeicherSpiel() {
+        spieler_schwarz = spielfeld.getSpielerSchwarz();
+        spieler_weiss = spielfeld.getSpielerWeiss();
+        spielfeldgroesse = spielfeld.getSpielfeldGroesse();
+        komipunkte = spieler_weiss.getKomiPunkte();
+        vorgabesteine = spielfeld.getVorgabeZahl();
 
-            //Startbelegung
-            spielfeldArray = spielfeld.getSpielfeldZumZeitpunkt(0);
+        //Startbelegung
+        spielfeldArray = spielfeld.getSpielfeldZumZeitpunkt(0);
 
-            //Standardkonfigurationen
-            spielzuege+="(;GM[1]FF[4]RU[Japanese]";
+        //Standardkonfigurationen
+        spielzuege += "(;GM[1]FF[4]RU[Japanese]";
 
-            //Spielfeldgroesse
-            spielzuege+="SZ["+spielfeldgroesse+"]";
-            
-            //Vorgabesteine
-            spielzuege+="HA["+vorgabesteine+"]";
+        //Spielfeldgroesse
+        spielzuege += "SZ[" + spielfeldgroesse + "]";
 
-            //Komipunkte
-            spielzuege+="KM["+komipunkte+"]";
+        //Vorgabesteine
+        spielzuege += "HA[" + vorgabesteine + "]";
 
-            //Spielernamen
-            spielzuege+="PW["+spieler_weiss.getSpielerName()+"]";
-            spielzuege+="PB["+spieler_schwarz.getSpielerName()+"]";
+        //Komipunkte
+        spielzuege += "KM[" + komipunkte + "]";
 
-            //Standardkonfigurationen
-            spielzuege+="GN[LoGo]DT[Default]TM[Default]";
+        //Spielernamen
+        spielzuege += "PW[" + spieler_weiss.getSpielerName() + "]";
+        spielzuege += "PB[" + spieler_schwarz.getSpielerName() + "]";
 
-            int farbe = 0;
-            int x = 0;
-            int y = 0;
+        //Standardkonfigurationen
+        spielzuege += "GN[LoGo]DT[Default]TM[Default]";
 
-            for(int i=0;i<(spielfeld.getspielZugCollection().size());i++)
-            {
+        int farbe = 0;
+        int x = 0;
+        int y = 0;
 
-                farbe = spielfeld.getspielZugCollection().get(i).getFarbe();
-                x = spielfeld.getspielZugCollection().get(i).getXPosition();
-                y = spielfeld.getspielZugCollection().get(i).getYPosition();
+        for (int i = 0; i < (spielfeld.getspielZugCollection().size()); i++) {
 
-                if(farbe==1)
-                {//Schwarzer Stein
-                        spielzuege += "S["+x+y+"]";
-                }
-                else if(farbe ==2)
-                {//Weisser Stein
-                    spielzuege += "W["+x+y+"]";
-                }
+            farbe = spielfeld.getspielZugCollection().get(i).getFarbe();
+            x = spielfeld.getspielZugCollection().get(i).getXPosition();
+            y = spielfeld.getspielZugCollection().get(i).getYPosition();
 
-                else
-                {
-                    break;
-                }
+            if (farbe == 1) {//Schwarzer Stein
+                spielzuege += "S[" + x + y + "]";
+            } else if (farbe == 2) {//Weisser Stein
+                spielzuege += "W[" + x + y + "]";
+            } else {
+                break;
             }
+        }
 
-            PrintWriter pw = null;
-            try {
-            BufferedWriter bw = new BufferedWriter( new FileWriter( "C:/Go-Spiel.txt"));
-            pw = new PrintWriter( bw );
+        PrintWriter pw = null;
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter("C:/Go-Spiel.txt"));
+            pw = new PrintWriter(bw);
 
             pw.println(spielzuege);
-        } catch ( IOException e ){
-            System.out.println( "Konnte Datei nicht erstellen" );
+        } catch (IOException e) {
+            System.out.println("Konnte Datei nicht erstellen");
         } finally {
-            if ( pw != null )
+            if (pw != null) {
                 pw.close();
+            }
         }
-     }
+    }
 }

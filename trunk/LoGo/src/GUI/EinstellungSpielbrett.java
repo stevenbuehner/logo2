@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package GUI;
 
 import Klassen.Konstante;
@@ -10,12 +5,15 @@ import Klassen.Konstante;
 /**
  *
  * @author tommy
+ * @version 0.2
  */
-public class EinstellungSpielbrett extends Spielbrett{
-    public EinstellungSpielbrett(int breite, int hoehe, int xOffset, int yOffset, int anzahlFelder){
+public class EinstellungSpielbrett extends Spielbrett {
+
+    public EinstellungSpielbrett(int breite, int hoehe, int xOffset, int yOffset, int anzahlFelder) {
         super(breite, hoehe, xOffset, yOffset, anzahlFelder);
     }
-    
+
+    @Override
     public void updateSpielFeld(int[][] neuesSpielFeld) {
 
         // Logik auf alle Felder anwenden
@@ -55,13 +53,11 @@ public class EinstellungSpielbrett extends Spielbrett{
                             break;
                         case Konstante.SCHNITTPUNKT_VERBOTEN:
                             // Zeichne das Feld als verbotenen Schnittpunkt
-                            if(spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_SCHWARZ){
+                            if (spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_SCHWARZ) {
                                 this.feld[i][j].starteAnimationVerbotenerZugSchwarz();
-                            }
-                            else if( spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_WEISS){
+                            } else if (spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_WEISS) {
                                 this.feld[i][j].starteAnimationVerbotenerZugWeiss();
-                            }
-                            else{
+                            } else {
                                 this.feld[i][j].setVerbotenerZug();
                             }
                             this.repaint();
@@ -74,5 +70,4 @@ public class EinstellungSpielbrett extends Spielbrett{
             }
         }
     }
-
 }

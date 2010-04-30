@@ -13,10 +13,9 @@ import java.awt.Graphics;
  */
 public interface SpielerUhren {
 
-    public void restzeitInMS( long zeit);
+    public void restzeitInMS(long zeit);
 
-    public void uhrAktiv( boolean istAktiv );
+    public void uhrAktiv(boolean istAktiv);
 
     public void zeichneZeiger(Graphics g);
-
 }

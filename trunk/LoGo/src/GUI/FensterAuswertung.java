@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package GUI;
 
 import Klassen.Spielfeld;
@@ -22,20 +21,20 @@ import logo.LoGoApp;
  * @author steven
  * @version 0.2
  */
-public class FensterAuswertung extends JFrame implements MouseListener{
+public class FensterAuswertung extends JFrame implements MouseListener {
 
     BufferedImage backgroundImage;
     JPanel contentPanel;
     Spielfeld dasSpielfeld;
     ImageIcon LogoIcon;
-    
-    public FensterAuswertung( ){
+
+    public FensterAuswertung() {
         this.init();
     }
 
-    private void init(){
+    private void init() {
 
-        GrafikLib lib =  GrafikLib.getInstance();
+        GrafikLib lib = GrafikLib.getInstance();
         this.backgroundImage = lib.getSprite("GUI/resources/Auswertungsanzeige.jpg");
         this.contentPanel = new BackgroundImagePanel(backgroundImage);
         this.dasSpielfeld = null;
@@ -46,25 +45,25 @@ public class FensterAuswertung extends JFrame implements MouseListener{
         this.setUndecorated(true);
         this.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
         this.setContentPane(contentPanel);
-        this.setSize(1024,768);
+        this.setSize(1024, 768);
         this.setLocationRelativeTo(null);
         // this.setVisible(true);
     }
 
-    public void setAnzeige( Spielfeld dasFeld ){
+    public void setAnzeige(Spielfeld dasFeld) {
         this.dasSpielfeld = dasFeld;
         this.berechneInformationen();
     }
 
-    public void setAnzeige( Spielfeld dasFeld, boolean fensterSichtbar ){
+    public void setAnzeige(Spielfeld dasFeld, boolean fensterSichtbar) {
         this.dasSpielfeld = dasFeld;
         this.setVisible(fensterSichtbar);
         this.berechneInformationen();
     }
 
     @Override
-    public void paint(Graphics g){
-        if (this.isVisible()){
+    public void paint(Graphics g) {
+        if (this.isVisible()) {
             super.paint(g);
             g.drawImage(backgroundImage, 0, 0, null);
 
@@ -73,20 +72,20 @@ public class FensterAuswertung extends JFrame implements MouseListener{
     }
 
     public void mouseClicked(MouseEvent e) {
-        Object[] options = { "Abbrechen",
-                                "Neues Spiel starten",
-                                "Programm beenden" };
+        Object[] options = {"Abbrechen",
+            "Neues Spiel starten",
+            "Programm beenden"};
 
-        int antwort = JOptionPane.showOptionDialog(this, 
-                "Wie möchten Sie nun fortfahren?", 
-                "Zwischenfrage", 
-                JOptionPane.YES_NO_CANCEL_OPTION, 
-                JOptionPane.QUESTION_MESSAGE, 
-                null, 
-                options, 
+        int antwort = JOptionPane.showOptionDialog(this,
+                "Wie möchten Sie nun fortfahren?",
+                "Zwischenfrage",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
                 options[0]);
 
-        switch (antwort){
+        switch (antwort) {
             case JOptionPane.YES_OPTION:
                 // Abbrechen gedrückt
                 // mache nichts
@@ -102,7 +101,7 @@ public class FensterAuswertung extends JFrame implements MouseListener{
             default:
                 // not used
                 break;
-            }
+        }
     }
 
     public void mousePressed(MouseEvent e) {
@@ -121,10 +120,9 @@ public class FensterAuswertung extends JFrame implements MouseListener{
      * Die ausgewerteten Informationen auf das Fenster @param g schreiben
      */
     private void render(Graphics g) {
-        if(this.dasSpielfeld == null
+        if (this.dasSpielfeld == null
                 || this.dasSpielfeld.getSpielerSchwarz() == null
-                || this.dasSpielfeld.getSpielerWeiss() == null)
-        {
+                || this.dasSpielfeld.getSpielerWeiss() == null) {
             // Es muss mindestens das Feld und die Spieler existieren,
             // sonst wird gar nicht erst etwas gerendert! :-)
             return;
@@ -133,16 +131,12 @@ public class FensterAuswertung extends JFrame implements MouseListener{
         // Zeichne die Informationen aus dem Spielfeld auf die Oberflaeche
     }
 
-
     /**
      * Beim übergeben eines neuen Spielfeldes wird diese Methode intern aufgerufen
      * sie macht alle nötigen Berechnungen die sich nicht direkt aus dem übergebenen
      * Spielfeld herauslesen lassen. Damit wird die performance erhöht und die Werte
      * müssen nicht bei jedem Aufruf von render bzw. paint neu berechnet werden.
      */
-    private void berechneInformationen(){
-
+    private void berechneInformationen() {
     }
-
-
 }
