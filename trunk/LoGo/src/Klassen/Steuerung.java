@@ -767,6 +767,7 @@ public class Steuerung implements SteuerungInterface {
             // Timer Stoppen
             this.stoppeTimerVonSpieler(this.dasSpielfeld.getSpielerFarbeAnDerReihe());
 
+
             LoGoApp.meineOberflaeche.setBrettOberflaeche(this.dasSpielfeld.getSpielfeldZumZeitpunkt(this.getAktuellAngezeigteZugnummer()),
                     this.dasSpielfeld.getSpielfeldGroesse(),
                     this.dasSpielfeld.getMarkiertenSteinZumZeitpunkt(this.getAktuellAngezeigteZugnummer()));

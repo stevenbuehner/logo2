@@ -1770,6 +1770,10 @@ public class Spielfeld {
         }
         Point rueckgabe = new Point(this.spielZugCollection.get(zeitpunkt - 1).getXPosition(),
                 this.spielZugCollection.get(zeitpunkt - 1).getYPosition());
+        if(rueckgabe.getX() < 1 || rueckgabe.getX() > this.getSpielfeldGroesse() ||
+           rueckgabe.getY() < 1 || rueckgabe.getY() > this.getSpielfeldGroesse()){
+            return null;
+        }
         return rueckgabe;
     }
 
