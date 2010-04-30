@@ -1,6 +1,6 @@
 package GUI;
 
-import interfaces.SpielerUhren;
+import Interfaces.SpielerUhren;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;

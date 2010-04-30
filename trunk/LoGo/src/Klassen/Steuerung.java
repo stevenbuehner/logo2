@@ -5,13 +5,13 @@ import Timer.CountdownPeriodenZeitSchwarz;
 import Timer.CountdownPeriodenZeitWeiss;
 import Timer.CountdownSpielerZeitSchwarz;
 import Timer.CountdownSpielerZeitWeiss;
-import interfaces.SteuerungInterface;
+import Interfaces.SteuerungInterface;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import logo.LoGoApp;
+import Logo.LoGoApp;
 
 /**
  * Die Klasse dient zur Steuerung des Spielflusses
