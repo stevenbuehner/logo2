@@ -7,8 +7,6 @@ import GUI.FensterAuswertung;
 import GUI.GrafikLib;
 import GUI.FensterEinstellung;
 import javax.swing.UnsupportedLookAndFeelException;
-import org.jdesktop.application.Application;
-import org.jdesktop.application.SingleFrameApplication;
 import GUI.FensterSpieloberflaeche;
 import Klassen.Steuerung;
 import interfaces.OberflaecheInterface;
@@ -18,7 +16,7 @@ import javax.swing.UIManager;
 /**
  * The main class of the application.
  */
-public class LoGoApp extends SingleFrameApplication {
+public class LoGoApp {
 
     public static OberflaecheInterface meineOberflaeche;
     public static FensterEinstellung meinEinstellungsfenster;
@@ -27,30 +25,6 @@ public class LoGoApp extends SingleFrameApplication {
     public static FensterAuswertung meinAuswertungsfenster;
     public static boolean debug = false;
 
-    /**
-     * At startup create and show the main frame of the application.
-     */
-    @Override
-    protected void startup() {
-        //show(new LoGoView(this));
-    }
-
-    /**
-     * This method is to initialize the specified window by injecting resources.
-     * Windows shown in our application come fully initialized from the GUI
-     * builder, so this additional configuration is not needed.
-     */
-    @Override
-    protected void configureWindow(java.awt.Window root) {
-    }
-
-    /**
-     * A convenient static getter for the application instance.
-     * @return the instance of LoGoApp
-     */
-    public static LoGoApp getApplication() {
-        return Application.getInstance(LoGoApp.class);
-    }
 
     /**
      * Main method launching the application.
@@ -92,7 +66,7 @@ public class LoGoApp extends SingleFrameApplication {
         catch (IllegalAccessException e) {
         // handle exception
         }
-        
+
          */
 
         meineSteuerung = new Steuerung();
