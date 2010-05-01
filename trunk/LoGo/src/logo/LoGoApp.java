@@ -1,7 +1,7 @@
 /**
  * LoGoApp.java
  */
-package logo;
+package Logo;
 
 import GUI.FensterAuswertung;
 import GUI.GrafikLib;
@@ -9,7 +9,7 @@ import GUI.FensterEinstellung;
 import javax.swing.UnsupportedLookAndFeelException;
 import GUI.FensterSpieloberflaeche;
 import Klassen.Steuerung;
-import interfaces.OberflaecheInterface;
+import Interfaces.OberflaecheInterface;
 import Interfaces.SteuerungInterface;
 import javax.swing.UIManager;
 

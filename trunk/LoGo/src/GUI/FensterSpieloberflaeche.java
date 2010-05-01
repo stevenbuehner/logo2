@@ -3,7 +3,7 @@ package GUI;
 import Klassen.Konstante;
 import Interfaces.SpielerUhren;
 import Interfaces.SpielerZettel;
-import interfaces.OberflaecheInterface;
+import Interfaces.OberflaecheInterface;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -26,7 +26,7 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
 import javax.swing.JOptionPane;
-import logo.LoGoApp;
+import Logo.LoGoApp;
 
 /**
  *

@@ -1,6 +1,6 @@
 package Klassen;
 
-import logo.LoGoApp;
+import Logo.LoGoApp;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
