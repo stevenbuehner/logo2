@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Interfaces;
+package interfaces;
 
 import java.awt.Point;
 
@@ -86,6 +86,10 @@ public interface OberflaecheInterface {
      */
     public void setWeissAmZug();
 
+    public void setSpielerMeldungWeiss(String s);
+
+    public void setSpielerMeldungSchwarz(String s);
+
     /**
      *
      * Sagt der Oberflaeche ob es grafisch eine @param undoMoeglich keit erlauben soll
@@ -157,4 +161,5 @@ public interface OberflaecheInterface {
     public void visiblePause(boolean visible);
 
     public void visibleFortsetzen(boolean visible);
+
 }

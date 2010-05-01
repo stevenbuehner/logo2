@@ -12,6 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -112,6 +114,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
 
         // Programm bei klick auf den roten Knopf nicht beenden sondern Event weiter verarbeiten
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
     }
 
     /**
@@ -471,7 +474,6 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      * @param e Event von der Maus (mit Koordinaten)
      */
     public void mouseClicked(MouseEvent e) {
-        System.out.println("Klicked "+ e.getX() + " " + e.getY()+ " : ");
         switch(this.getSelectedFeldgroesse()){
             case 7:
                 this.paneloffset = 47;
@@ -505,7 +507,6 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
         if(this.momSpielModus.equals("Startfeld") &&
            e.getX()-15>=this.brettXOffset && e.getX()-15<=this.brettXOffset+this.brettbreite &&
            e.getY()-24>=this.brettYOffset && e.getY()-24<=this.brettYOffset+this.bretthoehe){
-            System.out.print("Klicked "+ e.getX() + " " + e.getY()+ " : ");
 
             int farbe = 0;
             if(e.getButton()==MouseEvent.BUTTON1){
@@ -522,7 +523,6 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
             if(xKoord>this.getSelectedFeldgroesse()){xKoord=this.getSelectedFeldgroesse();}
             if(yKoord<1){yKoord=1;}
             if(yKoord>this.getSelectedFeldgroesse()){yKoord=this.getSelectedFeldgroesse();}
-            System.out.println(xKoord + " " + yKoord);
             this.dasSpielfeld.legeSteinAufInitBrett(xKoord, yKoord, farbe );
             this.dasSpielfeldGUI.updateSpielFeld(this.dasSpielfeld.getSpielfeldZumZeitpunkt(0));
             this.validate();
@@ -959,7 +959,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
             this.dasSpielfeld.initialisiereFeldMitVorgabenFuerSchwarz(this.getVorgabeWert());
             this.dasSpielfeldGUI.updateSpielFeld(this.dasSpielfeld.getSpielfeldZumZeitpunkt(0));
             this.spielVorgabeSteine.setEnabled(true);
-            this.spielBrettHinweise.setText("<HTML><BODY>Mit Vorgabe spielen...</BODY></HTML>");
+            this.spielBrettHinweise.setText("<HTML><BODY>Mit Vorgabe spielen. Oben die Zahl w&auml;hlen.</BODY></HTML>");
             this.repaint();
             this.animiereFrameEnde();
 
@@ -967,7 +967,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
         else if(modus.equals("Startfeld")){
             this.spielVorgabeSteine.setEnabled(false);
             this.spielBrettHinweise.setName("Mit eigenem Feld spielen");
-            this.spielBrettHinweise.setText("<HTML><BODY>Linksklick für Schwarz Rechtsklick für Weiß Gleiche Farben heben sich auf</BODY></HTML>");
+            this.spielBrettHinweise.setText("<HTML><BODY>Linksklick für Schwarz Rechtsklick für Weiß Gleiche Farben heben sich auf.</BODY></HTML>");
             this.animiereFrameEnde();
             this.spielVorgabeSteine.setSelectedItem(0);
             this.dasSpielfeldGUI.updateSpielFeld(this.dasSpielfeld.getSpielfeldZumZeitpunkt(0));

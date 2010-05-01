@@ -9,7 +9,7 @@ import GUI.FensterEinstellung;
 import javax.swing.UnsupportedLookAndFeelException;
 import GUI.FensterSpieloberflaeche;
 import Klassen.Steuerung;
-import Interfaces.OberflaecheInterface;
+import interfaces.OberflaecheInterface;
 import Interfaces.SteuerungInterface;
 import javax.swing.UIManager;
 
