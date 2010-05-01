@@ -4,8 +4,8 @@
  */
 package Timer;
 
-import interfaces.OberflaecheInterface;
-import logo.LoGoApp;
+import Interfaces.OberflaecheInterface;
+import Logo.LoGoApp;
 
 /**
  *
