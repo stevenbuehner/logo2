@@ -94,7 +94,7 @@ public class Speichern {
          */
         JFileChooser chooser = new JFileChooser();
         chooser.showSaveDialog( (FensterSpieloberflaeche)LoGoApp.meineOberflaeche);
-        String selFile = chooser.getSelectedFile().getName() + ".cfg";
+        String selFile = chooser.getCurrentDirectory() + chooser.getSelectedFile().getName() + ".cfg";
 
 
         PrintWriter pw = null;
