@@ -503,6 +503,11 @@ public class Steuerung implements SteuerungInterface {
                 this.spielerZeitWeiss.starteCountdown();
                 LoGoApp.meineOberflaeche.setWeissAmZug();
             }
+            LoGoApp.meineOberflaeche.setSpielernameSchwarz(this.dasSpielfeld.getSpielerSchwarz().getSpielerName());
+            LoGoApp.meineOberflaeche.setSpielernameWeiss(this.dasSpielfeld.getSpielerWeiss().getSpielerName());
+            this.setzeGefangenZahlAufOberklaeche();
+            //LoGoApp.meineOberflaeche.setSpielerMeldungSchwarz("");
+            //LoGoApp.meineOberflaeche.setSpielerMeldungWeiss("");
             this.wechsleInStatus(Konstante.SPIEL_LAUEFT);
         }
     }
@@ -1111,5 +1116,10 @@ public class Steuerung implements SteuerungInterface {
         }finally{
             return true;
         }
+    }
+
+    private void setzeGefangenZahlAufOberklaeche() {
+        LoGoApp.meineOberflaeche.setGefangeneSteineSchwarz(this.dasSpielfeld.getSpielerSchwarz().getGefangenenAnzahl());
+        LoGoApp.meineOberflaeche.setGefangeneSteineWeiss(this.dasSpielfeld.getSpielerWeiss().getGefangenenAnzahl());
     }
 }

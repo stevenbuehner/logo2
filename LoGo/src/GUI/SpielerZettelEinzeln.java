@@ -26,7 +26,7 @@ public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {
 
     /* übergebene Variablen*/
     private String spielername;
-    private int Anzahl;
+    private int anzahl;
     private String fehlermeldung;
 
     public SpielerZettelEinzeln(int xPos, int yPos, double offsetWinkel, String startText) {
@@ -36,26 +36,26 @@ public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {
         this.anzeigeText_spielername = startText;
     }
 
-    public void StringBau(String spielername, int Anzahl, String fehlermeldung) {
+    public void StringBau(String spielername, int anzahl, String fehlermeldung) {
         this.spielername = spielername;
-        this.Anzahl = Anzahl;
+        this.anzahl = anzahl;
         this.fehlermeldung = fehlermeldung;
         anzeigeText_spielername = "Spieler:  " + spielername;
-        anzeigeText_gefangene = "Anzahl Gefangene:  " + Anzahl;
+        anzeigeText_gefangene = "Anzahl Gefangene:  " + this.anzahl;
         anzeigeText_fehlermeldung = fehlermeldung;
         ZeilenAbstand = 50;
     }
 
     public void setSpielername(String spielername) {
-        this.StringBau(spielername, this.Anzahl, this.fehlermeldung);
+        this.StringBau(spielername, this.anzahl, this.fehlermeldung);
     }
 
     public void setGefangenenAnzahl(int anzahl) {
-        this.StringBau(this.spielername, Anzahl, this.fehlermeldung);
+        this.StringBau(this.spielername, anzahl, this.fehlermeldung);
     }
 
     public void setFehlermeldung(String fehlermeldung) {
-        this.StringBau(this.spielername, this.Anzahl, fehlermeldung);
+        this.StringBau(this.spielername, this.anzahl, fehlermeldung);
     }
 
     @Override
@@ -84,12 +84,8 @@ public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {
             this.anzeigeText_fehlermeldung = "";
         }
         g2.drawString(this.anzeigeText_spielername, xPos, yPos);
-        xPos = xPos + ZeilenAbstand;
-        yPos = yPos + ZeilenAbstand;
-        g2.drawString(this.anzeigeText_gefangene, xPos, yPos);
-        xPos = xPos + ZeilenAbstand;
-        yPos = yPos + ZeilenAbstand;
-        g2.drawString(this.anzeigeText_fehlermeldung, xPos, yPos);
+        g2.drawString(this.anzeigeText_gefangene, xPos, yPos + this.ZeilenAbstand);
+        g2.drawString(this.anzeigeText_fehlermeldung, xPos, yPos + this.ZeilenAbstand + this.ZeilenAbstand);
 
         at = AffineTransform.getRotateInstance(
                 0,

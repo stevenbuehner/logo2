@@ -1839,6 +1839,7 @@ public class Spielfeld {
     public List<Spielzug> getspielZugCollection() {
 
         return this.spielZugCollection;
+
     }
 
 }

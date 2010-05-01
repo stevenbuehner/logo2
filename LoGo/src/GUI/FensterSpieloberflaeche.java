@@ -1,9 +1,9 @@
 package GUI;
 
 import Klassen.Konstante;
-import Interfaces.OberflaecheInterface;
 import Interfaces.SpielerUhren;
 import Interfaces.SpielerZettel;
+import interfaces.OberflaecheInterface;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -114,8 +114,8 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         this.backgroundImage = lib.getSprite("GUI/resources/SpielTisch2.jpg");
 
         this.spielerUhrSchwarz = new SpielerUhr(316, 215, 0, 4.5);
-        this.spielerUhrWeiss = new SpielerUhr(112, 144, 0, 1);
-        this.spielerZettelWeiss = new SpielerZettelEinzeln(5, 560, -22.0, "WEISS:");
+        this.spielerUhrWeiss = new SpielerUhr(114, 144, 0, 1);
+        this.spielerZettelWeiss = new SpielerZettelEinzeln(5, 560, -18.0, "WEISS:");
         this.spielerZettelSchwarz = new SpielerZettelEinzeln(238, 424, 3.7, "SCHWARZ:");
 
         this.spielOberflaechePausiert = false;
@@ -489,21 +489,33 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
     }
 
     public void setSpielernameWeiss(String spielername) {
+        this.spielerZettelWeiss.setSpielername(spielername);
     }
 
     public void setSpielernameSchwarz(String spielername) {
+        this.spielerZettelSchwarz.setSpielername(spielername);
     }
 
     public void setGefangeneSteineWeiss(int anzGefangenerSteiner) {
+        this.spielerZettelWeiss.setGefangenenAnzahl(anzGefangenerSteiner);
     }
 
     public void setGefangeneSteineSchwarz(int anzGefangenerSteiner) {
+        this.spielerZettelSchwarz.setGefangenenAnzahl(anzGefangenerSteiner);
     }
 
     public void setSchwarzAmZug() {
     }
 
     public void setWeissAmZug() {
+    }
+
+    public void setSpielerMeldungWeiss(String s){
+        this.spielerZettelWeiss.setFehlermeldung(s);
+    }
+
+    public void setSpielerMeldungSchwarz(String s){
+        this.spielerZettelSchwarz.setFehlermeldung(s);
     }
 
     public void setUndoErlaubt(boolean undoMoeglich) {
