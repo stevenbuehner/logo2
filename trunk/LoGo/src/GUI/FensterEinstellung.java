@@ -355,32 +355,32 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
                                     this.labelKomi.getY() + this.labelKomi.getHeight() + verAbs,
                                     100 ,
                                     radBuH );
-        this.siebenXsieben.setBounds(this.labelGroessenWahl.getX(),
-                                    this.labelGroessenWahl.getY()+this.labelGroessenWahl.getHeight()+verAbs,
+        this.siebenXsieben.setBounds(this.labelGroessenWahl.getX() + this.labelGroessenWahl.getWidth() + horAbs,
+                                     this.labelGroessenWahl.getY(),
                                     100 ,
                                     radBuH);
-        this.neunXneun.setBounds(this.labelGroessenWahl.getX() + this.labelGroessenWahl.getWidth() + horAbs,
-                                    this.labelGroessenWahl.getY(),
+        this.neunXneun.setBounds(this.siebenXsieben.getX() + this.siebenXsieben.getWidth() + horAbs,
+                                    this.siebenXsieben.getY(),
                                     100 ,
                                     radBuH);
-        this.elfXelf.setBounds(this.neunXneun.getX(),
+        this.elfXelf.setBounds(this.neunXneun.getX() + this.neunXneun.getWidth() + horAbs,
+                                    this.neunXneun.getY(),
+                                    100 ,
+                                    radBuH);
+        this.dreizehnXdreizehn.setBounds(this.labelGroessenWahl.getX(),
+                                    this.labelGroessenWahl.getY() + this.labelGroessenWahl.getHeight() + verAbs,
+                                    100 ,
+                                    radBuH);
+        this.fuenfzehnXfuenfzehn.setBounds(this.siebenXsieben.getX(),
+                                    this.siebenXsieben.getY() + this.siebenXsieben.getHeight() + verAbs,
+                                    100 ,
+                                    radBuH);
+        this.siebzehnXsiebzehn.setBounds(this.neunXneun.getX(),
                                     this.neunXneun.getY() + this.neunXneun.getHeight() + verAbs,
                                     100 ,
                                     radBuH);
-        this.dreizehnXdreizehn.setBounds(this.neunXneun.getX() + this.neunXneun.getWidth() + horAbs ,
-                                    this.labelGroessenWahl.getY(),
-                                    100 ,
-                                    radBuH);
-        this.fuenfzehnXfuenfzehn.setBounds(this.dreizehnXdreizehn.getX(),
-                                    this.dreizehnXdreizehn.getY() + this.dreizehnXdreizehn.getHeight() + verAbs,
-                                    100 ,
-                                    radBuH);
-        this.siebzehnXsiebzehn.setBounds(this.dreizehnXdreizehn.getX() + this.dreizehnXdreizehn.getWidth() + horAbs,
-                                    this.labelGroessenWahl.getY(),
-                                    100 ,
-                                    radBuH);
-        this.neunzehnXneunzehn.setBounds(this.siebzehnXsiebzehn.getX(),
-                                    this.siebzehnXsiebzehn.getY() + this.siebzehnXsiebzehn.getHeight() + verAbs,
+        this.neunzehnXneunzehn.setBounds(this.elfXelf.getX(),
+                                    this.elfXelf.getY() + this.elfXelf.getHeight() + verAbs,
                                     100 ,
                                     radBuH);
 
