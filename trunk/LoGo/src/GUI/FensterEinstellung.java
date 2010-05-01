@@ -93,7 +93,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
     private String momSpielModus;
 
     /* Zum zeichnen des Feldes */
-    private int frameMinhoehe = 300;
+    private int frameMinhoehe = 270;
     private int frameMaxhoehe = 768;
 
 
@@ -105,7 +105,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
         super(fenstername);
         this.init();
         pack();
-        this.setSize(700, this.frameMinhoehe);
+        this.setSize(650, this.frameMinhoehe);
         this.setResizable(false);
         this.setLocationRelativeTo(null);       // Fenster zentrieren
         this.setVisible(true);
@@ -472,11 +472,39 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      */
     public void mouseClicked(MouseEvent e) {
         System.out.println("Klicked "+ e.getX() + " " + e.getY()+ " : ");
-        this.paneloffset = 13;
-        this.seitenoffset = 15;
+        switch(this.getSelectedFeldgroesse()){
+            case 7:
+                this.paneloffset = 47;
+                this.seitenoffset = 17;
+                break;
+            case 9:
+                this.paneloffset = 29;
+                this.seitenoffset = 17;
+                break;
+            case 11:
+                this.paneloffset = 20;
+                this.seitenoffset = 17;
+                break;
+            case 13:
+                this.paneloffset = 13;
+                this.seitenoffset = 16;
+                break;
+            case 15:
+                this.paneloffset = 8;
+                this.seitenoffset = 16;
+                break;
+            case 17:
+                this.paneloffset = 4;
+                this.seitenoffset = 16;
+                break;
+            case 19:
+                this.paneloffset = 1;
+                this.seitenoffset = 16;
+                break;
+        }
         if(this.momSpielModus.equals("Startfeld") &&
-           e.getX()-this.seitenoffset>=this.brettXOffset && e.getX()-this.seitenoffset<=this.brettXOffset+this.brettbreite &&
-           e.getY()-this.paneloffset>=this.brettYOffset && e.getY()-this.paneloffset<=this.brettYOffset+this.bretthoehe){
+           e.getX()-15>=this.brettXOffset && e.getX()-15<=this.brettXOffset+this.brettbreite &&
+           e.getY()-24>=this.brettYOffset && e.getY()-24<=this.brettYOffset+this.bretthoehe){
             System.out.print("Klicked "+ e.getX() + " " + e.getY()+ " : ");
 
             int farbe = 0;

@@ -547,6 +547,8 @@ public class SpielAuswertung {
         for (int k = listeSteine.size() - 1; k >= 0; k--) {
             if (listeSteine.get(k).getBelegungswert() != farbeGefangen) {
                 this.auswertungBrett[listeSteine.get(k).getXPos()][listeSteine.get(k).getYPos()].setBelegungswert(Konstante.SCHNITTPUNKT_LEER);
+                this.auswertungBrett[listeSteine.get(k).getXPos()][listeSteine.get(k).getYPos()].setMarkiert(false);
+                this.auswertungBrett[listeSteine.get(k).getXPos()][listeSteine.get(k).getYPos()].setAnalysiert(false);
             } else {
                 this.auswertungBrett[listeSteine.get(k).getXPos()][listeSteine.get(k).getYPos()].setBelegungswert(farbe);
             }
