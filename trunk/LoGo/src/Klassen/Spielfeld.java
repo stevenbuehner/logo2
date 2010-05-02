@@ -267,6 +267,8 @@ public class Spielfeld {
         if (zeitpunkt < this.spielfeldCacheMitZugnummerStand) {
             this.spielfeldCacheMitZugnummerStand = 0;
             this.loescheVerbotenenPunkt();
+            this.getSpielerSchwarz().setGefangenenAnzahl(0);
+            this.getSpielerWeiss().setGefangenenAnzahl(0);
             for (int i = 0; i < this.getSpielfeldGroesse(); i++) {
                 for (int j = 0; j < this.getSpielfeldGroesse(); j++) {
                     this.aktuellesSpielfeldCache[i][j] = this.initialfeld[i][j];
@@ -322,6 +324,11 @@ public class Spielfeld {
             this.spielZugCollection.remove(i);
         }
         this.letzteZugnummer = zeitpunkt;
+        /* Gefangenenzahlen anpassen, indem sie auf 0 gesetzt werden und das
+         * feld neu aufgebaut wird
+        this.spielerSchwarz.setGefangenenAnzahl(0);
+        this.spielerWeiss.setGefangenenAnzahl(0);*/
+
         return true;
     }
 
