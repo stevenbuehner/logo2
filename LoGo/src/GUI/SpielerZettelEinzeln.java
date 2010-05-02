@@ -1,6 +1,8 @@
 package GUI;
 
 import Interfaces.SpielerZettel;
+import Klassen.Konstante;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -23,13 +25,20 @@ public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {
     private String anzeigeText_spielername;
     private String anzeigeText_gefangene;
     private String anzeigeText_fehlermeldung;
+    private String spielerFarbe;
 
     /* übergebene Variablen*/
     private String spielername;
     private int anzahl;
     private String fehlermeldung;
 
-    public SpielerZettelEinzeln(int xPos, int yPos, double offsetWinkel, String startText) {
+    public SpielerZettelEinzeln(int xPos, int yPos, double offsetWinkel, String startText, int spielerFarbe) {
+        if(spielerFarbe == Konstante.SCHNITTPUNKT_SCHWARZ){
+            this.spielerFarbe = "Schwarz: ";
+        }
+        else {
+            this.spielerFarbe = "Weiß: ";
+        }
         this.xPos = xPos;
         this.yPos = yPos;
         this.OwinkelInRad = Math.toRadians(offsetWinkel);
@@ -40,8 +49,8 @@ public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {
         this.spielername = spielername;
         this.anzahl = anzahl;
         this.fehlermeldung = fehlermeldung;
-        anzeigeText_spielername = "Spieler:  " + spielername;
-        anzeigeText_gefangene = "Anzahl Gefangene:  " + this.anzahl;
+        anzeigeText_spielername =this.spielerFarbe + spielername;
+        anzeigeText_gefangene = "Gefangen:  " + this.anzahl;
         anzeigeText_fehlermeldung = fehlermeldung;
         ZeilenAbstand = 50;
     }
@@ -70,6 +79,8 @@ public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {
 
     public void zeichneDich(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
+        Font myFont = new Font("TimesRoman", 1, 19);
+        g2.setFont(myFont);
 
         AffineTransform at = AffineTransform.getRotateInstance(
                 this.OwinkelInRad, xPos, yPos);

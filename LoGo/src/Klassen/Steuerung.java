@@ -235,6 +235,9 @@ public class Steuerung implements SteuerungInterface {
             /* Man darf nur einen Stein versuchen zu setzen wenn es kein
              * Passen ist*/
             if (xPos != -1 && yPos != -1) {
+                // Bevor ein Zug gemacht wird, werden Fehlermeldungen geloescht
+                this.leereFehlerMeldungen();
+
                 // Versuche den Stein zu setzen und speichere das Resulatat in returnWert
                 returnWert = this.dasSpielfeld.macheZug(xPos, yPos);
 
@@ -249,16 +252,20 @@ public class Steuerung implements SteuerungInterface {
                         this.updateUndoUndRedo();
                         break;
                     case 0:
-                        LoGoApp.meineOberflaeche.gibFehlermeldungAus("Verboten: Spielpunkt befindet sich nicht auf dem Brett");
+                        this.leereFehlerMeldungen();
+                        this.gibMeldungAnSpieler(this.dasSpielfeld.getSpielerFarbeAnDerReihe(), "Verboten: Spielpunkt befindet sich nicht auf dem Brett");
                         break;
                     case -1:
-                        LoGoApp.meineOberflaeche.gibFehlermeldungAus("Koregel: Verbotener Zug");
+                        this.leereFehlerMeldungen();
+                        this.gibMeldungAnSpieler(this.dasSpielfeld.getSpielerFarbeAnDerReihe(), "Koregel: Verbotener Zug");
                         break;
                     case -2:
-                        LoGoApp.meineOberflaeche.gibFehlermeldungAus("Dieser Schnittpunkt ist bereits belegt");
+                        this.leereFehlerMeldungen();
+                        this.gibMeldungAnSpieler(this.dasSpielfeld.getSpielerFarbeAnDerReihe(), "Schnittpunkt bereits belegt");
                         break;
                     case -3:
-                        LoGoApp.meineOberflaeche.gibFehlermeldungAus("Selbstmord ist nicht erlaubt!");
+                        this.leereFehlerMeldungen();
+                        this.gibMeldungAnSpieler(this.dasSpielfeld.getSpielerFarbeAnDerReihe(), "Selbstmord ist nicht erlaubt!");
                         break;
                     default:
                         // Das darf nicht vorkommen
@@ -268,6 +275,11 @@ public class Steuerung implements SteuerungInterface {
                 this.dasSpielfeld.zugPassen();
                 this.setAktuelleAngeigteZugnummer(this.getAktuellAngezeigteZugnummer() + 1);
             }
+
+            // Gefangenenzahlen aktualisieren
+            LoGoApp.meineOberflaeche.setGefangeneSteineSchwarz(this.dasSpielfeld.getSpielerSchwarz().getGefangenenAnzahl());
+            LoGoApp.meineOberflaeche.setGefangeneSteineWeiss(this.dasSpielfeld.getSpielerWeiss().getGefangenenAnzahl());
+
 
             // aktualisiere die GefangenenAnzahl
             LoGoApp.meineOberflaeche.setGefangeneSteineSchwarz(brett.getSpielerSchwarz().getGefangenenAnzahl());
@@ -506,8 +518,7 @@ public class Steuerung implements SteuerungInterface {
             LoGoApp.meineOberflaeche.setSpielernameSchwarz(this.dasSpielfeld.getSpielerSchwarz().getSpielerName());
             LoGoApp.meineOberflaeche.setSpielernameWeiss(this.dasSpielfeld.getSpielerWeiss().getSpielerName());
             this.setzeGefangenZahlAufOberklaeche();
-            //LoGoApp.meineOberflaeche.setSpielerMeldungSchwarz("");
-            //LoGoApp.meineOberflaeche.setSpielerMeldungWeiss("");
+            this.leereFehlerMeldungen();
             this.wechsleInStatus(Konstante.SPIEL_LAUEFT);
         }
     }
@@ -793,6 +804,10 @@ public class Steuerung implements SteuerungInterface {
                 || this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_GEBIETSAUSWERTUNG)
                 && this.getAktuellAngezeigteZugnummer() > 0) {
             this.setAktuelleAngeigteZugnummer(this.getAktuellAngezeigteZugnummer() - 1);
+            // Fehlermeldungen loeschen
+            this.leereFehlerMeldungen();
+            this.setzeGefangenZahlAufOberklaeche();
+
             // Timer Stoppen
             this.stoppeTimerVonSpieler(this.dasSpielfeld.getSpielerFarbeAnDerReihe());
 
@@ -846,6 +861,10 @@ public class Steuerung implements SteuerungInterface {
         if (this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_LAUEFT
                 && this.getAktuellAngezeigteZugnummer() < this.dasSpielfeld.getLetzteZugnummer()) {
             this.setAktuelleAngeigteZugnummer(this.getAktuellAngezeigteZugnummer() + 1);
+            // Fehlermeldungen loeschen
+            this.leereFehlerMeldungen();
+            this.setzeGefangenZahlAufOberklaeche();
+            
             // Stoppe Timer
             this.stoppeTimerVonSpieler(this.dasSpielfeld.getSpielerFarbeAnDerReihe());
 
@@ -1121,5 +1140,19 @@ public class Steuerung implements SteuerungInterface {
     private void setzeGefangenZahlAufOberklaeche() {
         LoGoApp.meineOberflaeche.setGefangeneSteineSchwarz(this.dasSpielfeld.getSpielerSchwarz().getGefangenenAnzahl());
         LoGoApp.meineOberflaeche.setGefangeneSteineWeiss(this.dasSpielfeld.getSpielerWeiss().getGefangenenAnzahl());
+    }
+
+    private void leereFehlerMeldungen() {
+        LoGoApp.meineOberflaeche.setSpielerMeldungSchwarz(" ");
+        LoGoApp.meineOberflaeche.setSpielerMeldungWeiss(" ");
+    }
+
+    private void gibMeldungAnSpieler(int spielerFarbe, String nachicht){
+        if(spielerFarbe == Konstante.SCHNITTPUNKT_SCHWARZ){
+            LoGoApp.meineOberflaeche.setSpielerMeldungSchwarz(nachicht);
+        }
+        else if(spielerFarbe == Konstante.SCHNITTPUNKT_WEISS){
+            LoGoApp.meineOberflaeche.setSpielerMeldungWeiss(nachicht);
+        }
     }
 }
