@@ -14,7 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
-import logo.LoGoApp;
+import Logo.LoGoApp;
 
 /**
  *
