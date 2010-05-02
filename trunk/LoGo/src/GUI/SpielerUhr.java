@@ -23,11 +23,10 @@ public class SpielerUhr extends JComponent implements SpielerUhren {
 
     /* Zeit, die angezeigt werden soll */
     private long anzeigeZeit;
-    private boolean istAktiv;
 
     /* Wert, bei der die Uhr anfangen soll zu signalisieren, dass
      * die Zeit kritisch ist */
-    private long kritischeZeitInMS;
+    private long kritischeZeitInMS = 10000;
     /* Verschiedene Bilder fuer die Zeiger */
     BufferedImage sekundenZeigerBImage;
     BufferedImage minutenZeigerBImage;
@@ -42,7 +41,6 @@ public class SpielerUhr extends JComponent implements SpielerUhren {
         this.xMittelPos = xPos;
         this.yMittelPos = yPos;
         this.anzeigeZeit = anfangsZeit;
-        this.istAktiv = false;
         this.OwinkelInRad = Math.toRadians(offsetWinkel);
         this.kritischeZeitInMS = 30000;
 
@@ -65,14 +63,6 @@ public class SpielerUhr extends JComponent implements SpielerUhren {
      */
     public void restzeitInMS(long zeit) {
         this.anzeigeZeit = zeit;
-    }
-
-    /**
-     * Es soll gekennzeichnet werden, ob die Uhr gerade aktiv ist.
-     * @param istAktiv Flag ob aktiv.
-     */
-    public void uhrAktiv(boolean istAktiv) {
-        this.istAktiv = istAktiv;
     }
 
     /**
@@ -164,5 +154,9 @@ public class SpielerUhr extends JComponent implements SpielerUhren {
                 0);
         g2.setTransform(at);
         g = (Graphics) g2;
+    }
+
+    public void uhrAktiv(boolean istAktiv) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
