@@ -115,8 +115,8 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
 
         this.spielerUhrSchwarz = new SpielerUhr(316, 215, 0, 4.5);
         this.spielerUhrWeiss = new SpielerUhr(114, 144, 0, 1);
-        this.spielerZettelWeiss = new SpielerZettelEinzeln(5, 560, -18.0, "WEISS", Konstante.SCHNITTPUNKT_WEISS);
-        this.spielerZettelSchwarz = new SpielerZettelEinzeln(238, 424, 3.7, "SCHWARZ", Konstante.SCHNITTPUNKT_SCHWARZ);
+        this.spielerZettelWeiss = new SpielerZettelEinzeln(5, 570, -18.6, "WEISS", Konstante.SCHNITTPUNKT_WEISS);
+        this.spielerZettelSchwarz = new SpielerZettelEinzeln(238, 424, 2.5, "SCHWARZ", Konstante.SCHNITTPUNKT_SCHWARZ);
 
         this.spielOberflaechePausiert = false;
 
