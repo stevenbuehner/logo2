@@ -51,8 +51,8 @@ public class SpielerUhr extends JComponent implements SpielerUhren {
         /* Bilder laden und nicht skalieren (sind schon skaliert) */
         // this.sekundenZeigerBImage =  lib.getSprite("GUI/resources/ZeigerBearb4.png");
         this.sekundenZeigerBImage = lib.getSprite("GUI/resources/sekZeiger1.png");
-        this.minutenZeigerBImage = lib.getSprite("GUI/resources/ZeigerBearb4.png");
-        this.stundenZeigerBImage = lib.getSprite("GUI/resources/StZeigerEinfach1.png");
+        this.minutenZeigerBImage = lib.getSprite("GUI/resources/MinutenZeigerHuebsch2.png");
+        this.stundenZeigerBImage = lib.getSprite("GUI/resources/stundenZeigerHuebsch2.png");
 
 
 
