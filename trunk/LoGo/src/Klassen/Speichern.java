@@ -10,7 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.swing.JFileChooser;
-import Logo.LoGoApp;
+import logo.LoGoApp;
 
 /**
  *

@@ -20,7 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import Logo.LoGoApp;
+import logo.LoGoApp;
 
 
 /**
@@ -141,7 +141,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
         this.dasSpielfeld = new Spielfeld(13);
 
         /* Initialisieren der Oberflaeche */
-        this.spielerNameWeiss          = new JTextField("Steven");
+        this.spielerNameWeiss          = new JTextField("Weiss");
         this.spielerZeitMinutenWeiss   = new JTextField("30");
         this.spielerZeitStundenWeiss   = new JTextField("0");
         this.spielerKomiWeiss          = new JTextField("6.5");
