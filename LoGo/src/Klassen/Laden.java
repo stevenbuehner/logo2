@@ -21,58 +21,58 @@ public class Laden {
     private Spieler spieler_schwarz;
     public Spielfeld _spielfeld;
 
-    //Funktion für den Identifier des Switch Case Konstrukts
+    //Funktion für den Identifier des Switch-Case Konstrukts
     public int getID(String id)
     {
-        int _id=0;
+        int _id = 0;
 
         //Spielfeldgroesse
-        if(id == "SZ")
+        if(id.equals("SZ"))
         {
           _id = 1;
         }
         //Vorgabesteine
-        else if(id == "HA")
+        else if(id.equals("HA"))
         {
           _id = 2;
         }
         //Komipunkte
-        else if(id == "KM")
+        else if(id.equals("KM"))
         {
           _id = 3;
         }
         //Spielername Weiss
-        else if(id == "PW")
+        else if(id.equals("PW"))
         {
           _id = 4;
         }
         //Spielername Schwarz
-        else if(id == "PB")
+        else if(id.equals("PB"))
         {
           _id = 5;
         }
         //Zeitanzeige Weisser Spieler
-        else if(id == "TPW")
+        else if(id.equals("TPW"))
         {
             _id = 6;
         }
         // Zeitanzeige Schwarzer Spieler
-        else if (id == "TPB")
+        else if (id.equals("TPB"))
         {
             _id = 7;
         }
         //Periodenzeit
-        else if(id == "OT")
+        else if(id.equals("OT"))
         {
             _id = 8;
         }
         //Spielzuege Schwarz
-        else if(id == "S")
+        else if(id.equals("S"))
         {
           _id = 9;
         }
         //Spielzuege Weiss
-        else if(id == "W")
+        else if(id.equals("W"))
         {
           _id = 10;
         }
@@ -101,36 +101,40 @@ public class Laden {
     
     String identifier = null;
 
-    //Herausschneiden von (;
+    //Herausschneidender Standard_SGF_Konfiguration
     _klammer_auf = _geladenerString.indexOf("(;");
     _geladenerString.substring(_klammer_auf);
 
-    //Ein Identifier besteht maximal aus 2 Ziffern
+    //Ein Identifier besteht maximal aus zwei Ziffern
     char c1;
     char c2;
     
     String s_parameter  = null;
-    //Parametervariablen deklaration
+
+    //Deklaration von Parametervariablen als Integerzahl, Float und Long
     int i_parameter = 0;
     float f_parameter = 0;
     long l_parameter = 0;
 
-    //String Parametervariablen für Spielzüge
+    //Parametervariablen für die Spielzüge als String
     String s_parameterX;
     String s_parameterY;
-    //Int Parametervariablen für Spielzüge
+
+    //Parametervariablen für die Spielzüge als Integerzahl
     int i_parameterX = 0;
     int i_parameterY = 0;
 
-    
-    while(_geladenerString!=null)//Solange im String was drin steht
+    //Durchfuehren der Schleife bis der String keinen Inhalt mehr besitzt
+    while(_geladenerString!=null)
     {
         _klammer_auf = _geladenerString.indexOf("[");
 
 
        c1 = _geladenerString.charAt(0);
        identifier = String.valueOf(c1);
-       if(_klammer_auf > 1) //Wenn der Identifier aus mehr als einem Buchstaben besteht
+
+       //Wenn der Identifier aus mehr als einem Buchstaben besteht
+       if(_klammer_auf > 1)
        {
         c2 = _geladenerString.charAt(1);
         identifier += String.valueOf(c2);
@@ -141,80 +145,97 @@ public class Laden {
        //Parameterzuweisung
        s_parameter = _geladenerString.substring(_klammer_auf, _klammer_zu);
        
-    //Je nach Identifier wird der Parameter als Int Float Long oder String interpretiert
-    // und verwendet
+    /*
+     * Je nach Identifier wird der Parameter als Integerzahl, Float, Long oder
+     * String interpretiert und verwendet
+     */
     switch(this.getID(identifier)){
-        case 1://Spielfeldgröße
-            //String zu Int Umwandlung für die Spielfeldgröße
+        case 1:
+            /* Spielfeldgröße
+             * Umwandeln von String zu Intergerzahl für die Spielfeldgroesse
+             */
             i_parameter = Integer.parseInt(s_parameter);
-            //Erzeuge Spielfeld und weise der lokalen Variable das neue Spielfeld zu
+
+            //Erzeuge Spielfeld und weise der lokalen Variablen das neue Spielfeld zu
             this._spielfeld = new Spielfeld(i_parameter);
+
             //Weise dem Spielfeld die beiden Spieler zu
             _spielfeld.setSpielerSchwarz(spieler_schwarz);
             _spielfeld.setSpielerWeiss(spieler_weiss);
             break;
-        case 2: //String zu Int Umwandlung für Vorgabesteine
+        case 2: 
+            //Umwandeln von String zu Integerzahl für Vorgabesteine
             i_parameter = Integer.parseInt(s_parameter);
             this._spielfeld.initialisiereFeldMitVorgabenFuerSchwarz(i_parameter);
             break;
         case 3:
-            //String Float Umwandlung für Komipunkte
+            //Umwandeln von String zu Float für Komipunkte
             f_parameter = Float.parseFloat(s_parameter);
             this.spieler_weiss.setKomiPunkte(f_parameter);
             break;
         case 4:
-            //Name Spieler - weiss
+            //Name Spieler - Weiss
             spieler_weiss.setSpielerName(s_parameter);
             break;
         case 5:
-            //Name Spieler - schwarz
+            //Name Spieler - Schwarz
             spieler_schwarz.setSpielerName(s_parameter);
             break;
         case 6:
-            //String long Umwandlung für Spielzeit
+            //Umwandeln von String zu Long für Spielzeit
             l_parameter = Long.parseLong(s_parameter);
             this.spieler_weiss.setVerbleibendeSpielzeitInMS(l_parameter);
             break;
         case 7:
-            //String long Umwandlung für verbleibende Zeit
+            //Umwandeln von String zu Long für verbleibende Zeit
             l_parameter = Long.parseLong(s_parameter);
             this.spieler_schwarz.setVerbleibendeSpielzeitInMS(l_parameter);
             break;
         case 8:
-            //String long Umwandlung für Periodenzeit
+            //Umwandeln von String zu Long für Periodenzeit
             l_parameter = Long.parseLong(s_parameter);
             this._spielfeld.setPeriodenZeit(l_parameter);
             break;
         case 9:
-            //Koordinaten wenn als Identifier 'B' erscheint
-            //Trenne X-Buchstabe von Y-Buchstabe
+            /*
+             * Koordinaten wenn als Identifier 'B' erscheint
+             * Trenne X-Buchstabe von Y-Buchstabe
+             */
             s_parameterX = s_parameter.substring(0,1);
             s_parameterY = s_parameter;
+
             //Umwandlung und weise Koordinaten lokalen Variablen zu
             i_parameterX = Integer.parseInt(s_parameterX);
             i_parameterY = Integer.parseInt(s_parameterY);
+
             //Ziehe das 'a' = 97 wieder ab um die Koordinate als Zahl zu bekommen
             i_parameterX -= 97;
             i_parameterY -= 97;
+
             //Mache Zug mit Farbe = 1 für Spieler schwarz
             this._spielfeld.macheZug(i_parameterX, i_parameterY, 1);
             break;
         case 10:
-            //Koordinaten wenn als Identifier 'W' erscheint
-            //Siehe case 9
+            /*
+             * Koordinaten wenn als Identifier 'W' erscheint
+             * Siehe case 9
+             *
+             */
             s_parameterX = s_parameter.substring(0,1);
             s_parameterY = s_parameter;
             i_parameterX = Integer.parseInt(s_parameterX);
             i_parameterY = Integer.parseInt(s_parameterY);
             i_parameterX -= 97;
             i_parameterY -= 97;
+
+            //Mache Zug mit Farbe = 2 für Spieler weiss
             this._spielfeld.macheZug(i_parameterX, i_parameterY, 2);
             break;
 
         default:
             break;
         }
-        //schneide aus Originalstring die schließende Klammer heraus
+        //Schneidet aus dem Originalstring die schließende Klammer heraus
         _geladenerString.substring(_klammer_zu);
         }
     }
