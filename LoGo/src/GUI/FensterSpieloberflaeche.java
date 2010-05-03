@@ -26,6 +26,9 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import javax.swing.JOptionPane;
 import logo.LoGoApp;
 
@@ -82,6 +85,10 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
     /* Double Buffering */
     String mess = "";
 
+    /* Fuer das Spielinfo-Fenster muss der Name der Spieler gespeichert werden */
+    String spielerSchwarzName;
+    String spielerWeissName;
+
     public FensterSpieloberflaeche(String pFenstername) {
         super(pFenstername);
 
@@ -100,6 +107,9 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
     }
 
     public void init() {
+        // Namen initialisieren
+        this.spielerSchwarzName = "";
+        this.spielerWeissName = "";
 
         GrafikLib lib = GrafikLib.getInstance();
 
@@ -495,10 +505,12 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
 
     public void setSpielernameWeiss(String spielername) {
         this.spielerZettelWeiss.setSpielername(spielername);
+        this.spielerWeissName = spielername;
     }
 
     public void setSpielernameSchwarz(String spielername) {
         this.spielerZettelSchwarz.setSpielername(spielername);
+        this.spielerSchwarzName = spielername;
     }
 
     public void setGefangeneSteineWeiss(int anzGefangenerSteiner) {
@@ -643,6 +655,28 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
     }
 
     private void buttonSpielInfoGedrueckt() {
+        /* Jetzt werden informationen zum Spiel ausgegeben */
+        long stundenSchwarz  = LoGoApp.meineSteuerung.getStartHauptzeitSchwarz()/(1000*60*60);
+        long minutenSchwarz  = LoGoApp.meineSteuerung.getStartHauptzeitSchwarz()/(1000*60) - stundenSchwarz*60;
+        long stundenWeiss    = LoGoApp.meineSteuerung.getStartHauptzeitWeiss()/(1000*60*60);
+        long minutenWeiss    = LoGoApp.meineSteuerung.getStartHauptzeitWeiss()/(1000*60) - stundenWeiss * 60;
+        long minutenPeriod   = LoGoApp.meineSteuerung.getPeriodenZeit()/(1000*60);
+        long sekundenPeriod  = LoGoApp.meineSteuerung.getPeriodenZeit()/(1000) - 60*minutenPeriod;
+
+        String ausgabe = "";
+        ausgabe += "Schwarz: " + this.spielerSchwarzName + "\n";
+        ausgabe += "Weiß: " + this.spielerWeissName + "\n";
+        ausgabe += "\n";
+        if(LoGoApp.meineSteuerung.getIgnoreTime() == false){
+            ausgabe += "Gesamtzeit Schwarz: " + stundenSchwarz + " Stunden, " + minutenSchwarz + " Minuten\n";
+            ausgabe += "Gesamtzeit Weiß: " + stundenWeiss + " Stunden, " + minutenWeiss + " Minuten\n";
+            ausgabe += "Byo-Yomi: " + minutenPeriod + " Minuten, " + sekundenPeriod + " Sekunden\n";
+            ausgabe += "\n";
+        }
+        NumberFormat numberFormat = new DecimalFormat("0.00");
+        numberFormat.setRoundingMode(RoundingMode.DOWN);
+        ausgabe += "Komi: " + numberFormat.format(LoGoApp.meineSteuerung.getKomiWeiss()) + "\n";
+        JOptionPane.showMessageDialog(this, ausgabe);
     }
 
     private void buttonCreditsGedrueckt() {

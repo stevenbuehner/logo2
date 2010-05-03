@@ -32,6 +32,10 @@ public class Steuerung implements SteuerungInterface {
     Countdown spielerZeitSchwarz;
     Countdown spielerZeitWeiss;
 
+    /* Startinfos zum Spiel */
+    long startZeitSchwarz = 0;
+    long startZeitWeiss = 0;
+
     public Steuerung() {
         this(9, 60 * 1000);     // Standardwerte
     }
@@ -505,6 +509,10 @@ public class Steuerung implements SteuerungInterface {
         } else {
             LoGoApp.meineOberflaeche.weissInPeriodenZeit(true);
         }
+
+        /* Startwerte der Zeiten abspeichern */
+        this.startZeitSchwarz = this.dasSpielfeld.getSpielerSchwarz().getVerbleibendeSpielzeitInMS();
+        this.startZeitWeiss   = this.dasSpielfeld.getSpielerWeiss().getVerbleibendeSpielzeitInMS();
         
         String validierungsAntwort = this.dasSpielfeld.spielfeldValidiert();
         if (validierungsAntwort != null) {
@@ -1299,5 +1307,38 @@ public class Steuerung implements SteuerungInterface {
         } else if (spielerFarbe == Konstante.SCHNITTPUNKT_WEISS) {
             LoGoApp.meineOberflaeche.setSpielerMeldungWeiss(nachicht);
         }
+    }
+
+    public float getKomiWeiss() {
+        if(this.dasSpielfeld!=null){
+            if(this.dasSpielfeld.getSpielerWeiss()!=null){
+                return this.dasSpielfeld.getSpielerWeiss().getKomiPunkte();
+            }
+        }
+        return 0;
+    }
+
+    public boolean getIgnoreTime() {
+        if(this.dasSpielfeld!=null){
+            return this.dasSpielfeld.getIgnoreTime();
+        }
+        else{
+            return true;
+        }
+    }
+
+    public long getStartHauptzeitSchwarz() {
+        return this.startZeitSchwarz;
+    }
+
+    public long getStartHauptzeitWeiss() {
+        return this.startZeitWeiss;
+    }
+
+    public long getPeriodenZeit() {
+        if(this.dasSpielfeld!=null){
+            return this.dasSpielfeld.getPeriodenZeit();
+        }
+        return 0;
     }
 }
