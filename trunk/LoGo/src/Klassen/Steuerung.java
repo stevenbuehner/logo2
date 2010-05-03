@@ -503,7 +503,7 @@ public class Steuerung implements SteuerungInterface {
         if(this.dasSpielfeld.getSpielerWeiss().getVerbleibendeSpielzeitInMS() > 0){
             LoGoApp.meineOberflaeche.weissInPeriodenZeit(false);
         } else {
-            LoGoApp.meineOberflaeche.weissInPeriodenZeit(false);
+            LoGoApp.meineOberflaeche.weissInPeriodenZeit(true);
         }
         
         String validierungsAntwort = this.dasSpielfeld.spielfeldValidiert();
