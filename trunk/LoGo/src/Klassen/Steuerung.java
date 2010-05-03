@@ -550,6 +550,10 @@ public class Steuerung implements SteuerungInterface {
                 this.spielerZeitSchwarz.setRemainingTime(1);
                 this.spielerZeitWeiss.setRemainingTime(1);
             }
+
+            /* Die Variable fuer die zugnummer muss eingestellt werden */
+            this.setAktuelleAngeigteZugnummer(this.dasSpielfeld.getLetzteZugnummer());
+            
             /* Der Obeflaeche das aktuelle Spielfeld übergeben, damit
              * Vorgaben etc. eingezeichnet werden können
              */
