@@ -7,7 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
-import Logo2.LoGoApp;
+import logo.LoGoApp;
 
 /**
  *
