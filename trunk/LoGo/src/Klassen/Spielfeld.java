@@ -89,7 +89,7 @@ public class Spielfeld {
                 this.initialfeld[i][j] = Konstante.SCHNITTPUNKT_LEER;
             }
         }
-        this.setIgnoreTime(true);
+        this.setIgnoreTime(false);
     }
 
     /**
