@@ -4,6 +4,7 @@ import Klassen.Konstante;
 import Interfaces.SpielerUhren;
 import Interfaces.SpielerZettel;
 import Interfaces.OberflaecheInterface;
+import Sound.SoundLib;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -40,6 +41,8 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
     private final static int STANDARD_SPIELFELD_BREITE = 496;
     private final static int STANDARD_SPIELFELD_XPOS = 497;
     private final static int STANDARD_SPIELFELD_YPOS = 158;
+    private final static long STANDARD_ALARM_XX_SEK_VORSCHLUSS = 10*1000;
+
     // Damit dass Spiel fluessig laueft
     private long delta = 0;
     private long last = 0;
@@ -458,11 +461,23 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         if (this.spielerUhrWeiss != null) {
             this.spielerUhrWeiss.restzeitInMS(periodenZeitInMS);
         }
+
+        if( periodenZeitInMS <= FensterSpieloberflaeche.STANDARD_ALARM_XX_SEK_VORSCHLUSS){
+            if( periodenZeitInMS > (STANDARD_ALARM_XX_SEK_VORSCHLUSS-1000)){
+                SoundLib.getInstance().playSound("alarm");
+            }
+        }
     }
 
     public void setAnzeigePeriodenZeitSchwarz(long periodenZeitInMS) {
         if (this.spielerUhrSchwarz != null) {
             this.spielerUhrSchwarz.restzeitInMS(periodenZeitInMS);
+        }
+
+        if( periodenZeitInMS <= FensterSpieloberflaeche.STANDARD_ALARM_XX_SEK_VORSCHLUSS){
+            if( periodenZeitInMS > (STANDARD_ALARM_XX_SEK_VORSCHLUSS-1000)){
+                SoundLib.getInstance().playSound("alarm");
+            }
         }
     }
 
