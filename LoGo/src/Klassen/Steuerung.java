@@ -63,7 +63,6 @@ public class Steuerung implements SteuerungInterface {
             int spielfeldGroesse,
             int vorgabeSteineFuerSchwarz) {
 
-        this.aktuellAngezeigteZugnummer = 0;
         Spielfeld tmpSpielfeld = new Spielfeld(spielfeldGroesse);
 
         tmpSpielfeld.setSpielerSchwarz(new Spieler(spielerNameSchwarz, spielZeitSchwarz, 0, 0));
@@ -84,7 +83,7 @@ public class Steuerung implements SteuerungInterface {
     public void initMitSpielfeld(Spielfeld bereitsInitialisiertesSpielfeld) {
 
         if (bereitsInitialisiertesSpielfeld != null) {
-            String validierungsAntwort = this.dasSpielfeld.spielfeldValidiert();
+            String validierungsAntwort = bereitsInitialisiertesSpielfeld.spielfeldValidiert();
 
             if (validierungsAntwort == null) {
                 this.dasSpielfeld = bereitsInitialisiertesSpielfeld;
@@ -114,7 +113,7 @@ public class Steuerung implements SteuerungInterface {
 
             } else {
                 if (LoGoApp.debug) {
-                    System.out.println("Spielfeld ist nicht VALIDE in der Steuerung angekommen!!");
+                    System.out.println("Spielfeld ist nicht VALIDE in der Steuerung angekommen!!\n"+validierungsAntwort);
                 }
             }
         }
@@ -465,6 +464,21 @@ public class Steuerung implements SteuerungInterface {
         }
     }
 
+
+    /**
+     * @see SteuerungInterface
+     */
+    public void buttonNeuesSchnellstartSpiel() {
+        Spielfeld standardSpiel = new Spielfeld(9);
+        
+        standardSpiel.setSpielerSchwarz(new Spieler("Schwarz", 45 * 60 * 1000, 0, 0));
+        standardSpiel.setSpielerWeiss(new Spieler("Weiß", 45 * 60 * 1000, 0, 0));
+        standardSpiel.setPeriodenZeit(60*1000);
+
+        this.initMitSpielfeld(standardSpiel);
+        this.buttonSpielStarten();
+    }
+
     /**Implementierung des Interfaces
      * @see SteuerungInterface
      */
@@ -805,7 +819,6 @@ public class Steuerung implements SteuerungInterface {
                 System.out.println("Das Senden zur DB geht erst NACH der Spielauswertung!");
             }
         }
-
 
         if (this.dasSpielfeld == null) {
             return;
