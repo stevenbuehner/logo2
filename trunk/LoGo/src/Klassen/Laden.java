@@ -83,6 +83,11 @@ public class Laden {
         return _id;
     }
 
+    Laden(Spielfeld getSpielfeld){
+        //Instanz von Spielfeld wird der Speicherklasse im Konstruktor übergeben
+        this._spielfeld = getSpielfeld;
+    }
+
     public void LadeSpiel( ){
 
         try{
