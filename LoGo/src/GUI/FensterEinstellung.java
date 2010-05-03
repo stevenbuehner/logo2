@@ -18,6 +18,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import logo.LoGoApp;
@@ -878,7 +879,8 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
             return;
         }
         else{
-            if(this.dasSpielfeld.spielfeldValidiert() == true){
+            String validierungsAntwort = this.dasSpielfeld.spielfeldValidiert();
+            if(validierungsAntwort == null){
                 LoGoApp.meineSteuerung.initMitDatenModell(this.dasSpielfeld, this.getNameSchwarz(), this.getNameWeiss(), zeitSchwarz, zeitWeiss, periodenzeit, this.getKomi());
                 LoGoApp.meineSteuerung.buttonSpielStarten();
                  /* Jetzt spiel Starten */
@@ -886,7 +888,10 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
                 return;
             }
             else{
-                System.out.println("Feld nicht valide");
+                if(LoGoApp.debug){
+                    System.out.println("Feld nicht valide");
+                }
+                JOptionPane.showConfirmDialog(this, "Ihre Eingaben sind nicht zulässig!\n" + validierungsAntwort);
             }
         }
 

@@ -1,6 +1,7 @@
 package Klassen;
 
 import GUI.GrafikLib;
+import logo.LoGoApp;
 
 /**
  *
@@ -23,6 +24,10 @@ public class GrafikVorlader {
         GrafikLib lib = GrafikLib.getInstance();
         String base = "GUI/resources/";
 
+        if (LoGoApp.debug) {
+            System.out.println("Beginne mit dem Laden der Grafiken in den Speicher");
+        }
+
         // Kugelgrafiken
         lib.getSprite(base + "Kugel_7x7.png");
         lib.getSprite(base + "Kugel_9x9.png");
@@ -42,10 +47,10 @@ public class GrafikVorlader {
         lib.getSprite(base + "MarkierterStein2_9x9.png");
         lib.getSprite(base + "MarkierterStein3_9x9.png");
 
-        // Minutenzeiger
-        lib.getSprite(base + "MinutenZeigerHuebsch1.png");
+        // Uhrzeiger
         lib.getSprite(base + "MinutenZeigerHuebsch2.png");
-
+        lib.getSprite(base + "sekZeiger1.png");
+        lib.getSprite(base + "stundenZeigerHuebsch2.png");
 
         // Screen Grafiken
         lib.getSprite(base + "Auswertungsanzeige.jpg");
@@ -53,6 +58,9 @@ public class GrafikVorlader {
         lib.getSprite(base + "PauseScreen.jpg");
         lib.getSprite(base + "SpielTisch2.jpg");
         lib.getSprite(base + "StartScreen.jpg");
-        
+
+        if (LoGoApp.debug) {
+            System.out.println("Grafiken fertig in den Speicher geladen");
+        }
     }
 }
