@@ -489,18 +489,34 @@ public class Steuerung implements SteuerungInterface {
             // Vorraussetzung zum Initialisieren ist ein Objekt vom Typ Spieler in this.dasSpielfeld
             if (this.dasSpielfeld.getSpielerSchwarz() != null
                     || this.dasSpielfeld.getSpielerWeiss() != null) {
-                this.periodenZeitSchwarz = new CountdownPeriodenZeitSchwarz(
+                if(this.dasSpielfeld.getIgnoreTime() == false){
+                    this.periodenZeitSchwarz = new CountdownPeriodenZeitSchwarz(
                         false,
                         this.dasSpielfeld.getPeriodenZeit());
-                this.periodenZeitWeiss = new CountdownPeriodenZeitWeiss(
+                    this.periodenZeitWeiss = new CountdownPeriodenZeitWeiss(
                         false,
                         this.dasSpielfeld.getPeriodenZeit());
-                this.spielerZeitSchwarz = new CountdownSpielerZeitSchwarz(
+                    this.spielerZeitSchwarz = new CountdownSpielerZeitSchwarz(
                         false,
                         this.dasSpielfeld.getSpielerSchwarz().getVerbleibendeSpielzeitInMS());
-                this.spielerZeitWeiss = new CountdownSpielerZeitWeiss(
+                    this.spielerZeitWeiss = new CountdownSpielerZeitWeiss(
                         false,
                         this.dasSpielfeld.getSpielerWeiss().getVerbleibendeSpielzeitInMS());
+                }
+                else {
+                    this.periodenZeitSchwarz = new CountdownPeriodenZeitSchwarz(
+                        false,
+                        1);
+                    this.periodenZeitWeiss = new CountdownPeriodenZeitWeiss(
+                        false,
+                        1);
+                    this.spielerZeitSchwarz = new CountdownSpielerZeitSchwarz(
+                        false,
+                        1);
+                    this.spielerZeitWeiss = new CountdownSpielerZeitWeiss(
+                        false,
+                        1);
+                }
             }
 
             // Oberfläche füllen
@@ -543,11 +559,17 @@ public class Steuerung implements SteuerungInterface {
                     this.dasSpielfeld.getMarkiertenSteinZumZeitpunkt(aktuellAngezeigteZugnummer));
 
             // Der Oberfläche den Spieler der am Zug ist übergeben und benötigte Timer starten
+            if (this.dasSpielfeld.getIgnoreTime() == false){
+                if (this.dasSpielfeld.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ) {
+                    this.spielerZeitSchwarz.starteCountdown();
+                } else {
+                    this.spielerZeitWeiss.starteCountdown();
+                }
+            }
             if (this.dasSpielfeld.getSpielerFarbeAnDerReihe() == Konstante.SCHNITTPUNKT_SCHWARZ) {
-                this.spielerZeitSchwarz.starteCountdown();
                 LoGoApp.meineOberflaeche.setSchwarzAmZug();
-            } else {
-                this.spielerZeitWeiss.starteCountdown();
+            }
+            else {
                 LoGoApp.meineOberflaeche.setWeissAmZug();
             }
             LoGoApp.meineOberflaeche.setSpielernameSchwarz(this.dasSpielfeld.getSpielerSchwarz().getSpielerName());
