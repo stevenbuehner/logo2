@@ -468,10 +468,10 @@ public class Steuerung implements SteuerungInterface {
      * @see SteuerungInterface
      */
     public void buttonNeuesSchnellstartSpiel() {
-        Spielfeld standardSpiel = new Spielfeld(9);
+        Spielfeld standardSpiel = new Spielfeld(13);
         
-        standardSpiel.setSpielerSchwarz(new Spieler("Schwarz", 45 * 60 * 1000, 0, 0));
-        standardSpiel.setSpielerWeiss(new Spieler("Weiß", 45 * 60 * 1000, 0, 0));
+        standardSpiel.setSpielerSchwarz(new Spieler("Schwarz", 30 * 60 * 1000, 0, 0));
+        standardSpiel.setSpielerWeiss(new Spieler("Weiß", 30 * 60 * 1000, 0, 0));
         standardSpiel.setPeriodenZeit(60*1000);
 
         this.initMitSpielfeld(standardSpiel);
