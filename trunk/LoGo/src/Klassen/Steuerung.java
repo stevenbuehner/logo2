@@ -402,7 +402,6 @@ public class Steuerung implements SteuerungInterface {
                     LoGoApp.meineOberflaeche.setPauseScreen(true);
 
                     userResponse = JOptionPane.showConfirmDialog(null, "Das aktuelle Spiel ist noch am Laufen. \nWenn Sie ein neues Spiel starten, wird das alte beendet. Wollen Sie das wirklich?");
-                    ;
 
                     Spielfeld brett = this.dasSpielfeld;
 
