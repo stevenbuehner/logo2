@@ -1,5 +1,6 @@
 package Klassen;
 
+import GUI.FensterSpieloberflaeche;
 import Timer.Countdown;
 import Timer.CountdownPeriodenZeitSchwarz;
 import Timer.CountdownPeriodenZeitWeiss;
@@ -83,8 +84,9 @@ public class Steuerung implements SteuerungInterface {
     public void initMitSpielfeld(Spielfeld bereitsInitialisiertesSpielfeld) {
 
         if (bereitsInitialisiertesSpielfeld != null) {
-            if (bereitsInitialisiertesSpielfeld.spielfeldValidiert() == true) {
+            String validierungsAntwort = this.dasSpielfeld.spielfeldValidiert();
 
+            if (validierungsAntwort == null) {
                 this.dasSpielfeld = bereitsInitialisiertesSpielfeld;
                 this.dieSpielfeldAuswertung = null;
                 // Timer initialisieren
@@ -94,7 +96,10 @@ public class Steuerung implements SteuerungInterface {
 
                     InetAddress addr = InetAddress.getLocalHost();
                     ipAddr = addr.getHostAddress();
-                    System.out.println("IP-Adresse: " + ipAddr);
+
+                    if(LoGoApp.debug){
+                        System.out.println("IP-Adresse: " + ipAddr);
+                    }
 
                 } catch (UnknownHostException ex) {
                     Logger.getLogger(Steuerung.class.getName()).log(Level.SEVERE, null, ex);
@@ -110,7 +115,10 @@ public class Steuerung implements SteuerungInterface {
 
 
             } else {
-                throw new UnsupportedOperationException("Es wurde ein leeres Spiel an die Steuerung übergeben! Das geht nicht.");
+                if(LoGoApp.debug){
+                    System.out.println("Spielfeld ist nicht VALIDE in der Steuerung angekommen!!");
+                }
+                // throw new UnsupportedOperationException("Es wurde ein leeres Spiel an die Steuerung übergeben! Das geht nicht.");
                 // JOptionPane.showConfirmDialog(null, "Das erstelle Spielfeld ist ungültig. Bitte versuchen Sie es erneut.");
             }
         }
@@ -149,9 +157,11 @@ public class Steuerung implements SteuerungInterface {
     public void klickAufFeld(int xPos, int yPos) {
 
         // Zum Debuggen
-        System.out.println("Klick auf Punkt (" + xPos + "|" + yPos + ")");
+        if(LoGoApp.debug){
+            System.out.println("Klick auf Punkt (" + xPos + "|" + yPos + ")");
+        }
 
-        if (this.dasSpielfeld == null) {
+        if (this.dasSpielfeld == null && LoGoApp.debug) {
             System.out.println("Es existiert noch kein Spielfeld in klickeAufFeld() in Steuerung");
             return;
         }
@@ -471,7 +481,8 @@ public class Steuerung implements SteuerungInterface {
             /* Da noch kein Spielfeld existiert, das gestartet werden kann */
         }
 
-        if (this.dasSpielfeld.spielfeldValidiert() == false) {
+        String validierungsAntwort = this.dasSpielfeld.spielfeldValidiert();
+        if (validierungsAntwort != null) {
             throw new UnsupportedOperationException("Spielfeld nicht valide! Spiel kann nicht gestartet werden");
         } else {
             // Timer initialisieren
@@ -696,7 +707,9 @@ public class Steuerung implements SteuerungInterface {
             // Spielstatus auf pausiert setzen.
             this.wechsleInStatus(Konstante.SPIEL_PAUSIERT);
         } else {
-            System.out.println("Spiel Pausieren in Steuerung aktiviert, aber das ist nicht erlaubt");
+            if(LoGoApp.debug){
+                System.out.println("Spiel Pausieren in Steuerung aktiviert, aber das ist nicht erlaubt");
+            }
         }
     }
 
@@ -761,10 +774,14 @@ public class Steuerung implements SteuerungInterface {
             boolean returnWert = this.historyVersenden(this.dasSpielfeld.getSpielerSchwarz().getSpielerName(),
                     this.dasSpielfeld.getSpielerWeiss().getSpielerName(),
                     pSchw, pWeiss );
-            System.out.println( "Spielstand zur DB gesendet: " + returnWert);
+            if(LoGoApp.debug){
+                System.out.println( "Spielstand zur DB gesendet: " + returnWert);
             }
+        }
         else{
-            System.out.println( "Das Senden zur DB geht erst NACH der Spielauswertung!");
+            if(LoGoApp.debug){
+                System.out.println( "Das Senden zur DB geht erst NACH der Spielauswertung!");
+            }
         }
 
 
@@ -799,10 +816,36 @@ public class Steuerung implements SteuerungInterface {
      * @see SteuerungInterface
      */
     public void buttonSpielLaden() {
-        if (true) {
 
-        } else {
-            JOptionPane.showMessageDialog(null, "Laden nicht möglich weil ...");
+        int returnWert = JOptionPane.CANCEL_OPTION;
+
+        if (this.dasSpielfeld != null && this.dasSpielfeld.getSpielZustand() != Konstante.SPIEL_BEENDET){
+            // Spiel läuft noch
+            if (this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_LAUEFT) {
+                returnWert = JOptionPane.showConfirmDialog(null, "Das Spiel läuft noch, wollen Sie es wirklich beenden und ein neues Laden?");
+            } else if (this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_PAUSIERT) {
+                returnWert = JOptionPane.showConfirmDialog(null, "Das Spiel pausiert gerade, wollen Sie es wirklich beenden um ein neues zu laden?");
+            } else if (this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_GEBIETSAUSWERTUNG) {
+                returnWert = JOptionPane.showConfirmDialog(null, "Das Spiel wird gerade ausgewertet, wollen Sie es wirklich beenden um ein neues zu laden?");
+            }
+        }
+
+        if ( returnWert == JOptionPane.CANCEL_OPTION ){
+            // Ess soll ein neues Spiel geladen werden
+            Laden ladenObjekt = new Laden();
+            
+            Spielfeld neuesSpielfeld = ladenObjekt.getSpielfeld();
+            String fehlermeldung = null;
+
+            if(neuesSpielfeld != null){
+                fehlermeldung = neuesSpielfeld.spielfeldValidiert();
+            }
+
+            if(fehlermeldung == null){
+                this.initMitSpielfeld(neuesSpielfeld);
+            }else{
+                JOptionPane.showConfirmDialog((FensterSpieloberflaeche) LoGoApp.meineOberflaeche, "Das geladene Spielfeld entählt nicht zulässige Werte.\nBitte verwenden Sie ausschließlich zugelassene SGF-Spieldateien.");
+            }
         }
     }
 
@@ -1158,7 +1201,9 @@ public class Steuerung implements SteuerungInterface {
         histEintr.setPunkteSpielerSchwarz(punkteSchwarz);
         histEintr.setPunkteSpielerWeiss(punkteWeiss);
         histEintr.setDatum(new java.sql.Date( System.currentTimeMillis() ));
-        System.out.println(histEintr.getDatum());
+        if(LoGoApp.debug){
+            System.out.println(histEintr.getDatum());
+        }
 
         try {
             hc.open();
