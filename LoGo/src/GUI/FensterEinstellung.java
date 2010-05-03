@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package GUI;
 
 import Klassen.Konstante;
@@ -435,7 +430,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
 
         this.spielermodus.addItem("Schnellstart");
         this.spielermodus.addItem("Vorgabe");
-        this.spielermodus.addItem("Startfeld");
+        this.spielermodus.addItem("Startformation");
 
         this.spielVorgabeSteine.addItem("0");
         this.spielVorgabeSteine.addItem("2");
@@ -503,7 +498,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
                 this.seitenoffset = 16;
                 break;
         }
-        if(this.momSpielModus.equals("Startfeld") &&
+        if(this.momSpielModus.equals("Startformation") &&
            e.getX()-15>=this.brettXOffset && e.getX()-15<=this.brettXOffset+this.brettbreite &&
            e.getY()-24>=this.brettYOffset && e.getY()-24<=this.brettYOffset+this.bretthoehe){
 
@@ -967,7 +962,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
             this.animiereFrameEnde();
 
         }
-        else if(modus.equals("Startfeld")){
+        else if(modus.equals("Startformation")){
             this.spielVorgabeSteine.setEnabled(false);
             this.spielBrettHinweise.setName("Mit eigenem Feld spielen");
             this.spielBrettHinweise.setText("<HTML><BODY>Linksklick für Schwarz Rechtsklick für Weiß Gleiche Farben heben sich auf.</BODY></HTML>");
