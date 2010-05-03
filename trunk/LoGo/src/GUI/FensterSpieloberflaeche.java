@@ -674,59 +674,6 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         LoGoApp.meineSteuerung.buttonAuswertungBeendet();
     }
 
-    public void ergebnisAuszaehlenZeigen(String nameSchwarz, String nameWeiss, float komiFuerWeiss, int gebietsPunktSchwarz, int gebietsPunkteWeiss,
-            int schwarzeGefangenImSpiel, int weisseGefangenImSpiel, int schwarzeSteineTotAufBrett, int weisseSteineTotAufBrett) {
-        if (LoGoApp.debug) {
-            System.out.println("Name Schwarz: " + nameSchwarz);
-            System.out.println("Name Weiss: " + nameWeiss);
-            System.out.println("Gebietspunkte Schwarz: " + gebietsPunktSchwarz);
-            System.out.println("Gebietspunkte Weiss: " + gebietsPunkteWeiss);
-            System.out.println("Gefangene Schwarze im Spiel: " + schwarzeGefangenImSpiel);
-            System.out.println("Gefangene Weisse im Spiel: " + weisseGefangenImSpiel);
-            System.out.println("Tote Schwarze auf Brett: " + schwarzeSteineTotAufBrett);
-            System.out.println("Tote Weisse auf Brett: " + weisseSteineTotAufBrett);
-            System.out.println("Komi fuer Weiss: " + komiFuerWeiss);
-        }
-    }
-
-    public void ergebnisAufgebenZeigen(String nameSchwarz, String nameWeiss, int konstanteFuerGewinner) {
-        /* Erstmal zum Debugen */
-        if (LoGoApp.debug) {
-            System.out.println("Name Schwarz: " + nameSchwarz);
-            System.out.println("Name Weiss: " + nameWeiss);
-        }
-
-        String gewinner;
-        if (konstanteFuerGewinner == Konstante.SCHNITTPUNKT_SCHWARZ) {
-            gewinner = "Schwarz";
-        } else {
-            gewinner = "Weiss";
-        }
-
-        if (LoGoApp.debug) {
-            System.out.println(gewinner + " gewinnt durch Aufgabe");
-        }
-    }
-
-    public void ergebnisAufZeitVerlorenZeigen(String nameSchwarz, String nameWeiss, int konstanteFuerGewinner) {
-        /* Erstmal zum Debugen */
-        if (LoGoApp.debug) {
-            System.out.println("Name Schwarz: " + nameSchwarz);
-            System.out.println("Name Weiss: " + nameWeiss);
-        }
-
-        String gewinner;
-        if (konstanteFuerGewinner == Konstante.SCHNITTPUNKT_SCHWARZ) {
-            gewinner = "Schwarz";
-        } else {
-            gewinner = "Weiss";
-        }
-
-        if (LoGoApp.debug) {
-            System.out.println(gewinner + " gewinnt durch Zeit");
-        }
-    }
-
     public void visibleNeuesSpiel(boolean visible) {
         this.AuswertungBeenden.setEnabled(visible);
     }

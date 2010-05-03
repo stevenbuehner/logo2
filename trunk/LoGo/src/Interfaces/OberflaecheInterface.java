@@ -121,21 +121,6 @@ public interface OberflaecheInterface {
      */
     public void setPauseScreen(boolean setPause);
 
-    // public void setAuswertungsButtonsVisible (boolean visible );
-    /**
-     * Ist das Spiel beendet, so wird das Ergebnis angezeigt. Das bedeutet, das
-     * Feld darf nicht mehr gezeichnet werden und stattdessen wird das Ergebnis
-     * des Spiels angezeigt.
-     */
-    public void ergebnisAuszaehlenZeigen(String nameSchwarz, String nameWeiss, float komiFuerWeiss,
-            int gebietsPunktSchwarz, int gebietsPunkteWeiss,
-            int schwarzeGefangenImSpiel, int weisseGefangenImSpiel,
-            int schwarzeSteineTotAufBrett, int weisseSteineTotAufBrett);
-
-    public void ergebnisAufgebenZeigen(String nameSchwarz, String nameWeiss, int konstanteFuerGewinner);
-
-    public void ergebnisAufZeitVerlorenZeigen(String nameSchwarz, String nameWeiss, int konstanteFuerGewinner);
-
     /**
      * Die Schaltflaechen auf der Oberflaeche fuer Passen und Aufgeben werden
      * je nach Spielstatus freigegeben
