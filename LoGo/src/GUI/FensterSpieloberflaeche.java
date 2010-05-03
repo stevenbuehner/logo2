@@ -680,6 +680,7 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
     }
 
     private void buttonCreditsGedrueckt() {
+        LoGoApp.meineSteuerung.buttonZeigeCreditsGedrueckt();
     }
 
     private void buttonUndoGedrueckt() {

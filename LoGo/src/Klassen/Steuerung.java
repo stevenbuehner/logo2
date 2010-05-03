@@ -7,6 +7,7 @@ import Timer.CountdownPeriodenZeitWeiss;
 import Timer.CountdownSpielerZeitSchwarz;
 import Timer.CountdownSpielerZeitWeiss;
 import Interfaces.SteuerungInterface;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
@@ -462,7 +463,7 @@ public class Steuerung implements SteuerungInterface {
                 this.spielerZeitWeiss.stoppeCountdown();
                 this.spielerZeitSchwarz.stoppeCountdown();
                 LoGoApp.meineOberflaeche.setVisible(false);
-                LoGoApp.meinEinstellungsfenster.setVisible(true);
+                LoGoApp.meinEinstellungsfenster.macheFensterSichtbar(true);
             }
         }
     }
@@ -487,7 +488,7 @@ public class Steuerung implements SteuerungInterface {
     public void buttonSpielStarten() {
         // Überprüfe ob die Initialisierung korrekt war
         LoGoApp.meineOberflaeche.setVisible(true);
-        LoGoApp.meinEinstellungsfenster.setVisible(false);
+        LoGoApp.meinEinstellungsfenster.macheFensterSichtbar(false);
         LoGoApp.meinAuswertungsfenster.setVisible(false);
 
         
@@ -1340,5 +1341,15 @@ public class Steuerung implements SteuerungInterface {
             return this.dasSpielfeld.getPeriodenZeit();
         }
         return 0;
+    }
+
+    public void buttonZeigeCreditsGedrueckt() {
+        
+            try {
+                Runtime.getRuntime().exec("evince ../GUI/resources/ChinesischerRestsatz.pdf");
+            } catch (IOException ex) {
+                Logger.getLogger(Steuerung.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
     }
 }

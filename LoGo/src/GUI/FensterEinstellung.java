@@ -903,15 +903,8 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      * der Fehlerstring geleert
      */
     private void outputMessageToUser() {
-        System.out.print(this.errorString);
+        JOptionPane.showMessageDialog(this, this.errorString);
         this.errorString = "";
-    }
-
-    /**
-     * Das Spielfeld (Datenmodell) wird neu mit gewaehlter Vorgabezahl initialisiert
-     */
-    private void initFeld() {
-        this.dasSpielfeld.initialisiereFeldMitVorgabenFuerSchwarz(this.getVorgabeWert());
     }
 
     /**
@@ -976,5 +969,16 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
             this.dasSpielfeld.initialisiereFeldMitVorgabenFuerSchwarz(this.getVorgabeWert());
             this.dasSpielfeldGUI.updateSpielFeld(this.dasSpielfeld.getSpielfeldZumZeitpunkt(0));
         }
+    }
+
+    public void macheFensterSichtbar(boolean b){
+        if(b==true){
+            this.dasSpielfeld = new Spielfeld(getSelectedFeldgroesse());
+            this.dasSpielfeldGUI.updateSpielFeld(this.dasSpielfeld.getAktuellesSpielFeld());
+            this.setVisible(true);
+        }else{
+            this.setVisible(false);
+        }
+
     }
 }
