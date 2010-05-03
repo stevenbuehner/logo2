@@ -153,13 +153,13 @@ public class FensterAuswertung extends JFrame implements MouseListener {
             g.setFont(myFont);
             g.drawString(this.spielerSchwarzName, this.xKoordSchw, this.yOffset);
             g.drawString("Gebietspunkte: "+this.spielerSchwarzGebietspunkte, this.xKoordSchw, this.yOffset + this.zeilenabstand);
-            g.drawString("Gefangen: "+this.spielerSchwarzAufBrettGefangen, this.xKoordSchw, this.yOffset + 2*this.zeilenabstand);
-            g.drawString("Gefangen auf Brett: "+this.spielerSchwarzImSpielGefangen, this.xKoordSchw, this.yOffset + 3*this.zeilenabstand);
+            g.drawString("Gefangen: "+this.spielerSchwarzImSpielGefangen, this.xKoordSchw, this.yOffset + 2*this.zeilenabstand);
+            g.drawString("Gefangen auf Brett: " + this.spielerSchwarzAufBrettGefangen, this.xKoordSchw, this.yOffset + 3*this.zeilenabstand);
 
             g.drawString(this.spielerWeissName, this.xKoordWeiss, this.yOffset);
             g.drawString("Gebietspunkte: "+this.spielerWeissGebietspunkte, this.xKoordWeiss, this.yOffset + this.zeilenabstand);
-            g.drawString("Gefangen: "+this.spielerWeissAufBrettGefangen, this.xKoordWeiss, this.yOffset + 2*this.zeilenabstand);
-            g.drawString("Gefangen auf Brett: "+this.spielerWeissImSpielGefangen, this.xKoordWeiss, this.yOffset + 3*this.zeilenabstand);
+            g.drawString("Gefangen: "+this.spielerWeissImSpielGefangen, this.xKoordWeiss, this.yOffset + 2*this.zeilenabstand);
+            g.drawString("Gefangen auf Brett: "+this.spielerWeissAufBrettGefangen, this.xKoordWeiss, this.yOffset + 3*this.zeilenabstand);
             
             NumberFormat numberFormat = new DecimalFormat("0.00");
             numberFormat.setRoundingMode(RoundingMode.DOWN);
@@ -251,8 +251,6 @@ public class FensterAuswertung extends JFrame implements MouseListener {
             this.spielerWeissKomi = 0;
         }
 
-        this.spielerSchwarzKomi = 0;
-        this.spielerWeissKomi = komiFuerWeiss;
         this.ergebnisFuerWeiss = (this.spielerWeissAufBrettGefangen + this.spielerWeissGebietspunkte + this.spielerWeissImSpielGefangen + this.spielerWeissKomi)
                                  - (this.spielerSchwarzAufBrettGefangen + this.spielerSchwarzGebietspunkte + this.spielerSchwarzImSpielGefangen + this.spielerSchwarzKomi);
         this.wieWurdeBeendet = FensterAuswertung.DURCH_AUSZAEHLEN_BEENDET;
