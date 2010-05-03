@@ -54,6 +54,12 @@ public interface SteuerungInterface {
             float komiFuerWeiss);
 
     /**
+     * Initialisiere das Spiel mit einem @param bereitsInitialisiertesSpielfeld
+     * Diese Funktion sorgt selbst für eine Validierung ...
+     */
+    public void initMitSpielfeld(Spielfeld bereitsInitialisiertesSpielfeld);
+
+    /**
      * Wenn bei der GUI auf einen Schnittpunkt geklickt wurde, muss die
      * Steuerung reagieren. Die Koordinaten werden dann uebermittelt
      * @param xPos X-Koordinate (1-Spielfeldgroesse)
@@ -65,6 +71,11 @@ public interface SteuerungInterface {
      * Der spieler wünscht ein neues Spiel
      */
     public void buttonNeuesSpiel();
+
+    /**
+     * Starte schnell ein neues Spiel, egal wie es da drin ausschaut.
+     */
+    public void buttonNeuesSchnellstartSpiel();
 
     /**
      * Spieler klickt auf "Spiel Starten" damit wird dann die Validierung

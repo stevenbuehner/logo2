@@ -527,6 +527,7 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
     }
 
     public void mouseClicked(MouseEvent e) {
+
         if (this.dasBrett != null) {
             Point returnWert = this.dasBrett.berechneTreffer(e.getX(), e.getY());
             if (returnWert != null) {
@@ -535,6 +536,11 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
             } else {
                 mess = "kein Treffer mit Clicked-Koordinaten: " + e.getX() + " | " + e.getY();
             }
+        }
+        else{
+            // Start-Screen wird angezeigt.
+            // Bei einem Klick starte sofort mit Schnellstartmode
+            LoGoApp.meineSteuerung.buttonNeuesSchnellstartSpiel();
         }
     }
 
