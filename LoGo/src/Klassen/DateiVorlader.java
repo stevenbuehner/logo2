@@ -24,42 +24,43 @@ public class DateiVorlader {
 
         GrafikLib gLib = GrafikLib.getInstance();
         SoundLib sLib = SoundLib.getInstance();
-        String base = "GUI/resources/";
+        String baseGrafik = "GUI/resources/";
+        String baseSound = "Sound/resources/";
 
         if (LoGoApp.debug) {
             System.out.println("Beginne mit dem Laden der Grafiken in den Speicher");
         }
 
         // Kugelgrafiken
-        gLib.getSprite(base + "Kugel_7x7.png");
-        gLib.getSprite(base + "Kugel_9x9.png");
-        gLib.getSprite(base + "Kugel_13x13.png");
-        gLib.getSprite(base + "Kugel_15x15.png");
-        gLib.getSprite(base + "Kugel_17x17.png");
-        gLib.getSprite(base + "Kugel_19x19.png");
+        gLib.getSprite(baseGrafik + "Kugel_7x7.png");
+        gLib.getSprite(baseGrafik + "Kugel_9x9.png");
+        gLib.getSprite(baseGrafik + "Kugel_13x13.png");
+        gLib.getSprite(baseGrafik + "Kugel_15x15.png");
+        gLib.getSprite(baseGrafik + "Kugel_17x17.png");
+        gLib.getSprite(baseGrafik + "Kugel_19x19.png");
 
         // Markierte Steine
-        gLib.getSprite(base + "MarkierterStein_7x7.png");
-        gLib.getSprite(base + "MarkierterStein_9x9.png");
-        gLib.getSprite(base + "MarkierterStein_13x13.png");
-        gLib.getSprite(base + "MarkierterStein_15x15.png");
-        gLib.getSprite(base + "MarkierterStein_17x17.png");
-        gLib.getSprite(base + "MarkierterStein_19x19.png");
+        gLib.getSprite(baseGrafik + "MarkierterStein_7x7.png");
+        gLib.getSprite(baseGrafik + "MarkierterStein_9x9.png");
+        gLib.getSprite(baseGrafik + "MarkierterStein_13x13.png");
+        gLib.getSprite(baseGrafik + "MarkierterStein_15x15.png");
+        gLib.getSprite(baseGrafik + "MarkierterStein_17x17.png");
+        gLib.getSprite(baseGrafik + "MarkierterStein_19x19.png");
 
-        gLib.getSprite(base + "MarkierterStein2_9x9.png");
-        gLib.getSprite(base + "MarkierterStein3_9x9.png");
+        gLib.getSprite(baseGrafik + "MarkierterStein2_9x9.png");
+        gLib.getSprite(baseGrafik + "MarkierterStein3_9x9.png");
 
         // Uhrzeiger
-        gLib.getSprite(base + "MinutenZeigerHuebsch2.png");
-        gLib.getSprite(base + "sekZeiger1.png");
-        gLib.getSprite(base + "stundenZeigerHuebsch2.png");
+        gLib.getSprite(baseGrafik + "MinutenZeigerHuebsch2.png");
+        gLib.getSprite(baseGrafik + "sekZeiger1.png");
+        gLib.getSprite(baseGrafik + "stundenZeigerHuebsch2.png");
 
         // Screen Grafiken
-        gLib.getSprite(base + "Auswertungsanzeige.jpg");
-        gLib.getSprite(base + "GUI_v1.png");
-        gLib.getSprite(base + "PauseScreen.jpg");
-        gLib.getSprite(base + "SpielTisch2.jpg");
-        gLib.getSprite(base + "StartScreen.jpg");
+        gLib.getSprite(baseGrafik + "Auswertungsanzeige.jpg");
+        gLib.getSprite(baseGrafik + "GUI_v1.png");
+        gLib.getSprite(baseGrafik + "PauseScreen.jpg");
+        gLib.getSprite(baseGrafik + "SpielTisch2.jpg");
+        gLib.getSprite(baseGrafik + "StartScreen.jpg");
 
         if (LoGoApp.debug) {
             System.out.println("Grafiken fertig in den Speicher geladen");
@@ -70,8 +71,8 @@ public class DateiVorlader {
         }
 
         // Sounddateien laden
-        sLib.loadSound("abschluss", "sound/boom.wav");
-        sLib.loadSound("alarm", "sound/rocket_start.wav");
+       // sLib.loadSound( "abschluss", baseSound + "abschlussMono.wav" );
+       // sLib.loadSound( "alarm", baseSound + "alarmMono.wav" );
 
         if (LoGoApp.debug) {
             System.out.println("Sounddateien fertig in den Speicher geladen.");
