@@ -174,4 +174,14 @@ public interface SteuerungInterface {
      * Auswertung beenden.
      */
     public void buttonAuswertungBeendet();
+
+    public float getKomiWeiss();
+
+    public boolean getIgnoreTime();
+
+    public long getStartHauptzeitSchwarz();
+
+    public long getStartHauptzeitWeiss();
+
+    public long getPeriodenZeit();
 }
