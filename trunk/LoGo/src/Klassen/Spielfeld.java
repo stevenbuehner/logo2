@@ -980,7 +980,9 @@ public class Spielfeld {
      * mindestens eine Freiheit haben. Die Zuege muessen wie gesagt ausfuehrbar
      * sein, und die Reihenfolge der Spieler muss auch stimmen. Wenn irgendwann
      * 2 mal gepasst wurde, darf danach nicht weiter gespielt werden.
-     * @return Die Funktion ueberprueft
+     * @return Gibt einen String zurueck, der eine Fehlermeldung enthaelt.
+     *  Ist er null gitbt es keien Fehler
+     * Ueberprueft wird:
      * - den Spielzustand
      * - die spielZugCollection mit den gemachten Zügen
      * - die Objekte spielerSchwarz und spielerWeiss
@@ -988,13 +990,13 @@ public class Spielfeld {
      *
      * Die Funktion muss erst noch implementiert werden
      */
-    public boolean spielfeldValidiert() {
+    public String spielfeldValidiert() {
 
         boolean validiert = true;
 
         // Spieler validieren
         if (this.spielerSchwarz == null || this.spielerWeiss == null) {
-            return false;
+            return "Es existieren noch nicht alle Spieler";
         }
         // Warum die Gefangenenanzahl auf 0 setzen?? ... was bei einem geladenen Spiel?
         // this.spielerSchwarz.setGefangenenAnzahl(0);
@@ -1023,8 +1025,7 @@ public class Spielfeld {
             for (int j = 0; j < this.getSpielfeldGroesse(); j++) {
                 if (this.versucheSteinZuNehmen(i, j, feld, false) == 1) {
                     validiert = false;
-                    System.out.println("Anfangsspielstellung nicht valide. Stelle " + (i + 1) + "," + (j + 1) + ". Gruppe hat keine Freiheiten");
-                    return validiert;
+                    return "Anfangsspielstellung nicht valide. Stelle " + (i + 1) + "," + (j + 1) + ". Gruppe hat keine Freiheiten";
                 }
             }
         }
@@ -1032,7 +1033,7 @@ public class Spielfeld {
         /* Gibt es noch keine Zuege, ist das Feld valide */
         if (this.letzteZugnummer == 0) {
             this.setSpielfeldZumZeitpunkt(0);
-            return validiert;
+            return null;
         }
 
         /* Wenn man bis hier kommt, ist die Anfangsstellung valide. Jetz muessen
@@ -1047,14 +1048,14 @@ public class Spielfeld {
             /* Reihenfolge der Spieler beachten */
             if (this.spielZugCollection.get(i).getFarbe() != momSpieler) {
                 validiert = false;
-                return validiert;
+                return "Momentaner Spieler zum Zeitpunkt " + i + " ist falsch.";
             }
 
             /* Es darf nur ein Zug gemacht werden, wenn die Letzten beiden Zuege
              * nicht passen waren*/
             if (letzterZugGepasst == true && vorletzterZugGepasst == true) {
                 validiert = false;
-                return validiert;
+                return "Es wurde 2 mal gepasst und dann weiter gespielt.";
             }
 
             /* Passen abfangen */
@@ -1078,21 +1079,18 @@ public class Spielfeld {
                     case 1: /* Zug erfolgreich */
                         break;
                     case 0: /* Liegt nicht auf Feld */
-                        System.out.println("Zug " + (i + 1) + " liegt nicht auf dem Brett. Koordinaten " + this.spielZugCollection.get(i).getXPosition() + "," + this.spielZugCollection.get(i).getYPosition());
                         validiert = false;
-                        return validiert;
+                        return "Zug " + (i + 1) + " liegt nicht auf dem Brett. Koordinaten " + this.spielZugCollection.get(i).getXPosition() + "," + this.spielZugCollection.get(i).getYPosition();
                     case -1: /* War verboten (Ko) */
-                        System.out.println("Zug " + (i + 1) + " ist verboten (Ko-Regel)");
                         validiert = false;
-                        return validiert;
+                        return "Zug " + (i + 1) + " ist verboten (Ko-Regel)";
                     case -2: /* Schon belegt gewesen */
-                        System.out.println("Zug " + (i + 1) + " ist schon Belegt. Koordinaten " + this.spielZugCollection.get(i).getXPosition() + "," + this.spielZugCollection.get(i).getYPosition());
                         validiert = false;
-                        return validiert;
+                        return "Zug " + (i + 1) + " ist schon Belegt. Koordinaten " + this.spielZugCollection.get(i).getXPosition() + "," + this.spielZugCollection.get(i).getYPosition();
                     case -3: /* Selbstmord */
                         System.out.println("Zug " + (i + 1) + " ist verboten (Selbstmord)");
                         validiert = false;
-                        return validiert;
+                        return "Zug " + (i + 1) + " ist verboten (Selbstmord)";
                     default:
                         throw new UnsupportedOperationException("Unbekannter return-Wert von setStein");
                 }
@@ -1119,7 +1117,7 @@ public class Spielfeld {
         /* Wenn man bis hier kommt, ist das Spiel valide. Es wurde die Reihenfolge
          * der Spieler, das Passen und die Zuege beachtet. Alles war korrekt
          */
-        return validiert;
+        return null;
     }
 
     /**
