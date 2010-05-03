@@ -147,4 +147,8 @@ public interface OberflaecheInterface {
 
     public void visibleFortsetzen(boolean visible);
 
+    public void schwarzInPeriodenZeit(boolean b);
+
+    public void weissInPeriodenZeit(boolean b);
+
 }

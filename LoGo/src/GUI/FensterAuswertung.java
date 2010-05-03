@@ -161,7 +161,7 @@ public class FensterAuswertung extends JFrame implements MouseListener {
             g.drawString("Gefangen: "+this.spielerWeissAufBrettGefangen, this.xKoordWeiss, this.yOffset + 2*this.zeilenabstand);
             g.drawString("Gefangen auf Brett: "+this.spielerWeissImSpielGefangen, this.xKoordWeiss, this.yOffset + 3*this.zeilenabstand);
             
-            NumberFormat numberFormat = new DecimalFormat("0.0");
+            NumberFormat numberFormat = new DecimalFormat("0.00");
             numberFormat.setRoundingMode(RoundingMode.DOWN);
 
             if(this.spielerWeissKomi >= 0 && this.spielerSchwarzKomi == 0){
@@ -194,10 +194,10 @@ public class FensterAuswertung extends JFrame implements MouseListener {
             g.drawString(this.spielerSchwarzName, this.xKoordSchw, this.yOffset);
             g.drawString(this.spielerWeissName, this.xKoordWeiss, this.yOffset);
             if(this.gewinnerBeiAufgOdZeit == Konstante.SCHNITTPUNKT_SCHWARZ){
-                g.drawString("Schwarz gewinnt druch Aufgabe.", this.xKoordSchw, this.yOffset + this.zeilenabstand);
+                g.drawString("Schwarz gewinnt durch Aufgabe.", this.xKoordSchw, this.yOffset + this.zeilenabstand);
             }
             else {
-                g.drawString("Weiß gewinnt druch Aufgabe.", this.xKoordWeiss, this.yOffset + this.zeilenabstand);
+                g.drawString("Weiß gewinnt durch Aufgabe.", this.xKoordWeiss, this.yOffset + this.zeilenabstand);
             }
 
 

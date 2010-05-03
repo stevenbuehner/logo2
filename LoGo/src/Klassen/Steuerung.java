@@ -487,11 +487,26 @@ public class Steuerung implements SteuerungInterface {
         LoGoApp.meinEinstellungsfenster.setVisible(false);
         LoGoApp.meinAuswertungsfenster.setVisible(false);
 
+        
+
         if (this.dasSpielfeld == null) {
             return;
             /* Da noch kein Spielfeld existiert, das gestartet werden kann */
         }
 
+        /* Periodenzeit setzen */
+        if(this.dasSpielfeld.getSpielerSchwarz().getVerbleibendeSpielzeitInMS() > 0){
+            LoGoApp.meineOberflaeche.schwarzInPeriodenZeit(false);
+        } else {
+            LoGoApp.meineOberflaeche.schwarzInPeriodenZeit(true);
+        }
+
+        if(this.dasSpielfeld.getSpielerWeiss().getVerbleibendeSpielzeitInMS() > 0){
+            LoGoApp.meineOberflaeche.weissInPeriodenZeit(false);
+        } else {
+            LoGoApp.meineOberflaeche.weissInPeriodenZeit(false);
+        }
+        
         String validierungsAntwort = this.dasSpielfeld.spielfeldValidiert();
         if (validierungsAntwort != null) {
             throw new UnsupportedOperationException("Spielfeld nicht valide! Spiel kann nicht gestartet werden");
@@ -1058,6 +1073,7 @@ public class Steuerung implements SteuerungInterface {
         this.dasSpielfeld.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(0);
         this.periodenZeitSchwarz.setRemainingTime(this.dasSpielfeld.getPeriodenZeit());
         this.periodenZeitSchwarz.starteCountdown();
+        LoGoApp.meineOberflaeche.schwarzInPeriodenZeit(true);
     }
 
     /**Implementierung des Interfaces
@@ -1078,6 +1094,7 @@ public class Steuerung implements SteuerungInterface {
         this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(0);
         this.periodenZeitWeiss.setRemainingTime(this.dasSpielfeld.getPeriodenZeit());
         this.periodenZeitWeiss.starteCountdown();
+        LoGoApp.meineOberflaeche.weissInPeriodenZeit(true);
     }
 
     /**Implementierung des Interfaces
