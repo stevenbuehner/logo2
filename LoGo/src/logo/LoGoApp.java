@@ -11,7 +11,7 @@ import GUI.FensterSpieloberflaeche;
 import Klassen.Steuerung;
 import Interfaces.OberflaecheInterface;
 import Interfaces.SteuerungInterface;
-import Klassen.GrafikVorlader;
+import Klassen.DateiVorlader;
 import javax.swing.UIManager;
 
 /**
@@ -70,7 +70,7 @@ public class LoGoApp {
 
          */
 
-        new GrafikVorlader();
+        new DateiVorlader();
         
         meineSteuerung = new Steuerung();
         meineOberflaeche = new FensterSpieloberflaeche("LoGo, by Steven Buehner, Alex Jesche, Rebecca King and Tommy Schladitz");

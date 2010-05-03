@@ -18,13 +18,12 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import logo.LoGoApp;
 
-
 /**
  *
  * @author tommy
  * @version 0.1
  */
-public class FensterEinstellung extends JFrame implements MouseListener, ActionListener{
+public class FensterEinstellung extends JFrame implements MouseListener, ActionListener {
 
     /* Felder auf der GUI
      * Zur darstellung der Daten
@@ -33,16 +32,13 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
     private JTextField spielerZeitStundenWeiss;
     private JTextField spielerZeitMinutenWeiss;
     private JTextField spielerKomiWeiss;
-
     private JTextField spielerNameSchwarz;
     private JTextField spielerZeitStundenSchwarz;
     private JTextField spielerZeitMinutenSchwarz;
-
     private JComboBox spielermodus;
     private JCheckBox spielMitZeitSpielen;
     private JTextField periodenZeitMinuten;
     private JTextField periodenZeitSekunden;
-
     private ButtonGroup spielFeldAuswahl;
     private JRadioButton siebenXsieben;
     private JRadioButton neunXneun;
@@ -51,13 +47,10 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
     private JRadioButton fuenfzehnXfuenfzehn;
     private JRadioButton siebzehnXsiebzehn;
     private JRadioButton neunzehnXneunzehn;
-
     private JComboBox spielVorgabeSteine;
     private JLabel spielBrettHinweise;
-
     private JButton spielStarten;
     private JButton hilfeButton;
-
     private JLabel labelSpielmodus;
     private JLabel labelPeriodenzeit;
     private JLabel labelMinutenP;
@@ -73,8 +66,6 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
     private JLabel labelKomi;
     private JLabel labelGroessenWahl;
     private JLabel labelVorgabe;
-
-
     /* Die Benutzereingaben muessen verwaltet werden */
     private String errorString;
     private boolean fehlerBeiEingabe;
@@ -92,9 +83,8 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
     private int frameMinhoehe = 270;
     private int frameMaxhoehe = 768;
 
-
-    public FensterEinstellung(){
-        this( "Einstellungsfenster");
+    public FensterEinstellung() {
+        this("Einstellungsfenster");
     }
 
     public FensterEinstellung(String fenstername) {
@@ -115,7 +105,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      * Initialisieren der Werte. Hier werden die Initialfunktionen in der richtigen
      * Reihenfolge aufgerufen, bevor der Benutzer agieren kann.
      */
-    private void init(){
+    private void init() {
         this.addMouseListener(this);
         this.startwerteSetzen();
         this.radioButtonsInGroup();
@@ -130,59 +120,59 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      * Hier werden die Label, Buttons und Textfelder initialisiert.
      * Beschriftungen und andere textuelle Dinge
      */
-    private void startwerteSetzen(){
+    private void startwerteSetzen() {
         this.errorString = "";
         this.momSpielModus = "Schnellstart";
         this.fehlerBeiEingabe = false;
         this.dasSpielfeld = new Spielfeld(13);
 
         /* Initialisieren der Oberflaeche */
-        this.spielerNameWeiss          = new JTextField("Weiss");
-        this.spielerZeitMinutenWeiss   = new JTextField("30");
-        this.spielerZeitStundenWeiss   = new JTextField("0");
-        this.spielerKomiWeiss          = new JTextField("6.5");
+        this.spielerNameWeiss = new JTextField("Weiss");
+        this.spielerZeitMinutenWeiss = new JTextField("30");
+        this.spielerZeitStundenWeiss = new JTextField("0");
+        this.spielerKomiWeiss = new JTextField("6.5");
 
-        this.spielerNameSchwarz        = new JTextField("Schwarz");
+        this.spielerNameSchwarz = new JTextField("Schwarz");
         this.spielerZeitMinutenSchwarz = new JTextField("30");
         this.spielerZeitStundenSchwarz = new JTextField("0");
 
-        this.periodenZeitMinuten       = new JTextField("1");
-        this.periodenZeitSekunden      = new JTextField("0");
+        this.periodenZeitMinuten = new JTextField("1");
+        this.periodenZeitSekunden = new JTextField("0");
 
-        this.spielermodus              = new JComboBox();
-        this.spielMitZeitSpielen       = new JCheckBox("Zeit setzen", true);
+        this.spielermodus = new JComboBox();
+        this.spielMitZeitSpielen = new JCheckBox("Zeit setzen", true);
         this.spielMitZeitSpielen.setSelected(true);
 
-        this.spielFeldAuswahl          = new ButtonGroup();
-        this.siebenXsieben             = new JRadioButton("7 x 7");
-        this.neunXneun                 = new JRadioButton("9 x 9");
-        this.elfXelf                   = new JRadioButton("11 x 11");
-        this.dreizehnXdreizehn         = new JRadioButton("13 x 13",true);
-        this.fuenfzehnXfuenfzehn       = new JRadioButton("15 x 15");
-        this.siebzehnXsiebzehn         = new JRadioButton("17 x 17");
-        this.neunzehnXneunzehn         = new JRadioButton("19 x 19");
+        this.spielFeldAuswahl = new ButtonGroup();
+        this.siebenXsieben = new JRadioButton("7 x 7");
+        this.neunXneun = new JRadioButton("9 x 9");
+        this.elfXelf = new JRadioButton("11 x 11");
+        this.dreizehnXdreizehn = new JRadioButton("13 x 13", true);
+        this.fuenfzehnXfuenfzehn = new JRadioButton("15 x 15");
+        this.siebzehnXsiebzehn = new JRadioButton("17 x 17");
+        this.neunzehnXneunzehn = new JRadioButton("19 x 19");
 
-        this.spielVorgabeSteine        = new JComboBox();
-        this.spielBrettHinweise        = new JLabel("Schnellstart");
-        this.spielStarten              = new JButton("Start");
-        this.hilfeButton               = new JButton("Hilfe");
+        this.spielVorgabeSteine = new JComboBox();
+        this.spielBrettHinweise = new JLabel("Schnellstart");
+        this.spielStarten = new JButton("Start");
+        this.hilfeButton = new JButton("Hilfe");
 
         /* Zusaetzliche Labels */
-        this.labelSpielmodus = new JLabel("Spielmodus",JLabel.LEFT);
-        this.labelPeriodenzeit = new JLabel("Byo-Yomi",JLabel.LEFT);
-        this.labelMinutenP = new JLabel("Min",JLabel.LEFT);
-        this.labelSekundenP = new JLabel("Sek",JLabel.LEFT);
-        this.labelNameSchwarz = new JLabel("Spieler Schwarz",JLabel.LEFT);
-        this.labelZeitSchwarz = new JLabel("Zeit Schwarz",JLabel.LEFT);
-        this.labelMinutenS = new JLabel("Min",JLabel.LEFT);
-        this.labelStundenS = new JLabel("Std",JLabel.LEFT);
-        this.labelNameWeiss = new JLabel("Spieler Weiß",JLabel.LEFT);
-        this.labelZeitWeiss = new JLabel("Zeit Weiß",JLabel.LEFT);
-        this.labelMinutenW = new JLabel("Min",JLabel.LEFT);
-        this.labelStundenW = new JLabel("Std",JLabel.LEFT);
-        this.labelKomi = new JLabel("Komi:",JLabel.LEFT);
-        this.labelGroessenWahl = new JLabel("Brettgröße",JLabel.LEFT);
-        this.labelVorgabe = new JLabel("Vorgabe",JLabel.LEFT);
+        this.labelSpielmodus = new JLabel("Spielmodus", JLabel.LEFT);
+        this.labelPeriodenzeit = new JLabel("Byo-Yomi", JLabel.LEFT);
+        this.labelMinutenP = new JLabel("Min", JLabel.LEFT);
+        this.labelSekundenP = new JLabel("Sek", JLabel.LEFT);
+        this.labelNameSchwarz = new JLabel("Spieler Schwarz", JLabel.LEFT);
+        this.labelZeitSchwarz = new JLabel("Zeit Schwarz", JLabel.LEFT);
+        this.labelMinutenS = new JLabel("Min", JLabel.LEFT);
+        this.labelStundenS = new JLabel("Std", JLabel.LEFT);
+        this.labelNameWeiss = new JLabel("Spieler Weiß", JLabel.LEFT);
+        this.labelZeitWeiss = new JLabel("Zeit Weiß", JLabel.LEFT);
+        this.labelMinutenW = new JLabel("Min", JLabel.LEFT);
+        this.labelStundenW = new JLabel("Std", JLabel.LEFT);
+        this.labelKomi = new JLabel("Komi:", JLabel.LEFT);
+        this.labelGroessenWahl = new JLabel("Brettgröße", JLabel.LEFT);
+        this.labelVorgabe = new JLabel("Vorgabe", JLabel.LEFT);
 
         /* Zum Spielbrett */
         this.brettbreite = 496;
@@ -196,7 +186,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      * Die schon definierten Komponenten werden nun auf die ContentPane
      * gelegt
      */
-    private void komponentenAufContentPane(){
+    private void komponentenAufContentPane() {
         this.getContentPane().add(this.spielerNameWeiss);
         this.getContentPane().add(this.spielerZeitMinutenWeiss);
         this.getContentPane().add(this.spielerZeitStundenWeiss);
@@ -213,8 +203,8 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
         this.getContentPane().add(this.elfXelf);
         this.getContentPane().add(this.dreizehnXdreizehn);
         this.getContentPane().add(this.fuenfzehnXfuenfzehn);
-        this.getContentPane().add( this.siebzehnXsiebzehn);
-        this.getContentPane().add( this.neunzehnXneunzehn);
+        this.getContentPane().add(this.siebzehnXsiebzehn);
+        this.getContentPane().add(this.neunzehnXneunzehn);
         this.getContentPane().add(this.spielVorgabeSteine);
         this.getContentPane().add(this.spielBrettHinweise);
         this.getContentPane().add(this.spielStarten);
@@ -243,174 +233,174 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
     /** 
      * Die Komponenten muessen einen genau definierten Ort bekommen
      */
-    private void fensterRendern(){
+    private void fensterRendern() {
         int horAbs = 20; // horizontaler Abstand
         int verAbs = 5; // vertikaler Abstand
         int textFH = 20; // Textfeldhoehe
-        int labH   = 30; // Labelhoehe
-        int cBoxH  = 30; // Checkboxhoehe
+        int labH = 30; // Labelhoehe
+        int cBoxH = 30; // Checkboxhoehe
         int labelTFA = 5; // Abstand zwischen Label und Links daneben Textfeld (label-textfeld-abstand)
         int labelTFV = 0; // Vertikaler Abstand von Label und Textfeld
 
         this.labelSpielmodus.setBounds(10, 10, 100, 20);
-        this.labelPeriodenzeit.setBounds(this.labelSpielmodus.getX()+this.labelSpielmodus.getWidth()+2* horAbs + 120,
-                                    this.labelSpielmodus.getY() ,
-                                    100,
-                                    this.labelSpielmodus.getHeight());
-        this.spielermodus .setBounds(this.labelSpielmodus.getX(),
-                                    this.labelSpielmodus.getY() + this.labelSpielmodus.getHeight() + labelTFV ,
-                                    125, textFH );
-        this.spielMitZeitSpielen .setBounds(this.spielermodus.getX() + this.spielermodus.getWidth() + horAbs,
-                                    this.spielermodus.getY(),
-                                    100,
-                                    cBoxH);
+        this.labelPeriodenzeit.setBounds(this.labelSpielmodus.getX() + this.labelSpielmodus.getWidth() + 2 * horAbs + 120,
+                this.labelSpielmodus.getY(),
+                100,
+                this.labelSpielmodus.getHeight());
+        this.spielermodus.setBounds(this.labelSpielmodus.getX(),
+                this.labelSpielmodus.getY() + this.labelSpielmodus.getHeight() + labelTFV,
+                125, textFH);
+        this.spielMitZeitSpielen.setBounds(this.spielermodus.getX() + this.spielermodus.getWidth() + horAbs,
+                this.spielermodus.getY(),
+                100,
+                cBoxH);
         this.periodenZeitMinuten.setBounds(this.labelPeriodenzeit.getX(),
-                                    this.spielMitZeitSpielen.getY(),
-                                    50,
-                                    textFH);
+                this.spielMitZeitSpielen.getY(),
+                50,
+                textFH);
         labelMinutenP.setBounds(this.periodenZeitMinuten.getX() + this.periodenZeitMinuten.getWidth() + labelTFA,
-                                    this.periodenZeitMinuten.getY(),
-                                    50,
-                                    labH);
-        this.periodenZeitSekunden.setBounds(this.labelMinutenP.getX()+this.labelMinutenP.getWidth()+horAbs,
-                                    this.periodenZeitMinuten.getY(),
-                                    50,
-                                    textFH);
-        this.labelSekundenP.setBounds(this.periodenZeitSekunden.getX()+this.periodenZeitSekunden.getWidth()+labelTFA,
-                                    this.periodenZeitSekunden.getY(),
-                                    50,
-                                    labH);
+                this.periodenZeitMinuten.getY(),
+                50,
+                labH);
+        this.periodenZeitSekunden.setBounds(this.labelMinutenP.getX() + this.labelMinutenP.getWidth() + horAbs,
+                this.periodenZeitMinuten.getY(),
+                50,
+                textFH);
+        this.labelSekundenP.setBounds(this.periodenZeitSekunden.getX() + this.periodenZeitSekunden.getWidth() + labelTFA,
+                this.periodenZeitSekunden.getY(),
+                50,
+                labH);
         this.labelNameSchwarz.setBounds(this.spielermodus.getX(),
-                                    this.spielermodus.getY() + this.spielermodus.getHeight() + verAbs,
-                                    150,
-                                    labH);
+                this.spielermodus.getY() + this.spielermodus.getHeight() + verAbs,
+                150,
+                labH);
         this.labelZeitSchwarz.setBounds(this.periodenZeitMinuten.getX(),
-                                    this.periodenZeitMinuten.getY() + this.periodenZeitMinuten.getHeight() + verAbs,
-                                    100,
-                                    labH);
-        this.spielerNameSchwarz .setBounds(this.labelNameSchwarz.getX(),
-                                    this.labelNameSchwarz.getY() + this.labelNameSchwarz.getHeight()+ labelTFV,
-                                    100,
-                                    textFH);
+                this.periodenZeitMinuten.getY() + this.periodenZeitMinuten.getHeight() + verAbs,
+                100,
+                labH);
+        this.spielerNameSchwarz.setBounds(this.labelNameSchwarz.getX(),
+                this.labelNameSchwarz.getY() + this.labelNameSchwarz.getHeight() + labelTFV,
+                100,
+                textFH);
         this.spielerZeitStundenSchwarz.setBounds(this.labelZeitSchwarz.getX(),
-                                    this.labelZeitSchwarz.getY()+this.labelZeitSchwarz.getHeight()+labelTFV,
-                                    50,
-                                    textFH);
+                this.labelZeitSchwarz.getY() + this.labelZeitSchwarz.getHeight() + labelTFV,
+                50,
+                textFH);
         this.labelStundenS.setBounds(this.spielerZeitStundenSchwarz.getX() + this.spielerZeitStundenSchwarz.getWidth() + labelTFA,
-                                    this.spielerZeitStundenSchwarz.getY(),
-                                    50,
-                                    labH);
+                this.spielerZeitStundenSchwarz.getY(),
+                50,
+                labH);
         this.spielerZeitMinutenSchwarz.setBounds(this.labelStundenS.getX() + this.labelStundenS.getWidth() + horAbs,
-                                    this.labelStundenS.getY(),
-                                    50,
-                                    textFH);
+                this.labelStundenS.getY(),
+                50,
+                textFH);
         this.labelMinutenS.setBounds(this.spielerZeitMinutenSchwarz.getX() + this.spielerZeitMinutenSchwarz.getWidth() + labelTFA,
-                                    this.spielerZeitMinutenSchwarz.getY(),
-                                    50,
-                                    labH);
+                this.spielerZeitMinutenSchwarz.getY(),
+                50,
+                labH);
 
         this.labelNameWeiss.setBounds(this.spielerNameSchwarz.getX(),
-                                    this.spielerNameSchwarz.getY() + this.spielerNameSchwarz.getHeight() + verAbs,
-                                    100,
-                                    labH);
+                this.spielerNameSchwarz.getY() + this.spielerNameSchwarz.getHeight() + verAbs,
+                100,
+                labH);
         this.labelZeitWeiss.setBounds(this.spielerZeitStundenSchwarz.getX(),
-                                    this.spielerZeitStundenSchwarz.getY() + this.spielerZeitStundenSchwarz.getHeight() + verAbs,
-                                    100,
-                                    labH);
+                this.spielerZeitStundenSchwarz.getY() + this.spielerZeitStundenSchwarz.getHeight() + verAbs,
+                100,
+                labH);
         this.spielerNameWeiss.setBounds(this.labelNameWeiss.getX(),
-                                    this.labelNameWeiss.getY() + this.labelNameWeiss.getHeight()+ labelTFV,
-                                    100,
-                                    textFH);
+                this.labelNameWeiss.getY() + this.labelNameWeiss.getHeight() + labelTFV,
+                100,
+                textFH);
         this.spielerZeitStundenWeiss.setBounds(this.labelZeitWeiss.getX(),
-                                    this.labelZeitWeiss.getY()+this.labelZeitWeiss.getHeight()+labelTFV,
-                                    50,
-                                    textFH);
+                this.labelZeitWeiss.getY() + this.labelZeitWeiss.getHeight() + labelTFV,
+                50,
+                textFH);
         this.labelStundenW.setBounds(this.spielerZeitStundenWeiss.getX() + this.spielerZeitStundenWeiss.getWidth() + labelTFA,
-                                    this.spielerZeitStundenWeiss.getY(),
-                                    50,
-                                    labH);
+                this.spielerZeitStundenWeiss.getY(),
+                50,
+                labH);
         this.spielerZeitMinutenWeiss.setBounds(this.labelStundenW.getX() + this.labelStundenW.getWidth() + horAbs,
-                                    this.labelStundenW.getY(),
-                                    50,
-                                    textFH);
+                this.labelStundenW.getY(),
+                50,
+                textFH);
         this.labelMinutenW.setBounds(this.spielerZeitMinutenWeiss.getX() + this.spielerZeitMinutenWeiss.getWidth() + labelTFA,
-                                    this.spielerZeitMinutenWeiss.getY(),
-                                    50,
-                                    labH);
+                this.spielerZeitMinutenWeiss.getY(),
+                50,
+                labH);
         this.labelKomi.setBounds(this.spielerNameWeiss.getX(),
-                                    this.spielerNameWeiss.getY() + this.spielerNameWeiss.getHeight()+verAbs,
-                                    100,
-                                    labH);
+                this.spielerNameWeiss.getY() + this.spielerNameWeiss.getHeight() + verAbs,
+                100,
+                labH);
         this.spielerKomiWeiss.setBounds(this.spielerZeitStundenWeiss.getX(),
-                                    this.spielerZeitStundenWeiss.getY() + this.spielerZeitStundenWeiss.getHeight() + verAbs,
-                                    50,
-                                    textFH);
+                this.spielerZeitStundenWeiss.getY() + this.spielerZeitStundenWeiss.getHeight() + verAbs,
+                50,
+                textFH);
 
         int vAbsRB = 10; // vertikaler Abstand von Radiobuttons
         int radBuH = 15; // hoehe eines Radiobuttons
         this.labelGroessenWahl.setBounds(this.labelKomi.getX(),
-                                    this.labelKomi.getY() + this.labelKomi.getHeight() + verAbs,
-                                    100 ,
-                                    radBuH );
+                this.labelKomi.getY() + this.labelKomi.getHeight() + verAbs,
+                100,
+                radBuH);
         this.siebenXsieben.setBounds(this.labelGroessenWahl.getX() + this.labelGroessenWahl.getWidth() + horAbs,
-                                     this.labelGroessenWahl.getY(),
-                                    100 ,
-                                    radBuH);
+                this.labelGroessenWahl.getY(),
+                100,
+                radBuH);
         this.neunXneun.setBounds(this.siebenXsieben.getX() + this.siebenXsieben.getWidth() + horAbs,
-                                    this.siebenXsieben.getY(),
-                                    100 ,
-                                    radBuH);
+                this.siebenXsieben.getY(),
+                100,
+                radBuH);
         this.elfXelf.setBounds(this.neunXneun.getX() + this.neunXneun.getWidth() + horAbs,
-                                    this.neunXneun.getY(),
-                                    100 ,
-                                    radBuH);
+                this.neunXneun.getY(),
+                100,
+                radBuH);
         this.dreizehnXdreizehn.setBounds(this.labelGroessenWahl.getX(),
-                                    this.labelGroessenWahl.getY() + this.labelGroessenWahl.getHeight() + verAbs,
-                                    100 ,
-                                    radBuH);
+                this.labelGroessenWahl.getY() + this.labelGroessenWahl.getHeight() + verAbs,
+                100,
+                radBuH);
         this.fuenfzehnXfuenfzehn.setBounds(this.siebenXsieben.getX(),
-                                    this.siebenXsieben.getY() + this.siebenXsieben.getHeight() + verAbs,
-                                    100 ,
-                                    radBuH);
+                this.siebenXsieben.getY() + this.siebenXsieben.getHeight() + verAbs,
+                100,
+                radBuH);
         this.siebzehnXsiebzehn.setBounds(this.neunXneun.getX(),
-                                    this.neunXneun.getY() + this.neunXneun.getHeight() + verAbs,
-                                    100 ,
-                                    radBuH);
+                this.neunXneun.getY() + this.neunXneun.getHeight() + verAbs,
+                100,
+                radBuH);
         this.neunzehnXneunzehn.setBounds(this.elfXelf.getX(),
-                                    this.elfXelf.getY() + this.elfXelf.getHeight() + verAbs,
-                                    100 ,
-                                    radBuH);
+                this.elfXelf.getY() + this.elfXelf.getHeight() + verAbs,
+                100,
+                radBuH);
 
         int buttonH = 30; // hoehe eines Buttons
         this.spielStarten.setBounds(this.labelMinutenS.getX() + this.labelMinutenS.getWidth() + horAbs,
-                                    this.labelMinutenS.getY(),
-                                    75,
-                                    buttonH);
-        this.hilfeButton.setBounds( this.spielStarten.getX(),
-                                    this.spielStarten.getY() + this.spielStarten.getHeight() + verAbs,
-                                    75,
-                                    buttonH);
+                this.labelMinutenS.getY(),
+                75,
+                buttonH);
+        this.hilfeButton.setBounds(this.spielStarten.getX(),
+                this.spielStarten.getY() + this.spielStarten.getHeight() + verAbs,
+                75,
+                buttonH);
 
         this.labelVorgabe.setBounds(this.brettXOffset + this.brettbreite + horAbs,
-                                    this.brettYOffset + verAbs,
-                                    100,
-                                    labH);
+                this.brettYOffset + verAbs,
+                100,
+                labH);
         this.spielVorgabeSteine.setBounds(this.labelVorgabe.getX(),
-                                    this.labelVorgabe.getY() + this.labelVorgabe.getHeight() + labelTFA ,
-                                    100 ,
-                                    20);
+                this.labelVorgabe.getY() + this.labelVorgabe.getHeight() + labelTFA,
+                100,
+                20);
         this.spielBrettHinweise.setBounds(this.spielVorgabeSteine.getX(),
-                                    this.spielVorgabeSteine.getY() + this.spielVorgabeSteine.getHeight() + verAbs,
-                                    this.spielVorgabeSteine.getWidth(),
-                                    100);
+                this.spielVorgabeSteine.getY() + this.spielVorgabeSteine.getHeight() + verAbs,
+                this.spielVorgabeSteine.getWidth(),
+                100);
     }
-    
+
     /**
      * Die definierten RadioButtons fuer die Wahl der Feldgroesse muessen in
      * einer Gruppe zusammengefasst werden
      */
-    private void radioButtonsInGroup(){
-        
+    private void radioButtonsInGroup() {
+
         this.spielFeldAuswahl.add(this.siebenXsieben);
         this.spielFeldAuswahl.add(this.neunXneun);
         this.spielFeldAuswahl.add(this.elfXelf);
@@ -426,7 +416,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      * Wird hier ein Wert geaendert, muss er auch im restlichen Programm
      * veraendert werden
      */
-    private void comboBoxenInit(){
+    private void comboBoxenInit() {
 
         this.spielermodus.addItem("Schnellstart");
         this.spielermodus.addItem("Vorgabe");
@@ -447,7 +437,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      * Alle Textfelder und Buttons muessen zum ActionListener hinzugefuegt
      * werden.
      */
-    private void zumActionListenerAdden(){
+    private void zumActionListenerAdden() {
         this.spielermodus.addActionListener(this);
         this.spielMitZeitSpielen.addActionListener(this);
         this.siebenXsieben.addActionListener(this);
@@ -468,7 +458,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      * @param e Event von der Maus (mit Koordinaten)
      */
     public void mouseClicked(MouseEvent e) {
-        switch(this.getSelectedFeldgroesse()){
+        switch (this.getSelectedFeldgroesse()) {
             case 7:
                 this.paneloffset = 47;
                 this.seitenoffset = 17;
@@ -498,26 +488,33 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
                 this.seitenoffset = 16;
                 break;
         }
-        if(this.momSpielModus.equals("Startformation") &&
-           e.getX()-15>=this.brettXOffset && e.getX()-15<=this.brettXOffset+this.brettbreite &&
-           e.getY()-24>=this.brettYOffset && e.getY()-24<=this.brettYOffset+this.bretthoehe){
+        if (this.momSpielModus.equals("Startformation")
+                && e.getX() - 15 >= this.brettXOffset && e.getX() - 15 <= this.brettXOffset + this.brettbreite
+                && e.getY() - 24 >= this.brettYOffset && e.getY() - 24 <= this.brettYOffset + this.bretthoehe) {
 
             int farbe = 0;
-            if(e.getButton()==MouseEvent.BUTTON1){
+            if (e.getButton() == MouseEvent.BUTTON1) {
                 farbe = Konstante.SCHNITTPUNKT_SCHWARZ;
-            }
-            else{
+            } else {
                 farbe = Konstante.SCHNITTPUNKT_WEISS;
             }
-            int xKoord=1;
-            int yKoord=1;
-            xKoord = (int) ((((double)e.getX()-this.seitenoffset+(double)this.brettXOffset)/(double)this.brettbreite)*(double)this.getSelectedFeldgroesse())+1;
-            yKoord = this.getSelectedFeldgroesse()- (int) ((((double)e.getY()+this.paneloffset-(double)this.brettYOffset)/(double)this.bretthoehe)*(double)this.getSelectedFeldgroesse())+1;
-            if(xKoord<1){xKoord=1;}
-            if(xKoord>this.getSelectedFeldgroesse()){xKoord=this.getSelectedFeldgroesse();}
-            if(yKoord<1){yKoord=1;}
-            if(yKoord>this.getSelectedFeldgroesse()){yKoord=this.getSelectedFeldgroesse();}
-            this.dasSpielfeld.legeSteinAufInitBrett(xKoord, yKoord, farbe );
+            int xKoord = 1;
+            int yKoord = 1;
+            xKoord = (int) ((((double) e.getX() - this.seitenoffset + (double) this.brettXOffset) / (double) this.brettbreite) * (double) this.getSelectedFeldgroesse()) + 1;
+            yKoord = this.getSelectedFeldgroesse() - (int) ((((double) e.getY() + this.paneloffset - (double) this.brettYOffset) / (double) this.bretthoehe) * (double) this.getSelectedFeldgroesse()) + 1;
+            if (xKoord < 1) {
+                xKoord = 1;
+            }
+            if (xKoord > this.getSelectedFeldgroesse()) {
+                xKoord = this.getSelectedFeldgroesse();
+            }
+            if (yKoord < 1) {
+                yKoord = 1;
+            }
+            if (yKoord > this.getSelectedFeldgroesse()) {
+                yKoord = this.getSelectedFeldgroesse();
+            }
+            this.dasSpielfeld.legeSteinAufInitBrett(xKoord, yKoord, farbe);
             this.dasSpielfeldGUI.updateSpielFeld(this.dasSpielfeld.getSpielfeldZumZeitpunkt(0));
             this.validate();
             repaint();
@@ -543,34 +540,24 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      */
     public void actionPerformed(ActionEvent e) {
 
-        if(e.getSource() == this.spielMitZeitSpielen){
+        if (e.getSource() == this.spielMitZeitSpielen) {
             this.toggleSpielMitZeitSpielen();
-        }
-
-        else if(e.getSource() == this.spielStarten){
+        } else if (e.getSource() == this.spielStarten) {
             this.versucheZuStarten();
-        }
-
-        else if(e.getSource() == this.hilfeButton){
+        } else if (e.getSource() == this.hilfeButton) {
             this.zeigeHilfeAn();
-        }
-
-        else if(e.getSource() == this.spielermodus){
+        } else if (e.getSource() == this.spielermodus) {
             this.updateSpielmodus(this.spielermodus.getSelectedItem().toString());
-        }
-
-        else if(e.getSource() == this.spielVorgabeSteine){
+        } else if (e.getSource() == this.spielVorgabeSteine) {
             this.updateBrettVorgabe();
-        }
-
-        else if(e.getSource() == this.siebenXsieben ||
-                e.getSource() == this.neunXneun ||
-                e.getSource() == this.elfXelf ||
-                e.getSource() == this.dreizehnXdreizehn ||
-                e.getSource() == this.fuenfzehnXfuenfzehn ||
-                e.getSource() == this.siebzehnXsiebzehn ||
-                e.getSource() == this.neunzehnXneunzehn){
-                this.neuesSpielfeld();
+        } else if (e.getSource() == this.siebenXsieben
+                || e.getSource() == this.neunXneun
+                || e.getSource() == this.elfXelf
+                || e.getSource() == this.dreizehnXdreizehn
+                || e.getSource() == this.fuenfzehnXfuenfzehn
+                || e.getSource() == this.siebzehnXsiebzehn
+                || e.getSource() == this.neunzehnXneunzehn) {
+            this.neuesSpielfeld();
         }
 
     }
@@ -580,16 +567,15 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      * zwischen Enabled und Disabled hin und her.
      */
     private void toggleSpielMitZeitSpielen() {
-        JCheckBox box = (JCheckBox)this.spielMitZeitSpielen;
-        if( !box.isSelected() ){
+        JCheckBox box = (JCheckBox) this.spielMitZeitSpielen;
+        if (!box.isSelected()) {
             this.periodenZeitMinuten.setEnabled(false);
             this.periodenZeitSekunden.setEnabled(false);
             this.spielerZeitMinutenSchwarz.setEnabled(false);
             this.spielerZeitMinutenWeiss.setEnabled(false);
             this.spielerZeitStundenSchwarz.setEnabled(false);
             this.spielerZeitStundenWeiss.setEnabled(false);
-        }
-        else{
+        } else {
             this.periodenZeitMinuten.setEnabled(true);
             this.periodenZeitSekunden.setEnabled(true);
             this.spielerZeitMinutenSchwarz.setEnabled(true);
@@ -608,14 +594,14 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
         /* parameter herausfinden */
         int feldgroesse = this.getSelectedFeldgroesse();
         /* Ist die Feldgroesse gleich geblieben, muss nichts gemacht werden */
-        if(feldgroesse == this.dasSpielfeld.getSpielfeldGroesse()){
+        if (feldgroesse == this.dasSpielfeld.getSpielfeldGroesse()) {
             return;
         }
 
         this.dasSpielfeld = new Spielfeld(feldgroesse);
-     /*   if(this.momSpielModus.equals("Vorgabe")){*/
-            this.dasSpielfeld.initialisiereFeldMitVorgabenFuerSchwarz(this.getVorgabeWert());
-     //   }
+        /*   if(this.momSpielModus.equals("Vorgabe")){*/
+        this.dasSpielfeld.initialisiereFeldMitVorgabenFuerSchwarz(this.getVorgabeWert());
+        //   }
         /* Es muss noch eine neue Oberflaeche angelegt werden */
 
         this.getContentPane().remove(this.dasSpielfeldGUI);
@@ -634,15 +620,23 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      * Aus den RadioButtons muss ermittelt werden, welcher gerade ausgewaehlt ist
      * @return Spielfeldgroesse, je nach Button-Stellung;
      */
-    private int getSelectedFeldgroesse(){
+    private int getSelectedFeldgroesse() {
         int feldgroesse;
-        if(this.siebenXsieben.isSelected() == true){ feldgroesse = 7;}
-        else if(this.neunXneun.isSelected() == true){feldgroesse = 9;}
-        else if(this.elfXelf.isSelected() == true){feldgroesse = 11;}
-        else if(this.dreizehnXdreizehn.isSelected() == true){feldgroesse = 13;}
-        else if(this.fuenfzehnXfuenfzehn.isSelected() == true){feldgroesse = 15;}
-        else if(this.siebzehnXsiebzehn.isSelected() == true){feldgroesse = 17;}
-        else {feldgroesse = 19;}
+        if (this.siebenXsieben.isSelected() == true) {
+            feldgroesse = 7;
+        } else if (this.neunXneun.isSelected() == true) {
+            feldgroesse = 9;
+        } else if (this.elfXelf.isSelected() == true) {
+            feldgroesse = 11;
+        } else if (this.dreizehnXdreizehn.isSelected() == true) {
+            feldgroesse = 13;
+        } else if (this.fuenfzehnXfuenfzehn.isSelected() == true) {
+            feldgroesse = 15;
+        } else if (this.siebzehnXsiebzehn.isSelected() == true) {
+            feldgroesse = 17;
+        } else {
+            feldgroesse = 19;
+        }
         return feldgroesse;
     }
 
@@ -651,18 +645,16 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      * Falscheingaben werden abgefangen
      * @return Spielername Weiss
      */
-    private String getNameWeiss(){
+    private String getNameWeiss() {
         String rueckgabe = "";
         String textFeldString = this.spielerNameWeiss.getText();
-        if(!textFeldString.matches("[A-Za-z0-9]*")){
+        if (!textFeldString.matches("[A-Za-z0-9]*")) {
             rueckgabe = "Weiss";
             sendMessageToUser("Weißer Name falsch. Darf nur aus Buchstaben und Zahlen bestehen.");
-        }
-        else if(textFeldString.length() == 0){
+        } else if (textFeldString.length() == 0) {
             rueckgabe = "Weiss";
             sendMessageToUser("Name des weißen Spielers nicht angegeben.");
-        }
-        else {
+        } else {
             rueckgabe = textFeldString;
         }
         return rueckgabe;
@@ -673,18 +665,16 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      * Falscheingaben werden abgefangen
      * @return Spielername Schwarz
      */
-    private String getNameSchwarz(){
+    private String getNameSchwarz() {
         String rueckgabe = "";
         String textFeldString = this.spielerNameSchwarz.getText();
-        if(!textFeldString.matches("[A-Za-z0-9]*")){
+        if (!textFeldString.matches("[A-Za-z0-9]*")) {
             rueckgabe = "Schwarz";
             sendMessageToUser("Schwarzer Name falsch. Darf nur aus Buchstaben und Zahlen bestehen.");
-        }
-        else if(textFeldString.length() == 0){
+        } else if (textFeldString.length() == 0) {
             rueckgabe = "Schwarz";
             sendMessageToUser("Name des schwarzen Spielers nicht angegeben.");
-        }
-        else {
+        } else {
             rueckgabe = textFeldString;
         }
         return rueckgabe;
@@ -694,16 +684,16 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      * Parse das Sekundenfeld in der Periodenzeit
      * @return Zeit in ms (fuer Verarbeitung)
      */
-    private long getSekundenPeriode(){
+    private long getSekundenPeriode() {
         long rueckgabe = 0;
         String textFeldVal = this.periodenZeitSekunden.getText();
-        try{
+        try {
             rueckgabe = 1000 * Integer.parseInt(textFeldVal);
-        }catch(NumberFormatException nfe){
-           sendMessageToUser("Byo-Yomi: Sekundenzeit Falsch");
-           rueckgabe = 0;
+        } catch (NumberFormatException nfe) {
+            sendMessageToUser("Byo-Yomi: Sekundenzeit Falsch");
+            rueckgabe = 0;
         }
-        if(rueckgabe < 0){
+        if (rueckgabe < 0) {
             sendMessageToUser("Byo-Yomi: Minuten negativ");
             rueckgabe = 0;
         }
@@ -714,16 +704,16 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      * Parse das Minutenfeld in der Periodenzeit
      * @return Zeit in ms (fuer Veratbeitung)
      */
-    private long getMinutenPeriode(){
+    private long getMinutenPeriode() {
         long rueckgabe = 0;
         String textFeldVal = this.periodenZeitMinuten.getText();
-        try{
+        try {
             rueckgabe = 60 * 1000 * Integer.parseInt(textFeldVal);
-        }catch(NumberFormatException nfe){
-           sendMessageToUser("Byo-Yomi: Minutenzeit Falsch");
-           rueckgabe = 0;
+        } catch (NumberFormatException nfe) {
+            sendMessageToUser("Byo-Yomi: Minutenzeit Falsch");
+            rueckgabe = 0;
         }
-        if(rueckgabe < 0){
+        if (rueckgabe < 0) {
             sendMessageToUser("Byo-Yomi: Minuten negativ");
             rueckgabe = 0;
         }
@@ -735,16 +725,16 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      * Parse das Minutenfeld des schwarzen Spielers
      * @return Zeit in ms (fuer Verarbeitung)
      */
-    private long getMinutenSchwarz(){
+    private long getMinutenSchwarz() {
         long rueckgabe = 0;
         String textFeldVal = this.spielerZeitMinutenSchwarz.getText();
-        try{
+        try {
             rueckgabe = 60 * 1000 * Integer.parseInt(textFeldVal);
-        }catch(NumberFormatException nfe){
-           sendMessageToUser("Zeit Schwarz: Minutenzeit Falsch");
-           rueckgabe = 0;
+        } catch (NumberFormatException nfe) {
+            sendMessageToUser("Zeit Schwarz: Minutenzeit Falsch");
+            rueckgabe = 0;
         }
-        if(rueckgabe < 0){
+        if (rueckgabe < 0) {
             sendMessageToUser("Byo-Yomi: Minuten negativ");
             rueckgabe = 0;
         }
@@ -755,16 +745,16 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      * Parse das Minutenfeld des weissen Spielers
      * @return Zeit in ms (fuer Verarbeitung)
      */
-    private long getMinutenWeiss(){
+    private long getMinutenWeiss() {
         long rueckgabe = 0;
         String textFeldVal = this.spielerZeitMinutenWeiss.getText();
-        try{
+        try {
             rueckgabe = 60 * 1000 * Integer.parseInt(textFeldVal);
-        }catch(NumberFormatException nfe){
-           sendMessageToUser("Zeit Weiss: Minutenzeit Falsch");
-           rueckgabe = 0;
+        } catch (NumberFormatException nfe) {
+            sendMessageToUser("Zeit Weiss: Minutenzeit Falsch");
+            rueckgabe = 0;
         }
-        if(rueckgabe < 0){
+        if (rueckgabe < 0) {
             sendMessageToUser("Byo-Yomi: Minuten negativ");
             rueckgabe = 0;
         }
@@ -775,16 +765,16 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      * Parse das Stundenfeld des schwarzen Spielers
      * @return Zeit in ms (fuer Verarbeitung)
      */
-    private long getStundenSchwarz(){
+    private long getStundenSchwarz() {
         long rueckgabe = 0;
         String textFeldVal = this.spielerZeitStundenSchwarz.getText();
-        try{
+        try {
             rueckgabe = 60 * 60 * 1000 * Integer.parseInt(textFeldVal);
-        }catch(NumberFormatException nfe){
-           sendMessageToUser("Zeit Schwarz: Stundenzeit Falsch");
-           rueckgabe = 0;
+        } catch (NumberFormatException nfe) {
+            sendMessageToUser("Zeit Schwarz: Stundenzeit Falsch");
+            rueckgabe = 0;
         }
-        if(rueckgabe < 0){
+        if (rueckgabe < 0) {
             sendMessageToUser("Byo-Yomi: Minuten negativ");
             rueckgabe = 0;
         }
@@ -795,16 +785,16 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      * Parse das Stundenfeld des weissen Spielers
      * @return Zeit in ms (fuer Verarbeitung)
      */
-    private long getStundenWeiss(){
+    private long getStundenWeiss() {
         long rueckgabe = 0;
         String textFeldVal = this.spielerZeitStundenWeiss.getText();
-        try{
+        try {
             rueckgabe = 60 * 60 * 1000 * Integer.parseInt(textFeldVal);
-        }catch(NumberFormatException nfe){
-           sendMessageToUser("Zeit Weiss: Stundenzeit Falsch");
-           rueckgabe = 0;
+        } catch (NumberFormatException nfe) {
+            sendMessageToUser("Zeit Weiss: Stundenzeit Falsch");
+            rueckgabe = 0;
         }
-        if(rueckgabe < 0){
+        if (rueckgabe < 0) {
             sendMessageToUser("Byo-Yomi: Minuten negativ");
             rueckgabe = 0;
         }
@@ -816,14 +806,14 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      * werden.
      * @return Erkanntes Komi
      */
-    private float getKomi(){
+    private float getKomi() {
         float rueckgabe = 0;
         String textFeldVal = this.spielerKomiWeiss.getText();
-        try{
+        try {
             rueckgabe = Float.valueOf(textFeldVal).floatValue();
-        }catch(NumberFormatException nfe){
-           sendMessageToUser("Komi falsch angegeben");
-           rueckgabe = 6.5f;
+        } catch (NumberFormatException nfe) {
+            sendMessageToUser("Komi falsch angegeben");
+            rueckgabe = 6.5f;
         }
         return rueckgabe;
     }
@@ -833,9 +823,9 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      * werden.
      * @param s Zu uebermittelnde Nachicht
      */
-    private void sendMessageToUser(String s){
+    private void sendMessageToUser(String s) {
         this.fehlerBeiEingabe = true;
-        this.errorString+=s+"\n";
+        this.errorString += s + "\n";
     }
 
     /**
@@ -845,21 +835,20 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      */
     private void versucheZuStarten() {
         this.fehlerBeiEingabe = false;
-        long zeitSchwarz = this.getStundenSchwarz()+this.getMinutenSchwarz();
-        long zeitWeiss   = this.getStundenWeiss()+this.getMinutenWeiss();
+        long zeitSchwarz = this.getStundenSchwarz() + this.getMinutenSchwarz();
+        long zeitWeiss = this.getStundenWeiss() + this.getMinutenWeiss();
         long periodenzeit = this.getMinutenPeriode() + this.getSekundenPeriode();
         Spieler sSchwarz = new Spieler(this.getNameSchwarz(), zeitSchwarz, 0, 0);
         Spieler sWeiss = new Spieler(this.getNameWeiss(), zeitWeiss, 0, this.getKomi());
         this.dasSpielfeld.setSpielerSchwarz(sSchwarz);
         this.dasSpielfeld.setSpielerWeiss(sWeiss);
         this.dasSpielfeld.setPeriodenZeit(periodenzeit);
-        if(this.spielMitZeitSpielen.isSelected()==true){
+        if (this.spielMitZeitSpielen.isSelected() == true) {
             this.dasSpielfeld.setIgnoreTime(false);
-        }
-        else{
+        } else {
             this.dasSpielfeld.setIgnoreTime(true);
         }
-        if(this.fehlerBeiEingabe == true){
+        if (this.fehlerBeiEingabe == true) {
 
             /* Fehlerausgabe */
             this.outputMessageToUser();
@@ -872,18 +861,16 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
             this.fehlerBeiEingabe = false;
 
             return;
-        }
-        else{
+        } else {
             String validierungsAntwort = this.dasSpielfeld.spielfeldValidiert();
-            if(validierungsAntwort == null){
+            if (validierungsAntwort == null) {
                 LoGoApp.meineSteuerung.initMitDatenModell(this.dasSpielfeld, this.getNameSchwarz(), this.getNameWeiss(), zeitSchwarz, zeitWeiss, periodenzeit, this.getKomi());
                 LoGoApp.meineSteuerung.buttonSpielStarten();
-                 /* Jetzt spiel Starten */
-                 this.setVisible(false);
+                /* Jetzt spiel Starten */
+                this.setVisible(false);
                 return;
-            }
-            else{
-                if(LoGoApp.debug){
+            } else {
+                if (LoGoApp.debug) {
                     System.out.println("Feld nicht valide");
                 }
                 JOptionPane.showConfirmDialog(this, "Ihre Eingaben sind nicht zulässig!\n" + validierungsAntwort);
@@ -903,12 +890,12 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
         this.spielerKomiWeiss.setText(String.valueOf(this.getKomi()));
         this.spielerNameSchwarz.setText(this.getNameSchwarz());
         this.spielerNameWeiss.setText(this.getNameWeiss());
-        this.spielerZeitMinutenSchwarz.setText(String.valueOf(this.getMinutenSchwarz()/60000));
-        this.spielerZeitStundenSchwarz.setText(String.valueOf(this.getStundenSchwarz()/36000000));
-        this.spielerZeitMinutenWeiss.setText(String.valueOf(this.getMinutenWeiss()/60000));
-        this.spielerZeitStundenWeiss.setText(String.valueOf(this.getStundenWeiss()/36000000));
-        this.periodenZeitMinuten.setText(String.valueOf(this.getMinutenPeriode()/60000));
-        this.periodenZeitSekunden.setText(String.valueOf(this.getSekundenPeriode()/1000));
+        this.spielerZeitMinutenSchwarz.setText(String.valueOf(this.getMinutenSchwarz() / 60000));
+        this.spielerZeitStundenSchwarz.setText(String.valueOf(this.getStundenSchwarz() / 36000000));
+        this.spielerZeitMinutenWeiss.setText(String.valueOf(this.getMinutenWeiss() / 60000));
+        this.spielerZeitStundenWeiss.setText(String.valueOf(this.getStundenWeiss() / 36000000));
+        this.periodenZeitMinuten.setText(String.valueOf(this.getMinutenPeriode() / 60000));
+        this.periodenZeitSekunden.setText(String.valueOf(this.getSekundenPeriode() / 1000));
     }
 
     /**
@@ -936,7 +923,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
     }
 
     private void updateSpielmodus(String modus) {
-        if(modus.equals(this.momSpielModus)){
+        if (modus.equals(this.momSpielModus)) {
             return; // nichts aendert sich
         }
         this.momSpielModus = modus;
@@ -944,7 +931,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
          * nicht geaendert hat, muss man nur das datenmodell auf leer setzen*/
         this.dasSpielfeld = new Spielfeld(this.getSelectedFeldgroesse());
 
-        if(modus.equals( "Schnellstart")){
+        if (modus.equals("Schnellstart")) {
             /* Das Feld ist jetzt leer, bereit fuer den Schnellstart */
             this.animiereFrameStart();
             /* Bei einem Schnellstart spielt man ohne Vorgaben */
@@ -952,8 +939,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
             this.dasSpielfeldGUI.updateSpielFeld(this.dasSpielfeld.getSpielfeldZumZeitpunkt(0));
             this.repaint();
 
-        }
-        else if(modus.equals("Vorgabe")){
+        } else if (modus.equals("Vorgabe")) {
             this.dasSpielfeld.initialisiereFeldMitVorgabenFuerSchwarz(this.getVorgabeWert());
             this.dasSpielfeldGUI.updateSpielFeld(this.dasSpielfeld.getSpielfeldZumZeitpunkt(0));
             this.spielVorgabeSteine.setEnabled(true);
@@ -961,8 +947,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
             this.repaint();
             this.animiereFrameEnde();
 
-        }
-        else if(modus.equals("Startformation")){
+        } else if (modus.equals("Startformation")) {
             this.spielVorgabeSteine.setEnabled(false);
             this.spielBrettHinweise.setName("Mit eigenem Feld spielen");
             this.spielBrettHinweise.setText("<HTML><BODY>Linksklick für Schwarz Rechtsklick für Weiß Gleiche Farben heben sich auf.</BODY></HTML>");
@@ -986,11 +971,10 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
     }
 
     private void updateBrettVorgabe() {
-        if(this.momSpielModus.equals("Vorgabe")){
+        if (this.momSpielModus.equals("Vorgabe")) {
             this.dasSpielfeld = new Spielfeld(this.getSelectedFeldgroesse());
             this.dasSpielfeld.initialisiereFeldMitVorgabenFuerSchwarz(this.getVorgabeWert());
             this.dasSpielfeldGUI.updateSpielFeld(this.dasSpielfeld.getSpielfeldZumZeitpunkt(0));
         }
     }
-
 }
