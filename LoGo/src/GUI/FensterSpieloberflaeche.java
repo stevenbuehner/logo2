@@ -62,8 +62,8 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
     private SpielerZettel spielerZettelSchwarz;
     private SpielerZettel spielerZettelWeiss;
     protected MenuBar dieMenueBar;
-    protected MenuItem Einstellungen;
-    protected MenuItem UeberLoGo;
+    protected MenuItem SpielInfo;
+    protected MenuItem Credits;
     protected MenuItem NeuesSpiel;
     protected MenuItem SpielLaden;
     protected MenuItem SpielSpeichern;
@@ -173,16 +173,16 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         Menu dasLoGoMenue = new Menu("LoGo");
 
         // Einstellungen
-        Einstellungen = new MenuItem("Einstellungen");
-        Einstellungen.addActionListener(this);
-        Einstellungen.setShortcut(new MenuShortcut(KeyEvent.VK_COMMA));
-        dasLoGoMenue.add(Einstellungen);
+        SpielInfo = new MenuItem("Spielinformationen");
+        SpielInfo.addActionListener(this);
+        SpielInfo.setShortcut(new MenuShortcut(KeyEvent.VK_COMMA));
+        dasLoGoMenue.add(SpielInfo);
 
-        // Ueber
-        UeberLoGo = new MenuItem("Über LoGo");
-        UeberLoGo.addActionListener(this);
-        UeberLoGo.setShortcut(new MenuShortcut(KeyEvent.VK_A));
-        dasLoGoMenue.add(UeberLoGo);
+        // Ueber Logo - Credits
+        Credits = new MenuItem("Credits");
+        Credits.addActionListener(this);
+        Credits.setShortcut(new MenuShortcut(KeyEvent.VK_A));
+        dasLoGoMenue.add(Credits);
 
         // ------ Spiel-Menue -------
         Menu dasSpielMenue = new Menu("Spiel");
@@ -222,7 +222,7 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         dasSpielMenue.add(Undo);
 
         // Spielzug Redo
-        Redo = new MenuItem("Spielzug wieder herstellen");
+        Redo = new MenuItem("Spielzug wiederherstellen");
         Redo.addActionListener(this);
         Redo.setEnabled(false);
         Redo.setShortcut(new MenuShortcut(KeyEvent.VK_RIGHT));
@@ -563,10 +563,10 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
      */
     public void actionPerformed(ActionEvent e) {
         // Aktions die ueber die Menue-Leiste eingegeben werden
-        if (e.getSource() == UeberLoGo) {
-            this.buttonUeberLogoGedrueckt();
-        } else if (e.getSource() == Einstellungen) {
-            this.buttonEinstellungenGedrueckt();
+        if (e.getSource() == Credits) {
+            this.buttonCreditsGedrueckt();
+        } else if (e.getSource() == SpielInfo) {
+            this.buttonSpielInfoGedrueckt();
         } else if (e.getSource() == NeuesSpiel) {
             this.buttonNeuesSpiel();
         } else if (e.getSource() == SpielLaden) {
@@ -639,10 +639,10 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         LoGoApp.meineSteuerung.buttonSpielBeenden();
     }
 
-    private void buttonEinstellungenGedrueckt() {
+    private void buttonSpielInfoGedrueckt() {
     }
 
-    private void buttonUeberLogoGedrueckt() {
+    private void buttonCreditsGedrueckt() {
     }
 
     private void buttonUndoGedrueckt() {
