@@ -20,7 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import Logo2.LoGoApp;
+import logo.LoGoApp;
 
 
 /**
