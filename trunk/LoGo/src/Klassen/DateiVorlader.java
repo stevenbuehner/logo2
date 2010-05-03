@@ -1,6 +1,7 @@
 package Klassen;
 
 import GUI.GrafikLib;
+import Sound.MySoundClip;
 import Sound.SoundLib;
 import logo.LoGoApp;
 
@@ -71,8 +72,8 @@ public class DateiVorlader {
         }
 
         // Sounddateien laden
-       // sLib.loadSound( "abschluss", baseSound + "abschlussMono.wav" );
-       // sLib.loadSound( "alarm", baseSound + "alarmMono.wav" );
+        sLib.loadSound( "alarm", baseSound + "alarmMono.wav" );
+        sLib.loadSound("abschluss", baseSound + "abschlussMono.wav");        
 
         if (LoGoApp.debug) {
             System.out.println("Sounddateien fertig in den Speicher geladen.");
