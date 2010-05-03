@@ -17,7 +17,11 @@ public interface SpielerZettel {
 
     public void setGefangenenAnzahl(int anzahl);
 
-    public void setFehlermeldung(String fehlermeldung);
+    public void setInfoBox(String fehlermeldung);
 
     public void zeichneDich(Graphics g);
+
+    public void setInPeriodenZeit(boolean b);
+
+    public boolean getInPeriodenZeit();
 }

@@ -114,7 +114,7 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
 
         this.spielerUhrSchwarz = new SpielerUhr(316, 215, 0, 4.5);
         this.spielerUhrWeiss = new SpielerUhr(114, 144, 0, 1);
-        this.spielerZettelWeiss = new SpielerZettelEinzeln(5, 570, -18.6, "WEISS", Konstante.SCHNITTPUNKT_WEISS);
+        this.spielerZettelWeiss = new SpielerZettelEinzeln(10, 575, -18.6, "WEISS", Konstante.SCHNITTPUNKT_WEISS);
         this.spielerZettelSchwarz = new SpielerZettelEinzeln(238, 424, 2.5, "SCHWARZ", Konstante.SCHNITTPUNKT_SCHWARZ);
 
         this.spielOberflaechePausiert = false;
@@ -501,11 +501,11 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
     }
 
     public void setSpielerMeldungWeiss(String s) {
-        this.spielerZettelWeiss.setFehlermeldung(s);
+        this.spielerZettelWeiss.setInfoBox(s);
     }
 
     public void setSpielerMeldungSchwarz(String s) {
-        this.spielerZettelSchwarz.setFehlermeldung(s);
+        this.spielerZettelSchwarz.setInfoBox(s);
     }
 
     public void setUndoErlaubt(boolean undoMoeglich) {
@@ -692,5 +692,17 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
 
     public void visibleAuswertungBeenden(boolean visible) {
         this.AuswertungBeenden.setEnabled(visible);
+    }
+
+    public void schwarzInPeriodenZeit(boolean b) {
+        if(this.spielerZettelSchwarz != null){
+            this.spielerZettelSchwarz.setInPeriodenZeit(b);
+        }
+    }
+
+    public void weissInPeriodenZeit(boolean b) {
+        if(this.spielerZettelWeiss != null){
+            this.spielerZettelWeiss.setInPeriodenZeit(b);
+        }
     }
 }

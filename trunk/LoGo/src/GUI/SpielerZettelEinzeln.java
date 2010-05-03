@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JComponent;
 
 /**
@@ -19,52 +21,82 @@ public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {
     private int xPos;
     private int yPos;
     private double OwinkelInRad;
-    private int ZeilenAbstand;
+    private int zeilenAbstandOben = 30;
+    private int zeilenAbstandUnten = 20;
+    private int schriftGroesseOben = 16;
+    private int schriftGroesseUnten = 14;
+    private int maxBuchstProZeile = 25;
 
     /* die einzelnen Textvariablen*/
     private String anzeigeText_spielername;
     private String anzeigeText_gefangene;
-    private String anzeigeText_fehlermeldung;
     private String spielerFarbe;
+    private List<String> infoTextTeile;
+
 
     /* übergebene Variablen*/
     private String spielername;
-    private int anzahl;
-    private String fehlermeldung;
+    private int anzahlGefangene;
 
-    public SpielerZettelEinzeln(int xPos, int yPos, double offsetWinkel, String startText, int spielerFarbe) {
+    /* Wenn der Spieler in Periodenzeit ist, wird dies Angezeigt */
+    private boolean spielerInPeriodenZeit;
+
+    public SpielerZettelEinzeln(int xPos, int yPos, double offsetWinkel, String spielerName, int spielerFarbe) {
         if(spielerFarbe == Konstante.SCHNITTPUNKT_SCHWARZ){
-            this.spielerFarbe = "Schwarz: ";
-        }
-        else {
-            this.spielerFarbe = "Weiß: ";
+            this.spielerFarbe = "(Schwarz)";
+        }else{
+            this.spielerFarbe = "(Weiß)";
         }
         this.xPos = xPos;
         this.yPos = yPos;
         this.OwinkelInRad = Math.toRadians(offsetWinkel);
-        this.anzeigeText_spielername = startText;
+        this.anzeigeText_spielername = spielerName;
+        this.infoTextTeile = new ArrayList<String>();
+        this.anzahlGefangene = 0;
+        this.spielerInPeriodenZeit = false;
+
     }
 
-    public void StringBau(String spielername, int anzahl, String fehlermeldung) {
+    public void ObererZettelTeil(String spielername, int anzahlGefangene) {
         this.spielername = spielername;
-        this.anzahl = anzahl;
-        this.fehlermeldung = fehlermeldung;
-        anzeigeText_spielername =this.spielerFarbe + spielername;
-        anzeigeText_gefangene = "Gefangen:  " + this.anzahl;
-        anzeigeText_fehlermeldung = fehlermeldung;
-        ZeilenAbstand = 50;
+        this.anzahlGefangene = anzahlGefangene;
+
+        anzeigeText_spielername =this.spielername + " " + this.spielerFarbe;
+        anzeigeText_gefangene = this.anzahlGefangene + " Steine gefangen";
     }
+
 
     public void setSpielername(String spielername) {
-        this.StringBau(spielername, this.anzahl, this.fehlermeldung);
+        this.ObererZettelTeil(spielername, this.anzahlGefangene);
     }
 
     public void setGefangenenAnzahl(int anzahl) {
-        this.StringBau(this.spielername, anzahl, this.fehlermeldung);
+        this.ObererZettelTeil(this.spielername, anzahl);
     }
 
-    public void setFehlermeldung(String fehlermeldung) {
-        this.StringBau(this.spielername, this.anzahl, fehlermeldung);
+    public void setInfoBox(String infoIn) {
+        this.infoTextTeile = new ArrayList<String>();
+        if(infoIn.length() <= this.maxBuchstProZeile){
+            this.infoTextTeile.add(infoIn);
+            return;
+        }
+        String uebrigerText = infoIn;
+        String textAusschnitt;
+        int abgearbeitetBis = 0;
+        while(uebrigerText.length() > maxBuchstProZeile){
+            textAusschnitt = uebrigerText.substring(0, this.maxBuchstProZeile);
+            if(textAusschnitt.lastIndexOf(' ') > 0){
+                this.infoTextTeile.add(textAusschnitt.substring(0,textAusschnitt.lastIndexOf(' ')));
+                uebrigerText = uebrigerText.substring(textAusschnitt.lastIndexOf(' ')+1);
+            }
+            else {
+                this.infoTextTeile.add(textAusschnitt);
+                uebrigerText = uebrigerText.substring(this.maxBuchstProZeile);
+            }
+        }
+        /* Noch den Rest anhaengen */
+        this.infoTextTeile.add(uebrigerText);
+
     }
 
     @Override
@@ -79,24 +111,43 @@ public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {
 
     public void zeichneDich(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        Font myFont = new Font("TimesRoman", 1, 19);
-        g2.setFont(myFont);
+        
 
         AffineTransform at = AffineTransform.getRotateInstance(
                 this.OwinkelInRad, xPos, yPos);
         g2.setTransform(at);
+        /* Oberen Teil Zeichnen */
+        Font myFontOben = new Font("TimesRoman", 1, this.schriftGroesseOben);
+        g2.setFont(myFontOben);
+
         if (this.anzeigeText_spielername == null) {
             this.anzeigeText_spielername = "";
         }
         if (this.anzeigeText_gefangene == null) {
             this.anzeigeText_gefangene = "";
         }
-        if (this.anzeigeText_fehlermeldung == null) {
-            this.anzeigeText_fehlermeldung = "";
-        }
+
         g2.drawString(this.anzeigeText_spielername, xPos, yPos);
-        g2.drawString(this.anzeigeText_gefangene, xPos, yPos + this.ZeilenAbstand);
-        g2.drawString(this.anzeigeText_fehlermeldung, xPos, yPos + this.ZeilenAbstand + this.ZeilenAbstand);
+        g2.drawString(this.anzeigeText_gefangene, xPos, yPos + this.zeilenAbstandOben);
+        
+        /* Nun der untere Teil */
+        int offsetTextY;
+        int startY = yPos + 2 * this.zeilenAbstandOben;
+        Font myFontUnten = new Font("TimesRoman", 1, this.schriftGroesseUnten);
+        g2.setFont(myFontUnten);
+        if(this.getInPeriodenZeit() == true){
+            g2.drawString("Byo-Yomi aktiv", xPos, startY);
+            offsetTextY = this.zeilenAbstandUnten;
+        }
+        else {
+            offsetTextY = 0;
+        }
+        if(this.infoTextTeile.size()>0){
+            for(int i=0; i<this.infoTextTeile.size(); i++){
+                g2.drawString(this.infoTextTeile.get(i), xPos, startY + i*this.zeilenAbstandUnten + offsetTextY);
+            }
+        }
+
 
         at = AffineTransform.getRotateInstance(
                 0,
@@ -104,5 +155,13 @@ public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {
                 0);
         g2.setTransform(at);
         g = (Graphics) g2;
+    }
+
+    public void setInPeriodenZeit(boolean b) {
+        this.spielerInPeriodenZeit = b;
+    }
+
+    public boolean getInPeriodenZeit() {
+        return this.spielerInPeriodenZeit;
     }
 }
