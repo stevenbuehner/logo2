@@ -26,7 +26,7 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
 import javax.swing.JOptionPane;
-import Logo.LoGoApp;
+import Logo2.LoGoApp;
 
 /**
  *
