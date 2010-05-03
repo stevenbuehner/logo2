@@ -174,6 +174,9 @@ public class Spielbrett extends JComponent {
             g.drawLine(xOffset + i * feldBreite + halbeFeldBreite, yOffset + halbeFeldHoehe, xOffset + i * feldBreite + halbeFeldBreite, yOffset + linienHoehe + halbeFeldHoehe);
         }
 
+        // Vorgabepunkte Zeichnen
+        this.zeichneVorgabepunkte(g);
+
         // Jedes Feld soll sich selbst zeichnen
         for (int i = 0; i < this.anzahlFelder; i++) {
             for (int j = 0; j < this.anzahlFelder; j++) {
@@ -330,6 +333,118 @@ public class Spielbrett extends JComponent {
 
     public int getAnzahlFelder() {
         return this.anzahlFelder;
+    }
+
+    private void zeichneVorgabepunkte(Graphics g) {
+        int durchmesser = 0;
+        switch (this.getAnzahlFelder()){
+            case 7:
+                durchmesser = 11;
+                break;
+            case 9:
+                durchmesser = 11;
+                break;
+            case 11:
+                durchmesser = 9;
+                break;
+            case 13:
+                durchmesser = 9;
+                break;
+            case 15:
+                durchmesser = 7;
+                break;
+            case 17:
+                durchmesser = 7;
+                break;
+            case 19:
+                durchmesser = 5;
+                break;
+        }
+        switch (this.getAnzahlFelder()){
+            case 7:
+                this.zeichneVorgabepunkte(6, 6, durchmesser, g);
+                this.zeichneVorgabepunkte(2, 2, durchmesser, g);
+                this.zeichneVorgabepunkte(6, 2, durchmesser, g);
+                this.zeichneVorgabepunkte(2, 6, durchmesser, g);
+                this.zeichneVorgabepunkte(6, 4, durchmesser, g);
+                this.zeichneVorgabepunkte(4, 2, durchmesser, g);
+                this.zeichneVorgabepunkte(2, 4, durchmesser, g);
+                this.zeichneVorgabepunkte(4, 6, durchmesser, g);
+                this.zeichneVorgabepunkte(4, 4, durchmesser, g);
+                break;
+            case 9:
+                this.zeichneVorgabepunkte(7, 7, durchmesser, g);
+                this.zeichneVorgabepunkte(3, 3, durchmesser, g);
+                this.zeichneVorgabepunkte(7, 3, durchmesser, g);
+                this.zeichneVorgabepunkte(3, 7, durchmesser, g);
+                this.zeichneVorgabepunkte(7, 5, durchmesser, g);
+                this.zeichneVorgabepunkte(3, 5, durchmesser, g);
+                this.zeichneVorgabepunkte(5, 7, durchmesser, g);
+                this.zeichneVorgabepunkte(5, 3, durchmesser, g);
+                this.zeichneVorgabepunkte(5, 5, durchmesser, g);
+                break;
+            case 11:
+                this.zeichneVorgabepunkte(9, 9, durchmesser, g);
+                this.zeichneVorgabepunkte(3, 3, durchmesser, g);
+                this.zeichneVorgabepunkte(9, 3, durchmesser, g);
+                this.zeichneVorgabepunkte(3, 9, durchmesser, g);
+                this.zeichneVorgabepunkte(9, 6, durchmesser, g);
+                this.zeichneVorgabepunkte(3, 6, durchmesser, g);
+                this.zeichneVorgabepunkte(6, 9, durchmesser, g);
+                this.zeichneVorgabepunkte(6, 3, durchmesser, g);
+                this.zeichneVorgabepunkte(6, 6, durchmesser, g);
+                break;
+            case 13:
+                this.zeichneVorgabepunkte(10, 10, durchmesser, g);
+                this.zeichneVorgabepunkte( 4,  4, durchmesser, g);
+                this.zeichneVorgabepunkte(10,  4, durchmesser, g);
+                this.zeichneVorgabepunkte( 4, 10, durchmesser, g);
+                this.zeichneVorgabepunkte(10,  7, durchmesser, g);
+                this.zeichneVorgabepunkte( 4,  7, durchmesser, g);
+                this.zeichneVorgabepunkte( 7, 10, durchmesser, g);
+                this.zeichneVorgabepunkte( 7,  4, durchmesser, g);
+                this.zeichneVorgabepunkte( 7,  7, durchmesser, g);
+                break;
+            case 15:
+                this.zeichneVorgabepunkte(12, 12, durchmesser, g);
+                this.zeichneVorgabepunkte( 4,  4, durchmesser, g);
+                this.zeichneVorgabepunkte(12,  4, durchmesser, g);
+                this.zeichneVorgabepunkte( 4, 12, durchmesser, g);
+                this.zeichneVorgabepunkte(12,  8, durchmesser, g);
+                this.zeichneVorgabepunkte( 4,  8, durchmesser, g);
+                this.zeichneVorgabepunkte( 8, 12, durchmesser, g);
+                this.zeichneVorgabepunkte( 8,  4, durchmesser, g);
+                this.zeichneVorgabepunkte( 8,  8, durchmesser, g);
+                break;
+            case 17:
+                this.zeichneVorgabepunkte(14, 14, durchmesser, g);
+                this.zeichneVorgabepunkte( 4,  4, durchmesser, g);
+                this.zeichneVorgabepunkte(14,  4, durchmesser, g);
+                this.zeichneVorgabepunkte( 4, 14, durchmesser, g);
+                this.zeichneVorgabepunkte(14,  9, durchmesser, g);
+                this.zeichneVorgabepunkte( 4,  9, durchmesser, g);
+                this.zeichneVorgabepunkte( 9, 14, durchmesser, g);
+                this.zeichneVorgabepunkte( 9,  4, durchmesser, g);
+                this.zeichneVorgabepunkte( 9,  9, durchmesser, g);
+                break;
+            case 19:
+                this.zeichneVorgabepunkte(16, 16, durchmesser, g);
+                this.zeichneVorgabepunkte( 4,  4, durchmesser, g);
+                this.zeichneVorgabepunkte(16,  4, durchmesser, g);
+                this.zeichneVorgabepunkte( 4, 16, durchmesser, g);
+                this.zeichneVorgabepunkte(16, 10, durchmesser, g);
+                this.zeichneVorgabepunkte( 4, 10, durchmesser, g);
+                this.zeichneVorgabepunkte(10, 16, durchmesser, g);
+                this.zeichneVorgabepunkte(10,  4, durchmesser, g);
+                this.zeichneVorgabepunkte(10, 10, durchmesser, g);
+                break;
+        }
+    }
+    private void zeichneVorgabepunkte(int xPos, int yPos, int durchmesser, Graphics g) {
+        g.fillOval(xOffset + (brettBreite / anzahlFelder) * (xPos-1) + (brettBreite / anzahlFelder) / 2-durchmesser/2,
+                yOffset + (brettHoehe / anzahlFelder) * (yPos-1) + (brettHoehe/anzahlFelder)/2 - durchmesser/2,
+                durchmesser,
+                durchmesser);
     }
 
     /*
