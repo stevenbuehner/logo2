@@ -674,8 +674,9 @@ public class Steuerung implements SteuerungInterface {
             } else {
                 gewinner = Konstante.SCHNITTPUNKT_SCHWARZ;
             }
-            LoGoApp.meineOberflaeche.ergebnisAufgebenZeigen(this.dasSpielfeld.getSpielerSchwarz().getSpielerName(),
+            LoGoApp.meinAuswertungsfenster.ergebnisAufgebenZeigen(this.dasSpielfeld.getSpielerSchwarz().getSpielerName(),
                     this.dasSpielfeld.getSpielerWeiss().getSpielerName(), gewinner);
+            LoGoApp.meinAuswertungsfenster.setVisible(true);
         }
     }
 
@@ -1065,9 +1066,10 @@ public class Steuerung implements SteuerungInterface {
      */
     public void zeitAbgelaufenSchwarzPeriodenzeit() {
         this.wechsleInStatus(Konstante.SPIEL_BEENDET);
-        LoGoApp.meineOberflaeche.ergebnisAufZeitVerlorenZeigen(this.dasSpielfeld.getSpielerSchwarz().getSpielerName(),
+        LoGoApp.meinAuswertungsfenster.ergebnisAufZeitVerlorenZeigen(this.dasSpielfeld.getSpielerSchwarz().getSpielerName(),
                 this.dasSpielfeld.getSpielerWeiss().getSpielerName(),
                 Konstante.SCHNITTPUNKT_WEISS);
+        LoGoApp.meinAuswertungsfenster.setVisible(true);
     }
 
     /**Implementierung des Interfaces
@@ -1084,9 +1086,10 @@ public class Steuerung implements SteuerungInterface {
      */
     public void zeitAbgelaufenWeissPeriodenzeit() {
         this.wechsleInStatus(Konstante.SPIEL_BEENDET);
-        LoGoApp.meineOberflaeche.ergebnisAufZeitVerlorenZeigen(this.dasSpielfeld.getSpielerSchwarz().getSpielerName(),
+        LoGoApp.meinAuswertungsfenster.ergebnisAufZeitVerlorenZeigen(this.dasSpielfeld.getSpielerSchwarz().getSpielerName(),
                 this.dasSpielfeld.getSpielerWeiss().getSpielerName(),
                 Konstante.SCHNITTPUNKT_SCHWARZ);
+        LoGoApp.meinAuswertungsfenster.setVisible(true);
     }
 
     /**
@@ -1131,7 +1134,7 @@ public class Steuerung implements SteuerungInterface {
         }
         if (this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_GEBIETSAUSWERTUNG) {
             this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_BEENDET);
-            LoGoApp.meineOberflaeche.ergebnisAuszaehlenZeigen(this.dasSpielfeld.getSpielerSchwarz().getSpielerName(),
+            LoGoApp.meinAuswertungsfenster.ergebnisAuszaehlenZeigen(this.dasSpielfeld.getSpielerSchwarz().getSpielerName(),
                     this.dasSpielfeld.getSpielerWeiss().getSpielerName(),
                     this.dasSpielfeld.getSpielerWeiss().getKomiPunkte(),
                     this.dieSpielfeldAuswertung.getGebietsPunkteSchwarz(),
@@ -1140,6 +1143,7 @@ public class Steuerung implements SteuerungInterface {
                     this.dasSpielfeld.getSpielerSchwarz().getGefangenenAnzahl() /* Die von schwarz gefangenen Steine sind die gefangenen Weissen */,
                     this.dieSpielfeldAuswertung.getSchwarzeGefangeneAufBrett(),
                     this.dieSpielfeldAuswertung.getWeisseGefangeneAufBrett());
+            LoGoApp.meinAuswertungsfenster.setVisible(true);
         }
     }
 
