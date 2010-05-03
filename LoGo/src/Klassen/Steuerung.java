@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import logo.LoGoApp;
+import Logo.LoGoApp;
 
 /**
  * Die Klasse dient zur Steuerung des Spielflusses
@@ -1097,14 +1097,19 @@ public class Steuerung implements SteuerungInterface {
     }
 
     private void stoppeTimerVonSpieler(int spieler) {
-        if (spieler == Konstante.SCHNITTPUNKT_SCHWARZ) {
-            this.spielerZeitSchwarz.stoppeCountdown();
-            this.periodenZeitSchwarz.stoppeCountdown();
-            this.dasSpielfeld.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(this.spielerZeitSchwarz.getRemainingTime());
-        } else {
-            this.spielerZeitWeiss.stoppeCountdown();
-            this.periodenZeitWeiss.stoppeCountdown();
-            this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(this.spielerZeitWeiss.getRemainingTime());
+        if( this.dasSpielfeld == null){
+            return;
+        }
+        if (this.dasSpielfeld.getIgnoreTime() == false){
+            if (spieler == Konstante.SCHNITTPUNKT_SCHWARZ) {
+                this.spielerZeitSchwarz.stoppeCountdown();
+                this.periodenZeitSchwarz.stoppeCountdown();
+                this.dasSpielfeld.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(this.spielerZeitSchwarz.getRemainingTime());
+            } else {
+                this.spielerZeitWeiss.stoppeCountdown();
+                this.periodenZeitWeiss.stoppeCountdown();
+                this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(this.spielerZeitWeiss.getRemainingTime());
+            }
         }
     }
 
