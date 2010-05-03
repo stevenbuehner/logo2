@@ -1,6 +1,7 @@
 package GUI;
 
 import Klassen.Konstante;
+import Sound.SoundLib;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
@@ -302,5 +303,17 @@ public class FensterAuswertung extends JFrame implements MouseListener {
         this.spielerSchwarzName = nameSchwarz;
         this.spielerWeissName = nameWeiss;
         this.gewinnerBeiAufgOdZeit = konstanteFuerGewinner;
+    }
+
+    @Override
+    public void setVisible( boolean visible){
+        super.setVisible(visible);
+        SoundLib sLib = SoundLib.getInstance();
+
+        if(visible){
+            sLib.playSound("abschluss");
+        }else{
+            sLib.stopSound("abschluss");
+        }
     }
 }
