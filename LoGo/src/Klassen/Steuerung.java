@@ -485,6 +485,8 @@ public class Steuerung implements SteuerungInterface {
     public void buttonSpielStarten() {
         // Überprüfe ob die Initialisierung korrekt war
         LoGoApp.meineOberflaeche.setVisible(true);
+        LoGoApp.meinEinstellungsfenster.setVisible(false);
+        LoGoApp.meinAuswertungsfenster.setVisible(false);
 
         if (this.dasSpielfeld == null) {
             return;
