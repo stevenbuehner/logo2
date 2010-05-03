@@ -42,6 +42,11 @@ public class SoundLib {
         audio.loop();
     }
 
+    public void stopSound( String name ){
+        AudioClip audio = sounds.get(name);
+        audio.stop();
+    }
+
     public void stopLoopingSound() {
         for (AudioClip c : loopingClips) {
             c.stop();
