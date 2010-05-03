@@ -92,7 +92,6 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         strategy = getBufferStrategy();
         createBackbuffer();
 
-
         // Thread anstoßen
         this.start();
     }
@@ -265,8 +264,6 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         Fortsetzen.setShortcut(new MenuShortcut(KeyEvent.VK_P));
         Fortsetzen.setEnabled(false);
         dasSpielMenue.add(Fortsetzen);
-
-
 
         dieMenueBar.add(dasLoGoMenue);
         dieMenueBar.add(dasSpielMenue);
@@ -526,6 +523,9 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         JOptionPane.showMessageDialog(this, fehlertext);
     }
 
+    /**
+     * @see MouseListener
+     */
     public void mouseClicked(MouseEvent e) {
 
         if (this.dasBrett != null) {
@@ -536,8 +536,7 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
             } else {
                 mess = "kein Treffer mit Clicked-Koordinaten: " + e.getX() + " | " + e.getY();
             }
-        }
-        else{
+        } else {
             // Start-Screen wird angezeigt.
             // Bei einem Klick starte sofort mit Schnellstartmode
             LoGoApp.meineSteuerung.buttonNeuesSchnellstartSpiel();
@@ -605,8 +604,6 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         this.Pause.setEnabled(false);
         this.Fortsetzen.setEnabled(true);
         this.spielOberflaechePausiert = true;
-
-        // Hier dann die Glass-Pane zeichnen / aktivieren
     }
 
     private void buttonSpielFortsetzenGedrueckt() {
@@ -616,17 +613,8 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         this.Pause.setEnabled(true);
         this.Fortsetzen.setEnabled(false);
         this.spielOberflaechePausiert = false;
-
-
-        // Hier dann die Glass-Pane wegnehmen / deaktivieren
     }
 
-    /*  private void buttonNeuesSpielGedrueckt() {
-    this.dasBrett = null;
-    this.Pause.setEnabled(false);
-    this.Fortsetzen.setEnabled(false);
-    LoGoApp.meineSteuerung.buttonSpielStarten();
-    }*/
     private void buttonSpielSpeichernGedrueckt() {
         LoGoApp.meineSteuerung.buttonSpielSpeichern();
     }
