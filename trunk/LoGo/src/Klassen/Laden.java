@@ -1,8 +1,11 @@
 package Klassen;
 
+import GUI.FensterSpieloberflaeche;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import javax.swing.JFileChooser;
+import logo.LoGoApp;
 
 /**
  * Diese Klasse uebernimmt den Ladevorgang
@@ -14,6 +17,7 @@ public class Laden {
     private String _geladenerString;
     private Spieler spieler_weiss;
     private Spieler spieler_schwarz;
+    private char c_lokale_umwandlungsvariable; //Für Ascii - String Umwandlung
     public Spielfeld _spielfeld;
 
     //Funktion für den Identifier des Switch-Case Konstrukts
@@ -47,12 +51,12 @@ public class Laden {
           _id = 5;
         }
         //Zeitanzeige Weisser Spieler
-        else if(id.equals("TPW"))
+        else if(id.equals("TW"))
         {
             _id = 6;
         }
         // Zeitanzeige Schwarzer Spieler
-        else if (id.equals("TPB"))
+        else if (id.equals("TB"))
         {
             _id = 7;
         }
@@ -83,19 +87,23 @@ public class Laden {
     }
     
     public Spielfeld getSpielfeld(){
+        //Rueckgabe des Spielfeldes
         return this._spielfeld;
     }
 
-
-
     public void LadeSpiel( ){
 
-        try{
-            //Hier muss der String des OpenFileDialog verwendet werden
-            BufferedReader in = new BufferedReader(new FileReader ("C:/Go-Spiel.txt"));
+       JFileChooser chooser = new JFileChooser();
+       chooser.showOpenDialog((FensterSpieloberflaeche)LoGoApp.meineOberflaeche);
+       String selFile = chooser.getCurrentDirectory()+ "\\" + chooser.getSelectedFile().getName();
+
+       try{
+            BufferedReader in = new BufferedReader(new FileReader (selFile));
             String zeile = null;
-            while((zeile = in.readLine()) != null);
-            _geladenerString = zeile;
+            while((zeile = in.readLine()) != null)
+            {
+                _geladenerString = zeile;
+            }
         }catch(IOException e){
             ;
         }
@@ -106,9 +114,17 @@ public class Laden {
     
     String identifier = null;
 
+    //Spielerobjekte erzeugen
+    long l_spieler_variable = 0;
+    float f_spieler_variable = 0;
+    String s_spieler_variable = "";
+    int i_spieler_variable = 0;
+    spieler_weiss = new Spieler(s_spieler_variable,l_spieler_variable,i_spieler_variable,f_spieler_variable);
+    spieler_schwarz = new Spieler(s_spieler_variable,l_spieler_variable,i_spieler_variable,f_spieler_variable);
+
     //Herausschneidender Standard_SGF_Konfiguration
-    _klammer_auf = _geladenerString.indexOf("(;");
-    _geladenerString.substring(_klammer_auf);
+    _klammer_auf = _geladenerString.indexOf("(;") + 2;
+    _geladenerString = _geladenerString.substring(_klammer_auf);
 
     //Ein Identifier besteht maximal aus zwei Ziffern
     char c1;
@@ -130,7 +146,7 @@ public class Laden {
     int i_parameterY = 0;
 
     //Durchfuehren der Schleife bis der String keinen Inhalt mehr besitzt
-    while(_geladenerString!=null)
+    do
     {
         _klammer_auf = _geladenerString.indexOf("[");
 
@@ -148,7 +164,7 @@ public class Laden {
        _klammer_zu = _geladenerString.indexOf("]");
 
        //Parameterzuweisung
-       s_parameter = _geladenerString.substring(_klammer_auf, _klammer_zu);
+       s_parameter = _geladenerString.substring(_klammer_auf+1, _klammer_zu);
        
     /*
      * Je nach Identifier wird der Parameter als Integerzahl, Float, Long oder
@@ -189,17 +205,17 @@ public class Laden {
         case 6:
             //Umwandeln von String zu Long für Spielzeit
             l_parameter = Long.parseLong(s_parameter);
-            this.spieler_weiss.setVerbleibendeSpielzeitInMS(l_parameter);
+            this.spieler_weiss.setVerbleibendeSpielzeitInMS(l_parameter * 1000);
             break;
         case 7:
             //Umwandeln von String zu Long für verbleibende Zeit
             l_parameter = Long.parseLong(s_parameter);
-            this.spieler_schwarz.setVerbleibendeSpielzeitInMS(l_parameter);
+            this.spieler_schwarz.setVerbleibendeSpielzeitInMS(l_parameter * 1000);
             break;
         case 8:
             //Umwandeln von String zu Long für Periodenzeit
             l_parameter = Long.parseLong(s_parameter);
-            this._spielfeld.setPeriodenZeit(l_parameter);
+            this._spielfeld.setPeriodenZeit(l_parameter * 1000);
             break;
         case 9:
             /*
@@ -207,12 +223,15 @@ public class Laden {
              * Trenne X-Buchstabe von Y-Buchstabe
              */
             s_parameterX = s_parameter.substring(0,1);
-            s_parameterY = s_parameter;
+            s_parameterY = s_parameter.substring(1,2);
 
             //Umwandlung und weise Koordinaten lokalen Variablen zu
-            i_parameterX = Integer.parseInt(s_parameterX);
-            i_parameterY = Integer.parseInt(s_parameterY);
 
+            c_lokale_umwandlungsvariable = s_parameterX.charAt(0);
+            i_parameterX = (int) c_lokale_umwandlungsvariable;
+
+             c_lokale_umwandlungsvariable = s_parameterY.charAt(0);
+             i_parameterY = (int) c_lokale_umwandlungsvariable;
             //Ziehe das 'a' = 97 wieder ab um die Koordinate als Zahl zu bekommen
             i_parameterX -= 97;
             i_parameterY -= 97;
@@ -227,9 +246,17 @@ public class Laden {
              *
              */
             s_parameterX = s_parameter.substring(0,1);
-            s_parameterY = s_parameter;
-            i_parameterX = Integer.parseInt(s_parameterX);
-            i_parameterY = Integer.parseInt(s_parameterY);
+            s_parameterY = s_parameter.substring(1,2);
+            
+            //Umwandlung von String zu Char
+            c_lokale_umwandlungsvariable = s_parameterX.charAt(0);
+            //Umwandlung von Char zu Ascii wert
+            i_parameterX = (int) c_lokale_umwandlungsvariable;
+
+            c_lokale_umwandlungsvariable = s_parameterY.charAt(0);
+            i_parameterY = (int) c_lokale_umwandlungsvariable;
+
+            //97 abziehen um die Koordinate zu bekommen
             i_parameterX -= 97;
             i_parameterY -= 97;
 
@@ -241,7 +268,7 @@ public class Laden {
             break;
         }
         //Schneidet aus dem Originalstring die schließende Klammer heraus
-        _geladenerString.substring(_klammer_zu);
-        }
+        _geladenerString = _geladenerString.substring(_klammer_zu + 1);
+        }while(!_geladenerString.isEmpty());
     }
 }
