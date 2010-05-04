@@ -95,7 +95,8 @@ public class Laden {
 
        JFileChooser chooser = new JFileChooser();
        chooser.showOpenDialog((FensterSpieloberflaeche)LoGoApp.meineOberflaeche);
-       String selFile = chooser.getCurrentDirectory()+ "\\" + chooser.getSelectedFile().getName();
+       //String selFile = chooser.getCurrentDirectory()+ "\\" + chooser.getSelectedFile().getName();
+       String selFile = chooser.getSelectedFile().getAbsolutePath();
 
        try{
             BufferedReader in = new BufferedReader(new FileReader (selFile));
