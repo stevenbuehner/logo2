@@ -1366,4 +1366,8 @@ public class Steuerung implements SteuerungInterface {
         }
         
     }
+
+    public void buttonZeigeCreditsGedrueckt() {
+        LoGoApp.meineCredits.setVisible(true);
+    }
 }
