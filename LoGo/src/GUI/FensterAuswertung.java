@@ -1,7 +1,10 @@
 package GUI;
 
+import Klassen.BackgroundStatistikLoader;
+import Klassen.HistoryEintrag;
 import Klassen.Konstante;
 import Sound.SoundLib;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
@@ -37,17 +40,17 @@ public class FensterAuswertung extends JFrame implements MouseListener {
     private float spielerWeissKomi;
     private float ergebnisFuerWeiss;
     private int gewinnerBeiAufgOdZeit;
-
     private static final int AUF_ZEIT_BEENDET = 300;
     private static final int DURCH_AUFGABE_BEENDET = 301;
     private static final int DURCH_AUSZAEHLEN_BEENDET = 302;
-
+    private static final int STATISTIK_XPOS = 91;
+    private static final int STATISTIK_YPOS = 500;
+    private static final int STATISTIK_ANZAHL = 5;
+    private HistoryEintrag histEintraege[];
     private int wieWurdeBeendet;
-
     private BufferedImage backgroundImage;
     private JPanel contentPanel;
     private ImageIcon LogoIcon;
-    
     private int xKoordSchw = 110;
     private int xKoordWeiss = 580;
     private int zeilenabstand = 30;
@@ -72,6 +75,8 @@ public class FensterAuswertung extends JFrame implements MouseListener {
         this.wieWurdeBeendet = 0;
         this.ergebnisFuerWeiss = 0;
         this.gewinnerBeiAufgOdZeit = 0;
+
+        this.histEintraege = new HistoryEintrag[STATISTIK_ANZAHL];
 
         GrafikLib lib = GrafikLib.getInstance();
         this.backgroundImage = lib.getSprite("GUI/resources/Auswertungsanzeige.jpg");
@@ -148,78 +153,94 @@ public class FensterAuswertung extends JFrame implements MouseListener {
      */
     private void render(Graphics g) {
         /* Je nachdem, wie Beendet wurde, wird das Ergebnis angezeigt */
-        if(this.wieWurdeBeendet == FensterAuswertung.DURCH_AUSZAEHLEN_BEENDET){
+        if (this.wieWurdeBeendet == FensterAuswertung.DURCH_AUSZAEHLEN_BEENDET) {
             Font myFont = new Font("TimesRoman", 1, 16);
             g.setFont(myFont);
             g.drawString(this.spielerSchwarzName, this.xKoordSchw, this.yOffset);
-            g.drawString("Gebietspunkte: "+this.spielerSchwarzGebietspunkte, this.xKoordSchw, this.yOffset + this.zeilenabstand);
-            g.drawString("Gefangen: "+this.spielerSchwarzImSpielGefangen, this.xKoordSchw, this.yOffset + 2*this.zeilenabstand);
-            g.drawString("Gefangen auf Brett: " + this.spielerSchwarzAufBrettGefangen, this.xKoordSchw, this.yOffset + 3*this.zeilenabstand);
+            g.drawString("Gebietspunkte: " + this.spielerSchwarzGebietspunkte, this.xKoordSchw, this.yOffset + this.zeilenabstand);
+            g.drawString("Gefangen: " + this.spielerSchwarzImSpielGefangen, this.xKoordSchw, this.yOffset + 2 * this.zeilenabstand);
+            g.drawString("Gefangen auf Brett: " + this.spielerSchwarzAufBrettGefangen, this.xKoordSchw, this.yOffset + 3 * this.zeilenabstand);
 
             g.drawString(this.spielerWeissName, this.xKoordWeiss, this.yOffset);
-            g.drawString("Gebietspunkte: "+this.spielerWeissGebietspunkte, this.xKoordWeiss, this.yOffset + this.zeilenabstand);
-            g.drawString("Gefangen: "+this.spielerWeissImSpielGefangen, this.xKoordWeiss, this.yOffset + 2*this.zeilenabstand);
-            g.drawString("Gefangen auf Brett: "+this.spielerWeissAufBrettGefangen, this.xKoordWeiss, this.yOffset + 3*this.zeilenabstand);
-            
+            g.drawString("Gebietspunkte: " + this.spielerWeissGebietspunkte, this.xKoordWeiss, this.yOffset + this.zeilenabstand);
+            g.drawString("Gefangen: " + this.spielerWeissImSpielGefangen, this.xKoordWeiss, this.yOffset + 2 * this.zeilenabstand);
+            g.drawString("Gefangen auf Brett: " + this.spielerWeissAufBrettGefangen, this.xKoordWeiss, this.yOffset + 3 * this.zeilenabstand);
+
             NumberFormat numberFormat = new DecimalFormat("0.00");
             numberFormat.setRoundingMode(RoundingMode.DOWN);
 
-            if(this.spielerWeissKomi >= 0 && this.spielerSchwarzKomi == 0){
-                g.drawString("Komi: " + numberFormat.format(this.spielerWeissKomi), this.xKoordWeiss, this.yOffset + 4*this.zeilenabstand);
-            }
-            else if(this.spielerSchwarzKomi >=0 && this.spielerWeissKomi == 0) {
-                g.drawString("Komi: " + numberFormat.format(this.spielerSchwarzKomi), this.xKoordSchw, this.yOffset + 4*this.zeilenabstand);
-            }
-            else {
-                g.drawString("Komi: 0", this.xKoordWeiss, this.yOffset + 4*this.zeilenabstand);
+            if (this.spielerWeissKomi >= 0 && this.spielerSchwarzKomi == 0) {
+                g.drawString("Komi: " + numberFormat.format(this.spielerWeissKomi), this.xKoordWeiss, this.yOffset + 4 * this.zeilenabstand);
+            } else if (this.spielerSchwarzKomi >= 0 && this.spielerWeissKomi == 0) {
+                g.drawString("Komi: " + numberFormat.format(this.spielerSchwarzKomi), this.xKoordSchw, this.yOffset + 4 * this.zeilenabstand);
+            } else {
+                g.drawString("Komi: 0", this.xKoordWeiss, this.yOffset + 4 * this.zeilenabstand);
             }
 
-            if(this.ergebnisFuerWeiss > 0.01){
-                g.drawString("Weiss gewinnt mit " + numberFormat.format(this.ergebnisFuerWeiss) + " Punkten.", this.xKoordWeiss, this.yOffset + 5*this.zeilenabstand);
-            }
-            else if (this.ergebnisFuerWeiss< -0.01) {
-                g.drawString("Schwarz gewinnt mit " + numberFormat.format((this.ergebnisFuerWeiss)*-1) + " Punkten.", this.xKoordSchw, this.yOffset + 5*this.zeilenabstand);
-            }
-            else {
-                g.drawString("Unentschieden", this.xKoordWeiss, this.yOffset + 6*this.zeilenabstand);
-                g.drawString("Unentschieden", this.xKoordSchw, this.yOffset + 6*this.zeilenabstand);
+            if (this.ergebnisFuerWeiss > 0.01) {
+                g.drawString("Weiss gewinnt mit " + numberFormat.format(this.ergebnisFuerWeiss) + " Punkten.", this.xKoordWeiss, this.yOffset + 5 * this.zeilenabstand);
+            } else if (this.ergebnisFuerWeiss < -0.01) {
+                g.drawString("Schwarz gewinnt mit " + numberFormat.format((this.ergebnisFuerWeiss) * -1) + " Punkten.", this.xKoordSchw, this.yOffset + 5 * this.zeilenabstand);
+            } else {
+                g.drawString("Unentschieden", this.xKoordWeiss, this.yOffset + 6 * this.zeilenabstand);
+                g.drawString("Unentschieden", this.xKoordSchw, this.yOffset + 6 * this.zeilenabstand);
             }
 
-
-
-        }
-        else if(this.wieWurdeBeendet == FensterAuswertung.DURCH_AUFGABE_BEENDET){
+        } else if (this.wieWurdeBeendet == FensterAuswertung.DURCH_AUFGABE_BEENDET) {
             Font myFont = new Font("TimesRoman", 1, 16);
             g.setFont(myFont);
             g.drawString(this.spielerSchwarzName, this.xKoordSchw, this.yOffset);
             g.drawString(this.spielerWeissName, this.xKoordWeiss, this.yOffset);
-            if(this.gewinnerBeiAufgOdZeit == Konstante.SCHNITTPUNKT_SCHWARZ){
+            if (this.gewinnerBeiAufgOdZeit == Konstante.SCHNITTPUNKT_SCHWARZ) {
                 g.drawString("Schwarz gewinnt durch Aufgabe.", this.xKoordSchw, this.yOffset + this.zeilenabstand);
-            }
-            else {
+            } else {
                 g.drawString("Weiß gewinnt durch Aufgabe.", this.xKoordWeiss, this.yOffset + this.zeilenabstand);
             }
 
 
-        }
-        else if(this.wieWurdeBeendet == FensterAuswertung.AUF_ZEIT_BEENDET){
+        } else if (this.wieWurdeBeendet == FensterAuswertung.AUF_ZEIT_BEENDET) {
             Font myFont = new Font("TimesRoman", 1, 16);
             g.setFont(myFont);
             g.drawString(this.spielerSchwarzName, this.xKoordSchw, this.yOffset);
             g.drawString(this.spielerWeissName, this.xKoordWeiss, this.yOffset);
-            if(this.gewinnerBeiAufgOdZeit == Konstante.SCHNITTPUNKT_SCHWARZ){
+            if (this.gewinnerBeiAufgOdZeit == Konstante.SCHNITTPUNKT_SCHWARZ) {
                 g.drawString("Schwarz gewinnt auf Zeit.", this.xKoordSchw, this.yOffset + this.zeilenabstand);
-            }
-            else {
+            } else {
                 g.drawString("Weiß gewinnt auf Zeit.", this.xKoordWeiss, this.yOffset + this.zeilenabstand);
             }
 
         }
+
+
+        /* Ab hier das zeichnen der History-Einträge */
         
+        g.drawString("Spieler Schwarz", STATISTIK_XPOS, STATISTIK_YPOS);
+        g.drawString("Spieler Schwarz", STATISTIK_XPOS + 200, STATISTIK_YPOS);
+        g.drawString("Spieler Weiss", STATISTIK_XPOS + 400, STATISTIK_YPOS);
+        g.drawString("Spieler Schwarz", STATISTIK_XPOS + 600, STATISTIK_YPOS);
+        g.drawLine(STATISTIK_XPOS, STATISTIK_YPOS, STATISTIK_XPOS+830, STATISTIK_YPOS);
+        
+        if (histEintraege[0] != null) {
+            // zeichne History-Einträge ...
+            int x = STATISTIK_XPOS;
+            int y = STATISTIK_YPOS;
+            g.setColor(Color.BLACK);
+            // g.setFont(myFont);
 
-        // Zeichne die Informationen aus dem Spielfeld auf die Oberflaeche
+            for (int i = 0; i < STATISTIK_ANZAHL; i++) {
+                if (histEintraege[i] != null) {
+                    g.drawString(histEintraege[i].getNameSpielerSchwarz(), x, y + zeilenabstand * (i + 1));
+                    g.drawString(String.valueOf(histEintraege[i].getPunkteSpielerSchwarz()), x + 200, y + zeilenabstand * (i + 1));
+                    g.drawString(histEintraege[i].getNameSpielerWeiss(), x + 400, y + zeilenabstand * (i + 1));
+                    g.drawString(String.valueOf(histEintraege[i].getPunkteSpielerWeiss()), x + 600, y + zeilenabstand * (i + 1));
+                }
+            }
+        } else {
+            // ansonsten warte auf Datenbank
+            g.drawString("Warte auf Ergebnisse aus der Datenbank ...", STATISTIK_XPOS, STATISTIK_YPOS + this.zeilenabstand);
+        }
+
     }
-
 
     public void ergebnisAuszaehlenZeigen(String nameSchwarz, String nameWeiss, float komiFuerWeiss, int gebietsPunktSchwarz, int gebietsPunkteWeiss,
             int schwarzeGefangenImSpiel, int weisseGefangenImSpiel, int schwarzeSteineTotAufBrett, int weisseSteineTotAufBrett) {
@@ -242,17 +263,16 @@ public class FensterAuswertung extends JFrame implements MouseListener {
         this.spielerSchwarzImSpielGefangen = weisseGefangenImSpiel;
         this.spielerSchwarzAufBrettGefangen = weisseSteineTotAufBrett;
         this.spielerWeissAufBrettGefangen = schwarzeSteineTotAufBrett;
-        if(komiFuerWeiss >=0){
+        if (komiFuerWeiss >= 0) {
             this.spielerWeissKomi = komiFuerWeiss;
             this.spielerSchwarzKomi = 0;
-        }
-        else {
-            this.spielerSchwarzKomi = -1*komiFuerWeiss;
+        } else {
+            this.spielerSchwarzKomi = -1 * komiFuerWeiss;
             this.spielerWeissKomi = 0;
         }
 
         this.ergebnisFuerWeiss = (this.spielerWeissAufBrettGefangen + this.spielerWeissGebietspunkte + this.spielerWeissImSpielGefangen + this.spielerWeissKomi)
-                                 - (this.spielerSchwarzAufBrettGefangen + this.spielerSchwarzGebietspunkte + this.spielerSchwarzImSpielGefangen + this.spielerSchwarzKomi);
+                - (this.spielerSchwarzAufBrettGefangen + this.spielerSchwarzGebietspunkte + this.spielerSchwarzImSpielGefangen + this.spielerSchwarzKomi);
         this.wieWurdeBeendet = FensterAuswertung.DURCH_AUSZAEHLEN_BEENDET;
     }
 
@@ -304,14 +324,21 @@ public class FensterAuswertung extends JFrame implements MouseListener {
     }
 
     @Override
-    public void setVisible( boolean visible){
+    public void setVisible(boolean visible) {
         super.setVisible(visible);
         SoundLib sLib = SoundLib.getInstance();
 
-        if(visible){
+        if (visible) {
             sLib.playSound("abschluss");
-        }else{
+            // Lade die Statistikwerte im Hintergrund und zeige sie an
+            new BackgroundStatistikLoader(STATISTIK_ANZAHL);
+        } else {
             sLib.stopSound("abschluss");
         }
+    }
+
+    public synchronized void setHistoryEintraege(HistoryEintrag eintraege[]) {
+        this.histEintraege = eintraege;
+        this.repaint();
     }
 }
