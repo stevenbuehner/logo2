@@ -141,7 +141,8 @@ public class Speichern {
             else if (farbe == 2)
             {
                 spielzuege += "W["+_buchstabeX+_buchstabeY+"]";
-            } else
+            }
+            else
             {
                 break;
             }
@@ -152,7 +153,7 @@ public class Speichern {
         chooser.showSaveDialog((FensterSpieloberflaeche)LoGoApp.meineOberflaeche);
 
         //Directory und Dateiname definieren
-       // String selFile = chooser.getCurrentDirectory() + "\\" + chooser.getSelectedFile().getName();
+        //Gesamten Pfadnamen verwenden
         String selFile = chooser.getSelectedFile().getAbsolutePath();
 
         //Endung überprüfen
