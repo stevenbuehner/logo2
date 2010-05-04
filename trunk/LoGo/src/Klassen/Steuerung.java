@@ -1345,12 +1345,19 @@ public class Steuerung implements SteuerungInterface {
     }
 
     public void buttonZeigeCreditsGedrueckt() {
-        
-            try {
-                Runtime.getRuntime().exec("evince ../GUI/resources/ChinesischerRestsatz.pdf");
-            } catch (IOException ex) {
-                Logger.getLogger(Steuerung.class.getName()).log(Level.SEVERE, null, ex);
-            }
+
+         Process p = null;
+        try {
+            p = Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler ../GUI/resources/ChinesischerRestsatz.pdf");
+        } catch (IOException ex) {
+            Logger.getLogger(Steuerung.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            p.waitFor();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Steuerung.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         
     }
 }
