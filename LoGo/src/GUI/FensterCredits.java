@@ -27,7 +27,6 @@ public class FensterCredits extends JFrame{
 
     private void init(){
 
-
         GrafikLib lib = GrafikLib.getInstance();
         BufferedImage bg = lib.getSprite("GUI/resources/Credits.jpg");
         this.backgroundPanel = new BackgroundImagePanel(bg);
@@ -36,6 +35,7 @@ public class FensterCredits extends JFrame{
         this.setSize(bg.getWidth(), bg.getHeight());
         this.setLocationRelativeTo(null);
 
+        this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }
 
 }
