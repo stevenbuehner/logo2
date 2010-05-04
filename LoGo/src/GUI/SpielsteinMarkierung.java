@@ -12,20 +12,16 @@ public class SpielsteinMarkierung extends SpielStein {
     SpielsteinMarkierung(BufferedImage[] image, double x, double y) {
         super(image, x, y);
 
-        this.addScene(this.storedImages[0], 0);
-        this.addScene(this.storedImages[1], 0);
-        this.addScene(this.storedImages[2], 0);
-        this.addScene(this.storedImages[3], 0);
-        this.addScene(this.storedImages[4], 0);
-        this.addScene(this.storedImages[5], 0);
-        this.addScene(this.storedImages[6], 0);
-        this.addScene(this.storedImages[7], 0);
-        this.addScene(this.storedImages[8], 0);
-        this.addScene(this.storedImages[9], 0);
-        this.addScene(this.storedImages[10], 0);
-        // this.addScene(this.storedImages[11], 0); // wieder das Selbe
+        //this.addScene(storedImages[48], 1000);
+        this.addScene(storedImages[55], 300); // leerlauf
+        this.addScene(storedImages[49], 100);
+        this.addScene(storedImages[50], 100);
+        this.addScene(storedImages[51], 100);
+        this.addScene(storedImages[52], 100);
+        this.addScene(storedImages[53], 100);
+        this.addScene(storedImages[54], 8000);
 
-        this.loop = true;
+        this.setLoop(true, 0);
     }
 
     public SpielsteinMarkierung(BufferedImage image, double x, double y) {
@@ -33,18 +29,6 @@ public class SpielsteinMarkierung extends SpielStein {
 
         this.addScene(this.storedImages[0], 0);
         this.loop = true;
-    }
-
-    @Override
-    protected void computeAnimation() {
-
-        if (this.currentSceneIndex < 10) {
-            this.currentSceneIndex++;
-        } else if (this.currentSceneIndex == 10 && this.loop) {
-            currentSceneIndex = 5;
-        } else {
-            // this.currentSceneIndex = this.currentSceneIndex;
-        }
     }
 
     @Override

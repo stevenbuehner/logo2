@@ -125,11 +125,11 @@ public class Spielbrett extends JComponent {
                 throw new UnsupportedOperationException("Diese Spiellfeldgroesse wird nicht unterstuetzt.");
         }
 
-        BufferedImage[] kugeln = lib.getSprite(spielSteinImageName, 14, 3);
+        BufferedImage[] kugeln = lib.getSprite(spielSteinImageName, 14, 4);
         BufferedImage[] markStein = lib.getSprite(markierterSteinImage, 12, 1);
 
         // Initialisierern des Spezial-Objektes zum markieren der Spielsteine
-        this.markierterStein = new SpielsteinMarkierung(markStein, 0, 0);
+        this.markierterStein = new SpielsteinMarkierung(kugeln, 0, 0);
         this.markierterStein.setVisible(false);
 
         for (int m = 0; m < this.anzahlFelder; m++) {
