@@ -214,10 +214,10 @@ public class FensterAuswertung extends JFrame implements MouseListener {
 
         /* Ab hier das zeichnen der History-Einträge */
         
-        g.drawString("Spieler Schwarz", STATISTIK_XPOS, STATISTIK_YPOS);
-        g.drawString("Spieler Schwarz", STATISTIK_XPOS + 200, STATISTIK_YPOS);
-        g.drawString("Spieler Weiss", STATISTIK_XPOS + 400, STATISTIK_YPOS);
-        g.drawString("Spieler Schwarz", STATISTIK_XPOS + 600, STATISTIK_YPOS);
+        g.drawString("Spielername (Schwarz)", STATISTIK_XPOS, STATISTIK_YPOS);
+        g.drawString("Punkte (Schwarz)", STATISTIK_XPOS + 200, STATISTIK_YPOS);
+        g.drawString("Spielername (Weiss)", STATISTIK_XPOS + 400, STATISTIK_YPOS);
+        g.drawString("Punkte (Schwarz)", STATISTIK_XPOS + 600, STATISTIK_YPOS);
         g.drawLine(STATISTIK_XPOS, STATISTIK_YPOS, STATISTIK_XPOS+830, STATISTIK_YPOS);
         
         if (histEintraege[0] != null) {
