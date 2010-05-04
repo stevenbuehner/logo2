@@ -4,14 +4,19 @@ import Klassen.Konstante;
 import Klassen.Laden;
 import Klassen.Spieler;
 import Klassen.Spielfeld;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.FocusTraversalPolicy;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Vector;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -114,6 +119,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
         this.zumActionListenerAdden();
         this.neuesSpielfeld();
         this.fensterRendern();
+        this.tabReihenfolge();
         this.komponentenAufContentPane();
     }
 
@@ -251,6 +257,35 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
         this.getContentPane().add(labelVorgabe);
         this.getContentPane().add(new JLabel("")); // dirty, aber so klappts
         this.getContentPane().add(this.dasSpielfeldGUI); // muss noch kommen <-----------
+    }
+
+    private void tabReihenfolge() {
+        // Tabreihenfolgen wird festgelegt
+
+
+        FocusTraversalPolicy policy = TabTravel.getFocusTraversal(new JComponent[] {
+            this.spielerNameSchwarz,
+            this.spielerNameWeiss ,
+            this.periodenZeitMinuten,
+            this.periodenZeitSekunden,
+            this.spielerZeitStundenSchwarz,
+            this.spielerZeitMinutenSchwarz,
+            this.spielerZeitStundenWeiss,
+            this.spielerZeitMinutenWeiss,
+            this.spielerKomiWeiss,
+            this.siebenXsieben,
+            this.neunXneun,
+            this.elfXelf,
+            this.dreizehnXdreizehn,
+            this.fuenfzehnXfuenfzehn,
+            this.siebzehnXsiebzehn,
+            this.neunzehnXneunzehn,
+            this.spielStarten,
+            this.hilfeButton,
+            this.spielermodus});
+
+        this.setFocusTraversalPolicy(policy);
+        this.setFocusCycleRoot(true);
     }
 
     /** 
