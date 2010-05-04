@@ -901,7 +901,6 @@ public class Steuerung implements SteuerungInterface {
 
             if (neuesSpielfeld != null) {
                 fehlermeldung = neuesSpielfeld.spielfeldValidiert();
-                return;
             }
 
             if (fehlermeldung == null) {
