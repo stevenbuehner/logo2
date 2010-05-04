@@ -890,9 +890,11 @@ public class Steuerung implements SteuerungInterface {
             }
         }
 
-        if (returnWert == JOptionPane.CANCEL_OPTION) {
-            // Ess soll ein neues Spiel geladen werden
+        //Return Wert ist Null wenn neues Spiel geladen werden soll
+        if (returnWert == 0) {
+            // Es soll ein neues Spiel geladen werden
             Laden ladenObjekt = new Laden();
+            ladenObjekt.LadeSpiel();
 
             Spielfeld neuesSpielfeld = ladenObjekt.getSpielfeld();
             String fehlermeldung = null;
@@ -907,7 +909,7 @@ public class Steuerung implements SteuerungInterface {
                 this.buttonSpielStarten();
                 this.buttonPause();
             } else {
-                JOptionPane.showConfirmDialog((FensterSpieloberflaeche) LoGoApp.meineOberflaeche, "Das geladene Spielfeld entählt nicht zulässige Werte.\nBitte verwenden Sie ausschließlich zugelassene SGF-Spieldateien.");
+                JOptionPane.showConfirmDialog((FensterSpieloberflaeche) LoGoApp.meineOberflaeche, "Das geladene Spielfeld enthält nicht zulässige Werte.\nBitte verwenden Sie ausschließlich zugelassene SGF-Spieldateien.");
             }
         }
     }
