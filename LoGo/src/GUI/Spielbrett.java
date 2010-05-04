@@ -283,7 +283,14 @@ public class Spielbrett extends JComponent {
                                 this.feld[i][j].starteAnimationGebietSchwarzZuLeer();
                             } else if (this.spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_GEBIET_WEISS) {
                                 this.feld[i][j].starteAnimantionGebietWeissZuLeer();
+                            } else if (this.spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_SCHWARZ_GEFANGEN){
+                                this.feld[i][j].setLeeresFeld();
+                            } else if (this.spielFeldArray[i][j] == Konstante.SCHNITTPUNKT_WEISS_GEFANGEN){
+                                this.feld[i][j].setLeeresFeld();
+                            }else {
+                                this.feld[i][j].setLeeresFeld();
                             }
+
                             break;
                         case Konstante.SCHNITTPUNKT_VERBOTEN:
                             // Zeichne das Feld als verbotenen Schnittpunkt
@@ -487,19 +494,19 @@ public class Spielbrett extends JComponent {
     private void zeichneDickeHorLinie(int x0, int y0, int x1, int y1, int anzahlDerLinien, Graphics g) {
         int linienZahl = anzahlDerLinien;
         int linienGezeichnet = 0;
-        int linienDicke = 0;
+        int lDicke = 0;
         boolean eineSeiteSchonGezeichnet = false;
         g.drawLine(x0, y0, x1, y1);
         linienGezeichnet++;
-        linienDicke ++;
+        lDicke ++;
         while(linienGezeichnet < linienZahl){
             if(eineSeiteSchonGezeichnet == true){
-                g.drawLine(x0, y0-linienDicke, x1, y1-linienDicke);
-                linienDicke++;
+                g.drawLine(x0, y0-lDicke, x1, y1-lDicke);
+                lDicke++;
                 eineSeiteSchonGezeichnet = false;
             }
             else {
-                g.drawLine(x0, y0+linienDicke, x1, y1+linienDicke);
+                g.drawLine(x0, y0+lDicke, x1, y1+lDicke);
                 eineSeiteSchonGezeichnet = true;
             }
             linienGezeichnet++;
@@ -509,19 +516,19 @@ public class Spielbrett extends JComponent {
     private void zeichneDickeVerLinie(int x0, int y0, int x1, int y1, int anzahlDerLinien, Graphics g){
         int linienZahl = anzahlDerLinien;
         int linienGezeichnet = 0;
-        int linienDicke = 0;
+        int lDicke = 0;
         boolean eineSeiteSchonGezeichnet = false;
         g.drawLine(x0, y0, x1, y1);
         linienGezeichnet++;
-        linienDicke ++;
+        lDicke ++;
         while(linienGezeichnet < linienZahl){
             if(eineSeiteSchonGezeichnet == true){
-                g.drawLine(x0-linienDicke, y0, x1-linienDicke, y1);
-                linienDicke++;
+                g.drawLine(x0-lDicke, y0, x1-lDicke, y1);
+                lDicke++;
                 eineSeiteSchonGezeichnet = false;
             }
             else {
-                g.drawLine(x0+linienDicke, y0, x1+linienDicke, y1);
+                g.drawLine(x0+lDicke, y0, x1+lDicke, y1);
                 eineSeiteSchonGezeichnet = true;
             }
             linienGezeichnet++;
