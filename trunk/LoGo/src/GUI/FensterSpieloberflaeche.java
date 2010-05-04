@@ -600,12 +600,11 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
     public void actionPerformed(ActionEvent e) {
         // Aktions die ueber die Menue-Leiste eingegeben werden
         if (e.getSource() == Credits) {
-            this.buttonCreditsGedrueckt();
+            this.zeigeCredits();
         } else if (e.getSource() == SpielInfo) {
-
+            this.buttonSpielInfoGedrueckt();
         } else if(e.getSource() == Hilfe){
             this.buttonHilfe();
-            
         } else if (e.getSource() == NeuesSpiel) {
             this.buttonNeuesSpiel();
         } else if (e.getSource() == SpielLaden) {
@@ -771,5 +770,9 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
 
     private void buttonHilfe() {
         LoGoApp.meineSteuerung.buttonZeigeHilfeGedrueckt();
+    }
+
+    private void zeigeCredits() {
+        LoGoApp.meineSteuerung.buttonZeigeCreditsGedrueckt();
     }
 }
