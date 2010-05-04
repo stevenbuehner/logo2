@@ -39,17 +39,6 @@ public class DateiVorlader {
         gLib.getSprite(baseGrafik + "Kugel_17x17.png");
         gLib.getSprite(baseGrafik + "Kugel_19x19.png");
 
-        // Markierte Steine
-        gLib.getSprite(baseGrafik + "MarkierterStein_7x7.png");
-        gLib.getSprite(baseGrafik + "MarkierterStein_9x9.png");
-        gLib.getSprite(baseGrafik + "MarkierterStein_13x13.png");
-        gLib.getSprite(baseGrafik + "MarkierterStein_15x15.png");
-        gLib.getSprite(baseGrafik + "MarkierterStein_17x17.png");
-        gLib.getSprite(baseGrafik + "MarkierterStein_19x19.png");
-
-        gLib.getSprite(baseGrafik + "MarkierterStein2_9x9.png");
-        gLib.getSprite(baseGrafik + "MarkierterStein3_9x9.png");
-
         // Uhrzeiger
         gLib.getSprite(baseGrafik + "MinutenZeigerHuebsch2.png");
         gLib.getSprite(baseGrafik + "sekZeiger1.png");
