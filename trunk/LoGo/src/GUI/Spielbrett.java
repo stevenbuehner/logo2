@@ -91,45 +91,36 @@ public class Spielbrett extends JComponent {
         this.setBackground(null);
 
         String spielSteinImageName;
-        String markierterSteinImage = "";
         switch (anzahlFelder) {
             case 7:
                 spielSteinImageName = "GUI/resources/Kugel_7x7.png";
-                markierterSteinImage = "GUI/resources/MarkierterStein_7x7.png";
                 break;
             case 9:
                 spielSteinImageName = "GUI/resources/Kugel_9x9.png";
-                markierterSteinImage = "GUI/resources/MarkierterStein3_9x9.png";
                 break;
             case 11:
                 spielSteinImageName = "GUI/resources/Kugel_11x11.png";
-                markierterSteinImage = "GUI/resources/MarkierterStein_11x11.png";
                 break;
             case 13:
                 spielSteinImageName = "GUI/resources/Kugel_13x13.png";
-                markierterSteinImage = "GUI/resources/MarkierterStein_13x13.png";
                 break;
             case 15:
                 spielSteinImageName = "GUI/resources/Kugel_15x15.png";
-                markierterSteinImage = "GUI/resources/MarkierterStein_15x15.png";
                 break;
             case 17:
                 spielSteinImageName = "GUI/resources/Kugel_17x17.png";
-                markierterSteinImage = "GUI/resources/MarkierterStein_17x17.png";
                 break;
             case 19:
                 spielSteinImageName = "GUI/resources/Kugel_19x19.png";
-                markierterSteinImage = "GUI/resources/MarkierterStein_19x19.png";
                 break;
             default:
                 throw new UnsupportedOperationException("Diese Spiellfeldgroesse wird nicht unterstuetzt.");
         }
 
         BufferedImage[] kugeln = lib.getSprite(spielSteinImageName, 14, 4);
-        BufferedImage[] markStein = lib.getSprite(markierterSteinImage, 12, 1);
 
         // Initialisierern des Spezial-Objektes zum markieren der Spielsteine
-        this.markierterStein = new SpielsteinMarkierung(kugeln, 0, 0);
+        this.markierterStein = new SpielsteinMarkierung(kugeln);
         this.markierterStein.setVisible(false);
 
         for (int m = 0; m < this.anzahlFelder; m++) {

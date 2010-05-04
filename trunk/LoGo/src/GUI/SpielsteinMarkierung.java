@@ -9,8 +9,8 @@ import java.awt.image.BufferedImage;
  */
 public class SpielsteinMarkierung extends SpielStein {
 
-    SpielsteinMarkierung(BufferedImage[] image, double x, double y) {
-        super(image, x, y);
+    SpielsteinMarkierung(BufferedImage[] image) {
+        super(image, 0, 0);
 
         //this.addScene(storedImages[48], 1000);
         this.addScene(storedImages[55], 300); // leerlauf
@@ -24,8 +24,8 @@ public class SpielsteinMarkierung extends SpielStein {
         this.setLoop(true, 0);
     }
 
-    public SpielsteinMarkierung(BufferedImage image, double x, double y) {
-        super(image, x, y);
+    public SpielsteinMarkierung(BufferedImage image) {
+        super(image, 0, 0);
 
         this.addScene(this.storedImages[0], 0);
         this.loop = true;
