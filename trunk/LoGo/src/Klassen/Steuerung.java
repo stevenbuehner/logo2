@@ -1,14 +1,18 @@
 package Klassen;
 
 import GUI.FensterSpieloberflaeche;
+import GUI.GrafikLib;
 import Timer.Countdown;
 import Timer.CountdownPeriodenZeitSchwarz;
 import Timer.CountdownPeriodenZeitWeiss;
 import Timer.CountdownSpielerZeitSchwarz;
 import Timer.CountdownSpielerZeitWeiss;
 import Interfaces.SteuerungInterface;
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -1346,18 +1350,19 @@ public class Steuerung implements SteuerungInterface {
 
     public void buttonZeigeCreditsGedrueckt() {
 
-         Process p = null;
+     /*   try {
+            Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler ../GUI/resources/ChinesischerRestsatz.pdf");
+        } catch (IOException ex) {
+            Logger.getLogger(Steuerung.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+
+        URL myURL = getClass().getClassLoader().getResource("GUI/resources/ChinesischerRestsatz.pdf");
+        File f = new File(myURL.getFile());
         try {
-            p = Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler ../GUI/resources/ChinesischerRestsatz.pdf");
+            Desktop.getDesktop().open(f);
         } catch (IOException ex) {
             Logger.getLogger(Steuerung.class.getName()).log(Level.SEVERE, null, ex);
         }
-        try {
-            p.waitFor();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Steuerung.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
         
     }
 }
