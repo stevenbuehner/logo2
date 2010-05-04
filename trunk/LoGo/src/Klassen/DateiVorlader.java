@@ -61,6 +61,7 @@ public class DateiVorlader {
         gLib.getSprite(baseGrafik + "PauseScreen.jpg");
         gLib.getSprite(baseGrafik + "SpielTisch2.jpg");
         gLib.getSprite(baseGrafik + "StartScreen.jpg");
+        gLib.getSprite(baseGrafik + "Credits.jpg");
 
         if (LoGoApp.debug) {
             System.out.println("Grafiken fertig in den Speicher geladen");
