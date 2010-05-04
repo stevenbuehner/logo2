@@ -155,13 +155,13 @@ public class Speichern {
         String selFile = chooser.getCurrentDirectory() + "\\" + chooser.getSelectedFile().getName();
 
         //Endung überprüfen
-        if(selFile.toLowerCase().contains(".cfg"))
+        if(selFile.toLowerCase().contains(".sfg"))
         {
-            // File Name enthält die Endung ".cfg"
+            // File Name enthält die Endung ".sfg"
         }
         else
         {
-            selFile += ".cfg";
+            selFile += ".sfg";
         }
 
         //Zusammengesetzten String in die Datei abspeichern
