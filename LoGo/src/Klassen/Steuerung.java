@@ -378,7 +378,8 @@ public class Steuerung implements SteuerungInterface {
 
         if (this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_LAUEFT
                 || this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_GEBIETSAUSWERTUNG
-                || this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_BEENDET) {
+                || this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_BEENDET
+                || this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_PAUSIERT) {
 
             int aktStat = this.dasSpielfeld.getSpielZustand();
             int userResponse = JOptionPane.CANCEL_OPTION;
