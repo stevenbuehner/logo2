@@ -1,5 +1,6 @@
 package GUI;
 
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 
@@ -18,12 +19,8 @@ public class FensterCredits extends JFrame{
 
         this.init();
 
-
         this.setVisible(false);
-
-
     }
-
 
     private void init(){
 
@@ -32,10 +29,11 @@ public class FensterCredits extends JFrame{
         this.backgroundPanel = new BackgroundImagePanel(bg);
         this.setContentPane(backgroundPanel);
 
-        this.setSize(bg.getWidth(), bg.getHeight());
+        this.setSize(556, 392);
+        this.setResizable(false);
         this.setLocationRelativeTo(null);
 
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }
-
+    
 }
