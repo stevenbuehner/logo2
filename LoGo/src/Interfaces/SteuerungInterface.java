@@ -148,7 +148,7 @@ public interface SteuerungInterface {
      */
     public void buttonSpringeZumEnde();
 
-    public void buttonZeigeCreditsGedrueckt();
+    public void buttonZeigeHilfeGedrueckt();
 
     /**
      * Hauptzeit des schwarzen Spielers ist abgelaufen. Periodenzeit muss starten
