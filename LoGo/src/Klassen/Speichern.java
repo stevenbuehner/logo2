@@ -152,16 +152,17 @@ public class Speichern {
         chooser.showSaveDialog((FensterSpieloberflaeche)LoGoApp.meineOberflaeche);
 
         //Directory und Dateiname definieren
-        String selFile = chooser.getCurrentDirectory() + "\\" + chooser.getSelectedFile().getName();
+       // String selFile = chooser.getCurrentDirectory() + "\\" + chooser.getSelectedFile().getName();
+        String selFile = chooser.getSelectedFile().getAbsolutePath();
 
         //Endung überprüfen
-        if(selFile.toLowerCase().contains(".sfg"))
+        if(selFile.toLowerCase().contains(".sgf"))
         {
-            // File Name enthält die Endung ".sfg"
+            // File Name enthält die Endung ".sgf"
         }
         else
         {
-            selFile += ".sfg";
+            selFile += ".sgf";
         }
 
         //Zusammengesetzten String in die Datei abspeichern
