@@ -31,6 +31,8 @@ public class Spielbrett extends JComponent {
     protected SpielsteinMarkierung markierterStein;
     protected Point letztePositionMarkierterStein;
 
+    protected int linienDicke;
+
     // Array-Inhalte alle auf 0 setzen
     public Spielbrett(int breite, int hoehe, int xOffset, int yOffset, int anzahlFelder) {
 
@@ -44,6 +46,31 @@ public class Spielbrett extends JComponent {
         this.anzahlFelder = anzahlFelder;
         this.letztePositionMarkierterStein = null;
         this.setSize(30, 30);
+
+        // Dicke der Linien einstellen
+        switch(anzahlFelder){
+            case 7:
+                this.linienDicke = 4;
+                break;
+            case 9:
+                this.linienDicke = 3;
+                break;
+            case 11:
+                this.linienDicke = 2;
+                break;
+            case 13:
+                this.linienDicke = 2;
+                break;
+            case 15:
+                this.linienDicke = 1;
+                break;
+            case 17:
+                this.linienDicke = 1;
+                break;
+            case 19:
+                this.linienDicke = 1;
+                break;
+        }
 
         // initialisiere das Spielfeld mit leeren Feldern
         this.spielFeldArray = new int[anzahlFelder][anzahlFelder];
@@ -166,12 +193,22 @@ public class Spielbrett extends JComponent {
 
         // Horizontale Linien zeichnen
         for (int i = 0; i < this.anzahlFelder; i++) {
-            g.drawLine(this.xOffset + halbeFeldBreite, this.yOffset + i * feldHoehe + halbeFeldHoehe, xOffset + linienBreite + halbeFeldBreite, yOffset + i * feldHoehe + halbeFeldHoehe);
+            this.zeichneDickeHorLinie(this.xOffset + halbeFeldBreite,
+                    this.yOffset + i * feldHoehe + halbeFeldHoehe,
+                    xOffset + linienBreite + halbeFeldBreite,
+                    yOffset + i * feldHoehe + halbeFeldHoehe,
+                    this.linienDicke,
+                    g);
         }
 
         // Vertikale Linien zeichnen
         for (int i = 0; i < this.anzahlFelder; i++) {
-            g.drawLine(xOffset + i * feldBreite + halbeFeldBreite, yOffset + halbeFeldHoehe, xOffset + i * feldBreite + halbeFeldBreite, yOffset + linienHoehe + halbeFeldHoehe);
+            this.zeichneDickeVerLinie(xOffset + i * feldBreite + halbeFeldBreite,
+                    yOffset + halbeFeldHoehe,
+                    xOffset + i * feldBreite + halbeFeldBreite,
+                    yOffset + linienHoehe + halbeFeldHoehe,
+                    this.linienDicke,
+                    g);
         }
 
         // Vorgabepunkte Zeichnen
@@ -445,6 +482,50 @@ public class Spielbrett extends JComponent {
                 yOffset + (brettHoehe / anzahlFelder) * (yPos-1) + (brettHoehe/anzahlFelder)/2 - durchmesser/2,
                 durchmesser,
                 durchmesser);
+    }
+
+    private void zeichneDickeHorLinie(int x0, int y0, int x1, int y1, int anzahlDerLinien, Graphics g) {
+        int linienZahl = anzahlDerLinien;
+        int linienGezeichnet = 0;
+        int linienDicke = 0;
+        boolean eineSeiteSchonGezeichnet = false;
+        g.drawLine(x0, y0, x1, y1);
+        linienGezeichnet++;
+        linienDicke ++;
+        while(linienGezeichnet < linienZahl){
+            if(eineSeiteSchonGezeichnet == true){
+                g.drawLine(x0, y0-linienDicke, x1, y1-linienDicke);
+                linienDicke++;
+                eineSeiteSchonGezeichnet = false;
+            }
+            else {
+                g.drawLine(x0, y0+linienDicke, x1, y1+linienDicke);
+                eineSeiteSchonGezeichnet = true;
+            }
+            linienGezeichnet++;
+        }
+    }
+
+    private void zeichneDickeVerLinie(int x0, int y0, int x1, int y1, int anzahlDerLinien, Graphics g){
+        int linienZahl = anzahlDerLinien;
+        int linienGezeichnet = 0;
+        int linienDicke = 0;
+        boolean eineSeiteSchonGezeichnet = false;
+        g.drawLine(x0, y0, x1, y1);
+        linienGezeichnet++;
+        linienDicke ++;
+        while(linienGezeichnet < linienZahl){
+            if(eineSeiteSchonGezeichnet == true){
+                g.drawLine(x0-linienDicke, y0, x1-linienDicke, y1);
+                linienDicke++;
+                eineSeiteSchonGezeichnet = false;
+            }
+            else {
+                g.drawLine(x0+linienDicke, y0, x1+linienDicke, y1);
+                eineSeiteSchonGezeichnet = true;
+            }
+            linienGezeichnet++;
+        }
     }
 
     /*
