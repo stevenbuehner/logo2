@@ -70,6 +70,7 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
     protected MenuBar dieMenueBar;
     protected MenuItem SpielInfo;
     protected MenuItem Credits;
+    protected MenuItem Hilfe;
     protected MenuItem NeuesSpiel;
     protected MenuItem SpielLaden;
     protected MenuItem SpielSpeichern;
@@ -195,6 +196,13 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         Credits.addActionListener(this);
         Credits.setShortcut(new MenuShortcut(KeyEvent.VK_A));
         dasLoGoMenue.add(Credits);
+
+        // Hilfe
+        this.Hilfe = new MenuItem("Hilfe");
+        this.Hilfe.addActionListener(this);
+        this.Hilfe.setShortcut(new MenuShortcut(KeyEvent.VK_H));
+        dasLoGoMenue.add(this.Hilfe);
+
 
         // ------ Spiel-Menue -------
         Menu dasSpielMenue = new Menu("Spiel");
@@ -431,6 +439,8 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
                     this.buttonSpielPausierenGedrueckt();
                 }
                 break;
+            case KeyEvent.VK_H:
+                LoGoApp.meineSteuerung.buttonZeigeHilfeGedrueckt();
             default:
                 mess = "Pressed: " + KeyEvent.getKeyText(keyCode);
             // e.consume(); // Kombinierte Tasten sollen nicht behandlet werden.
@@ -592,7 +602,10 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         if (e.getSource() == Credits) {
             this.buttonCreditsGedrueckt();
         } else if (e.getSource() == SpielInfo) {
-            this.buttonSpielInfoGedrueckt();
+
+        } else if(e.getSource() == Hilfe){
+            this.buttonHilfe();
+            
         } else if (e.getSource() == NeuesSpiel) {
             this.buttonNeuesSpiel();
         } else if (e.getSource() == SpielLaden) {
@@ -680,7 +693,7 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
     }
 
     private void buttonCreditsGedrueckt() {
-        LoGoApp.meineSteuerung.buttonZeigeCreditsGedrueckt();
+        LoGoApp.meineSteuerung.buttonZeigeHilfeGedrueckt();
     }
 
     private void buttonUndoGedrueckt() {
@@ -754,5 +767,9 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         if(this.spielerZettelWeiss != null){
             this.spielerZettelWeiss.setInPeriodenZeit(b);
         }
+    }
+
+    private void buttonHilfe() {
+        LoGoApp.meineSteuerung.buttonZeigeHilfeGedrueckt();
     }
 }
