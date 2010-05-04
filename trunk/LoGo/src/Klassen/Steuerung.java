@@ -1348,7 +1348,7 @@ public class Steuerung implements SteuerungInterface {
         return 0;
     }
 
-    public void buttonZeigeCreditsGedrueckt() {
+    public void buttonZeigeHilfeGedrueckt() {
 
      /*   try {
             Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler ../GUI/resources/ChinesischerRestsatz.pdf");
