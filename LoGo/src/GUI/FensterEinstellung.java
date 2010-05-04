@@ -1,6 +1,7 @@
 package GUI;
 
 import Klassen.Konstante;
+import Klassen.Laden;
 import Klassen.Spieler;
 import Klassen.Spielfeld;
 import java.awt.event.ActionEvent;
@@ -128,34 +129,56 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
 
         /* Initialisieren der Oberflaeche */
         this.spielerNameWeiss = new JTextField("Weiss");
+        this.spielerNameWeiss.setToolTipText("Name des weißen Spielers eingeben");
         this.spielerZeitMinutenWeiss = new JTextField("30");
+        this.spielerZeitMinutenWeiss.setToolTipText("Hauptzeit: Minuten des weißen Spielers");
         this.spielerZeitStundenWeiss = new JTextField("0");
+        this.spielerZeitStundenWeiss.setToolTipText("Hauptzeit: Stunden des weißen Spielers");
         this.spielerKomiWeiss = new JTextField("6.5");
+        this.spielerKomiWeiss.setToolTipText("Ausgleichspunkte (Komi) für Weiß");
 
         this.spielerNameSchwarz = new JTextField("Schwarz");
+        this.spielerNameSchwarz.setToolTipText("Name des schwarzen Spielers eingeben");
         this.spielerZeitMinutenSchwarz = new JTextField("30");
+        this.spielerZeitMinutenSchwarz.setToolTipText("Hauptzeit: Minuten des schwarzen Spielers");
         this.spielerZeitStundenSchwarz = new JTextField("0");
+        this.spielerZeitStundenSchwarz.setToolTipText("Hauptzeit: Stunden des schwarzen Spielers");
 
         this.periodenZeitMinuten = new JTextField("1");
+        this.periodenZeitMinuten.setToolTipText("Byo-Yomi: Minuten beider Spieler");
         this.periodenZeitSekunden = new JTextField("0");
+        this.periodenZeitSekunden.setToolTipText("Byo-Yomi: Sekunden beider Spieler");
 
         this.spielermodus = new JComboBox();
+        this.spielermodus.setToolTipText("Wählen Sie einen Spielmodus, oder laden Sie ein bestehendes Spiel");
         this.spielMitZeitSpielen = new JCheckBox("Zeit setzen", true);
+        this.spielMitZeitSpielen.setToolTipText("Mit oder ohne Zeitbegrenzung spielen");
         this.spielMitZeitSpielen.setSelected(true);
 
         this.spielFeldAuswahl = new ButtonGroup();
         this.siebenXsieben = new JRadioButton("7 x 7");
+        this.siebenXsieben.setToolTipText("Feldgröße 7x7");
         this.neunXneun = new JRadioButton("9 x 9");
+        this.neunXneun.setToolTipText("Feldgröße 9x9");
         this.elfXelf = new JRadioButton("11 x 11");
+        this.elfXelf.setToolTipText("Feldgröße 11x11");
         this.dreizehnXdreizehn = new JRadioButton("13 x 13", true);
+        this.dreizehnXdreizehn.setToolTipText("Feldgröße 13x13");
         this.fuenfzehnXfuenfzehn = new JRadioButton("15 x 15");
+        this.fuenfzehnXfuenfzehn.setToolTipText("Feldgröße 15x15");
         this.siebzehnXsiebzehn = new JRadioButton("17 x 17");
+        this.siebzehnXsiebzehn.setToolTipText("Feldgröße 17x17");
         this.neunzehnXneunzehn = new JRadioButton("19 x 19");
+        this.neunzehnXneunzehn.setToolTipText("Feldgröße 19x19");
 
         this.spielVorgabeSteine = new JComboBox();
+        this.spielVorgabeSteine.setToolTipText("Wählen Sie die Zahl der Vorgabesteine");
         this.spielBrettHinweise = new JLabel("Schnellstart");
+        this.spielBrettHinweise.setToolTipText("Hinweise zur Bedienung");
         this.spielStarten = new JButton("Start");
+        this.spielStarten.setToolTipText("Das Spiel starten");
         this.hilfeButton = new JButton("Hilfe");
+        this.hilfeButton.setToolTipText("Hilf zum Spiel");
 
         /* Zusaetzliche Labels */
         this.labelSpielmodus = new JLabel("Spielmodus", JLabel.LEFT);
@@ -421,6 +444,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
         this.spielermodus.addItem("Schnellstart");
         this.spielermodus.addItem("Vorgabe");
         this.spielermodus.addItem("Startformation");
+        this.spielermodus.addItem("Spiel Laden");
 
         this.spielVorgabeSteine.addItem("0");
         this.spielVorgabeSteine.addItem("2");
@@ -881,6 +905,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
     }
 
     private void zeigeHilfeAn() {
+        LoGoApp.meineSteuerung.buttonZeigeHilfeGedrueckt();
     }
 
     /**
@@ -948,7 +973,29 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
             this.spielVorgabeSteine.setSelectedItem(0);
             this.dasSpielfeldGUI.updateSpielFeld(this.dasSpielfeld.getSpielfeldZumZeitpunkt(0));
             this.repaint();
+
+        } else if (modus.equals("Spiel Laden")) {
+            // Es soll ein neues Spiel geladen werden
+            Laden ladenObjekt = new Laden();
+            ladenObjekt.LadeSpiel();
+
+            Spielfeld neuesSpielfeld = ladenObjekt.getSpielfeld();
+            String fehlermeldung = null;
+
+            if (neuesSpielfeld != null) {
+                fehlermeldung = neuesSpielfeld.spielfeldValidiert();
+            }
+
+            if (fehlermeldung == null) {
+                this.dasSpielfeld = neuesSpielfeld;
+                this.versucheZuStarten();
+            } else {
+                this.sendMessageToUser("Konnte die Datei leider nicht öffnen.");
+                this.updateSpielmodus("Schnellstart");
+                this.outputMessageToUser();
+            }
         }
+
     }
 
     private void animiereFrameStart() {
