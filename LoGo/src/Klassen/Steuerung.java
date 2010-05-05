@@ -992,6 +992,9 @@ public class Steuerung implements SteuerungInterface {
             } else {
                 LoGoApp.meineOberflaeche.setWeissAmZug();
             }
+
+            // Nach einem Undo, ist man immer im Spielfluss
+            this.wechsleInStatus(Konstante.SPIEL_LAUEFT);
         }
     }
 
@@ -1043,6 +1046,17 @@ public class Steuerung implements SteuerungInterface {
                 LoGoApp.meineOberflaeche.setSchwarzAmZug();
             } else {
                 LoGoApp.meineOberflaeche.setWeissAmZug();
+            }
+
+            /* Wenn man nach einem Redo 2 Passenzuege hat, ist man in der Auswertung */
+            if(this.dasSpielfeld.getAnzahlLetzterPassZuege()>=2){
+                this.wechsleInStatus(Konstante.SPIEL_GEBIETSAUSWERTUNG);
+                /* Wenn nötig, stoppe Cowntdown */
+                this.stoppeTimerVonSpieler(this.dasSpielfeld.getSpielerFarbeAnDerReihe());
+            }
+            /* sonst ist man im normalen Spielfluss */
+            else {
+                this.wechsleInStatus(Konstante.SPIEL_LAUEFT);
             }
 
             // Undo und Redo legen
