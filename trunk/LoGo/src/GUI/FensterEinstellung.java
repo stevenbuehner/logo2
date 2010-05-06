@@ -905,7 +905,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
      * Sind die Eingaben korrekt, wird gestartet. Ansonsten wird nicht gestartet
      * und dem Benutzer eine Fehlerausgabe geliefert.
      */
-    private void versucheZuStarten() {
+    private boolean versucheZuStarten() {
         this.fehlerBeiEingabe = false;
         long zeitSchwarz = this.getStundenSchwarz() + this.getMinutenSchwarz();
         long zeitWeiss = this.getStundenWeiss() + this.getMinutenWeiss();
@@ -932,7 +932,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
             this.errorString = "";
             this.fehlerBeiEingabe = false;
 
-            return;
+            return false;
         } else {
             String validierungsAntwort = this.dasSpielfeld.spielfeldValidiert();
             if (validierungsAntwort == null) {
@@ -940,16 +940,15 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
                 LoGoApp.meineSteuerung.buttonSpielStarten();
                 /* Jetzt spiel Starten */
                 this.setVisible(false);
-                return;
+                return true;
             } else {
                 if (LoGoApp.debug) {
                     System.out.println("Feld nicht valide");
                 }
-                JOptionPane.showConfirmDialog(this, "Ihre Eingaben sind nicht zulässig!\n" + validierungsAntwort);
+                this.sendMessageToUser("Ihre Eingaben sind nicht zulässig!\n" + validierungsAntwort);
+                return false;
             }
         }
-
-
     }
 
     private void zeigeHilfeAn() {
@@ -1025,10 +1024,20 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
         } else if (modus.equals("Spiel Laden")) {
             // Es soll ein neues Spiel geladen werden
             Laden ladenObjekt = new Laden();
-            ladenObjekt.LadeSpiel();
+
+            try{
+                ladenObjekt.LadeSpiel();
+            }catch(Exception ex){
+            this.sendMessageToUser("Es ist ein Fehler beim Laden aufgetreten.");
+            this.outputMessageToUser();
+            this.spielermodus.setSelectedItem("Schnellstart");
+            this.animiereFrameStart();
+            return;
+            }
+
 
             Spielfeld neuesSpielfeld = ladenObjekt.getSpielfeld();
-            String fehlermeldung = null;
+            String fehlermeldung = "";
 
             if (neuesSpielfeld != null) {
                 fehlermeldung = neuesSpielfeld.spielfeldValidiert();
@@ -1036,14 +1045,20 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
 
             if (fehlermeldung == null) {
                 this.dasSpielfeld = neuesSpielfeld;
-                this.versucheZuStarten();
+                if(this.versucheZuStarten()){
+                    LoGoApp.meineSteuerung.buttonPause();
+                }else {
+                    this.sendMessageToUser("Spiel konnte leider nicht gestartet werden");
+                    this.outputMessageToUser();
+                }
             } else {
                 this.sendMessageToUser("Konnte die Datei leider nicht öffnen.");
                 this.updateSpielmodus("Schnellstart");
                 this.outputMessageToUser();
             }
+            this.spielermodus.setSelectedItem("Schnellstart");
+            this.animiereFrameStart();
         }
-
     }
 
     private void animiereFrameStart() {
