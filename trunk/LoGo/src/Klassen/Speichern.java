@@ -5,8 +5,6 @@
 package Klassen;
 
 import GUI.FensterSpieloberflaeche;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -80,7 +78,7 @@ public class Speichern {
         spielzuege = "";
 
         //Standardkonfigurationen
-        spielzuege += "(;GM[1]FF[4]RU[Japanese]";
+        spielzuege += "(;GM[1]FF[4]" +'\n'+ "RU[Japanese]";
 
         //Spielfeldgroesse
         spielzuege += "SZ[" + spielfeldgroesse + "]";
@@ -90,6 +88,15 @@ public class Speichern {
 
         //Komipunkte
         spielzuege += "KM[" + komipunkte + "]";
+        
+        //Datum
+        spielzuege += "DT["+aktuellesDatum_format.format(aktuellesDatum)+"]";
+
+        //Zeit
+        spielzuege += "TM["+aktuelleZeit_format.format(aktuelleZeit)+"]";
+
+        //Periodenzeit
+        spielzuege += "OT["+periodenzeit / 1000+" byo-yomi]" +'\n';
 
         //Spielernamen
         spielzuege += "PW[" + spieler_weiss.getSpielerName() + "]";
@@ -101,15 +108,6 @@ public class Speichern {
 
         //Standardkonfigurationen
         spielzuege += "GN[LoGo]";
-
-        //Datum
-        spielzuege += "DT["+aktuellesDatum_format.format(aktuellesDatum)+"]";
-
-        //Zeit
-        spielzuege += "TM["+aktuelleZeit_format.format(aktuelleZeit)+"]";
-
-        //Periodenzeit
-        spielzuege += "OT["+periodenzeit / 1000+"]";
 
         //Farb-Identifier: 1 für Schwarz | 2 für Weiss
         int farbe = 0;
@@ -137,12 +135,12 @@ public class Speichern {
             //Schwarzer Stein
             if (farbe == 1)
             {
-                spielzuege += "S["+_buchstabeX+_buchstabeY+"]";
+                spielzuege += '\n'+";S["+_buchstabeX+_buchstabeY+"]";
             }
             //Weisser Stein
             else if (farbe == 2)
             {
-                spielzuege += "W["+_buchstabeX+_buchstabeY+"]";
+                spielzuege += '\n'+";W["+_buchstabeX+_buchstabeY+"]";
             }
             else
             {
@@ -172,6 +170,9 @@ public class Speichern {
         {
             selFile += ".cgf";
         }
+         
+         //Standardkonfiguration
+         spielzuege+=")" + '\n';
 
         //Zusammengesetzten String in die Datei abspeichern
         PrintWriter pw = null;
