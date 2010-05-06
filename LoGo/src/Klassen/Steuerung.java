@@ -14,6 +14,7 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -843,7 +844,12 @@ public class Steuerung implements SteuerungInterface {
                 if (trotzUndoWeiterspielen == JOptionPane.OK_OPTION || trotzUndoWeiterspielen == JOptionPane.YES_OPTION) {
                     this.dasSpielfeld.setSpielfeldZumZeitpunkt(this.aktuellAngezeigteZugnummer);
                     Speichern sp = new Speichern(this.dasSpielfeld);
-                    sp.SpeicherSpiel();
+                    try{
+                        sp.SpeicherSpiel();
+                    }catch(Exception e){
+                        LoGoApp.meineOberflaeche.gibFehlermeldungAus("Spiel konnte nicht gespeichert werden.");
+                        return;
+                    }
                 } else {
                     /* Weitermachen */
                 }
@@ -875,7 +881,12 @@ public class Steuerung implements SteuerungInterface {
         if (returnWert == 0) {
             // Es soll ein neues Spiel geladen werden
             Laden ladenObjekt = new Laden();
-            ladenObjekt.LadeSpiel();
+            try{
+                ladenObjekt.LadeSpiel();
+            }catch(Exception e){
+                LoGoApp.meineOberflaeche.gibFehlermeldungAus("Spiel konnte nicht geladen werden");
+                return;
+            }
 
             Spielfeld neuesSpielfeld = ladenObjekt.getSpielfeld();
             String fehlermeldung = null;
@@ -1357,8 +1368,17 @@ public class Steuerung implements SteuerungInterface {
         }
         */
         URL myURL = getClass().getClassLoader().getResource("GUI/resources/ChinesischerRestsatz.pdf");
+
+
         try {
+            // check whether we have windows os. if yes, use runtime exec instead of desktop
+            String osName = System.getProperties().get("os.name").toString();
+            if (osName.matches(".*Windows.*")) {
+                Runtime.getRuntime().exec("rundll32 SHELL32.DLL,ShellExec_RunDLL \""+myURL.getFile()+"\"");
+            }
+            else {
             Desktop.getDesktop().open(new File(myURL.getFile()));
+            }
         } catch (IOException ex) {
             Logger.getLogger(Steuerung.class.getName()).log(Level.SEVERE, null, ex);
         }
