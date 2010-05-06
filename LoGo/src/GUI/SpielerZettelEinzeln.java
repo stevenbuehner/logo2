@@ -135,7 +135,7 @@ public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {
         int startY = yPos + 2 * this.zeilenAbstandOben;
         Font myFontUnten = new Font("TimesRoman", 1, this.schriftGroesseUnten);
         g2.setFont(myFontUnten);
-        if(this.getInPeriodenZeit() == true){
+        if(spielerInPeriodenZeit == true){
             g2.drawString("Byo-Yomi aktiv", xPos, startY);
             offsetTextY = this.zeilenAbstandUnten;
         }
@@ -161,7 +161,4 @@ public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {
         this.spielerInPeriodenZeit = b;
     }
 
-    public boolean getInPeriodenZeit() {
-        return this.spielerInPeriodenZeit;
-    }
 }

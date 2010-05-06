@@ -3,7 +3,7 @@ package Interfaces;
 import java.awt.Graphics;
 
 /**
- * Interface fuer Objekte die sich selbst auf die Oberflaeche zeichenn koennen
+ * Interface für Objekte die sich selbst auf die Oberflaeche zeichenn koennen.
  * @author steven
  * @version 1.0
  * @since $date: $
@@ -11,7 +11,7 @@ import java.awt.Graphics;
 public interface Drawable {
 
     /**
-     * Methode zum zeichen der Objekte
+     * Methode zum Zeichen der Objekte
      * @param g
      */
     public void drawObjects(Graphics g);
