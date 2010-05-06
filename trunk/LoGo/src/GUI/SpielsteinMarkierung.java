@@ -21,14 +21,14 @@ public class SpielsteinMarkierung extends SpielStein {
         this.addScene(storedImages[53], 100);
         this.addScene(storedImages[54], 8000);
 
-        this.setLoop(true, 0);
+        this.setLoop(true, 1);
     }
 
     public SpielsteinMarkierung(BufferedImage image) {
         super(image, 0, 0);
 
         this.addScene(this.storedImages[0], 0);
-        this.loop = true;
+        this.setLoop(false);
     }
 
     @Override
