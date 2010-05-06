@@ -676,8 +676,8 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         long sekundenPeriod  = LoGoApp.meineSteuerung.getPeriodenZeit()/(1000) - 60*minutenPeriod;
 
         String ausgabe = "";
-        ausgabe += "Schwarz: " + this.spielerSchwarzName + "\n";
-        ausgabe += "Weiß: " + this.spielerWeissName + "\n";
+        ausgabe += "Spielername Schwarz: " + this.spielerSchwarzName + "\n";
+        ausgabe += "Spielername Weiß: " + this.spielerWeissName + "\n";
         ausgabe += "\n";
         if(LoGoApp.meineSteuerung.getIgnoreTime() == false){
             ausgabe += "Gesamtzeit Schwarz: " + stundenSchwarz + " Stunden, " + minutenSchwarz + " Minuten\n";
