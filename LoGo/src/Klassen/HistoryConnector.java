@@ -27,6 +27,7 @@ public class HistoryConnector {
     public void open() throws Exception {
 
         try {
+            LoGoApp.meinAuswertungsfenster.setStatusNachricht("Verbindung zur Datenbank wird aufgebaut ...");
 
             // Treiber laden und Connection erzeugen
             Class.forName("com.mysql.jdbc.Driver");
@@ -54,19 +55,21 @@ public class HistoryConnector {
                 System.out.println("SQL-State: " + e.getSQLState());
                 System.out.println("ErrorCode: " + e.getErrorCode());
 
+                LoGoApp.meinAuswertungsfenster.setStatusNachricht("Verbindung zur Datenbank konnte nicht aufgebaut werden ...");
                 e = e.getNextException();
             }
 
-            System.exit(1);
         } catch (Exception e) {
+            LoGoApp.meinAuswertungsfenster.setStatusNachricht("Verbindung zur Datenbank konnte nicht aufgebaut werden ...");
             System.err.println(e.toString());
-            System.exit(1);
         }
     }
 
     public void close() throws SQLException {
         stmt.close();
         con.close();
+        LoGoApp.meinAuswertungsfenster.setStatusNachricht("Verbindung zur Datenbank wurde geschlossen ...");
+
     }
 
     public HistoryEintrag holeErstenHistoryEintrag() throws SQLException {

@@ -106,7 +106,6 @@ public class Laden {
                 _geladenerString = zeile;
             }
         }catch(IOException e){
-            ;
         }
 
     //Positionsvariablen von den Klammern
