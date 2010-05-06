@@ -129,7 +129,7 @@ public class FensterAuswertung extends JFrame implements MouseListener {
                 break;
             case JOptionPane.CANCEL_OPTION:
                 // Spiel beenden angeklickt
-                LoGoApp.meineSteuerung.buttonSpielBeenden();
+                System.exit(0);
                 break;
             default:
                 // not used
@@ -209,18 +209,17 @@ public class FensterAuswertung extends JFrame implements MouseListener {
             } else {
                 g.drawString("Weiß gewinnt auf Zeit.", this.xKoordWeiss, this.yOffset + this.zeilenabstand);
             }
-
         }
 
 
         /* Ab hier das zeichnen der History-Einträge */
-        
+
         g.drawString("Spielername (Schwarz)", STATISTIK_XPOS, STATISTIK_YPOS);
         g.drawString("Punkte (Schwarz)", STATISTIK_XPOS + 200, STATISTIK_YPOS);
         g.drawString("Spielername (Weiss)", STATISTIK_XPOS + 400, STATISTIK_YPOS);
         g.drawString("Punkte (Schwarz)", STATISTIK_XPOS + 600, STATISTIK_YPOS);
-        g.drawLine(STATISTIK_XPOS, STATISTIK_YPOS, STATISTIK_XPOS+830, STATISTIK_YPOS);
-        
+        g.drawLine(STATISTIK_XPOS, STATISTIK_YPOS, STATISTIK_XPOS + 830, STATISTIK_YPOS);
+
         if (histEintraege[0] != null) {
             // zeichne History-Einträge ...
             int x = STATISTIK_XPOS;
@@ -238,7 +237,7 @@ public class FensterAuswertung extends JFrame implements MouseListener {
             }
         } else {
             // ansonsten warte auf Datenbank
-            g.drawString("Warte auf Ergebnisse aus der Datenbank ...", STATISTIK_XPOS, STATISTIK_YPOS + this.zeilenabstand);
+            g.drawString(this.datenbankStatustext, STATISTIK_XPOS, STATISTIK_YPOS + this.zeilenabstand);
         }
 
     }
@@ -331,6 +330,7 @@ public class FensterAuswertung extends JFrame implements MouseListener {
 
         if (visible) {
             sLib.playSound("abschluss");
+            this.datenbankStatustext = "";
             // Lade die Statistikwerte im Hintergrund und zeige sie an
             new BackgroundStatistikLoader(STATISTIK_ANZAHL);
         } else {
@@ -343,7 +343,7 @@ public class FensterAuswertung extends JFrame implements MouseListener {
         this.repaint();
     }
 
-    public synchronized void setStatusNachricht( String statusNachricht ){
+    public synchronized void setStatusNachricht(String statusNachricht) {
         this.datenbankStatustext = statusNachricht;
         this.repaint();
     }
