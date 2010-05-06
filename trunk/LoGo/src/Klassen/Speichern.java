@@ -5,6 +5,8 @@
 package Klassen;
 
 import GUI.FensterSpieloberflaeche;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -147,23 +149,28 @@ public class Speichern {
                 break;
             }
         }
+        
+         //Fenster zum Speichervorgang
+         JFileChooser chooser = new JFileChooser();
+         int rueckgabe = chooser.showSaveDialog((FensterSpieloberflaeche)LoGoApp.meineOberflaeche);
+         String selFile = chooser.getSelectedFile().getAbsolutePath();
 
-        //Fenster zum Speichervorgang
-        JFileChooser chooser = new JFileChooser();
-        chooser.showSaveDialog((FensterSpieloberflaeche)LoGoApp.meineOberflaeche);
-
-        //Directory und Dateiname definieren
-        //Gesamten Pfadnamen verwenden
-        String selFile = chooser.getSelectedFile().getAbsolutePath();
+         switch(rueckgabe)
+         {
+             case JFileChooser.APPROVE_OPTION:
+                 break;
+             case JFileChooser.CANCEL_OPTION:
+                 break;
+         }
 
         //Endung überprüfen
-        if(selFile.toLowerCase().contains(".sgf"))
+        if(selFile.toLowerCase().contains(".cgf"))
         {
-            // File Name enthält die Endung ".sgf"
+            // File Name enthält die Endung ".cgf"
         }
         else
         {
-            selFile += ".sgf";
+            selFile += ".cgf";
         }
 
         //Zusammengesetzten String in die Datei abspeichern
