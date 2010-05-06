@@ -4,14 +4,13 @@ import Klassen.Konstante;
 import Klassen.Laden;
 import Klassen.Spieler;
 import Klassen.Spielfeld;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.FocusTraversalPolicy;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Vector;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -103,8 +102,22 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
         this.setVisible(true);
 
         // Programm bei klick auf den roten Knopf nicht beenden sondern Event weiter verarbeiten
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
 
+            @Override
+            public void windowClosing(WindowEvent e) {
+                /*
+                 * Wenn die Spieloberflaeche sichtbar ist, soll die Steuerung für
+                 * das Beenden verantwortlich gemacht werden. Ansonsten darf das
+                 * Einstellungsfenster direkt das Programm beenden
+                 */
+                if( ((FensterSpieloberflaeche)LoGoApp.meineOberflaeche).isVisible() ){
+                    LoGoApp.meineSteuerung.buttonSpielBeenden();
+                }else{
+                    System.exit(0);
+                }
+            }
+        });
     }
 
     /**
@@ -1042,6 +1055,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
     private void animiereFrameEnde() {
         this.setSize(this.getWidth(), this.frameMaxhoehe);
         this.validate();
+        this.setLocationRelativeTo(null);
         this.repaint();
     }
 
