@@ -50,16 +50,16 @@ public class Spielbrett extends JComponent {
         // Dicke der Linien einstellen
         switch(anzahlFelder){
             case 7:
-                this.linienDicke = 4;
+                this.linienDicke = 1;
                 break;
             case 9:
-                this.linienDicke = 3;
+                this.linienDicke = 1;
                 break;
             case 11:
-                this.linienDicke = 2;
+                this.linienDicke = 1;
                 break;
             case 13:
-                this.linienDicke = 2;
+                this.linienDicke = 1;
                 break;
             case 15:
                 this.linienDicke = 1;
@@ -386,13 +386,13 @@ public class Spielbrett extends JComponent {
                 durchmesser = 9;
                 break;
             case 15:
-                durchmesser = 7;
+                durchmesser = 9;
                 break;
             case 17:
-                durchmesser = 7;
+                durchmesser = 9;
                 break;
             case 19:
-                durchmesser = 5;
+                durchmesser = 7;
                 break;
         }
         switch (this.getAnzahlFelder()){
