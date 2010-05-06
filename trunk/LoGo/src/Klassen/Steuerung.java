@@ -827,29 +827,6 @@ public class Steuerung implements SteuerungInterface {
      * @see SteuerungInterface
      */
     public void buttonSpielSpeichern() {
-
-        // zum Testen
-        if (this.dieSpielfeldAuswertung != null && this.dasSpielfeld != null) {
-            float pSchw = this.dasSpielfeld.getSpielerWeiss().getKomiPunkte()
-                    + this.dieSpielfeldAuswertung.getGebietsPunkteSchwarz()
-                    + this.dasSpielfeld.getSpielerSchwarz().getGefangenenAnzahl()
-                    + this.dieSpielfeldAuswertung.getSchwarzeGefangeneAufBrett();
-            float pWeiss = this.dieSpielfeldAuswertung.getGebietsPunkteWeiss()
-                    + this.dasSpielfeld.getSpielerWeiss().getGefangenenAnzahl()
-                    + this.dieSpielfeldAuswertung.getWeisseGefangeneAufBrett();
-
-            boolean returnWert = this.historyVersenden(this.dasSpielfeld.getSpielerSchwarz().getSpielerName(),
-                    this.dasSpielfeld.getSpielerWeiss().getSpielerName(),
-                    pSchw, pWeiss);
-            if (LoGoApp.debug) {
-                System.out.println("Spielstand zur DB gesendet: " + returnWert);
-            }
-        } else {
-            if (LoGoApp.debug) {
-                System.out.println("Das Senden zur DB geht erst NACH der Spielauswertung!");
-            }
-        }
-
         if (this.dasSpielfeld == null) {
             return;
         }
