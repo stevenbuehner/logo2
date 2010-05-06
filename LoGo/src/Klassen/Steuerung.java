@@ -869,7 +869,7 @@ public class Steuerung implements SteuerungInterface {
         if (this.dasSpielfeld != null && this.dasSpielfeld.getSpielZustand() != Konstante.SPIEL_BEENDET) {
             // Spiel läuft noch
             if (this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_LAUEFT) {
-                returnWert = JOptionPane.showConfirmDialog(null, "Das Spiel läuft noch, wollen Sie es wirklich beenden und ein neues Laden?");
+                returnWert = JOptionPane.showConfirmDialog(null, "Das Spiel läuft noch, wollen Sie es wirklich beenden und ein neues laden?");
             } else if (this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_PAUSIERT) {
                 returnWert = JOptionPane.showConfirmDialog(null, "Das Spiel pausiert gerade, wollen Sie es wirklich beenden um ein neues zu laden?");
             } else if (this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_GEBIETSAUSWERTUNG) {
