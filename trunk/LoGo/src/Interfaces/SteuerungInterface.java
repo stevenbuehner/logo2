@@ -3,8 +3,10 @@ package Interfaces;
 import Klassen.Spielfeld;
 
 /**
- * Das ist das Interface fuer die Steuerung. Die folgenden Funktionen muessen daher implementiert sein.
- * @author tommy
+ * Das ist das Interface fuer die Steuerung.
+ * Diese Methoden /Aufrufe können von anderen GUI-Elementen verwendet werden
+ * um die Steuerung über Events oder Statusänderungen zu informieren.
+ * @author tommy, steven
  */
 public interface SteuerungInterface {
 
@@ -64,7 +66,7 @@ public interface SteuerungInterface {
     public void klickAufFeld(int xPos, int yPos);
 
     /**
-     * Der spieler wünscht ein neues Spiel
+     * Der Spieler wünscht ein neues Spiel.
      */
     public void buttonNeuesSpiel();
 
@@ -148,8 +150,15 @@ public interface SteuerungInterface {
      */
     public void buttonSpringeZumEnde();
 
+    /**
+     * Button "Hilfe" wurde betätigt und der User bittet um Hilfe ..
+     */
     public void buttonZeigeHilfeGedrueckt();
 
+    /**
+     * Der User will sich über das Spiel und deren Programmierer informieren.
+     * Der Button "Credits" wurde gedrückt.
+     */
     public void buttonZeigeCreditsGedrueckt();
 
     /**
@@ -179,14 +188,33 @@ public interface SteuerungInterface {
      */
     public void buttonAuswertungBeendet();
 
+    /**
+     * @return Die zum Spielbeginn festgelegte komiZeit.
+     */
     public float getKomiWeiss();
 
+    /**
+     *
+     * @return ob die Spielzeiten ignoriert werden sollen, also ein Spiel
+     * nicht auf Zeit gespielt wird.
+     */
     public boolean getIgnoreTime();
 
+    /**
+     * @return die zu Spielbeginn festgesetzte Hauptzeit des schwarzen Spielers.
+     */
     public long getStartHauptzeitSchwarz();
 
+    /**
+     *
+     * @return die zu Spielbeginn festgesetzte Hauptzeit des weißen Spielers.
+     */
     public long getStartHauptzeitWeiss();
 
+    /**
+     *
+     * @return die zu Spielbeginn festgesetzte Periodenzeit beider Spieler.
+     */
     public long getPeriodenZeit();
 
 }
