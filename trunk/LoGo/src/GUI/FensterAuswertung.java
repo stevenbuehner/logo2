@@ -55,6 +55,7 @@ public class FensterAuswertung extends JFrame implements MouseListener {
     private int xKoordWeiss = 580;
     private int zeilenabstand = 30;
     private int yOffset = 250;
+    private String datenbankStatustext = "";
 
     public FensterAuswertung() {
         this.init();
@@ -339,6 +340,11 @@ public class FensterAuswertung extends JFrame implements MouseListener {
 
     public synchronized void setHistoryEintraege(HistoryEintrag eintraege[]) {
         this.histEintraege = eintraege;
+        this.repaint();
+    }
+
+    public synchronized void setStatusNachricht( String statusNachricht ){
+        this.datenbankStatustext = statusNachricht;
         this.repaint();
     }
 }
