@@ -1,7 +1,6 @@
 package Klassen;
 
 import GUI.FensterSpieloberflaeche;
-import GUI.GrafikLib;
 import Timer.Countdown;
 import Timer.CountdownPeriodenZeitSchwarz;
 import Timer.CountdownPeriodenZeitWeiss;
