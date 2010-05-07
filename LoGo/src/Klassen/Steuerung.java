@@ -1374,7 +1374,8 @@ public class Steuerung implements SteuerungInterface {
             // check whether we have windows os. if yes, use runtime exec instead of desktop
             String osName = System.getProperties().get("os.name").toString();
             if (osName.matches(".*Windows.*")) {
-                Runtime.getRuntime().exec("rundll32 SHELL32.DLL,ShellExec_RunDLL \""+myURL.getFile()+"\"");
+                String pfad = myURL.toString();
+                Runtime.getRuntime().exec("rundll32 SHELL32.DLL,ShellExec_RunDLL \""+pfad+"\"");
             }
             else {
             Desktop.getDesktop().open(new File(myURL.getFile()));
