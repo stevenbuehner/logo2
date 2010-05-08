@@ -40,7 +40,7 @@ public class ScreenManager {
 
     /**
      *
-     * @param Liste von DisplayModes: modes
+     * @param modes Liste von DisplayModes
      * @return Gib den ersten kompatiblem DisplayModus zurueck,
      * bzw. null, wenn keiner gefunden wurde.
      */

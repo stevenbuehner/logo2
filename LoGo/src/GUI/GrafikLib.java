@@ -77,7 +77,7 @@ public class GrafikLib {
      * Grafik, wird die Grafik direkt aus dem Speicher, statt von der Festplatte
      * geladen.
      *
-     * @param path Pfad zum gewünschen Image
+     * @param pfad Pfad zum gewünschen Image
      * @return Bei Erfolg das Image als BufferedImage, sonst NULL
      */
     public BufferedImage getSprite(URL pfad) {
@@ -198,7 +198,7 @@ public class GrafikLib {
      * Wandelt den übergebenen Pfad (String) um in eine URL. Der Pfad kann relativ
      * übergeben werden, doch die URL ist auf der Festplatte eindeutig.
      * @param pfad
-     * @return
+     * @return Passende URL zum Pfad oder NULL bei fehlerhabtem Pfad
      */
     public URL getURLfromRessource(String pfad) {
         return getClass().getClassLoader().getResource(pfad);

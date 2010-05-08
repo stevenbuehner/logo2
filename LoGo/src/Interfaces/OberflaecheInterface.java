@@ -27,7 +27,7 @@ public interface OberflaecheInterface {
      *
      * @param spielfeld zweidimensionales Integerarray
      * @param spielfeldGroesse Integerwert mit der Größe des Spielfeldes
-     * @param marierterStein zu markierender Stein
+     * @param markierterStein zu markierender Stein
      */
     public void setBrettOberflaeche(int spielfeld[][], int spielfeldGroesse, Point markierterStein);
 
@@ -184,7 +184,7 @@ public interface OberflaecheInterface {
     /**
      * @param visible Ob die Schaltfläche "Pause" zur Verfügung, bzw. sichtbar sein soll,
      * kann über den Parameter eingestellt werden.
-     * @see visibleFortsetzen
+     * @see #visibleFortsetzen(boolean) 
      */
     public void visiblePause(boolean visible);
 
@@ -194,7 +194,7 @@ public interface OberflaecheInterface {
      * 
      * @param visible Ob die Schaltfläche "Fortsetzen" zur Verfügung, bzw. sichtbar sein soll,
      * kann über den Parameter eingestellt werden.
-     * @see visiblePause 
+     * @see #visiblePause(boolean)
      */
     public void visibleFortsetzen(boolean visible);
 
