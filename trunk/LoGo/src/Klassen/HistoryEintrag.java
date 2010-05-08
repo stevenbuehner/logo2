@@ -7,7 +7,8 @@ package Klassen;
 import java.sql.Date;
 
 /**
- *
+ * Objekte dieser Klasse enthalten alle relevanten Informationen für einen
+ * Historyeintrag in der Datenbank.
  * @author steven
  */
 public class HistoryEintrag {
@@ -18,6 +19,9 @@ public class HistoryEintrag {
     private float punkteSpielerWeiss;
     private Date zeitpunkt;
 
+    /**
+     * Standardkonstruktor, der alle Objekte initialisiert.
+     */
     public HistoryEintrag(){
         this.nameSpielerSchwarz = "";
         this.nameSpielerWeiss = "";
@@ -28,7 +32,7 @@ public class HistoryEintrag {
 
     /**
      * Getter für den Namen von Spieler Schwarz
-     * @return
+     * @return Name des schwarzen Spielers
      */
     public String getNameSpielerSchwarz() {
         return this.nameSpielerSchwarz;
@@ -43,7 +47,7 @@ public class HistoryEintrag {
 
     /**
      * Getter für die Punkte des Spieler Schwarz.
-     * @return
+     * @return Anzahl der Punkte des schwarzen Spielers
      */
     public float getPunkteSpielerSchwarz() {
         return this.punkteSpielerSchwarz;
@@ -58,7 +62,7 @@ public class HistoryEintrag {
 
     /**
      * Getter für den Namen von Spieler Weiss
-     * @return
+     * @return Name des weißen Spielers
      */
     public String getNameSpielerWeiss() {
         return this.nameSpielerWeiss;
@@ -73,7 +77,7 @@ public class HistoryEintrag {
 
     /**
      * Getter für die Punkte des Spieler Weiss.
-     * @return
+     * @return Anzahl der Punkte des weißen Spielers
      */
     public float getPunkteSpielerWeiss() {
         return this.punkteSpielerWeiss;

@@ -141,20 +141,6 @@ public class Spielbrett extends JComponent {
      * @param g
      * @param neuesFeld
      */
-    /* private void zeichneBenoetigteFelderNeu(Graphics g, int neuesFeld[][]) {
-
-    // ACHTUNG! FUNKTION NOCH NICHT IM EINSATZ!
-
-    //Checke ob sich was veraendert hat wen ja, kopiere gleich
-    for (int i = 0; i < this.anzahlFelder; i++) {
-    for (int j = 0; j < this.anzahlFelder; j++) {
-    if (this.spielFeldArray[i][j] != neuesFeld[i][j]) {
-    }
-    }
-    }
-    }
-
-     */
     @Override
     public void paint(Graphics g) {
         this.paintComponents(g);

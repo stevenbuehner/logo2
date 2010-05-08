@@ -30,7 +30,6 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
      * @param x X-Startposition der Animation (linke obere Ecke als Ausgangspunkt)
      * @param y Y-Startposition der Animation (linke obere Ecke als Ausgangspunkt)
      * @param delay Geschwindigkeit, mit der die Animationsbilder rotieren sollen
-     *
      */
     public SpielStein(BufferedImage[] image, double x, double y) {
 

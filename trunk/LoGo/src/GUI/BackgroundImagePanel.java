@@ -30,7 +30,7 @@ public class BackgroundImagePanel extends JPanel {
     /**
      * @param images Bilder (Mehrzahl) die im Hintergrund des Panels animiert
      * werden sollen.
-     * @see showNextImage()
+     * @see #showNextImage()
      * @see #paintComponent(java.awt.Graphics) 
      */
     public BackgroundImagePanel(BufferedImage[] images) {

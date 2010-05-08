@@ -51,7 +51,7 @@ public class Spieler {
 
     /**
      *
-     * @param Verbleibende Spielerzeit des Spielers in Millesekunden.
+     * @param zeitInMS Verbleibende Spielerzeit des Spielers in Millesekunden.
      * Ist diese aufgebraucht, kann er nur noch die verbleibende Periodenzeit nutzen.
      */
     public void setVerbleibendeSpielzeitInMS(long zeitInMS) {
@@ -59,24 +59,25 @@ public class Spieler {
     }
 
     /**
-     *
-     * @return Verbleibende Spielerzeit des Spielers in Sekunden.
+     * Gibt die verbleibende Spielerzeit des Spielers in Sekunden.
      * Ist diese aufgebraucht, kann er nur noch die verbleibende Periodenzeit nutzen.
      * Achtung, intern wird die Zeit in Sekunden gespeichert. Dies ist darum nur
      * ein gerundeter Wert.
      *
+     * @return Verbleibende Spielerzeit des Spielers in Sekunden.
      */
     public long getVerbleibendeSpielzeitInSek() {
         return this.verbliebendeSpielzeitInMS / 60;
     }
 
     /**
-     *
-     * @param Verbleibende Spielerzeit des Spielers in Sekunden.
+     * Funktion zum Setzen der verbleibenden Spielerzeit des Spielers in Sekunden.
      * Ist diese aufgebraucht, kann er nur noch die verbleibende Periodenzeit nutzen.
      * Achtung, intern wird die Zeit in Sekunden gespeichert. Dies ist darum nur
      * ein gerundeter Wert. Diese Funktion sollte darum nur mit Bedacht verwendet
      * werden.
+     *
+     * @param zeitInSek Verbleibende Spielerzeit des Spielers in Sekunden.
      */
     public void setVerbleibendeSpielzeitInSek(long zeitInSek) {
         this.verbliebendeSpielzeitInMS = zeitInSek * 60;
@@ -94,7 +95,7 @@ public class Spieler {
 
     /**
      *
-     * @param Zum Setzen der komiPunkte. Die Werte werden bei der Ausgabe dann
+     * @param komiPunkte Zum Setzen der komiPunkte. Die Werte werden bei der Ausgabe dann
      * wieder auf 0,5 gerundet.
      */
     public void setKomiPunkte(float komiPunkte) {
@@ -111,7 +112,7 @@ public class Spieler {
 
     /**
      *
-     * @param Überschreibt die aktuelle Gefangenenanzahl mit neueGefangenenAnzahl
+     * @param neueGefangenenAnzahl Überschreibt die aktuelle Gefangenenanzahl mit neueGefangenenAnzahl
      */
     public void setGefangenenAnzahl(int neueGefangenenAnzahl) {
         this.gefangenenAnzahl = neueGefangenenAnzahl;
@@ -119,7 +120,7 @@ public class Spieler {
 
     /**
      *
-     * @param Fügt der GefangenenAnzahl des Spielers zusaetzlicheGefangene hinzu.
+     * @param zusaetzlicheGefangene Fügt der GefangenenAnzahl des Spielers zusaetzlicheGefangene hinzu.
      */
     public void addGefangenenAnzahl(int zusaetzlicheGefangene) {
         this.gefangenenAnzahl += zusaetzlicheGefangene;

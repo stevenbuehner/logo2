@@ -15,7 +15,7 @@ public interface SpielerUhren {
      * Funktion um der Uhr die restliche Zeit in Millesekunden zu übergeben,
      * die der Spieler noch hat. Diese Funktion wird periodisch aufgerufen,
      * immer wenn sich die Anzeige ändern soll.
-     * @param zeit Zeit in Millesekunden.
+     * @param restzeit Zeit in Millesekunden.
      */
     public void restzeitInMS(long restzeit);
 
