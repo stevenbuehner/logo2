@@ -17,13 +17,17 @@ public interface OberflaecheInterface {
 
     /**
      * Das Brett wird hier Dargestellt. Dabei ist die Koordinate (0,0) links unten!
-     * @param spielfeld ist ein zweidimensionales Integer-Array mit der Groesse
-     * @param spielfeldGroesse Das Array kann die Werte SCHNITTPUNKT_LEER,
+     * Spielfeld ist ein zweidimensionales Integer-Array mit der Groesse
+     * spielfeldGroesse Das Array kann die Werte SCHNITTPUNKT_LEER,
      * SCHNITTPUNKT_SCHWARZ, SCHNITTPUNKT_WEISS und SCHNITTPUNKT_VERBOTEN enthalten,
      * welche in der Klasse Konstante spezifiziert sind.
-     * Der Parameter @param marierterStein ist null wenn nichts zu markieren ist.
+     * Der Parameter marierterStein ist null wenn nichts zu markieren ist.
      * Ansonsten übergibt er den als zuletzt gelegtenStein als Objekt der Klasse Punkt
      * zum markieren.
+     *
+     * @param spielfeld zweidimensionales Integerarray
+     * @param spielfeldGroesse Integerwert mit der Größe des Spielfeldes
+     * @param marierterStein zu markierender Stein
      */
     public void setBrettOberflaeche(int spielfeld[][], int spielfeldGroesse, Point markierterStein);
 
@@ -57,25 +61,27 @@ public interface OberflaecheInterface {
 
     /**
      * Setzt den Namen des weißen Spielers auf der GUI durch den Parameter
-     * @param spielername.
+     * @param spielername Name des weißen Spielers
      */
     public void setSpielernameWeiss(String spielername);
 
     /**
      * Setzt den Namen des schwarzen Spielers auf der GUI durch den Parameter
-     * @param spielername.
+     * @param spielername Name des schwarzen Spielers.
      */
     public void setSpielernameSchwarz(String spielername);
 
     /**
      * Zum übergeben der Anzahl aktueller gefangener weißer Steine an die GUI
-     * Der Parameter @param anzGefangenerSteiner ist dabei die Anzahl der Steine
+     * Der Parameter anzGefangenerSteiner ist dabei die Anzahl der Steine.
+     * @param anzGefangenerSteiner Anzahl gefangener weißer Steine
      */
     public void setGefangeneSteineWeiss(int anzGefangenerSteiner);
 
     /**
      * Zum übergeben der Anzahl aktueller gefangener schwarzer Steine an die GUI
-     * Der Parameter @param anzGefangenerSteiner ist dabei die Anzahl der Steine
+     * Der Parameter anzGefangenerSteiner ist dabei die Anzahl der Steine.
+     * @param anzGefangenerSteiner Anzahl gefangener schwarzen Steine
      */
     public void setGefangeneSteineSchwarz(int anzGefangenerSteiner);
 
@@ -90,20 +96,22 @@ public interface OberflaecheInterface {
     public void setWeissAmZug();
 
     /**
-     * Übergibt eine @param meldung speziell an den weißen Spieler.
-     *
+     * Übergibt eine Meldung speziell an den weißen Spieler.
+     * @param meldung Nachricht an Spieler Weiß zum Anzeigen
      */
     public void setSpielerMeldungWeiss(String meldung);
 
     /**
-     * Gibt eine @param meldung speziell an den schwarzen Spieler.
+     * Gibt eine Meldung speziell an den schwarzen Spieler.
+     * @param meldung Nachricht an Spieler Schwarz zum Anzeigen
      */
     public void setSpielerMeldungSchwarz(String meldung);
 
     /**
      *
-     * Sagt der Oberflaeche ob es grafisch eine @param undoMoeglich keit 
+     * Sagt der Oberflaeche ob es grafisch eine Undo-Möglichkeit
      * erlauben soll.
+     * @param undoMoeglich Undo Möglich oder nicht.
      */
     public void setUndoErlaubt(boolean undoMoeglich);
 
@@ -123,14 +131,14 @@ public interface OberflaecheInterface {
     public void gibFehlermeldungAus(String fehlertext);
 
     /**
-     * Mit dem Parameter @param visible kann die Oberflaeche ein- oder
+     * @param visible Mit dem Parameter kann die Oberflaeche ein- oder
      * ausgeblendet werden. Achtung! Countdowns etc. können gegebenenfalls
      * trotzdem noch laufen! Dies muss die Steuerung selbst abfangen.
      */
     public void setVisible(boolean visible);
 
     /**
-     * Der Oberflaeche kann über @param setPause ein Tipp gegeben werden, ob
+     * @param setPause Der Oberflaeche kann über setPause ein Tipp gegeben werden, ob
      * sie eine Art Pause- oder Blackscreen anzeigen möchte/sollte.
      */
     public void setPauseScreen(boolean setPause);
@@ -143,8 +151,8 @@ public interface OberflaecheInterface {
     public void visiblePassen(boolean visible);
 
     /**
-     * Ob die Schaltfläche "Aufgeben" zur Verfügung, bzw. sichtbar sein soll,
-     * kann über den Parameter @param visible eingestellt werden.
+     * @param visible Ob die Schaltfläche "Aufgeben" zur Verfügung, bzw. sichtbar sein soll,
+     * kann über den Parameter eingestellt werden.
      */
     public void visibleAufgeben(boolean visible);
 
@@ -156,36 +164,37 @@ public interface OberflaecheInterface {
     public void visibleAuswertungBeenden(boolean visible);
 
     /**
-     * Ob die Schaltfläche "Neues Spiel" zur Verfügung, bzw. sichtbar sein soll,
-     * kann über den Parameter @param visible eingestellt werden.
+     * @param visible Ob die Schaltfläche "Neues Spiel" zur Verfügung, bzw. sichtbar sein soll,
+     * kann über den Parameter eingestellt werden.
      */
     public void visibleNeuesSpiel(boolean visible);
 
     /**
-     * Ob die Schaltfläche "Spiel Laden" zur Verfügung, bzw. sichtbar sein soll.
-     * kann über den Parameter @param visible eingestellt werden.
+     * @param visible Ob die Schaltfläche "Spiel Laden" zur Verfügung, bzw. sichtbar sein soll.
+     * kann über den Parameter eingestellt werden.
      */
     public void visibleSpielLaden(boolean visible);
 
     /**
-     * Ob die Schaltfläche "Spiel speichern" zur Verfügung, bzw. sichtbar sein soll,
-     * kann über den Parameter @param visible eingestellt werden.
+     * @param visible Ob die Schaltfläche "Spiel speichern" zur Verfügung, bzw. sichtbar sein soll,
+     * kann über den Parameter eingestellt werden.
      */
     public void visibleSpielSpeichern(boolean visible);
 
     /**
-     * Ob die Schaltfläche "Pause" zur Verfügung, bzw. sichtbar sein soll,
-     * kann über den Parameter @param visible eingestellt werden.
+     * @param visible Ob die Schaltfläche "Pause" zur Verfügung, bzw. sichtbar sein soll,
+     * kann über den Parameter eingestellt werden.
      * @see visibleFortsetzen
      */
     public void visiblePause(boolean visible);
 
     /**
-     * Ob die Schaltfläche "Fortsetzen" zur Verfügung, bzw. sichtbar sein soll,
-     * kann über den Parameter @param visible eingestellt werden.
      * Die Schaltfläche Fortsetzen das Gegenstück zur Schaltfläche "Pause".
      * Es empfielt sich immer nur eine von beiden sichbar zu lassen.
-     * @see visiblePause
+     * 
+     * @param visible Ob die Schaltfläche "Fortsetzen" zur Verfügung, bzw. sichtbar sein soll,
+     * kann über den Parameter eingestellt werden.
+     * @see visiblePause 
      */
     public void visibleFortsetzen(boolean visible);
 
