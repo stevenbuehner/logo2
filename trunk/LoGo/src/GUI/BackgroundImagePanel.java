@@ -31,7 +31,7 @@ public class BackgroundImagePanel extends JPanel {
      * @param images Bilder (Mehrzahl) die im Hintergrund des Panels animiert
      * werden sollen.
      * @see showNextImage()
-     * @see paintComponent()
+     * @see #paintComponent(java.awt.Graphics) 
      */
     public BackgroundImagePanel(BufferedImage[] images) {
         this.images = images;
@@ -45,7 +45,7 @@ public class BackgroundImagePanel extends JPanel {
      * dem Konstruktor bereits übergeben worden sein. Außerdem muss die Funktion
      * showNextImage() zyklisch aufgerufen werden.
      * @param g Graphics Objekt um darauf das Hintergrundbild zu zeichnen
-     * @see showNextImage()
+     * @see #showNextImage() 
      */
     @Override
     protected void paintComponent(Graphics g) {
