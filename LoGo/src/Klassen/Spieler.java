@@ -16,6 +16,13 @@ public class Spieler {
     private float komiPunkte;
     private int gefangenenAnzahl;
 
+    /**
+     * Der Spieler wird mit dem Konstruktor sofort initialisiert.
+     * @param spielerName Name des Spielers
+     * @param spielzeitInMS Spielzeit des Spielers in Millisekunden
+     * @param gefangenenAnzahl Anzahl der gefangenen Steine des Spielers
+     * @param komiPunkte Anzahl der Komi des Spielers
+     */
     public Spieler(String spielerName, long spielzeitInMS, int gefangenenAnzahl, float komiPunkte) {
         this.setSpielerName(spielerName);
         this.setVerbleibendeSpielzeitInMS(spielzeitInMS);
