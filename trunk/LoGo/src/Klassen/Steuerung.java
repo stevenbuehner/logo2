@@ -911,7 +911,7 @@ public class Steuerung implements SteuerungInterface {
     public void buttonSpielBeenden() {
         int returnWert = JOptionPane.CANCEL_OPTION;
         if (this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_LAUEFT) {
-            returnWert = JOptionPane.showConfirmDialog(null, "Das Spiel läuft noch, wollen Sie es wirklich beenden?");
+            returnWert = JOptionPane.showConfirmDialog(null, "Das Spiel ist noch am laufen, wollen Sie es wirklich beenden?");
         } else if (this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_PAUSIERT) {
             returnWert = JOptionPane.showConfirmDialog(null, "Das Spiel pausiert gerade, wollen Sie es wirklich beenden?");
         } else if (this.dasSpielfeld.getSpielZustand() == Konstante.SPIEL_GEBIETSAUSWERTUNG) {
