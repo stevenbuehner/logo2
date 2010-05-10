@@ -62,7 +62,11 @@ public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {
         this.anzahlGefangene = anzahlGefangene;
 
         anzeigeText_spielername =this.spielername + " " + this.spielerFarbe;
+        if(this.anzahlGefangene == 1){
+            anzeigeText_gefangene = this.anzahlGefangene + " Stein gefangen";
+        } else {
         anzeigeText_gefangene = this.anzahlGefangene + " Steine gefangen";
+        }
     }
 
 
