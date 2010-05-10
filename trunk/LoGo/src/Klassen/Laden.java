@@ -20,9 +20,17 @@ public class Laden {
     private Spieler spieler_schwarz;
     //Für Ascii - String Umwandlung
     private char c_lokale_umwandlungsvariable; 
+    /**
+     *
+     */
     public Spielfeld _spielfeld;
 
     //Funktion für den Identifier des Switch-Case Konstrukts
+    /**
+     *
+     * @param id
+     * @return
+     */
     public int getID(String id)
     {
         int _id = 0;
@@ -84,15 +92,25 @@ public class Laden {
         return _id;
     }
 
+    /**
+     * Standartkonstruktor
+     */
     public Laden(){
 
     }
     
+    /**
+     *
+     * @return Gib das geladene Feld zurueck
+     */
     public Spielfeld getSpielfeld(){
         //Rueckgabe des Spielfeldes
         return this._spielfeld;
     }
 
+    /**
+     * Lade ein Spiel. Dabei muss der Benutzer eine Datei auswaehlen.
+     */
     public void LadeSpiel( ){
 
        JFileChooser chooser = new JFileChooser();
