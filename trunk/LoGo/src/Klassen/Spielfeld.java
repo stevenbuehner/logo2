@@ -54,10 +54,18 @@ public class Spielfeld {
      */
     private int[][] initialfeld;
 
+    /**
+     * Wird keine Spielfeldgroesse angegeben, wird eine Standardfeldgroesse
+     * eingestellt
+     */
     public Spielfeld() {
-        this(9);
+        this(13);
     }
 
+    /**
+     * Das Spielfeld wird initialisiert. Dazu werden alle Variablen initialisiert
+     * @param spielfeldGroesse Groesse des Spielfeldes
+     */
     public Spielfeld(int spielfeldGroesse) {
         this.vorgabeZahl = 0;
         this.spielfeldGroesse = spielfeldGroesse;
@@ -149,6 +157,10 @@ public class Spielfeld {
         return this.spielZustand;
     }
 
+    /**
+     * Setzt den Zustand des Spielfeldes
+     * @param neuerSpielZustand Setze den Spielzustand
+     */
     public void setSpielZustand(int neuerSpielZustand) {
 
         // Überprüfen ob der Zustand erlaubt ist
@@ -1204,6 +1216,11 @@ public class Spielfeld {
         //DUmmy
     }
 
+    /**
+     *
+     * @param vorgabenZahl
+     * @return
+     */
     public boolean initialisiereFeldMitVorgabenFuerSchwarz(int vorgabenZahl) {
         /* Wenn die Zahl der Vorgaben groesser als 9 ist, so ist die
          * Vorgabezahl Falsch -> Rueckgabewert False
@@ -1763,8 +1780,12 @@ public class Spielfeld {
         this.setYPosVerboten(-1);
     }
 
-    /* Damit ein Feld markiert werden kann, muss man wissen, zu welchem Zeitpunkt
-     * welcher Zug gespielt wurde. Dazu kann man die Spielzuege auslesen */
+    /**
+     * Damit ein Feld markiert werden kann, muss man wissen, zu welchem Zeitpunkt
+     * welcher Zug gespielt wurde. Dazu kann man die Spielzuege auslesen
+     * @param zeitpunkt
+     * @return
+     */
     public Point getMarkiertenSteinZumZeitpunkt(int zeitpunkt) {
         if (zeitpunkt <= 0 || zeitpunkt > this.letzteZugnummer) {
             return null;
@@ -1778,10 +1799,17 @@ public class Spielfeld {
         return rueckgabe;
     }
 
+    /**
+     * Soll die Zeit im Spiel ignoriert werden?
+     * @param ignore Ignorieren oder nicht
+     */
     public void setIgnoreTime(boolean ignore) {
         this.ignoreTime = ignore;
     }
 
+    /**
+     * @return Wird die Zeit gerade ignoriert?
+     */
     public boolean getIgnoreTime() {
         return this.ignoreTime;
     }
@@ -1830,12 +1858,17 @@ public class Spielfeld {
         }
     }
 
+    /**
+     *
+     * @return Anzhal der Vorgabesteine
+     */
     public int getVorgabeZahl() {
         return this.vorgabeZahl;
     }
 
     /**
      * Rueckgabe der Liste von Spielzuegen fuer die Klasse Speichern
+     * @return
      */
     public List<Spielzug> getspielZugCollection() {
 

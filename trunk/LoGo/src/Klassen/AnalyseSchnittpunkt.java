@@ -19,6 +19,13 @@ public class AnalyseSchnittpunkt {
     private boolean markiert;
     private boolean analysiert;
 
+    /**
+     * Der Analyseschnittpunkt dient als Datenstruktur zur Auswertung von Brettstellungen.
+     * In ihm kann man die Koordinaten eines Steines speichern, sowie Flags setzen
+     * uns sich seinen Belegungswert merken. Wird kein Belegungswert und keine
+     * Koordinate im Konstruktor angegeben, so liegen die Koordinaten auf (-1,-1)
+     * und der Belegungswert ist leer
+     */
     public AnalyseSchnittpunkt() {
         this.setXPos(-1);
         this.setYPos(-1);
@@ -28,6 +35,13 @@ public class AnalyseSchnittpunkt {
         this.setBelegungswert(Konstante.SCHNITTPUNKT_LEER);
     }
 
+    /**
+     * Wie der Standardkonstruktor, nur kann man hier noch die Koordinate des
+     * Punktes angeben. Der Belegungswert ist immer noch leer
+     * @param xPos X-Koordinate (von 0 oder 1 beginnend, kann beliebig sein)
+     * @param yPos Y-Koordinate (von 0 oder 1 beginnend, kann beliebig sein)
+     * @see AnalyseSchnittpunkt
+     */
     public AnalyseSchnittpunkt(int xPos, int yPos) {
         this.setXPos(xPos);
         this.setYPos(yPos);
@@ -37,6 +51,14 @@ public class AnalyseSchnittpunkt {
         this.setAnalysiert(false);
     }
 
+    /**
+     * Zusatzlich zum Standardkonstruktor kann man noch Koordinaten und Belegungswert
+     * angeben.
+     * @param xPos (von 0 oder 1 beginnend, kann beliebig sein)
+     * @param yPos (von 0 oder 1 beginnend, kann beliebig sein)
+     * @param belegungswert Was liegt auf dem Schnittpunkt (Farbe, Gebiet, Ko, Leer)
+     * @see AnalyseSchnittpunkt
+     */
     public AnalyseSchnittpunkt(int xPos, int yPos, int belegungswert) {
         this.setXPos(xPos);
         this.setYPos(yPos);

@@ -42,6 +42,12 @@ public class SpielAuswertung {
         }
     }
 
+    /**
+     * Vereinfachung des Standartkonstruktors. Man muss nur die Brettgroesse
+     * angeben. Das Komi wird auf 0 gestetzt
+     * @param brettGroesse Brettgroesse des Spielfeldes
+     * @see SpielAuswertung
+     */
     public SpielAuswertung(int brettGroesse) {
         this(brettGroesse, 0);
     }
@@ -1326,6 +1332,11 @@ public class SpielAuswertung {
         return rueckgabe;
     }
 
+    /**
+     * Die Gebietspunkte des Schwarzen Spielers ist gleich der Anzahl der Markierten
+     * gebietspunkte plus der Anzahl der auf dem Brett gefangenen Weissen Steinen.
+     * @return Anzahl der Gebietspunkte fuer Schwarz
+     */
     public int getGebietsPunkteSchwarz() {
         int rueckgabe = 0;
 
@@ -1343,6 +1354,11 @@ public class SpielAuswertung {
         return rueckgabe;
     }
 
+    /**
+     * Die Gebietspunkte des Weissen Spielers ist gleich der Anzahl der Markierten
+     * gebietspunkte plus der Anzahl der auf dem Brett gefangenen Schwarzen Steinen.
+     * @return Anzahl der Gebietspunkte fuer Weiss
+     */
     public int getGebietsPunkteWeiss() {
         int rueckgabe = 0;
 

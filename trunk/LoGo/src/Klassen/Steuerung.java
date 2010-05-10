@@ -40,11 +40,21 @@ public class Steuerung implements SteuerungInterface {
     /* Startinfos zum Spiel */
     long startZeitSchwarz = 0;
     long startZeitWeiss = 0;
+    private final long periodenZeit;
 
+    /**
+     * Es wird eine Steuerung erzeugt. Werden keine Parameter angegeben wird ein
+     * Standartfeld verwendet, mit einer Standardperiodenzeit.
+     */
     public Steuerung() {
-        this(9, 60 * 1000);     // Standardwerte
+        this(13, 60 * 1000);     // Standardwerte
     }
 
+    /**
+     * Die Steuerung wird mit genau definierter Feldgroesse und Periodenzeit.
+     * @param spielFeldGroesse Groesse des Spielfeldes
+     * @param periodenZeit Periodenzeit in Millisekunden
+     */
     public Steuerung(int spielFeldGroesse, long periodenZeit) {
 
         // Initialisiere nicht angegebenes mit Standardwerten
@@ -57,6 +67,7 @@ public class Steuerung implements SteuerungInterface {
                 0,
                 spielFeldGroesse,
                 3);
+        this.periodenZeit = periodenZeit;
     }
 
     /**Implementierung des Interfaces
@@ -87,6 +98,7 @@ public class Steuerung implements SteuerungInterface {
     }
 
     /**Implementierung des Interfaces
+     * @param bereitsInitialisiertesSpielfeld
      * @see SteuerungInterface
      */
     public void initMitSpielfeld(Spielfeld bereitsInitialisiertesSpielfeld) {
@@ -174,7 +186,7 @@ public class Steuerung implements SteuerungInterface {
         Spielfeld brett = this.dasSpielfeld;
         int returnWert = Konstante.FEHLER;
         int klickenderSpieler = brett.getSpielerFarbeAnDerReihe();
-        long periodenZeit = brett.getPeriodenZeit();
+        long periodenZeitLocal = brett.getPeriodenZeit();
 
         if (brett.getSpielZustand() == Konstante.SPIEL_LAUEFT) {
 
@@ -209,8 +221,8 @@ public class Steuerung implements SteuerungInterface {
                                  * muss auch dieser hier vorher extra uebermittelt werden
                                  */
                                 if (klickenderSpieler != brett.getSpielerFarbeAnDerReihe()) {
-                                    this.periodenZeitSchwarz.setRemainingTime(periodenZeit);
-                                    LoGoApp.meineOberflaeche.setAnzeigePeriodenZeitSchwarz(periodenZeit);
+                                    this.periodenZeitSchwarz.setRemainingTime(periodenZeitLocal);
+                                    LoGoApp.meineOberflaeche.setAnzeigePeriodenZeitSchwarz(periodenZeitLocal);
                                 }
 
                                 // Starte den Countdown, bzw. setze den Countdown fort
@@ -233,7 +245,7 @@ public class Steuerung implements SteuerungInterface {
                                  */
                                 if (klickenderSpieler != brett.getSpielerFarbeAnDerReihe()) {
                                     this.periodenZeitWeiss.setRemainingTime(brett.getPeriodenZeit());
-                                    LoGoApp.meineOberflaeche.setAnzeigePeriodenZeitWeiss(periodenZeit);
+                                    LoGoApp.meineOberflaeche.setAnzeigePeriodenZeitWeiss(periodenZeitLocal);
                                 }
 
                                 // Starte den Countdown, bzw. setze den Countdown fort
@@ -323,8 +335,8 @@ public class Steuerung implements SteuerungInterface {
                          * muss auch dieser hier vorher extra uebermittelt werden
                          */
                         if (klickenderSpieler != brett.getSpielerFarbeAnDerReihe()) {
-                            this.periodenZeitSchwarz.setRemainingTime(periodenZeit);
-                            LoGoApp.meineOberflaeche.setAnzeigePeriodenZeitSchwarz(periodenZeit);
+                            this.periodenZeitSchwarz.setRemainingTime(periodenZeitLocal);
+                            LoGoApp.meineOberflaeche.setAnzeigePeriodenZeitSchwarz(periodenZeitLocal);
                         }
 
                         // Starte den Countdown, bzw. setze den Countdown fort
@@ -347,7 +359,7 @@ public class Steuerung implements SteuerungInterface {
                          */
                         if (klickenderSpieler != brett.getSpielerFarbeAnDerReihe()) {
                             this.periodenZeitWeiss.setRemainingTime(brett.getPeriodenZeit());
-                            LoGoApp.meineOberflaeche.setAnzeigePeriodenZeitWeiss(periodenZeit);
+                            LoGoApp.meineOberflaeche.setAnzeigePeriodenZeitWeiss(periodenZeitLocal);
                         }
 
                         // Starte den Countdown, bzw. setze den Countdown fort
