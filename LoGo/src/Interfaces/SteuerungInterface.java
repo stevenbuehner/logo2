@@ -54,6 +54,7 @@ public interface SteuerungInterface {
     /**
      * Initialisiere das Spiel mit einem @param bereitsInitialisiertesSpielfeld
      * Diese Funktion sorgt selbst für eine Validierung ...
+     * @param bereitsInitialisiertesSpielfeld Uebergebenes Spielfeld
      */
     public void initMitSpielfeld(Spielfeld bereitsInitialisiertesSpielfeld);
 

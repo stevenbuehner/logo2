@@ -57,6 +57,9 @@ public class FensterAuswertung extends JFrame implements MouseListener {
     private int yOffset = 250;
     private String datenbankStatustext = "";
 
+    /**
+     * Die Auswertung wird erstellt. Dabei wird die Initfunktion aufgerufen.
+     */
     public FensterAuswertung() {
         this.init();
     }
@@ -242,6 +245,19 @@ public class FensterAuswertung extends JFrame implements MouseListener {
 
     }
 
+    /**
+     * Wird ein Spiel durch auszaehlen beendet, muss das Ergebnis entsprechend
+     * aufbereitet werden.
+     * @param nameSchwarz Name des schwarzen Spielers
+     * @param nameWeiss Name des weissen Spielers
+     * @param komiFuerWeiss Komipunkte fuer Weiss
+     * @param gebietsPunktSchwarz Anzahl der Gebietspunkte fuer Schwarz
+     * @param gebietsPunkteWeiss Anzahl der Gebietspunkte fuer Weiss
+     * @param schwarzeGefangenImSpiel Anzahl der im Spiel gefangenen schwarzen Steine
+     * @param weisseGefangenImSpiel Anzahl der im Spiel gefangenen weissen Steine
+     * @param schwarzeSteineTotAufBrett Anzahl der Toten schwarzen Steine auf dem Brett
+     * @param weisseSteineTotAufBrett Anzahl der Toten weissen Steine auf dem Brett
+     */
     public void ergebnisAuszaehlenZeigen(String nameSchwarz, String nameWeiss, float komiFuerWeiss, int gebietsPunktSchwarz, int gebietsPunkteWeiss,
             int schwarzeGefangenImSpiel, int weisseGefangenImSpiel, int schwarzeSteineTotAufBrett, int weisseSteineTotAufBrett) {
         if (LoGoApp.debug) {
@@ -276,6 +292,13 @@ public class FensterAuswertung extends JFrame implements MouseListener {
         this.wieWurdeBeendet = FensterAuswertung.DURCH_AUSZAEHLEN_BEENDET;
     }
 
+    /**
+     * Wurde das Spiel durch Aufgebe beendet, wird ein entsprechendes Ergebnis
+     * erzeugt.
+     * @param nameSchwarz Name des Schwarzen Spielers
+     * @param nameWeiss Name des Weissen Spielers
+     * @param konstanteFuerGewinner Wer hat gewonnen?
+     */
     public void ergebnisAufgebenZeigen(String nameSchwarz, String nameWeiss, int konstanteFuerGewinner) {
         /* Erstmal zum Debugen */
         if (LoGoApp.debug) {
@@ -299,6 +322,14 @@ public class FensterAuswertung extends JFrame implements MouseListener {
         this.spielerWeissName = nameWeiss;
         this.wieWurdeBeendet = FensterAuswertung.DURCH_AUFGABE_BEENDET;
     }
+
+   /**
+     * Wurde das Spiel durch Zeitueberschreitung beendet, wird ein entsprechendes Ergebnis
+     * erzeugt.
+     * @param nameSchwarz Name des Schwarzen Spielers
+     * @param nameWeiss Name des Weissen Spielers
+     * @param konstanteFuerGewinner Wer hat gewonnen?
+     */
 
     public void ergebnisAufZeitVerlorenZeigen(String nameSchwarz, String nameWeiss, int konstanteFuerGewinner) {
         /* Erstmal zum Debugen */
@@ -338,11 +369,19 @@ public class FensterAuswertung extends JFrame implements MouseListener {
         }
     }
 
+    /**
+     *
+     * @param eintraege Die Historyeintroege die Gesetzt werden sollen
+     */
     public synchronized void setHistoryEintraege(HistoryEintrag eintraege[]) {
         this.histEintraege = eintraege;
         this.repaint();
     }
 
+    /**
+     *
+     * @param statusNachricht Nachicht die Ausgegeben werden soll
+     */
     public synchronized void setStatusNachricht(String statusNachricht) {
         this.datenbankStatustext = statusNachricht;
         this.repaint();

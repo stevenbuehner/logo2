@@ -119,6 +119,7 @@ public interface OberflaecheInterface {
      * 
      * Sagt der Oberflaeche ob es grafisch eine @param redoMoeglich keit
      * erlauben soll
+     * @param redoMoeglich Ist Redo moeglich?
      */
     public void setRedoErlaubt(boolean redoMoeglich);
 
