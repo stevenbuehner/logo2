@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import logo.LoGoApp;
 
 /**
@@ -151,42 +152,40 @@ public class Speichern {
          //Fenster zum Speichervorgang
          JFileChooser chooser = new JFileChooser();
          int rueckgabe = chooser.showSaveDialog((FensterSpieloberflaeche)LoGoApp.meineOberflaeche);
-         String selFile = chooser.getSelectedFile().getAbsolutePath();
-
-         switch(rueckgabe)
+         if(rueckgabe == JFileChooser.CANCEL_OPTION)
          {
-             case JFileChooser.APPROVE_OPTION:
-                 break;
-             case JFileChooser.CANCEL_OPTION:
-                 break;
+             JOptionPane.showMessageDialog(null, "Speichervorgang wurde abgebrochen!");
          }
+         else
+         {
+             String selFile = chooser.getSelectedFile().getAbsolutePath();
+             //Endung überprüfen
+             if(selFile.toLowerCase().contains(".cgf"))
+             {
+                 // File Name enthält die Endung ".cgf"
+             }
+             else
+             {
+                 selFile += ".cgf";
+             }
 
-        //Endung überprüfen
-        if(selFile.toLowerCase().contains(".cgf"))
-        {
-            // File Name enthält die Endung ".cgf"
-        }
-        else
-        {
-            selFile += ".cgf";
-        }
-         
-         //Standardkonfiguration
-         spielzuege+=")" + '\n';
+             //Zusammengesetzten String in die Datei abspeichern
+             PrintWriter pw = null;
+             try {
+                 BufferedWriter bw = new BufferedWriter(new FileWriter(selFile.toString()));
+                 pw = new PrintWriter(bw);
 
-        //Zusammengesetzten String in die Datei abspeichern
-        PrintWriter pw = null;
-        try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(selFile.toString()));
-            pw = new PrintWriter(bw);
-
-            pw.println(spielzuege);
-        } catch (IOException e) {
-            System.out.println("Konnte Datei nicht erstellen");
-        } finally {
-            if (pw != null) {
-                pw.close();
-            }
-        }
+                 pw.println(spielzuege);
+             } catch (IOException e) {
+                 System.out.println("Konnte Datei nicht erstellen");
+             } finally
+             {
+                 if (pw != null) {
+                     pw.close();
+                 }
+             }
+             //Standardkonfiguration
+             spielzuege+=")" + '\n';
+         }
       }
 }
