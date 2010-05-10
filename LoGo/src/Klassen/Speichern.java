@@ -52,6 +52,9 @@ public class Speichern {
         this.spielfeld = zuSpeicherndesSpielfeld;
     }
 
+    /**
+     * Standartkonstruktor zum Spielspeichern
+     */
     public void SpeicherSpiel( ){
 
         //Get-Funktionen für die lokalen Variablen
