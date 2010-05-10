@@ -1052,9 +1052,9 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
                     this.outputMessageToUser();
                 }
             } else {
-                this.sendMessageToUser("Konnte die Datei leider nicht öffnen.");
+                //this.sendMessageToUser("Konnte die Datei leider nicht öffnen.");
                 this.updateSpielmodus("Schnellstart");
-                this.outputMessageToUser();
+                //this.outputMessageToUser();
             }
             this.spielermodus.setSelectedItem("Schnellstart");
             this.animiereFrameStart();
