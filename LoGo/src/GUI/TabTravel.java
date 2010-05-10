@@ -8,8 +8,17 @@ package GUI;
 import java.awt.FocusTraversalPolicy;
 import javax.swing.JComponent;
 
+/**
+ *
+ * @author tommy
+ */
 public class TabTravel {
 
+    /**
+     *
+     * @param order Komponenten, geordnet nach gewuenschter Tab-Reihenfolge
+     * @return
+     */
     public static FocusTraversalPolicy getFocusTraversal(
             final JComponent order[]) {
         FocusTraversalPolicy policy = new FocusTraversalPolicy() {
@@ -45,6 +54,7 @@ public class TabTravel {
                 return order[0];
             }
 
+            @Override
             public java.awt.Component getInitialComponent(java.awt.Window window) {
                 return order[0];
             }
