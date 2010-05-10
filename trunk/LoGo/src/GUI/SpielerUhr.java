@@ -37,6 +37,13 @@ public class SpielerUhr extends JComponent implements SpielerUhren {
     int sekZeigerXrotation;
     int sekZeigerYrotation;
 
+    /**
+     * Eine Spieluhr wird angelegt
+     * @param xPos X-Koordinate des Uhrenmittelpunkts
+     * @param yPos Y-Koordinate des Uhrenmittelpunkts
+     * @param anfangsZeit Zeit die Voreingestellt werden soll
+     * @param offsetWinkel Offsetwinkel, falls die Uhr schief liegt
+     */
     public SpielerUhr(int xPos, int yPos, long anfangsZeit, double offsetWinkel) {
         this.xMittelPos = xPos;
         this.yMittelPos = yPos;

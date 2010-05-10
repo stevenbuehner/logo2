@@ -41,6 +41,14 @@ public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {
     /* Wenn der Spieler in Periodenzeit ist, wird dies Angezeigt */
     private boolean spielerInPeriodenZeit;
 
+    /**
+     * Ein neuer Spielzettel wird angelegt
+     * @param xPos X-Koordinate der linken oberen Ecke
+     * @param yPos Y-Koordinate der linken oberen Ecke
+     * @param offsetWinkel Offsetwinkel, falls der Zettel schief ist
+     * @param spielerName Name des Spielers
+     * @param spielerFarbe Farbe des Spielers
+     */
     public SpielerZettelEinzeln(int xPos, int yPos, double offsetWinkel, String spielerName, int spielerFarbe) {
         if(spielerFarbe == Konstante.SCHNITTPUNKT_SCHWARZ){
             this.spielerFarbe = "(Schwarz)";
@@ -57,6 +65,11 @@ public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {
 
     }
 
+    /**
+     * Der obere Teil des Zettels wird veraendert
+     * @param spielername Name des Spielers
+     * @param anzahlGefangene Anzahl der gefangenen Steine des Spielers
+     */
     public void ObererZettelTeil(String spielername, int anzahlGefangene) {
         this.spielername = spielername;
         this.anzahlGefangene = anzahlGefangene;

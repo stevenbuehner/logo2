@@ -88,10 +88,17 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
     private int frameMinhoehe = 270;
     private int frameMaxhoehe = 768;
 
+    /**
+     * Eine neue Einstellung wird erzeugt.
+     */
     public FensterEinstellung() {
         this("Einstellungsfenster");
     }
 
+    /**
+     * Ein Einstellungsfenster wird mit einem Bestimmten Namen erzeugt
+     * @param fenstername Name des Fensters
+     */
     public FensterEinstellung(String fenstername) {
         super(fenstername);
         this.init();
@@ -1082,6 +1089,10 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
         }
     }
 
+    /**
+     *
+     * @param b Ist das Fenster sichtbar?
+     */
     public void macheFensterSichtbar(boolean b){
         if(b==true){
             this.dasSpielfeld = new Spielfeld(getSelectedFeldgroesse());
