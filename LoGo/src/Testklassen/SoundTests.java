@@ -1,26 +1,4 @@
-/*File AudioCapture01.java
-This program demonstrates the capture
-and subsequent playback of audio data.
-
-A GUI appears on the screen containing
-the following buttons:
-Capture
-Stop
-Playback
-
-Input data from a microphone is
-captured and saved in a
-ByteArrayOutputStream object when the
-user clicks the Capture button.
-
-Data capture stops when the user clicks
-the Stop button.
-
-Playback begins when the user clicks
-the Playback button.
-
-Tested using SDK 1.4.0 under Win2000
- **************************************/
+package Testklassen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,6 +6,10 @@ import java.awt.event.*;
 import java.io.*;
 import javax.sound.sampled.*;
 
+/**
+ * Klasse zum Testen der Soundfunktionalität und der Sound-Bibliothek.
+ * @author steven
+ */
 public class SoundTests
         extends JFrame {
 
@@ -113,9 +95,11 @@ public class SoundTests
         setVisible(true);
     }//end constructor
 
-    //This method captures audio input
-    // from a microphone and saves it in
-    // a ByteArrayOutputStream object.
+    /**
+     * This method captures audio input
+     * from a microphone and saves it in
+     a ByteArrayOutputStream object.
+    */
     private void captureAudio() {
         try {
             //Get everything set up for
@@ -144,9 +128,10 @@ public class SoundTests
         }//end catch
     }//end captureAudio method
 
-    //This method plays back the audio
-    // data that has been saved in the
-    // ByteArrayOutputStream
+    /** This method plays back the audio
+    *  data that has been saved in the
+    *  ByteArrayOutputStream
+    */
     private void playAudio() {
         try {
             //Get everything set up for
@@ -189,14 +174,17 @@ public class SoundTests
         }//end catch
     }//end playAudio
 
-    //This method creates and returns an
-    // AudioFormat object for a given set
-    // of format parameters.  If these
-    // parameters don't work well for
-    // you, try some of the other
-    // allowable parameter values, which
-    // are shown in comments following
-    // the declarations.
+    /**
+     *
+    * This method creates and returns an
+    * AudioFormat object for a given set
+    * of format parameters.  If these
+    * parameters don't work well for
+    * you, try some of the other
+    * allowable parameter values, which
+    * are shown in comments following
+    * the declarations.
+    */
     private AudioFormat getAudioFormat() {
         float sampleRate = 8000.0F;
         //8000,11025,16000,22050,44100
@@ -214,11 +202,13 @@ public class SoundTests
                 channels,
                 signed,
                 bigEndian);
-    }//end getAudioFormat
-//===================================//
+    }
 
-//Inner class to capture data from
-// microphone
+
+
+    /** Inner class to capture data from
+     * microphone
+     */
     class CaptureThread extends Thread {
         //An arbitrary-size temporary holding
         // buffer
@@ -252,10 +242,12 @@ public class SoundTests
                 System.exit(0);
             }//end catch
         }//end run
-    }//end inner class CaptureThread
-//===================================//
-//Inner class to play back the data
-// that was saved.
+    }
+
+    /**
+     * Inner class to play back the data
+     * that was saved.
+     */
     class PlayThread extends Thread {
 
         byte tempBuffer[] = new byte[10000];
@@ -287,7 +279,6 @@ public class SoundTests
                 System.exit(0);
             }//end catch
         }//end run
-    }//end inner class PlayThread
-//===================================//
-}//end outer class AudioCapture01.java
+    }
+}
 

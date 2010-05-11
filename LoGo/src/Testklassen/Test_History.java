@@ -7,12 +7,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Klasse zum Testen der Datenbank-Zugriffsfunktionen über das Internet
  * @author steven
  */
 public class Test_History {
 
 
+    /**
+     * Main Programm zum starten der Tests
+     * @param args
+     * @throws SQLException
+     */
     public static void main(String[] args) throws SQLException {
         HistoryConnector hc = new HistoryConnector();
         HistoryEintrag eintraege[] = null;
@@ -40,6 +45,6 @@ public class Test_History {
             }
 
             hc.close();
-        }
       }
+   }
 }
