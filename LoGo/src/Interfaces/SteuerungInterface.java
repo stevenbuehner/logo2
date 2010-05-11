@@ -32,29 +32,9 @@ public interface SteuerungInterface {
             int vorgabeSteineFuerSchwarz);
 
     /**
-     * Dient dafuer, ein Spiel zu laden und das komplette Feld zu uebergeben.
-     * Spielfeldgroesse muss nicht uebergeben werden, da diese im Spielfeld
-     * gespeichert ist.
-     * @param feld Spielfeld, welches schon fertig und gueltig konstruiert wurde
-     * @param spielerNameSchwarz Name des schwarzen Spielers
-     * @param spielerNameWeiss Name des weissen Spielers
-     * @param spielZeitSchwarz Absolute Zeit des schwarzen Spielers
-     * @param spielZeitWeiss Absolute Zeit des weissen Spielers
-     * @param periodenZeit Byo-Yomi fuer beide Spieler
-     * @param komiFuerWeiss Punkte zum Spielstaerkenausgleich fuer Weiss
-     */
-    public void initMitDatenModell(Spielfeld feld,
-            String spielerNameSchwarz,
-            String spielerNameWeiss,
-            long spielZeitSchwarz,
-            long spielZeitWeiss,
-            long periodenZeit,
-            float komiFuerWeiss);
-
-    /**
-     * Initialisiere das Spiel mit einem @param bereitsInitialisiertesSpielfeld
+     * Initialisiere das Spiel mit einem Spielfeld
      * Diese Funktion sorgt selbst für eine Validierung ...
-     * @param bereitsInitialisiertesSpielfeld Uebergebenes Spielfeld
+     * @param bereitsInitialisiertesSpielfeld Objekt vom Typ Spielfeld mit dem die Steuerung initialisiert werden soll.
      */
     public void initMitSpielfeld(Spielfeld bereitsInitialisiertesSpielfeld);
 

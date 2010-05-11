@@ -943,7 +943,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
         } else {
             String validierungsAntwort = this.dasSpielfeld.spielfeldValidiert();
             if (validierungsAntwort == null) {
-                LoGoApp.meineSteuerung.initMitDatenModell(this.dasSpielfeld, this.getNameSchwarz(), this.getNameWeiss(), zeitSchwarz, zeitWeiss, periodenzeit, this.getKomi());
+                LoGoApp.meineSteuerung.initMitSpielfeld(this.dasSpielfeld);
                 LoGoApp.meineSteuerung.buttonSpielStarten();
                 /* Jetzt spiel Starten */
                 this.setVisible(false);
