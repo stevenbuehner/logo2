@@ -6,30 +6,65 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+/**
+ * Diese Klasse beinhaltet die Grafik(en) und die Animationsvorgänge
+ * eines Spielsteines auf dem Spielbrett.
+ * @author steven
+ */
 public class SpielStein extends Rectangle2D.Double implements Drawable {
 
     // Informationen uber den Zustand der SpielSteinAnimation
+    /**
+     * Spielstein sichtbar oder nicht
+     */
     protected boolean visible;
+    /**
+     * Aktuelle Grafikindex bei einer Animations mit einem Grafik-Array
+     */
     protected int currentSceneIndex;
+    /**
+     * Zeit, die die aktuelle Szene schon dargestellt wird bei einer Animation
+     */
     protected long thisScenePlayedTime;         // Zeit die die aktuelle Scene schon "verbraten" hat
+    /**
+     * Soll die Animation wiederholt werden?
+     */
     protected boolean loop;
+    /**
+     * Wenn die Animation wiederholt werden soll, ab welchem Index?
+     * Bei negativen Werten wird nicht wiederholt.
+     */
     protected int loopFromIndex = -2;
     private ArrayList<OneScene> szenen;
     // Die Grafiken die anzuzeigen sind
+    /**
+     * Array mit den Grafiken. Wenn nur eine Grafik, dann ist es ein Array
+     * mit Size = 1
+     */
     protected BufferedImage[] storedImages;
     // Objekt wird demnaechst geloescht
+    /**
+     * Wenn der Stein gelöscht werden soll, dann wird dies hier markiert.
+     * Da es unter umständen vorkommen kann, dass ein Stein zwar gelöscht werden
+     * soll, aber noch von einer anderen Funktion gebraucht wird.
+     */
     protected boolean steinWirdGeloescht;
+    /**
+     * Offsetposition vom linken Spielfeldrand gemessen am Mittelpunkt der Grafik.
+     */
     protected int offsetLeft;
+    /**
+     * Offsetposition vom oberen Spielfeldrand gemessen am Mittelpunkt der Grafik.
+     */
     protected int offsetTop;
 
     /**
      *
      * Standardkonstruktor, bei dem gleich mehrere einzelne Bilder als Array
      * (= spaetere Animation) uebergeben werden.
-     * @param i Ein Array mit den Bildern die das Objekt verarbeiten soll
+     * @param image
      * @param x X-Startposition der Animation (linke obere Ecke als Ausgangspunkt)
      * @param y Y-Startposition der Animation (linke obere Ecke als Ausgangspunkt)
-     * @param delay Geschwindigkeit, mit der die Animationsbilder rotieren sollen
      */
     public SpielStein(BufferedImage[] image, double x, double y) {
 
@@ -63,7 +98,6 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
      * @param image Ein Array mit den Bildern die das Objekt verarbeiten soll
      * @param x X-Startposition der Animation (linke obere Ecke als Ausgangspunkt)
      * @param y Y-Startposition der Animation (linke obere Ecke als Ausgangspunkt)
-     * @param delay Geschwindigkeit, mit der die Animationsbilder rotieren sollen
      *
      */
     public SpielStein(BufferedImage image, double x, double y) {
@@ -117,6 +151,11 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
         }
     }
 
+    /**
+     * Zeichnet die Grfik auf das Spielbrett
+     * @param g Graphicfenster
+     */
+    @Override
     public void drawObjects(Graphics g) {
         if (!visible || szenen == null) {
             return;
@@ -151,6 +190,7 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
 
     /**
      * Legt fest, ob die Animation sich wiederholen soll
+     * @param loopAktiviert Ob die Animation wiederholt werden soll
      */
     public void setLoop(boolean loopAktiviert) {
         this.loop = loopAktiviert;
@@ -158,28 +198,51 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
 
     /**
      * Legt fest, ob die Animation sich wiederholen soll und wenn ja ab welchem Szenenindex.
+     * @param loopAktiviert Ob die Animation wiederholt werden soll
+     * @param loopFromIndex Wenn loop = true, dann ab welchem Index.
      */
     public void setLoop(boolean loopAktiviert, int loopFromIndex) {
         this.loop = loopAktiviert;
         this.loopFromIndex = loopFromIndex;
     }
 
+    /**
+     *
+     * @return Ob das Objekt gerade sichtbar ist
+     */
     public boolean isVisible() {
         return visible;
     }
 
+    /**
+     *
+     * @param sichtbar Ob das Objekt gerade sichtbar sein soll (true = sichtbar)
+     */
     public void setVisible(boolean sichtbar) {
         this.visible = sichtbar;
     }
 
+    /**
+     *
+     * @param i Setzen der X-Position. Abstand vom Zentrum der Spielgrafik zum linken Fensterrand
+     */
     public void setX(double i) {
         x = i;
     }
 
+    /**
+     *
+     * @param i Setzen der Y-Position. Abstand vom Zentrum der Spielgrafik zum oberen Fensterrand
+     */
     public void setY(double i) {
         y = i;
     }
 
+    /**
+     *
+     * @param image Grafik, die mit der Länge des zweiten Parameters angezeigt werden soll
+     * @param sceneDuration Anzeigedauer der Grafik
+     */
     protected synchronized void addScene(BufferedImage image, long sceneDuration) {
         this.szenen.add(new OneScene(image, sceneDuration));
     }
@@ -198,7 +261,7 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
 
     /**
      *
-     * @param sceneIndex
+     * @param sceneIndex Gewünschter Szenenindex
      * @return Gibt Szene am sceneIndex zurueck
      */
     protected OneScene getScene(int sceneIndex) {
@@ -213,6 +276,9 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
         this.thisScenePlayedTime = 0;
     }
 
+    /**
+     * Alle vorhandenen Szenen löschen und damit verbundene Parameter zurücksetzen
+     */
     protected synchronized void clearScenes() {
         this.restartAnimation();
         if (this.szenen.size() > 0) {
@@ -222,6 +288,9 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
         this.loopFromIndex = 0; // negativer Wert
     }
 
+    /**
+     * Die Animation eines gelegten weissen Spielsteines starten.
+     */
     public synchronized void starteAnimationWeissSetzen() {
         this.clearScenes();
         //this.addScene(storedImages[36], 100);
@@ -235,6 +304,9 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
         this.setLoop(false);
     }
 
+    /**
+     * Die Animation eines gelegten schwarzen Spielsteines starten.
+     */
     public synchronized void starteAnimationSchwarzSetzen() {
         this.clearScenes();
         // this.addScene(storedImages[0], 100);
@@ -251,6 +323,9 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
         this.setLoop(false);
     }
 
+    /**
+     * Die Animation eines zu entfernenden weissen Spielsteines starten.
+     */
     public synchronized void starteAnimationWeissEntfernen() {
         this.clearScenes();
         this.addScene(storedImages[29], 100);
@@ -265,6 +340,9 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
         this.setLoop(false);
     }
 
+    /**
+     * Die Animation eines zu entfernenden schwarzen Spielsteines starten.
+     */
     public synchronized void starteAnimationSchwarzEntfernen() {
         this.clearScenes();
         //this.addScene(storedImages[8], 100);
@@ -284,6 +362,10 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
         this.setLoop(false);
     }
 
+    /**
+     * Die Animation, dass dieses Feld jetzt ein verbotener Zug für Weiss
+     * ist, soll gestartet werden.
+     */
     public synchronized void starteAnimationVerbotenerZugWeiss() {
         this.clearScenes();
         this.addScene(storedImages[29], 100);
@@ -300,6 +382,10 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
         this.setLoop(false);
     }
 
+    /**
+     * Die Animation, dass dieses Feld jetzt ein verbotener Zug für Schwarz
+     * ist, soll gestartet werden.
+     */
     public synchronized void starteAnimationVerbotenerZugSchwarz() {
         this.clearScenes();
         //this.addScene(storedImages[8], 100);
@@ -321,66 +407,101 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
         this.setLoop(false);
     }
 
+    /**
+     * Ein verbotenes Feld soll jetzt wieder normal dargestellt werden. Dies
+     * soll animiert werden.
+     */
     public synchronized void starteAnimationVerbotenerZugAufheben() {
         this.clearScenes();
         this.addScene(storedImages[21], 100);
         this.setLoop(false);
     }
 
+    /**
+     * Ein Feld soll als verboten markiert sein, ohne Animation.
+     */
     public synchronized void setVerbotenerZug() {
         this.clearScenes();
         this.addScene(storedImages[37], 100);
         this.setLoop(false);
     }
 
+    /**
+     * Die Animation, dass ein Spielstein von Schwarz durch Weiss gefangen wurde, starten
+     */
     public synchronized void starteAnimationGefangenenSteinSchwarz() {
         this.clearScenes();
         this.addScene(storedImages[39], 100);
         this.setLoop(false);
     }
 
+    /**
+     * Die Animation, dass ein Spielstein von Weiss durch Schwarz gefangen wurde, starten
+     */
     public synchronized void starteAnimationGefangenenSteinWeiss() {
         this.clearScenes();
         this.addScene(storedImages[40], 100);
         this.setLoop(false);
     }
 
+    /**
+     * Die Animation, dass ein Gebietspunkt Schwarz zugerechnet wird.
+     */
     public synchronized void starteAnimationGebietspunktSchwarz() {
         this.clearScenes();
         this.addScene(storedImages[41], 100);
         this.setLoop(false);
     }
 
+    /**
+     * Die Animation, dass ein Gebietspunkt Weiss zugerechnet wird.
+     */
     public synchronized void starteAnimationGebietspunktWeiss() {
         this.clearScenes();
         this.addScene(storedImages[42], 100);
         this.setLoop(false);
     }
 
+    /**
+     * Die Animation, dass ein Gebietspunkt Schwarz zugerechnet wurde und jetzt
+     * wieder niemandem zugerechnet wird.
+     */
     public synchronized void starteAnimationGebietSchwarzZuLeer() {
         this.clearScenes();
         this.addScene(storedImages[21], 100);
         this.setLoop(false);
     }
 
+    /**
+     * Die Animation, dass ein Gebietspunkt Weiss zugerechnet wurde und jetzt
+     * wieder niemandem zugerechnet wird.     */
     public synchronized void starteAnimantionGebietWeissZuLeer() {
         this.clearScenes();
         this.addScene(storedImages[21], 100);
         this.setLoop(false);
     }
 
+    /**
+     * Ein schwarzer Stein soll ohne Animation angezeigt werden.
+     */
     public synchronized void setSchwarzerStein() {
         this.clearScenes();
         this.addScene(storedImages[9], 100);
         this.setLoop(false);
     }
 
+    /**
+     * Ein weisser Stein soll ohne Animation angezeigt werden.
+     */
     public synchronized void setWeisserStein() {
         this.clearScenes();
         this.addScene(storedImages[30], 100);
         this.setLoop(false);
     }
 
+    /**
+     * Ein leeres Feld soll ohne Animation angezeigt werden.
+     */
     public synchronized void setLeeresFeld() {
         this.clearScenes();
         this.addScene(storedImages[21], 100);
