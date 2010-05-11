@@ -56,6 +56,12 @@ public class Steuerung implements SteuerungInterface {
      */
     public Steuerung(int spielFeldGroesse, long periodenZeit) {
 
+        this.periodenZeit = periodenZeit;
+        this.periodenZeitSchwarz = new CountdownPeriodenZeitSchwarz(false, 60 * 1000);
+        this.periodenZeitWeiss = new CountdownPeriodenZeitWeiss(false, 60 * 1000);
+        this.spielerZeitSchwarz = new CountdownSpielerZeitSchwarz(false, 30 * 60 * 1000);
+        this.spielerZeitWeiss = new CountdownPeriodenZeitWeiss(false, 30 * 60 * 1000);
+
         // Initialisiere nicht angegebenes mit Standardwerten
         this.initMitEinstellungen(
                 "Steven",
@@ -66,12 +72,6 @@ public class Steuerung implements SteuerungInterface {
                 0,
                 spielFeldGroesse,
                 3);
-
-        this.periodenZeit = periodenZeit;
-        this.periodenZeitSchwarz = new CountdownPeriodenZeitSchwarz(false, 60 * 1000);
-        this.periodenZeitWeiss = new CountdownPeriodenZeitWeiss(false, 60 * 1000);
-        this.spielerZeitSchwarz = new CountdownSpielerZeitSchwarz(false, 30 * 60 * 1000);
-        this.spielerZeitWeiss = new CountdownPeriodenZeitWeiss(false, 30 * 60 * 1000);
     }
 
     /**Implementierung des Interfaces
@@ -101,7 +101,10 @@ public class Steuerung implements SteuerungInterface {
 
     }
 
-    /**Implementierung des Interfaces
+    /**
+     * Implementierung des Interfaces. Alle anderen initialisierer des Spielfeldes
+     * rufen diesen Standardinitialisierer auf. Abschliessende Operationen koennen also
+     * in dieser Funktion implementiert werden.
      * @param bereitsInitialisiertesSpielfeld
      * @see SteuerungInterface
      */
@@ -113,7 +116,28 @@ public class Steuerung implements SteuerungInterface {
             if (validierungsAntwort == null) {
                 this.dasSpielfeld = bereitsInitialisiertesSpielfeld;
                 this.dieSpielfeldAuswertung = null;
+                
                 // Timer initialisieren
+                if (this.dasSpielfeld.getIgnoreTime() == false) {
+                    this.periodenZeitSchwarz.setRemainingTime(this.dasSpielfeld.getPeriodenZeit());
+                    this.periodenZeitSchwarz.stoppeCountdown();
+                    this.periodenZeitWeiss.setRemainingTime(this.dasSpielfeld.getPeriodenZeit());
+                    this.periodenZeitWeiss.stoppeCountdown();
+                    this.spielerZeitSchwarz.setRemainingTime(this.dasSpielfeld.getSpielerSchwarz().getVerbleibendeSpielzeitInMS());
+                    this.spielerZeitSchwarz.stoppeCountdown();
+                    this.spielerZeitWeiss.setRemainingTime(this.dasSpielfeld.getSpielerWeiss().getVerbleibendeSpielzeitInMS());
+                    this.spielerZeitWeiss.stoppeCountdown();
+                } else {
+                    this.periodenZeitSchwarz.stoppeCountdown();
+                    this.periodenZeitSchwarz.setRemainingTime(1);
+                    this.periodenZeitWeiss.stoppeCountdown();
+                    this.periodenZeitWeiss.setRemainingTime(1);
+                    this.spielerZeitSchwarz.stoppeCountdown();
+                    this.spielerZeitSchwarz.setRemainingTime(1);
+                    this.spielerZeitWeiss.stoppeCountdown();
+                    this.spielerZeitWeiss.setRemainingTime(1);
+                }
+                
                 String ipAddr = null;
 
                 try {
@@ -513,30 +537,6 @@ public class Steuerung implements SteuerungInterface {
         if (validierungsAntwort != null) {
             throw new UnsupportedOperationException("Spielfeld nicht valide! Spiel kann nicht gestartet werden");
         } else {
-            // Timer initialisieren
-            // Vorraussetzung zum Initialisieren ist ein Objekt vom Typ Spieler in this.dasSpielfeld
-            if (this.dasSpielfeld.getSpielerSchwarz() != null
-                    && this.dasSpielfeld.getSpielerWeiss() != null) {
-                if (this.dasSpielfeld.getIgnoreTime() == false) {
-                    this.periodenZeitSchwarz.setRemainingTime(this.dasSpielfeld.getPeriodenZeit());
-                    this.periodenZeitSchwarz.stoppeCountdown();
-                    this.periodenZeitWeiss.setRemainingTime(this.dasSpielfeld.getPeriodenZeit());
-                    this.periodenZeitWeiss.stoppeCountdown();
-                    this.spielerZeitSchwarz.setRemainingTime(this.dasSpielfeld.getSpielerSchwarz().getVerbleibendeSpielzeitInMS());
-                    this.spielerZeitSchwarz.stoppeCountdown();
-                    this.spielerZeitWeiss.setRemainingTime(this.dasSpielfeld.getSpielerWeiss().getVerbleibendeSpielzeitInMS());
-                    this.spielerZeitWeiss.stoppeCountdown();
-                } else {
-                    this.periodenZeitSchwarz.stoppeCountdown();
-                    this.periodenZeitSchwarz.setRemainingTime(1);
-                    this.periodenZeitWeiss.stoppeCountdown();
-                    this.periodenZeitWeiss.setRemainingTime(1);
-                    this.spielerZeitSchwarz.stoppeCountdown();
-                    this.spielerZeitSchwarz.setRemainingTime(1);
-                    this.spielerZeitWeiss.stoppeCountdown();
-                    this.spielerZeitWeiss.setRemainingTime(1);
-                }
-            }
 
             // Oberfläche füllen
             LoGoApp.meineOberflaeche.setGefangeneSteineSchwarz(
@@ -557,6 +557,7 @@ public class Steuerung implements SteuerungInterface {
                     this.dasSpielfeld.getSpielerSchwarz().getVerbleibendeSpielzeitInMS());
             LoGoApp.meineOberflaeche.setAnzeigeSpielerZeitWeiss(
                     this.dasSpielfeld.getSpielerWeiss().getVerbleibendeSpielzeitInMS());
+            
             // Initialisiere alle benötigten Timer neu
             if (this.dasSpielfeld.getIgnoreTime() == false) {
                 this.periodenZeitSchwarz.setRemainingTime(this.dasSpielfeld.getPeriodenZeit());
