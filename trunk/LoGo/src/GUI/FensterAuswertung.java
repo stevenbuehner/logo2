@@ -21,7 +21,8 @@ import javax.swing.JRootPane;
 import logo.LoGoApp;
 
 /**
- *
+ * Darstellungsklasse für die Spielauswertung. Inklusiver einer Anzeige für die
+ * Bestenliste, welche durch Threads im Hintergrund geladen wird.
  * @author steven
  * @version 0.2
  */
