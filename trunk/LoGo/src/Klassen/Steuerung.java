@@ -1355,19 +1355,23 @@ public class Steuerung implements SteuerungInterface {
         URL myURL = getClass().getClassLoader().getResource("GUI/resources/ChinesischerRestsatz.pdf");
 
 
-        try {
             // check whether we have windows os. if yes, use runtime exec instead of desktop
             String osName = System.getProperties().get("os.name").toString();
             if (osName.matches(".*Windows.*")) {
                 String pfad = myURL.toString();
-                Runtime.getRuntime().exec("rundll32 SHELL32.DLL,ShellExec_RunDLL \""+pfad+"\"");
+                try{
+                    Runtime.getRuntime().exec("rundll32 SHELL32.DLL,ShellExec_RunDLL \""+pfad+"\"");
+                } catch (Exception e) {
+                    LoGoApp.meineOberflaeche.gibFehlermeldungAus("Die pdf konnte auf Ihrem System nicht geoeffnet werden. Bitte öffnen Sie diese von Hand im Programmordner.");
+                }
             }
             else {
-            Desktop.getDesktop().open(new File(myURL.getFile()));
+                try{
+                    Desktop.getDesktop().open(new File(myURL.getFile()));
+                }catch (Exception e){
+                    LoGoApp.meineOberflaeche.gibFehlermeldungAus("Die pdf konnte auf Ihrem System nicht geoeffnet werden. Bitte öffnen Sie diese von Hand im Programmordner.");
+                }
             }
-        } catch (IOException ex) {
-            Logger.getLogger(Steuerung.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     public void buttonZeigeCreditsGedrueckt() {
