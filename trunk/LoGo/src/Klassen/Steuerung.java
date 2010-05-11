@@ -14,7 +14,6 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -67,6 +66,7 @@ public class Steuerung implements SteuerungInterface {
                 0,
                 spielFeldGroesse,
                 3);
+
         this.periodenZeit = periodenZeit;
     }
 
@@ -138,33 +138,6 @@ public class Steuerung implements SteuerungInterface {
                 }
             }
         }
-    }
-
-    /**Implementierung des Interfaces
-     * @see SteuerungInterface
-     */
-    public void initMitDatenModell(
-            Spielfeld feld,
-            String spielerNameSchwarz,
-            String spielerNameWeiss,
-            long spielZeitSchwarz,
-            long spielZeitWeiss,
-            long periodenZeit,
-            float komiFuerWeiss) {
-        this.aktuellAngezeigteZugnummer = 0;
-        Spielfeld tmpSpielfeld = feld;
-
-        tmpSpielfeld.setSpielerSchwarz(new Spieler(spielerNameSchwarz, spielZeitSchwarz, 0, 0));
-        tmpSpielfeld.setSpielerWeiss(new Spieler(spielerNameWeiss, spielZeitWeiss, 0, komiFuerWeiss));
-        tmpSpielfeld.setPeriodenZeit(periodenZeit);
-
-        /* Was intern Passiert: Im Spielfeld wird ein Initialfeld generiert,
-         * welches Festlegt, dass immer die Vorgabesteine auf dem Brett liegen
-         * muessen.*/
-        this.initMitSpielfeld(tmpSpielfeld);
-
-        //Zum Testen wurde dies hier auskommentiert, da es sonst nicht funktionieren wuerde
-//        throw new UnsupportedOperationException("Not fully supported yet.");
     }
 
     /**Implementierung des Interfaces
