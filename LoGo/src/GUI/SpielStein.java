@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * Diese Klasse beinhaltet die Grafik(en) und die Animationsvorgänge
  * eines Spielsteines auf dem Spielbrett.
  * @author steven
+ * @version 0.4
  */
 public class SpielStein extends Rectangle2D.Double implements Drawable {
 

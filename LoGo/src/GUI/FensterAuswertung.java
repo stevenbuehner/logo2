@@ -64,6 +64,9 @@ public class FensterAuswertung extends JFrame implements MouseListener {
         this.init();
     }
 
+    /**
+     * Methode zum initialisieren der Variablen
+     */
     private void init() {
 
         this.spielerSchwarzName = "";
@@ -97,6 +100,11 @@ public class FensterAuswertung extends JFrame implements MouseListener {
         // this.setVisible(true);
     }
 
+    /**
+     * Überschriebene Funktion der Super-Klasse. Zeichnet die Hintergrundgrafik
+     * und übergibt dann an die Super-Klasse.
+     * @param g Graphics-Objekt des Fensters
+     */
     @Override
     public void paint(Graphics g) {
         if (this.isVisible()) {
@@ -107,6 +115,11 @@ public class FensterAuswertung extends JFrame implements MouseListener {
         }
     }
 
+    /**
+     * Fängt ab, ob mit der Maus auf das Feld geklickt wird.
+     * @param e Event
+     * @see MouseListener
+     */
     public void mouseClicked(MouseEvent e) {
         Object[] options = {"Abbrechen",
             "Neues Spiel starten",
@@ -140,20 +153,43 @@ public class FensterAuswertung extends JFrame implements MouseListener {
         }
     }
 
+    /**
+     * Fängt ab, ob die Maus gepresst wurde. Diese Funktion ist leer.
+     * @param e Event
+     * @see MouseListener
+     */
     public void mousePressed(MouseEvent e) {
     }
 
+    /**
+     * Fängt ab, ob die Maus losgelassen wurde. Diese Funktion ist leer.
+     * @param e Event
+     * @see MouseListener
+     */
     public void mouseReleased(MouseEvent e) {
     }
 
+    /**
+     * Fängt ab, ob die Maus in den Bereich des Fensters eingetreten ist.
+     * Diese Funktion ist leer.
+     * @param e Event
+     * @see MouseListener
+     */
     public void mouseEntered(MouseEvent e) {
     }
 
+    /**
+     * Fängt ab, ob die Maus aus dem Bereich des Fensters ausgetreten ist.
+     * Diese Funktion ist leer.
+     * @param e Event
+     * @see MouseListener
+     */
     public void mouseExited(MouseEvent e) {
     }
 
     /**
-     * Die ausgewerteten Informationen auf das Fenster @param g schreiben
+     * Die ausgewerteten Informationen auf das Graphics-Objekt geschrieben
+     * @param g Graphics-Objekt des Fensters
      */
     private void render(Graphics g) {
         /* Je nachdem, wie Beendet wurde, wird das Ergebnis angezeigt */
@@ -287,8 +323,7 @@ public class FensterAuswertung extends JFrame implements MouseListener {
             this.spielerWeissKomi = 0;
         }
 
-        this.ergebnisFuerWeiss = (this.spielerWeissAufBrettGefangen + this.spielerWeissGebietspunkte + this.spielerWeissImSpielGefangen + this.spielerWeissKomi)
-                - (this.spielerSchwarzAufBrettGefangen + this.spielerSchwarzGebietspunkte + this.spielerSchwarzImSpielGefangen + this.spielerSchwarzKomi);
+        this.ergebnisFuerWeiss = (this.spielerWeissAufBrettGefangen + this.spielerWeissGebietspunkte + this.spielerWeissImSpielGefangen + this.spielerWeissKomi) - (this.spielerSchwarzAufBrettGefangen + this.spielerSchwarzGebietspunkte + this.spielerSchwarzImSpielGefangen + this.spielerSchwarzKomi);
         this.wieWurdeBeendet = FensterAuswertung.DURCH_AUSZAEHLEN_BEENDET;
     }
 
@@ -323,14 +358,13 @@ public class FensterAuswertung extends JFrame implements MouseListener {
         this.wieWurdeBeendet = FensterAuswertung.DURCH_AUFGABE_BEENDET;
     }
 
-   /**
+    /**
      * Wurde das Spiel durch Zeitueberschreitung beendet, wird ein entsprechendes Ergebnis
      * erzeugt.
      * @param nameSchwarz Name des Schwarzen Spielers
      * @param nameWeiss Name des Weissen Spielers
      * @param konstanteFuerGewinner Wer hat gewonnen?
      */
-
     public void ergebnisAufZeitVerlorenZeigen(String nameSchwarz, String nameWeiss, int konstanteFuerGewinner) {
         /* Erstmal zum Debugen */
         if (LoGoApp.debug) {
@@ -354,6 +388,13 @@ public class FensterAuswertung extends JFrame implements MouseListener {
         this.gewinnerBeiAufgOdZeit = konstanteFuerGewinner;
     }
 
+    /**
+     * Überschriebene Funktion der Superklasse.
+     * Wenn aufgerufen, wird beim setzen auf sichtbar ein Ton abgespielt und
+     * im Hintergrund ein Thread gestartet, der die aktuellen Statistik-Werte
+     * aus der Datenbank im Internet abzurufen versucht.
+     * @param visible Fenster sichtbar oder nicht (true = sichtbar)
+     */
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
@@ -370,8 +411,9 @@ public class FensterAuswertung extends JFrame implements MouseListener {
     }
 
     /**
-     *
-     * @param eintraege Die Historyeintroege die Gesetzt werden sollen
+     * Diese Funktion kann vom Thread im Hintergrund aufgerufen werden.
+     * Sie übergibt die ermittelten History-Einträge.
+     * @param eintraege Die Historyeinträge die Gesetzt werden sollen
      */
     public synchronized void setHistoryEintraege(HistoryEintrag eintraege[]) {
         this.histEintraege = eintraege;
@@ -379,7 +421,9 @@ public class FensterAuswertung extends JFrame implements MouseListener {
     }
 
     /**
-     *
+     * Diese Funktion kann vom Thread im Hintergrund aufgerufen werden.
+     * Sie übergibt Statusnachrichten, sowie auftretende Fehler bei der
+     * Datenbankverbindung.
      * @param statusNachricht Nachicht die Ausgegeben werden soll
      */
     public synchronized void setStatusNachricht(String statusNachricht) {
