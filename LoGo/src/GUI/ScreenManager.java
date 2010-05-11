@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 
 import java.awt.DisplayMode;
@@ -15,11 +11,10 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 
 /**
- *
+ * Diese Klasse verwaltet den Bildschirm und die Anzeige-Bildschirm-Modi, es lässt sich damit
+ * zum Beispiel zwischen Vollbild und Fensterbild umschalten.
  * @author steven
  * @version 0.1
- * Diese Klasse handelt den Bildschirm. Mit der Klasse laesst sich unser
- * Bildschirm verwalten und auf Vollbild umschalten
  */
 public class ScreenManager {
 
