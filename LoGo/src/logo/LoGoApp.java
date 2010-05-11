@@ -75,7 +75,7 @@ public class LoGoApp {
         meinAuswertungsfenster = new FensterAuswertung();
         meineCredits = new FensterCredits();
 
-        meineOberflaeche = new FensterSpieloberflaeche("LoGo, by Steven Buehner, Alex Jesche, Rebecca King and Tommy Schladitz");
+        meineOberflaeche = new FensterSpieloberflaeche("LoGo");
         meinEinstellungsfenster = new FensterEinstellung("Einstellungen");
 
         //launch(LoGoApp.class, args);
