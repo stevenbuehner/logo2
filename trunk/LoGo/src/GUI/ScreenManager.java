@@ -25,6 +25,9 @@ public class ScreenManager {
 
     private GraphicsDevice vc;      // Video-Card
 
+    /**
+     * Standardkonstrkutor der die benötigten Variablen initialisiert
+     */
     public ScreenManager() {
         GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         this.vc = env.getDefaultScreenDevice();
@@ -95,6 +98,10 @@ public class ScreenManager {
         return true;
     }
 
+    /**
+     *
+     * @param dm Setzt den zu verwendenen DisplayMode
+     */
     public void setFullScreen(DisplayMode dm) {
         JFrame window = new JFrame();
         this.setFullScreen(dm, window);
@@ -103,7 +110,7 @@ public class ScreenManager {
     /**
      * ScreenManager in Fullscreen bringen
      * @param dm DisplayMode enhtaelt die Aufloesung, die Bildtiefe und die Anzeigegeschwindigkeit
-     * @param window das Fenster
+     * @param window Das Fenster
      */
     public void setFullScreen(DisplayMode dm, JFrame window) {
         window.setUndecorated(true);    // Fenster ohne Umrandung
@@ -120,6 +127,10 @@ public class ScreenManager {
         window.createBufferStrategy(2);
     }
 
+    /**
+     *
+     * @return Gibt ein Objekt vom Typ Graphics zurück
+     */
     public Graphics2D getGraphics() {
         Window w = vc.getFullScreenWindow();
         if (w != null) {
@@ -139,6 +150,9 @@ public class ScreenManager {
         return vc.getFullScreenWindow();
     }
 
+    /**
+     * Prüft ob Content vorhanden ist und wenn ja, zeigt es ihn zBsp an.
+     */
     public void update() {
         Window w = vc.getFullScreenWindow();
         if (w != null) {
