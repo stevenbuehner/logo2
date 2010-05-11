@@ -68,6 +68,10 @@ public class Steuerung implements SteuerungInterface {
                 3);
 
         this.periodenZeit = periodenZeit;
+        this.periodenZeitSchwarz = new CountdownPeriodenZeitSchwarz(false, 60 * 1000);
+        this.periodenZeitWeiss = new CountdownPeriodenZeitWeiss(false, 60 * 1000);
+        this.spielerZeitSchwarz = new CountdownSpielerZeitSchwarz(false, 30 * 60 * 1000);
+        this.spielerZeitWeiss = new CountdownPeriodenZeitWeiss(false, 30 * 60 * 1000);
     }
 
     /**Implementierung des Interfaces
@@ -512,33 +516,25 @@ public class Steuerung implements SteuerungInterface {
             // Timer initialisieren
             // Vorraussetzung zum Initialisieren ist ein Objekt vom Typ Spieler in this.dasSpielfeld
             if (this.dasSpielfeld.getSpielerSchwarz() != null
-                    || this.dasSpielfeld.getSpielerWeiss() != null) {
+                    && this.dasSpielfeld.getSpielerWeiss() != null) {
                 if (this.dasSpielfeld.getIgnoreTime() == false) {
-                    this.periodenZeitSchwarz = new CountdownPeriodenZeitSchwarz(
-                            false,
-                            this.dasSpielfeld.getPeriodenZeit());
-                    this.periodenZeitWeiss = new CountdownPeriodenZeitWeiss(
-                            false,
-                            this.dasSpielfeld.getPeriodenZeit());
-                    this.spielerZeitSchwarz = new CountdownSpielerZeitSchwarz(
-                            false,
-                            this.dasSpielfeld.getSpielerSchwarz().getVerbleibendeSpielzeitInMS());
-                    this.spielerZeitWeiss = new CountdownSpielerZeitWeiss(
-                            false,
-                            this.dasSpielfeld.getSpielerWeiss().getVerbleibendeSpielzeitInMS());
+                    this.periodenZeitSchwarz.setRemainingTime(this.dasSpielfeld.getPeriodenZeit());
+                    this.periodenZeitSchwarz.stoppeCountdown();
+                    this.periodenZeitWeiss.setRemainingTime(this.dasSpielfeld.getPeriodenZeit());
+                    this.periodenZeitWeiss.stoppeCountdown();
+                    this.spielerZeitSchwarz.setRemainingTime(this.dasSpielfeld.getSpielerSchwarz().getVerbleibendeSpielzeitInMS());
+                    this.spielerZeitSchwarz.stoppeCountdown();
+                    this.spielerZeitWeiss.setRemainingTime(this.dasSpielfeld.getSpielerWeiss().getVerbleibendeSpielzeitInMS());
+                    this.spielerZeitWeiss.stoppeCountdown();
                 } else {
-                    this.periodenZeitSchwarz = new CountdownPeriodenZeitSchwarz(
-                            false,
-                            1);
-                    this.periodenZeitWeiss = new CountdownPeriodenZeitWeiss(
-                            false,
-                            1);
-                    this.spielerZeitSchwarz = new CountdownSpielerZeitSchwarz(
-                            false,
-                            1);
-                    this.spielerZeitWeiss = new CountdownSpielerZeitWeiss(
-                            false,
-                            1);
+                    this.periodenZeitSchwarz.stoppeCountdown();
+                    this.periodenZeitSchwarz.setRemainingTime(1);
+                    this.periodenZeitWeiss.stoppeCountdown();
+                    this.periodenZeitWeiss.setRemainingTime(1);
+                    this.spielerZeitSchwarz.stoppeCountdown();
+                    this.spielerZeitSchwarz.setRemainingTime(1);
+                    this.spielerZeitWeiss.stoppeCountdown();
+                    this.spielerZeitWeiss.setRemainingTime(1);
                 }
             }
 
