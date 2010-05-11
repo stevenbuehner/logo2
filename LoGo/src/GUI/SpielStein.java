@@ -156,7 +156,6 @@ public class SpielStein extends Rectangle2D.Double implements Drawable {
      * Zeichnet die Grfik auf das Spielbrett
      * @param g Graphicfenster
      */
-    @Override
     public void drawObjects(Graphics g) {
         if (!visible || szenen == null) {
             return;
