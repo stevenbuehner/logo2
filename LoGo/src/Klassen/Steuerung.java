@@ -799,7 +799,7 @@ public class Steuerung implements SteuerungInterface {
             }
 
             // Spielstatus nach dem Aufnehmen des Spieles wieder auf "Spiel läuft" setzen
-            this.dasSpielfeld.setSpielZustand(Konstante.SPIEL_LAUEFT);
+            this.wechsleInStatus(Konstante.SPIEL_LAUEFT);
             LoGoApp.meineOberflaeche.setPauseScreen(false);
             this.updateUndoUndRedo();
         }
@@ -1160,6 +1160,18 @@ public class Steuerung implements SteuerungInterface {
                     this.dieSpielfeldAuswertung.getSchwarzeGefangeneAufBrett(),
                     this.dieSpielfeldAuswertung.getWeisseGefangeneAufBrett());
             LoGoApp.meinAuswertungsfenster.setVisible(true);
+            float punkteSchwarz = this.dasSpielfeld.getSpielerSchwarz().getGefangenenAnzahl() + this.dieSpielfeldAuswertung.getGebietsPunkteSchwarz() + this.dieSpielfeldAuswertung.getWeisseGefangeneAufBrett();
+            float punkteWeiss =   this.dasSpielfeld.getSpielerWeiss().getGefangenenAnzahl()   + this.dieSpielfeldAuswertung.getGebietsPunkteWeiss()   + this.dieSpielfeldAuswertung.getSchwarzeGefangeneAufBrett();
+            if(this.dasSpielfeld.getSpielerWeiss().getKomiPunkte() >=0){
+                punkteWeiss += this.dasSpielfeld.getSpielerWeiss().getKomiPunkte();
+            }
+            else {
+                punkteSchwarz += (-1 * this.dasSpielfeld.getSpielerWeiss().getKomiPunkte());
+            }
+            this.historyVersenden(this.dasSpielfeld.getSpielerSchwarz().getSpielerName(),
+                                  this.dasSpielfeld.getSpielerWeiss().getSpielerName(),
+                                  punkteSchwarz,
+                                  punkteWeiss);
         }
     }
 
@@ -1264,24 +1276,8 @@ public class Steuerung implements SteuerungInterface {
         histEintr.setPunkteSpielerSchwarz(punkteSchwarz);
         histEintr.setPunkteSpielerWeiss(punkteWeiss);
         histEintr.setDatum(new java.sql.Date(System.currentTimeMillis()));
-        if (LoGoApp.debug) {
-            System.out.println(histEintr.getDatum());
-        }
-
-        try {
-            hc.open();
-            hc.sendeNeuenHistoryEintrag(histEintr);
-            hc.close();
-
-        } catch (SQLException ex) {
-            System.out.println("Datenbankübertragungsfehler: " + ex.getCause());
-            return false;
-        } catch (Exception ex) {
-            System.out.println("Datenbankübertragungsfehler: " + ex.getCause());
-            return false;
-        } finally {
-            return true;
-        }
+        new BackgroundHistorySend(histEintr);
+        return true;
     }
 
     private void setzeGefangenZahlAufOberklaeche() {

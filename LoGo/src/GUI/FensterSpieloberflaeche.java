@@ -135,6 +135,7 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
 
         //this.setResizable(false);
         this.setSize(1024, 768);
+        this.setResizable(false);
         setLocationRelativeTo(null); // Fenster zentrieren
         this.setVisible(true);
         this.createBufferStrategy(2);

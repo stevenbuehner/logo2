@@ -99,9 +99,8 @@ public class HistoryConnector {
         HistoryEintrag[] rueckgabeHistoryEintraege = new HistoryEintrag[anzahl];
         int zaehler = 0;
 
-        ResultSet rs = stmt.executeQuery("Select nameSchwarz, nameWeiss, punkteSchwarz, punkteWeiss, datum, ABS(punkteSchwarz-punkteWeiss) AS punkteDifferenz "
-                + " FROM history "
-                + " ORDER BY ABS(punkteSchwarz-punkteWeiss) "
+        ResultSet rs = stmt.executeQuery("Select nameSchwarz, nameWeiss, punkteSchwarz, punkteWeiss, datum"
+                + " FROM bestenliste "
                 + " LIMIT 0, " + String.valueOf(anzahl) + ";");
 
 
