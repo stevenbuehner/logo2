@@ -5,17 +5,11 @@ import Timer.Countdown;
 import Timer.CountdownPeriodenZeitSchwarz;
 import Timer.CountdownPeriodenZeitWeiss;
 import Timer.CountdownSpielerZeitSchwarz;
-import Timer.CountdownSpielerZeitWeiss;
 import Interfaces.SteuerungInterface;
 import java.awt.Desktop;
 import java.io.File;
-import java.io.IOException;
-import java.net.InetAddress;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import logo.LoGoApp;
 
@@ -138,28 +132,6 @@ public class Steuerung implements SteuerungInterface {
                     this.spielerZeitWeiss.setRemainingTime(1);
                 }
                 
-                String ipAddr = null;
-
-                try {
-                    InetAddress addr = InetAddress.getLocalHost();
-                    ipAddr = addr.getHostAddress();
-
-                    if (LoGoApp.debug) {
-                        System.out.println("IP-Adresse: " + ipAddr);
-                    }
-
-                } catch (UnknownHostException ex) {
-                    Logger.getLogger(Steuerung.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                if (ipAddr == null || ipAddr.indexOf("10.") == 0) {
-                    if (JOptionPane.showConfirmDialog(null, "Befindest Du dich gerade in der DHBW?") == JOptionPane.NO_OPTION) {
-                    } else {
-                        System.exit(0);
-                    }
-                }
-
-
             } else {
                 if (LoGoApp.debug) {
                     System.out.println("Spielfeld ist nicht VALIDE in der Steuerung angekommen!!\n"+validierungsAntwort);
