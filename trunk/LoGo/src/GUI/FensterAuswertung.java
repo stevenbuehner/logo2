@@ -160,6 +160,7 @@ public class FensterAuswertung extends JFrame implements MouseListener {
      * @see MouseListener
      */
     public void mousePressed(MouseEvent e) {
+        repaint();
     }
 
     /**
@@ -168,6 +169,7 @@ public class FensterAuswertung extends JFrame implements MouseListener {
      * @see MouseListener
      */
     public void mouseReleased(MouseEvent e) {
+        repaint();
     }
 
     /**
@@ -177,6 +179,7 @@ public class FensterAuswertung extends JFrame implements MouseListener {
      * @see MouseListener
      */
     public void mouseEntered(MouseEvent e) {
+        repaint();
     }
 
     /**
@@ -186,6 +189,7 @@ public class FensterAuswertung extends JFrame implements MouseListener {
      * @see MouseListener
      */
     public void mouseExited(MouseEvent e) {
+        repaint();
     }
 
     /**
