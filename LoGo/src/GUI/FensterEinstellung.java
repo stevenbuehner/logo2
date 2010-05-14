@@ -500,6 +500,7 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
         this.spielermodus.addItem("Vorgabe");
         this.spielermodus.addItem("Startformation");
         this.spielermodus.addItem("Spiel Laden");
+        this.spielermodus.addItem("Spiel Beenden");
 
         this.spielVorgabeSteine.addItem("0");
         this.spielVorgabeSteine.addItem("2");
@@ -1003,7 +1004,17 @@ public class FensterEinstellung extends JFrame implements MouseListener, ActionL
          * nicht geaendert hat, muss man nur das datenmodell auf leer setzen*/
         this.dasSpielfeld = new Spielfeld(this.getSelectedFeldgroesse());
 
-        if (modus.equals("Schnellstart")) {
+        if(modus.equals("Spiel Beenden")){
+            int returnWert = JOptionPane.CANCEL_OPTION;
+            returnWert = JOptionPane.showConfirmDialog(null, "Wollen Sie wirklich beenden");
+            if(returnWert == JOptionPane.OK_OPTION || returnWert == JOptionPane.YES_OPTION){
+                System.exit(0);
+            }
+            else{
+                this.spielermodus.setSelectedItem("Schnellstart");
+                this.updateSpielmodus("Schnellstart");
+            }
+        } else if (modus.equals("Schnellstart")) {
             /* Das Feld ist jetzt leer, bereit fuer den Schnellstart */
             this.animiereFrameStart();
             /* Bei einem Schnellstart spielt man ohne Vorgaben */

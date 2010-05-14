@@ -1320,7 +1320,7 @@ public class Steuerung implements SteuerungInterface {
             Logger.getLogger(Steuerung.class.getName()).log(Level.SEVERE, null, ex);
         }
         */
-        URL myURL = getClass().getClassLoader().getResource("GUI/resources/ChinesischerRestsatz.pdf");
+        URL myURL = getClass().getClassLoader().getResource("GUI/resources/Hilfe.pdf");
 
 
             // check whether we have windows os. if yes, use runtime exec instead of desktop
