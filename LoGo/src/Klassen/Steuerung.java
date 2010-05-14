@@ -491,13 +491,17 @@ public class Steuerung implements SteuerungInterface {
         /* Periodenzeit setzen */
         if(this.dasSpielfeld.getSpielerSchwarz().getVerbleibendeSpielzeitInMS() > 0){
             LoGoApp.meineOberflaeche.schwarzInPeriodenZeit(false);
+        } else if (this.dasSpielfeld.getPeriodenZeit() == 0){
+            LoGoApp.meineOberflaeche.schwarzInPeriodenZeit(false);
         } else {
             LoGoApp.meineOberflaeche.schwarzInPeriodenZeit(true);
         }
 
         if(this.dasSpielfeld.getSpielerWeiss().getVerbleibendeSpielzeitInMS() > 0){
             LoGoApp.meineOberflaeche.weissInPeriodenZeit(false);
-        } else {
+        } else if(this.dasSpielfeld.getPeriodenZeit() == 0){
+            LoGoApp.meineOberflaeche.weissInPeriodenZeit(false);
+        }else {
             LoGoApp.meineOberflaeche.weissInPeriodenZeit(true);
         }
 
@@ -1045,7 +1049,9 @@ public class Steuerung implements SteuerungInterface {
         this.dasSpielfeld.getSpielerSchwarz().setVerbleibendeSpielzeitInMS(0);
         this.periodenZeitSchwarz.setRemainingTime(this.dasSpielfeld.getPeriodenZeit());
         this.periodenZeitSchwarz.starteCountdown();
-        LoGoApp.meineOberflaeche.schwarzInPeriodenZeit(true);
+        if(this.periodenZeitSchwarz.getRemainingTime()!=0){
+             LoGoApp.meineOberflaeche.schwarzInPeriodenZeit(true);
+        }
     }
 
     /**Implementierung des Interfaces
@@ -1066,7 +1072,9 @@ public class Steuerung implements SteuerungInterface {
         this.dasSpielfeld.getSpielerWeiss().setVerbleibendeSpielzeitInMS(0);
         this.periodenZeitWeiss.setRemainingTime(this.dasSpielfeld.getPeriodenZeit());
         this.periodenZeitWeiss.starteCountdown();
-        LoGoApp.meineOberflaeche.weissInPeriodenZeit(true);
+        if(this.periodenZeitWeiss.getRemainingTime()!=0){
+            LoGoApp.meineOberflaeche.weissInPeriodenZeit(true);
+        }
     }
 
     /**Implementierung des Interfaces
