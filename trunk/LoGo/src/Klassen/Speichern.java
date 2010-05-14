@@ -163,13 +163,13 @@ public class Speichern {
          {
              String selFile = chooser.getSelectedFile().getAbsolutePath();
              //Endung überprüfen
-             if(selFile.toLowerCase().contains(".sgf"))
+             if(selFile.toLowerCase().contains(".cgf"))
              {
                  // File Name enthält die Endung ".cgf"
              }
              else
              {
-                 selFile += ".sgf";
+                 selFile += ".cgf";
              }
 
              //Zusammengesetzten String in die Datei abspeichern
