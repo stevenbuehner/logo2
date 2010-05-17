@@ -16,6 +16,10 @@ public class BackgroundHistorySend implements Runnable{
     private HistoryEintrag historyE;
     private boolean once = false;
 
+    /**
+     * Konstruktor der Klasse.
+     * @param hist Zu versendender History-Eintrag.
+     */
     public BackgroundHistorySend( HistoryEintrag hist ){
 
         this.historyE = hist;

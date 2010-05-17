@@ -20,11 +20,18 @@ public class SoundTests
     AudioInputStream audioInputStream;
     SourceDataLine sourceDataLine;
 
+    /**
+     * mainfunktion
+     * @param args
+     */
     public static void main(
             String args[]) {
         new SoundTests();
     }//end main
 
+    /**
+     * Sounds testen
+     */
     public SoundTests() {//constructor
         final JButton captureBtn =
                 new JButton("Capture");
@@ -215,6 +222,7 @@ public class SoundTests
 
         byte tempBuffer[] = new byte[10000];
 
+        @Override
         public void run() {
             byteArrayOutputStream =
                     new ByteArrayOutputStream();
@@ -252,6 +260,7 @@ public class SoundTests
 
         byte tempBuffer[] = new byte[10000];
 
+        @Override
         public void run() {
             try {
                 int cnt;

@@ -14,10 +14,19 @@ import logo.LoGoApp;
  */
 public class CountdownSpielerZeitWeiss extends Countdown {
 
+    /**
+     * Konstruktor der Klasse
+     * @param starteSofort Soll Countdown sofort starten?
+     */
     public CountdownSpielerZeitWeiss(boolean starteSofort) {
         super(starteSofort);
     }
 
+    /**
+     * Einstellen des Countdowns
+     * @param starteSofort Soll der Countdown sofort starten?
+     * @param remainingTime Einzustellende Zeit in Millisekunden.
+     */
     public CountdownSpielerZeitWeiss(boolean starteSofort, long remainingTime) {
         super(starteSofort, remainingTime);
     }

@@ -17,17 +17,39 @@ import javax.swing.UIManager;
  */
 public class LoGoApp {
 
+    /**
+     * Oberflaeche-Interface der Applikation
+     */
     public static OberflaecheInterface meineOberflaeche;
+    /**
+     * Einstellungsfenster der Applikation
+     */
     public static FensterEinstellung meinEinstellungsfenster;
+    /**
+     *  Grafik-Libary der Applikation
+     */
     public static GrafikLib meineGrafikLib = GrafikLib.getInstance();
+    /**
+     *  Steuerung-Interface der Applikation
+     */
     public static SteuerungInterface meineSteuerung;
+    /**
+     *  Auswertungsfenster der Applikation
+     */
     public static FensterAuswertung meinAuswertungsfenster;
+    /**
+     *  Creditsfenster der Applikation
+     */
     public static FensterCredits meineCredits;
+    /**
+     *  Ist man im Debug-mode?
+     */
     public static boolean debug = false;
 
 
     /**
      * Main method launching the application.
+     * @param args
      */
     public static void main(String[] args) {
         UIManager.put("OptionPane.cancelButtonText", "Abbrechen");

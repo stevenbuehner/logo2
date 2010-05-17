@@ -20,20 +20,58 @@ import logo.LoGoApp;
  */
 public class Spielbrett extends JComponent {
 
+    /**
+     * Breite des Brettes, das gezeichnet ist.
+     */
     protected int brettBreite;
+    /**
+     * Hoehe des Brettes, das gezeichnet ist.
+     */
     protected int brettHoehe;
+    /**
+     * X-Koordinaten-Offset des Brettes in Pixel.
+     */
     protected int xOffset;
+    /**
+     * Y-Koordinaten-Offset des Brettes in Pixel.
+     */
     protected int yOffset;
+    /**
+     * Anzahl der Felder, also die Feldgroesse.
+     */
     protected int anzahlFelder;
+    /**
+     * Gespeichertes Spielfeld als Array, wo liegt ein Stein.
+     */
     protected int[][] spielFeldArray;
     // Grafiken
+    /**
+     * Array von Steinen, komplexere datenstruktur
+     */
     protected SpielStein[][] feld;
+    /**
+     * Markierung des Spielsteines.
+     */
     protected SpielsteinMarkierung markierterStein;
+    /**
+     * Welcher Punkt soll markiert werden
+     */
     protected Point letztePositionMarkierterStein;
 
+    /**
+     * Liniendicke der Feldlinien. Je nach Feldgroesse einstellbar.
+     */
     protected int linienDicke;
 
     // Array-Inhalte alle auf 0 setzen
+    /**
+     * Konstruktor des Spielbrettes.
+     * @param breite Brettbreite in Pixel
+     * @param hoehe Bretthoehe in Pixel
+     * @param xOffset X-Offset in Pixel
+     * @param yOffset Y-Offset in Pixel
+     * @param anzahlFelder Anzahl der Felder des Spielbrettes
+     */
     public Spielbrett(int breite, int hoehe, int xOffset, int yOffset, int anzahlFelder) {
 
         // Berechne Brettgroesse und Feldabstaende
@@ -139,7 +177,6 @@ public class Spielbrett extends JComponent {
      * Versuch nur die benötigten / veränderten Felder neu zu zeiche ... mal
      * schaun ob sich das umsetzen lässt
      * @param g
-     * @param neuesFeld
      */
     @Override
     public void paint(Graphics g) {
@@ -219,7 +256,8 @@ public class Spielbrett extends JComponent {
     }
 
     /**
-     * @param neuesSpielFeld[][] Wenn sich das Spielfeld veraendert hat
+     * Momentane Anzeige updaten
+     * @param neuesSpielFeld Das Spielfeld, auf das Upgedatet wird
      */
     public void updateSpielFeld(int[][] neuesSpielFeld) {
 
@@ -301,6 +339,10 @@ public class Spielbrett extends JComponent {
         }
     }
 
+    /**
+     * Einstellen, welcher Stein markiert werden soll.
+     * @param steinPos Position des Steines, Wenn Null wird nicht markiert.
+     */
     public void setMarkierterStein(Point steinPos) {
 
         if (steinPos == null) {
@@ -324,7 +366,8 @@ public class Spielbrett extends JComponent {
     }
 
     /**
-     *
+     * Logik-Operation auf alle Felder anwenden. Implementierung des interfaces
+     * Movable
      * @see interfaces.Movable
      * @param delta
      */
@@ -337,6 +380,12 @@ public class Spielbrett extends JComponent {
         }
     }
 
+    /**
+     * Wird auf das Feld geklickt, wird berechnet welcher Punkt gemeint ist.
+     * @param xPos
+     * @param yPos
+     * @return
+     */
     public Point berechneTreffer(int xPos, int yPos) {
 
         int xPosRelativ = xPos - this.xOffset;
@@ -352,6 +401,10 @@ public class Spielbrett extends JComponent {
         }
     }
 
+    /**
+     * Getter, liefert die Anzahl der Felder des Spielfeldes zurueck
+     * @return Anzahl der Felder
+     */
     public int getAnzahlFelder() {
         return this.anzahlFelder;
     }

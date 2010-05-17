@@ -16,6 +16,10 @@ import logo.LoGoApp;
  */
 public class DateiVorlader {
 
+    /**
+     * Konstruktor der Klasse. Hier werden Alle dateinen die im Spiel wichtig sind
+     * geladen. Alse besonders Bilder, um die Performance zu verbessern.
+     */
     public DateiVorlader() {
         this.ladeGrafiken();
     }

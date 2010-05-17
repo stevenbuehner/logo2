@@ -40,6 +40,7 @@ public class HistoryEintrag {
 
     /**
      * Setter für @param name von Spieler Schwarz.
+     * @param name Name des spielers
      */
     public void setNameSpielerSchwarz(String name) {
         this.nameSpielerSchwarz = name;
@@ -55,6 +56,7 @@ public class HistoryEintrag {
 
     /**
      * Setter für die @param punkte des Spielers Schwar.
+     * @param punkte Anzahl der Punkte
      */
     public void setPunkteSpielerSchwarz(float punkte) {
         this.punkteSpielerSchwarz = punkte;
@@ -70,6 +72,7 @@ public class HistoryEintrag {
 
     /**
      * Setter für @param name von Spieler Weiss.
+     * @param name
      */
     public void setNameSpielerWeiss(String name) {
         this.nameSpielerWeiss = name;
@@ -85,11 +88,16 @@ public class HistoryEintrag {
 
     /**
      * Setter für die @param punkte des Spielers Schwar.
+     * @param punkte  Anzahl der Punkte
      */
     public void setPunkteSpielerWeiss(float punkte) {
         this.punkteSpielerWeiss = punkte;
     }
 
+    /**
+     * Eintrag, ob schwarz gewonnen hat.
+     * @return
+     */
     public boolean hatSchwarzGewonnen() {
         if (this.punkteSpielerSchwarz > this.punkteSpielerWeiss){
             return true;
@@ -99,14 +107,26 @@ public class HistoryEintrag {
         }
     }
 
+    /**
+     * Eintrag, ob weiss gewonnen hat
+     * @return
+     */
     public boolean hatWeissGewonnen() {
         return !this.hatSchwarzGewonnen();
     }
 
+    /**
+     * Datum des Eintrages Setzen
+     * @param datum
+     */
     public void setDatum( Date datum ){
         this.zeitpunkt = datum;
     }
 
+    /**
+     * Getter, Datum des Eintrages
+     * @return
+     */
     public Date getDatum(){
         return this.zeitpunkt;
     }
