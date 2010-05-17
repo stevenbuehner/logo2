@@ -3,7 +3,7 @@ package GUI;
 import java.awt.image.BufferedImage;
 
 /**
- *
+ * Klasse fuer eine Animationsszene
  * @author steven
  */
 public class OneScene {

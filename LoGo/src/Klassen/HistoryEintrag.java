@@ -96,7 +96,7 @@ public class HistoryEintrag {
 
     /**
      * Eintrag, ob schwarz gewonnen hat.
-     * @return
+     * @return Hat schwarz gewonnen
      */
     public boolean hatSchwarzGewonnen() {
         if (this.punkteSpielerSchwarz > this.punkteSpielerWeiss){
@@ -109,7 +109,7 @@ public class HistoryEintrag {
 
     /**
      * Eintrag, ob weiss gewonnen hat
-     * @return
+     * @return Hat weiss gewonnen
      */
     public boolean hatWeissGewonnen() {
         return !this.hatSchwarzGewonnen();
@@ -125,7 +125,7 @@ public class HistoryEintrag {
 
     /**
      * Getter, Datum des Eintrages
-     * @return
+     * @return Datum
      */
     public Date getDatum(){
         return this.zeitpunkt;

@@ -6,13 +6,13 @@ import logo.LoGoApp;
 
 /**
  *
- * @author steven
- * @version 0.2
  * Einzige Aufgabe dieser Klasse ist es, die später benötigten Grafiken
  * in den Speicher vorzuladen.
  *
  * Hier für wird die GrafikLib verwendet, welche Verweise auf die Grafiken im
  * Speicher behält
+ * @author steven
+ * @version 0.2
  */
 public class DateiVorlader {
 

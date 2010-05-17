@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 
 /**
- *
+ * Spieleruhr, muss fuer jeden Spieler erstellt werden.
  * @author tommy
  * @version 0.2
  */

@@ -6,9 +6,8 @@ import javax.swing.JFrame;
 
 
 /**
- *
- * @author steven
  * Klasse für das Credits-Fenster
+ * @author steven
  */
 public class FensterCredits extends JFrame{
 

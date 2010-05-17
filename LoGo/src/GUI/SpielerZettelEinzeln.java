@@ -11,7 +11,7 @@ import java.util.List;
 import javax.swing.JComponent;
 
 /**
- *
+ * Zettel fuer jeden Spieler
  * @author Alex
  */
 public class SpielerZettelEinzeln extends JComponent implements SpielerZettel {

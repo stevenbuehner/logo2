@@ -3,7 +3,7 @@ package Sound;
 import java.applet.*;
 
 /**
- *
+ * Klasse fuer einen Sound
  * @author steven
  */
 public class MySoundClip extends Thread implements AudioClip {

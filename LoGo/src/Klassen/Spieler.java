@@ -5,7 +5,7 @@
 package Klassen;
 
 /**
- *
+ * Klasse die die Spieler erstellt
  * @author steven
  * @version 0.1
  */

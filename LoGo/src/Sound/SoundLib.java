@@ -5,7 +5,7 @@ import java.net.URL;
 import java.util.*;
 
 /**
- *
+ * Klasse die alle Sounds enthaelt
  * @author steven
  */
 public class SoundLib {

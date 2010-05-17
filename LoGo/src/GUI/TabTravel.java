@@ -9,7 +9,7 @@ import java.awt.FocusTraversalPolicy;
 import javax.swing.JComponent;
 
 /**
- *
+ * Klasse, die die Tabreihenfolge der uebergebenen Komponenten festlegt
  * @author tommy
  */
 public class TabTravel {
@@ -17,7 +17,7 @@ public class TabTravel {
     /**
      *
      * @param order Komponenten, geordnet nach gewuenschter Tab-Reihenfolge
-     * @return
+     * @return Tab-Policy
      */
     public static FocusTraversalPolicy getFocusTraversal(
             final JComponent order[]) {

@@ -7,9 +7,9 @@ import javax.swing.Timer;
 
 /**
  *
+ * Uebernommen aus dem Spiel >Wer wird Biblionaer< von Steven Buehner
  * @author steven
  * @version 1.0
- * Uebernommen aus dem Spiel >Wer wird Biblionaer< von Steven Buehner
  */
 public abstract class Countdown {
 
