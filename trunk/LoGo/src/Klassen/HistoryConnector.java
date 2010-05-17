@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- *
+ * Klasse zum Aufbau der Datenbankverbindung
  * @author steven
  */
 public class HistoryConnector {
@@ -17,13 +17,26 @@ public class HistoryConnector {
     final private String user = "logo";
     final private String pass = "checker08";
     final private String dbName = "logo";
+    /**
+     * Variable fuer die Verbindung
+     */
     protected Connection con;
+    /**
+     * SQL-Statement fuer die Abfrage.
+     */
     protected java.sql.Statement stmt;
 
+    /**
+     * Bei Proxy eine Verbindung aufbauen.
+     */
     public HistoryConnector() {
         //  Proxy pro = new Proxy(Proxy.Type.HTTP, null)
     }
 
+    /**
+     * Oeffnen einer Datenbankverbindung.
+     * @throws Exception
+     */
     public void open() throws Exception {
 
         try {
@@ -65,6 +78,10 @@ public class HistoryConnector {
         }
     }
 
+    /**
+     * Beenden der Datenbankverbindung.
+     * @throws SQLException
+     */
     public void close() throws SQLException {
         stmt.close();
         con.close();
@@ -72,6 +89,11 @@ public class HistoryConnector {
 
     }
 
+    /**
+     * History eintrag Holen
+     * @return
+     * @throws SQLException
+     */
     public HistoryEintrag holeErstenHistoryEintrag() throws SQLException {
         ResultSet rs = stmt.executeQuery("SELECT * FROM history;");
         if (!rs.next()) {
@@ -91,6 +113,12 @@ public class HistoryConnector {
         } while (rs.next());
     }
 
+    /**
+     * Bestenliste holen
+     * @param anzahl Anzahl der Besten n
+     * @return Historyeintraege
+     * @throws SQLException
+     */
     public HistoryEintrag[] holeDieBestenHistoryEintraege(int anzahl) throws SQLException {
 
         if (anzahl < 0) {
@@ -121,6 +149,12 @@ public class HistoryConnector {
         return rueckgabeHistoryEintraege;
     }
 
+    /**
+     * Nachicht aus Datenbank holen
+     * @param pIdMessage
+     * @return
+     * @throws SQLException
+     */
     public HistoryEintrag getMessage(int pIdMessage) throws SQLException {
         ResultSet rs = stmt.executeQuery("SELECT * FROM message WHERE ID_message = " + pIdMessage + ";");
         if (!rs.next()) {
@@ -137,6 +171,11 @@ public class HistoryConnector {
         return letzteNachricht;
     }
 
+    /**
+     * Versenden eines neuen History-Eintrages
+     * @param histEintr Zu versendender eintrag
+     * @throws SQLException
+     */
     public void sendeNeuenHistoryEintrag(HistoryEintrag histEintr) throws SQLException {
         String sqlQuerry = "INSERT INTO history (nameSchwarz, nameWeiss, punkteSchwarz, punkteWeiss, datum) VALUES ("
                 + "'" + histEintr.getNameSpielerSchwarz() + "',"

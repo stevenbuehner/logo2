@@ -24,6 +24,10 @@ public class SpielsteinMarkierung extends SpielStein {
         this.setLoop(true, 1);
     }
 
+    /**
+     * Malt die Spielsteinmarkierung
+     * @param image Zu malende Markierung
+     */
     public SpielsteinMarkierung(BufferedImage image) {
         super(image, 0, 0);
 

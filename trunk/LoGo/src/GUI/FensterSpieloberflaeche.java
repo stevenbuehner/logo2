@@ -67,20 +67,65 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
     private SpielerUhren spielerUhrWeiss;
     private SpielerZettel spielerZettelSchwarz;
     private SpielerZettel spielerZettelWeiss;
+    /**
+     * Der Menuebalken
+     */
     protected MenuBar dieMenueBar;
+    /**
+     * Das Spiel-Informationen-Item
+     */
     protected MenuItem SpielInfo;
+    /**
+     * Das Credits-Item, bei klick wird gezeigt, wer am Projekt beteiligt war
+     */
     protected MenuItem Credits;
+    /**
+     * Das Hilfe-Item, bei klick soll sich die pdf ueber das Spiel oeffnen
+     */
     protected MenuItem Hilfe;
+    /**
+     * Neues-Spiel-Item, bei klick kommt das Einstellungsfenster
+     */
     protected MenuItem NeuesSpiel;
+    /**
+     * Spiel-Laden-Item, bei klick kann man ein Spiel laden
+     */
     protected MenuItem SpielLaden;
+    /**
+     * Spiel-Speichern-Item, bei klick kann man das jetzige brett Speichern
+     */
     protected MenuItem SpielSpeichern;
+    /**
+     * Spiel-Beenden-Item, bei klick kann man LoGo beenden
+     */
     protected MenuItem SpielBeenden;
+    /**
+     * Undo-Item, bei klick geht das Spiel einen Zug zurueck
+     */
     protected MenuItem Undo;
+    /**
+     * Redo-Item, bei klick geht das Spiel eine Zug vor
+     */
     protected MenuItem Redo;
+    /**
+     * Passen-Item, bei klick wird gepasst
+     */
     protected MenuItem Passen;
+    /**
+     * Aufgeben-Item, bei klick gibt der momentane Spieler auf
+     */
     protected MenuItem Aufgeben;
+    /**
+     * Aufwertung-Beenden-Item, ist man in der Auswertung, so wird diese beendet
+     */
     protected MenuItem AuswertungBeenden;
+    /**
+     * Pause-Item, bei klick pausiert das Spiel
+     */
     protected MenuItem Pause;
+    /**
+     * Fortsetzen-Item, bei klick wird das Spiel fortgesetzt
+     */
     protected MenuItem Fortsetzen;
 
     /* Double Buffering */
@@ -90,6 +135,10 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
     String spielerSchwarzName;
     String spielerWeissName;
 
+    /**
+     * Konstruktor der Spieloberflaeche
+     * @param pFenstername Name des Fensters
+     */
     public FensterSpieloberflaeche(String pFenstername) {
         super(pFenstername);
 
@@ -107,6 +156,9 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         this.start();
     }
 
+    /**
+     * Funktion zur Initialisierung, hier werden alle Werte voreingestellt.
+     */
     public void init() {
         // Namen initialisieren
         this.spielerSchwarzName = "";
@@ -158,6 +210,9 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         });
     }
 
+    /**
+     * Zum besseren Aussehen, ohne flimmern, muss ein Backbuffer erstellt werden
+     */
     protected void createBackbuffer() {
         if (backbuffer != null) {
             backbuffer.flush();
@@ -170,6 +225,9 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
 
     }
 
+    /**
+     * Testen, ob der Backbuffer in ordnung ist.
+     */
     protected void checkBackbuffer() {
         if (backbuffer == null) {
             createBackbuffer();
@@ -179,6 +237,11 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         }
     }
 
+    /**
+     * Das Menue, also die Menueleiste, muss erstellt werden. Alle Komponenten
+     * werden an der richtigen Stelle eingebunden
+     * @param f Frame, in den das Menue eingebunden werden soll
+     */
     public void createMenue(Frame f) {
 
         dieMenueBar = new MenuBar();
@@ -293,6 +356,10 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
 
     }
 
+    /**
+     * Zeit zwischen 2 Threadaufrufen muss fuer eine fluessigere Animation
+     * berechnet werden.
+     */
     protected void berechneDelta() {
 
         delta = System.nanoTime() - last;
@@ -338,6 +405,10 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         strategy.show(); // Bufferanzeigen.
     }
 
+    /**
+     * die Oberflaeche wird gezeichnet, diese funktion wird in paint aufgerufen
+     * @param g
+     */
     public void render(Graphics g) {
 
         g.drawImage(backgroundImage, 0, 0, this);
@@ -380,6 +451,10 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         }
     }
 
+    /**
+     * Um den Thread zu starten, muss diese Funktion aufgerufen werden. Wenn der
+     * Tread noch nicht laeuft, startet er.
+     */
     public void start() {
         // Thread anstoßen
         if (!once) {
@@ -389,10 +464,18 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
         }
     }
 
+    /**
+     * Um den Tread der Oberflaeche zu stoppen.
+     */
     public void stop() {
         this.threadLaeuf = false;
     }
 
+    /**
+     * Ruft die Logik-Methode im Brett auf, so werden die Steine gleichmaessig
+     * gezeichnet
+     * @param timePassed Zeit, die seit dem letzten zeichnen vergangen ist.
+     */
     public synchronized void doLogic(long timePassed) {
         if (this.dasBrett != null) {
             this.dasBrett.doLogic(timePassed);
@@ -562,6 +645,7 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
     }
 
     /**
+     * @param e
      * @see MouseListener
      */
     public void mouseClicked(MouseEvent e) {
@@ -594,8 +678,8 @@ public class FensterSpieloberflaeche extends Frame implements Runnable, KeyListe
     }
 
     /**
-     *
-     * @param e
+     * Aktion-events abfangen, implementierung des Interfaces
+     * @param e Eingegangenes Action-Event
      * @see ActionListener
      */
     public void actionPerformed(ActionEvent e) {

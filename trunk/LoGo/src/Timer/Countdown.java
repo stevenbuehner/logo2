@@ -13,13 +13,28 @@ import javax.swing.Timer;
  */
 public abstract class Countdown {
 
+    /**
+     * Timer des Countdowns
+     */
     protected Timer countdownTimer;
+    /**
+     * Noch uebrige Zeit in MS
+     */
     protected long remainingTime;
 
+    /**
+     * Konstruktor der Klasse
+     * @param starteSofort Soll der Timer sofort loslaufen?
+     */
     public Countdown(boolean starteSofort) {
         this(starteSofort, 30); // Starte mit Standarzeit, 30 Sekunden
     }
 
+    /**
+     * Countdown einstellen
+     * @param starteSofort Soll Countdown gleich Starten
+     * @param zeitInMillesekunden Zeit in Millisekunden einstellen
+     */
     public Countdown(boolean starteSofort, long zeitInMillesekunden) {
         this.remainingTime = zeitInMillesekunden;
 
@@ -31,10 +46,18 @@ public abstract class Countdown {
         }
     }
 
+    /**
+     * Getter.
+     * @return noch uebrige Zeit
+     */
     public long getRemainingTime() {
         return this.remainingTime;
     }
 
+    /**
+     * Setter.
+     * @param remainingTimeInMillesekunden Zeit die Eingestellt wird
+     */
     public void setRemainingTime(long remainingTimeInMillesekunden) {
         this.remainingTime = remainingTimeInMillesekunden;
     }
