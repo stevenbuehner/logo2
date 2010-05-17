@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import logo.LoGoApp;
 
 /**
- *
+ * Klasse zum laden der Statistik
  * @author steven
  */
 public class BackgroundStatistikLoader implements Runnable{

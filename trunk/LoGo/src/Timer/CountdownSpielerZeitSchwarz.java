@@ -8,7 +8,7 @@ import Interfaces.OberflaecheInterface;
 import logo.LoGoApp;
 
 /**
- *
+ * Countdown fuer die Haupteit des schwarzen Spielers
  * @author steven
  * @version 0.1
  */

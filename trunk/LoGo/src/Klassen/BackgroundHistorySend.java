@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package Klassen;
 
@@ -9,7 +5,7 @@ import java.sql.SQLException;
 import logo.LoGoApp;
 
 /**
- *
+ * Klasse zur versenden der History
  * @author tommy
  */
 public class BackgroundHistorySend implements Runnable{

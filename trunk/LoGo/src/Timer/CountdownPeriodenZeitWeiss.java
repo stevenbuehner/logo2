@@ -8,7 +8,7 @@ import Interfaces.OberflaecheInterface;
 import logo.LoGoApp;
 
 /**
- *
+ * Klasse fuer die Periodenzeit des Schwarzen Spielers
  * @author steven
  * @version 0.1
  */

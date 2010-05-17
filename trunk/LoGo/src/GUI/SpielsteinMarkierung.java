@@ -3,7 +3,7 @@ package GUI;
 import java.awt.image.BufferedImage;
 
 /**
- *
+ * Markierung, welcher Stein soll markiert werden
  * @author steven
  * @version 0.2
  */

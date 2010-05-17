@@ -33,7 +33,7 @@ import javax.swing.JOptionPane;
 import logo.LoGoApp;
 
 /**
- *
+ * Fenster fuer die Spielbrettoberflaeche
  * @author steven
  * @version 0.2
  */

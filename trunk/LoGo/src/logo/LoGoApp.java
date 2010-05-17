@@ -13,7 +13,7 @@ import Klassen.DateiVorlader;
 import javax.swing.UIManager;
 
 /**
- * The main class of the application.
+ * Hauptklasse. Hat alle wichtigen informationen. Ist Class-Holder
  */
 public class LoGoApp {
 

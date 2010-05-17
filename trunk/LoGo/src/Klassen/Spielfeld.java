@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Klasse fuer das Spielfeld. Hier ist die Logik des Spieles untergebracht
  * @author steven, tommy
  * @version 0.1
  */
@@ -1218,8 +1218,8 @@ public class Spielfeld {
 
     /**
      *
-     * @param vorgabenZahl
-     * @return
+     * @param vorgabenZahl Anzahl der Vorgaben
+     * @return Wurde erfolgreich initialisiert
      */
     public boolean initialisiereFeldMitVorgabenFuerSchwarz(int vorgabenZahl) {
         /* Wenn die Zahl der Vorgaben groesser als 9 ist, so ist die
@@ -1783,8 +1783,8 @@ public class Spielfeld {
     /**
      * Damit ein Feld markiert werden kann, muss man wissen, zu welchem Zeitpunkt
      * welcher Zug gespielt wurde. Dazu kann man die Spielzuege auslesen
-     * @param zeitpunkt
-     * @return
+     * @param zeitpunkt Zeitpunkt zu dem Markiert werden soll.
+     * @return Punkt der Markiert werden soll
      */
     public Point getMarkiertenSteinZumZeitpunkt(int zeitpunkt) {
         if (zeitpunkt <= 0 || zeitpunkt > this.letzteZugnummer) {
@@ -1868,7 +1868,7 @@ public class Spielfeld {
 
     /**
      * Rueckgabe der Liste von Spielzuegen fuer die Klasse Speichern
-     * @return
+     * @return Spielzugcollection
      */
     public List<Spielzug> getspielZugCollection() {
 

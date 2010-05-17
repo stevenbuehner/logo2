@@ -5,10 +5,10 @@
 package Klassen;
 
 /**
- * @author tommy
  * Diese Klasse dient nur dazu eine Spielstellung zu analysieren. Durch bestimmte
  * Eigenschaften kann man markieren, ob man den entsprechenden Schnittpunkt
  * beispielsweise schon in ein Liste aufgenommen hat.
+ * @author tommy
  */
 public class AnalyseSchnittpunkt {
 

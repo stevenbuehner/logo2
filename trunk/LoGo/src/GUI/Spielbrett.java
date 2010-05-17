@@ -10,13 +10,12 @@ import javax.swing.JComponent;
 import logo.LoGoApp;
 
 /**
- *
- * @author steven
- * @version 0.1
  * Die Klasse wurde als Vorlage aus einem Forum entnommen:
  * http://www.java-forum.org/awt-swing-swt/95342-spielfeld-gitter-einzelne-zellen-veraendern.html#_
  *
  * Diese Klasse wird aktuell nirgends im Spiel verwedet!!!!
+ * @author steven
+ * @version 0.1
  */
 public class Spielbrett extends JComponent {
 
@@ -368,8 +367,8 @@ public class Spielbrett extends JComponent {
     /**
      * Logik-Operation auf alle Felder anwenden. Implementierung des interfaces
      * Movable
-     * @see interfaces.Movable
-     * @param delta
+     * @see Movable
+     * @param delta Zeitunterschied in Millisekunden
      */
     public void move(long delta) {
         // Bewegungen ausführen bei allen Feldern
@@ -382,9 +381,9 @@ public class Spielbrett extends JComponent {
 
     /**
      * Wird auf das Feld geklickt, wird berechnet welcher Punkt gemeint ist.
-     * @param xPos
-     * @param yPos
-     * @return
+     * @param xPos XPosition des Treffers
+     * @param yPos YPosition des Treffers
+     * @return Punkt der getroffen wurde
      */
     public Point berechneTreffer(int xPos, int yPos) {
 

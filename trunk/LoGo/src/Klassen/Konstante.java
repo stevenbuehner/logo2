@@ -5,7 +5,7 @@
 package Klassen;
 
 /**
- *
+ * Klasse um globale Konstanten zu Speichern
  * @author steven
  */
 public class Konstante {

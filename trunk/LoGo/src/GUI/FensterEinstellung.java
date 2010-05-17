@@ -24,7 +24,7 @@ import javax.swing.JTextField;
 import logo.LoGoApp;
 
 /**
- *
+ * Einstellungsfenster fuer Spieleinstellungen
  * @author tommy
  * @version 0.1
  */

@@ -91,7 +91,7 @@ public class HistoryConnector {
 
     /**
      * History eintrag Holen
-     * @return
+     * @return History-eintrag
      * @throws SQLException
      */
     public HistoryEintrag holeErstenHistoryEintrag() throws SQLException {
@@ -152,7 +152,7 @@ public class HistoryConnector {
     /**
      * Nachicht aus Datenbank holen
      * @param pIdMessage
-     * @return
+     * @return History-Eintrag
      * @throws SQLException
      */
     public HistoryEintrag getMessage(int pIdMessage) throws SQLException {

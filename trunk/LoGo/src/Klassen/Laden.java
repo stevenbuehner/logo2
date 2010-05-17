@@ -29,7 +29,7 @@ public class Laden {
     /**
      *
      * @param id
-     * @return
+     * @return Id des Elements
      */
     public int getID(String id)
     {
